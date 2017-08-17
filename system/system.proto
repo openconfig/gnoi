@@ -24,7 +24,7 @@ syntax = "proto3";
 
 package gnoi.system;
 
-import "github.com/openconfig/reference/rpc/gnoi/types.proto";
+import "github.com/openconfig/gnoi/types.proto";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
