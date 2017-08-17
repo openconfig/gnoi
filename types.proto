@@ -32,13 +32,25 @@ message HashType {
     UNSPECIFIED = 0;
     SHA256 = 1;
     SHA512 = 2;
+    MD5 = 3;
   }
   HashMethod method = 1;
   bytes hash = 2;
 }
 
-// OpenConfig path representation of the target.
-// eg. /interfaces/interface[name=et-1/0/0]
+// Path encodes a data tree path as a series of repeated strings, with
+// each element of the path representing a data tree node name and the
+// associated attributes.
+// Reference: gNMI Specification Section 2.2.2.
 message Path {
-  repeated string elements = 1;
+  string origin = 2;                              // Label to disambiguate path.
+  repeated PathElem elem = 3;                     // Elements of the path.
+}
+
+// PathElem encodes an element of a gNMI path, along with any attributes (keys)
+// that may be associated with it.
+// Reference: gNMI Specification Section 2.2.2.
+message PathElem {
+  string name = 1;                    // The name of the element in the path.
+  map<string, string> key = 2;        // Map of key (attribute) name to value.
 }
