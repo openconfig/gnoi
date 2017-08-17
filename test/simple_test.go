@@ -15,9 +15,17 @@ func TestGNOI(t *testing.T) {
 		in   proto.Message
 		want string
 	}{{
-		desc: "gnoi",
+		desc: "gnoi.Path",
 		in: &gnoi.Path{
-			Elements: []string{"foo", "path"},
+			Origin: "oc",
+			Elem:   []*gnoi.PathElem{{name: "interfaces", key: map[string]string{"name": "Ethernet1/1/0"}}},
+		},
+		want: "elements: \"foo\"\nelements: \"path\"\n",
+	}, {
+		desc: "gnoi.HashType",
+		in: &gnoi.HashType{
+			Method: gnoi.HashMethod_MD5,
+			Hash:   []byte("foo"),
 		},
 		want: "elements: \"foo\"\nelements: \"path\"\n",
 	}, {
