@@ -18,6 +18,8 @@ syntax = "proto3";
 
 package gnoi.file;
 
+import "github.com/openconfig/reference/rpc/gnoi/types.proto";
+
 service File {
   // Get read and streams the contents of a file from the target.
   // The file is streamed by sequential messages, each containing up to
@@ -73,7 +75,7 @@ message PutRequest {
   oneof request {
     Details open = 1;
     bytes contents = 2;
-    bytes checksum = 3; // MD5 checksum of the file.
+    gnoi.HashType hash = 3; // MD5 checksum of the file.
   }
 }
 

@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	"github.com/golang/protobuf/proto/proto"
-
-	gnoi "github.com/openconfig/reference/rpc/gnoi"
-	gbgp "github.com/openconfig/reference/rpc/gnoi/bgp"
+	"github.com/openconfig/gnoi"
+	gbgp "github.com/openconfig/gnoi/bgp"
 )
 
 func TestGNOI(t *testing.T) {
@@ -15,11 +14,19 @@ func TestGNOI(t *testing.T) {
 		in   proto.Message
 		want string
 	}{{
-		desc: "gnoi",
+		desc: "gnoi.Path",
 		in: &gnoi.Path{
-			Elements: []string{"foo", "path"},
+			Origin: "oc",
+			Elem:   []*gnoi.PathElem{{Name: "interfaces", Key: map[string]string{"name": "Ethernet1/1/0"}}},
 		},
-		want: "elements: \"foo\"\nelements: \"path\"\n",
+		want: "origin: \"oc\"\nelem: <\n  name: \"interfaces\"\n  key: <\n    key: \"name\"\n    value: \"Ethernet1/1/0\"\n  >\n>\n",
+	}, {
+		desc: "gnoi.HashType",
+		in: &gnoi.HashType{
+			Method: gnoi.HashType_MD5,
+			Hash:   []byte("foo"),
+		},
+		want: "method: MD5\nhash: \"foo\"\n",
 	}, {
 		desc: "bgp.ClearBGPNeighborRequest",
 		in: &gbgp.ClearBGPNeighborRequest{
