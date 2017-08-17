@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//proto:go_proto_library.bzl", "go_proto_library")
+
+proto_library(
+  name = "gnoi_proto",
+  srcs = ["types.proto"],
+  visibility = ["//visibility:public"],
+)
+
+go_proto_library(
+    name = "go_default_library",
+    srcs = ["types.proto"],
+    visibility = ["//visibility:public"],
+    rules_go_repo_only_for_internal_use = "@",
+    has_services = 1,
+)
