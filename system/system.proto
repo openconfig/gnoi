@@ -46,7 +46,13 @@ service System {
   rpc Time(TimeRequest) returns (TimeResponse) {}
 
   // SetPackage places a software package (possibly including bootable images)
-  // on the target.
+  // on the target. The file is sent in sequential messages, each message
+  // up to 64KB of data. A final message must be sent that includes the hash
+  // of the data sent. An error is returned if the location does not exist or
+  // there is an error writing the data. If no checksum is received, the target
+  // must assume the operation is incomplete and remove the partially
+  // transmitted file. The target should initially write the file to a temporary location so a failure
+  // does not destroy the original file.
   rpc SetPackage(stream SetPackageRequest) returns (SetPackageResponse) {}
 
   // SwitchControlProcessor will switch from the current route processor to the
@@ -278,9 +284,9 @@ message Package {
 
 // SetPackageRequest will place the package onto the target and optionally mark
 // it as the next bootable image. The initial message must be a package
-// message containing the filename and information about the file.
-// The final message must be a hash message contains the hash of the file
-// contents.
+// message containing the filename and information about the file. Folloing the
+// initial message the contents are then streamed in maximum 64k chunks. The
+// final message must be a hash message contains the hash of the file contents.
 message SetPackageRequest {
   oneof request {
    Package package = 1;
