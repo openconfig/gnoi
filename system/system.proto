@@ -51,8 +51,8 @@ service System {
   // of the data sent. An error is returned if the location does not exist or
   // there is an error writing the data. If no checksum is received, the target
   // must assume the operation is incomplete and remove the partially
-  // transmitted file. The target should initially write the file to a temporary location so a failure
-  // does not destroy the original file.
+  // transmitted file. The target should initially write the file to a temporary
+  // location so a failure does not destroy the original file.
   rpc SetPackage(stream SetPackageRequest) returns (SetPackageResponse) {}
 
   // SwitchControlProcessor will switch from the current route processor to the
