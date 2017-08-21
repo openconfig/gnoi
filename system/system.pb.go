@@ -843,7 +843,7 @@ func (m *Package) GetActivate() bool {
 
 // SetPackageRequest will place the package onto the target and optionally mark
 // it as the next bootable image. The initial message must be a package
-// message containing the filename and information about the file. Folloing the
+// message containing the filename and information about the file. Following the
 // initial message the contents are then streamed in maximum 64k chunks. The
 // final message must be a hash message contains the hash of the file contents.
 type SetPackageRequest struct {
