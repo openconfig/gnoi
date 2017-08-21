@@ -843,9 +843,9 @@ func (m *Package) GetActivate() bool {
 
 // SetPackageRequest will place the package onto the target and optionally mark
 // it as the next bootable image. The initial message must be a package
-// message containing the filename and information about the file.
-// The final message must be a hash message contains the hash of the file
-// contents.
+// message containing the filename and information about the file. Folloing the
+// initial message the contents are then streamed in maximum 64k chunks. The
+// final message must be a hash message contains the hash of the file contents.
 type SetPackageRequest struct {
 	// Types that are valid to be assigned to Request:
 	//	*SetPackageRequest_Package
@@ -1050,7 +1050,13 @@ type SystemClient interface {
 	// test if a target is actually responding.
 	Time(ctx context.Context, in *TimeRequest, opts ...grpc.CallOption) (*TimeResponse, error)
 	// SetPackage places a software package (possibly including bootable images)
-	// on the target.
+	// on the target. The file is sent in sequential messages, each message
+	// up to 64KB of data. A final message must be sent that includes the hash
+	// of the data sent. An error is returned if the location does not exist or
+	// there is an error writing the data. If no checksum is received, the target
+	// must assume the operation is incomplete and remove the partially
+	// transmitted file. The target should initially write the file to a temporary location so a failure
+	// does not destroy the original file.
 	SetPackage(ctx context.Context, opts ...grpc.CallOption) (System_SetPackageClient, error)
 	// SwitchControlProcessor will switch from the current route processor to the
 	// provided route processor. If the current route processor is the same as the
@@ -1240,7 +1246,13 @@ type SystemServer interface {
 	// test if a target is actually responding.
 	Time(context.Context, *TimeRequest) (*TimeResponse, error)
 	// SetPackage places a software package (possibly including bootable images)
-	// on the target.
+	// on the target. The file is sent in sequential messages, each message
+	// up to 64KB of data. A final message must be sent that includes the hash
+	// of the data sent. An error is returned if the location does not exist or
+	// there is an error writing the data. If no checksum is received, the target
+	// must assume the operation is incomplete and remove the partially
+	// transmitted file. The target should initially write the file to a temporary location so a failure
+	// does not destroy the original file.
 	SetPackage(System_SetPackageServer) error
 	// SwitchControlProcessor will switch from the current route processor to the
 	// provided route processor. If the current route processor is the same as the
