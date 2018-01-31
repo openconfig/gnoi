@@ -1,11 +1,25 @@
+// Copyright 2017 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package simple
 
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto/proto"
-	"github.com/openconfig/gnoi"
-	gbgp "github.com/openconfig/gnoi/bgp"
+	"github.com/golang/protobuf/proto"
+	gpb "github.com/openconfig/gnoi"
+	bgppb "github.com/openconfig/gnoi/bgp"
 )
 
 func TestGNOI(t *testing.T) {
@@ -14,25 +28,25 @@ func TestGNOI(t *testing.T) {
 		in   proto.Message
 		want string
 	}{{
-		desc: "gnoi.Path",
-		in: &gnoi.Path{
+		desc: "gpb.Path",
+		in: &gpb.Path{
 			Origin: "oc",
-			Elem:   []*gnoi.PathElem{{Name: "interfaces", Key: map[string]string{"name": "Ethernet1/1/0"}}},
+			Elem:   []*gpb.PathElem{{Name: "interfaces", Key: map[string]string{"name": "Ethernet1/1/0"}}},
 		},
 		want: "origin: \"oc\"\nelem: <\n  name: \"interfaces\"\n  key: <\n    key: \"name\"\n    value: \"Ethernet1/1/0\"\n  >\n>\n",
 	}, {
-		desc: "gnoi.HashType",
-		in: &gnoi.HashType{
-			Method: gnoi.HashType_MD5,
+		desc: "gpb.HashType",
+		in: &gpb.HashType{
+			Method: gpb.HashType_MD5,
 			Hash:   []byte("foo"),
 		},
 		want: "method: MD5\nhash: \"foo\"\n",
 	}, {
 		desc: "bgp.ClearBGPNeighborRequest",
-		in: &gbgp.ClearBGPNeighborRequest{
+		in: &bgppb.ClearBGPNeighborRequest{
 			Address:         "foo",
 			RoutingInstance: "bar",
-			Mode:            gbgp.ClearBGPNeighborRequest_HARD,
+			Mode:            bgppb.ClearBGPNeighborRequest_HARD,
 		},
 		want: "address: \"foo\"\nrouting_instance: \"bar\"\nmode: HARD\n",
 	}}
