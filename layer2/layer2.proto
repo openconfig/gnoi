@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package gnoi.layer2;
 
-import "github.com/openconfig/reference/rpc/gnoi/types.proto";
+import "github.com/openconfig/gnoi/types.proto";
 
 
 service Layer2 {

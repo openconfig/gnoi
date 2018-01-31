@@ -4,7 +4,7 @@ proto_library(
   name = "interface_proto",
   srcs = ["interface.proto"],
   deps = [
-    "//github.com/openconfig/reference/rpc/gnoi:gnoi_proto",
+    "//github.com/openconfig/gnoi:gnoi_proto",
   ],
 )
 
@@ -12,7 +12,7 @@ go_proto_library(
     name = "go_default_library",
     srcs = ["interface.proto"],
     deps = [
-      "//github.com/openconfig/reference/rpc/gnoi:go_default_library"
+      "//github.com/openconfig/gnoi:go_default_library"
     ],
     visibility = ["//visibility:public"],
     rules_go_repo_only_for_internal_use = "@",
