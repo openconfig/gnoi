@@ -54,3 +54,12 @@ message PathElem {
   string name = 1;                    // The name of the element in the path.
   map<string, string> key = 2;        // Map of key (attribute) name to value.
 }
+
+// Credentials defines credentials needed to perform authentication on a device.
+message Credentials {
+  string username = 1;
+  oneof password {
+    string cleartext = 2;
+    HashType hashed = 3;
+  }
+}
