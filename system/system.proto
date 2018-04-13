@@ -285,11 +285,11 @@ message RemoteDownload {
   string path = 1;
 
   enum DownloadType {
-    DL_UNKNOWN = 0;
-    DL_SFTP = 1;
-    DL_HTTP = 2;
-    DL_HTTPS = 3;
-    DL_SCP = 4;
+    UNKNOWN = 0;
+    SFTP = 1;
+    HTTP = 2;
+    HTTPS = 3;
+    SCP = 4;
   }
   DownloadType download_type = 2;
 
