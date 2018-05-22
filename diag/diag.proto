@@ -22,8 +22,8 @@ package gnoi.diag;
 
 // The Diag service exports to main set of RPCs:
 // 1- BERT related RPCs: Used to perform Bit Error Rate Test (BERT)
-//    operation on a set of ports.
-// 2- BURNING related RPCs: Used to perform a vendor-provide Burnin test on the
+//    operations on a set of ports.
+// 2- BURNING related RPCs: Used to perform a vendor-provided Burnin test on the
 //    switch to ensure the box is ready to start serving traffic. Burnin tests
 //    are typically run by HwOps in the datacenter, as part of turnup or repair
 //    workflow.
@@ -32,7 +32,7 @@ service Diag {
   // identified by an ID, which is given by the caller. The caller can then
   // use this ID (as well as the list of the ports) to stop the BERT operation
   // and/or get the BERT results. This RPC is expected to return an error status
-  // in the the following situations:
+  // in the following situations:
   // - When BERT operation is not supported on any of the ports specified by
   //   the request.
   // - When BERT is already in progress on any port specified by the request.
@@ -130,7 +130,7 @@ message StartBERTRequest {
     // Path to the interface corresponding to the port.
     gnoi.Path interface = 1;  // required
     // The selected PRBS generating polynomial for BERT.
-    PrbsPolynomial prbs_polynomial = 2;
+    PrbsPolynomial prbs_polynomial = 2;  // required
     // BERT duration in mins. Must be a positive number.
     uint32 test_duration_in_mins = 3;  // required
   }
