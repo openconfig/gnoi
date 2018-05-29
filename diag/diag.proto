@@ -23,19 +23,23 @@ package gnoi.diag;
 // The Diag service exports to main set of RPCs:
 // 1- BERT related RPCs: Used to perform Bit Error Rate Test (BERT)
 //    operations on a set of ports.
-// 2- BURNING related RPCs: Used to perform a vendor-provided Burnin test on the
+// 2- BURNIN related RPCs: Used to perform a vendor-provided Burnin test on the
 //    switch to ensure the box is ready to start serving traffic. Burnin tests
-//    are typically run in the datacenter, as part of turnup or repair workflow.
+//    are typically run in the field, as part of turnup or repair workflow.
 // Note: The RPCs defined here are are stateless operations and them
 // failing/passing should not leave any permanent artifact on the switch (unless
 // there is something wrong HW-wise).
+// Note: By "port" we refer to a channelized frontpanel or backplane port on a
+// chassis. In OpenConfig YANG models, there is a one-to-one relationship
+// between a port as used here and an "interface". Therefore, the "gnoi.Path"
+// fields below for ports correspond to "/interfaces/interface" in YANG models.
 service Diag {
   // Starts BERT operation on a set of ports. Each BERT operation is uniquely
   // identified by an ID, which is given by the caller. The caller can then
   // use this ID (as well as the list of the ports) to stop the BERT operation
   // and/or get the BERT results. This RPC is expected to return an error status
   // in the following situations:
-  // - When BERT operation is not supported on any of the ports specified by
+  // - When BERT operation is supported on none of the ports specified by
   //   the request.
   // - When BERT is already in progress on any port specified by the request.
   // - In case of any low-level HW/SW internal errors.
@@ -54,10 +58,10 @@ service Diag {
   // - When the BERT operation ID does not match the in progress or completed
   //   BERT operation on any of the ports specified by the request.
   // The RPC returns an OK status of none of these situations is encountered.
-  // Note that a BERT operation is considered completed if switch has a
-  // record of it. Also note that it is OK to receive a stop request for a port
-  // which has completed BERT, as long as the recorded BERT operation ID matches
-  // the one specified by the request.
+  // Note that a BERT operation is considered completed if the switch has a
+  // record/history of it. Also note that it is OK to receive a stop request for
+  // a port which has completed BERT, as long as the recorded BERT operation ID
+  // matches the one specified by the request.
   rpc StopBERT(StopBERTRequest) returns(StopBERTResponse) {}
 
   // Gets BERT results during the BERT operation or after it completes. The
@@ -113,10 +117,10 @@ enum BertStatus {
   BERT_STATUS_TEST_DURATION_TOO_LONG = 8;
   // The given BERT operation ID is not known. Returned for `StopBert` and
   // `GetBertResult` RPCs.
-  BERT_STATUS_BERT_OPERATION_ID_NOT_FOUND = 9;
+  BERT_STATUS_OPERATION_ID_NOT_FOUND = 9;
   // The given BERT operation ID is already in use. Returned when `StartBert`
   // RPC uses an ID which is already memorized for a BERT operation.
-  BERT_STATUS_BERT_OPERATION_ID_ALREADY_IN_USE = 10;
+  BERT_STATUS_OPERATION_ID_IN_USE = 10;
   // Failure to get the peer lock.
   BERT_STATUS_PEER_LOCK_FAILURE = 11;
   // Lost the peer lock after locking once.
@@ -133,8 +137,8 @@ message StartBERTRequest {
     gnoi.Path interface = 1;  // required
     // The selected PRBS generating polynomial for BERT.
     PrbsPolynomial prbs_polynomial = 2;  // required
-    // BERT duration in mins. Must be a positive number.
-    uint32 test_duration_in_mins = 3;  // required
+    // BERT duration in seconds. Must be a positive number.
+    uint32 test_duration_in_secs = 3;  // required
   }
   // Unique BERT operation ID specified by the client. Multiple BERTs run on
   // different ports can have the same BERT operation ID. This ID will be used
@@ -209,7 +213,7 @@ message GetBERTResultResponse {
     // Path to the interface corresponding to the port.
     gnoi.Path interface = 1;
     // BERT result get status for this port. Only if the status is
-    // BERT_STATUS_OK the rest of the fields below are meaningful.
+    // BERT_STATUS_OK are the rest of the fields meaningful.
     BertStatus status = 2;
     // The ID of the BERT operation running on this port. Since the caller
     // can query the BERT results for all the ports, ID can potentially be
