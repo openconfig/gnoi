@@ -1,0 +1,101 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Generic Network Operation Interface, GNOI, defines a set of RPC's used for
+// the operational aspects of network targets. These services are meant to be
+// used in conjunction with GNMI for all target state and operational aspects
+// of a network target. The gnoi.system.Service is the only mandatory vendor
+// implementation.
+
+syntax = "proto3";
+
+option cc_generic_services = false;
+
+package gnoi.test;
+
+// This gNOI service is a collection of operational RPC's that allow for the
+// testing of a target by triggering events that otherwise would be difficult
+// to trigger without sophisticated test-bed.
+service StepExecutionService {
+
+  // ExecuteSteps executes steps specified in the stream of StepExecutionRequest
+  // messages. Execution of each step is confirmed by transmitting back a
+  // StepExecutionResult message.
+  rpc ExecuteSteps(stream StepExecutionRequest)
+      returns (stream StepExecutionResult);
+}
+
+// StepExecutionRequest defines an action to be executed.
+// Only one action can be requested in this message and the response that is
+// transmitted back contains the same ID as specified in the request to simplify
+// matching a request with a response.
+message StepExecutionRequest {
+  uint64 request_id = 1;  // An ID of the action to be performed.
+  Step step = 2;          // An action to be performed.
+}
+
+// StepExecutionResult is transmitted by the target as result of performing a
+// requested action. It contains the same ID as specified in the request to
+// simplify matching a request with a response.
+// If the requested action was successfully performed, the 'success' field of
+// the response will be set to 'true'. It will be set to 'false' otherwise.
+message StepExecutionResult {
+  uint64 request_id = 1;  // An ID of the action whose status is reported.
+  bool success = 2;       // The status of the operation.
+}
+
+// Step is a wrapper for all types of actions. It specifies:
+// * type of the action to be performed
+// * the delay between the reception of the message and performing the action
+//   (in milliseconds)
+message Step {
+  // Delay between reception of the request and its execution.
+  uint64 delay_ms = 1;
+  oneof step {                // The action to be performed.
+    Received recived = 2;     // Simulate reception of a packet.
+    PortEvent port_event = 3; // Simulate a port event.
+  }
+}
+
+// Received requests simulation of reception of a packet. It specifies:
+// * the port, the event should take place on,
+// * how the packet reception related counters should be incremented
+message Received {
+  // The target port ID.
+  string port_id = 1;
+  // The requested change of the 'unicast_pkts' counter.
+  uint64 unicast_pkts = 2;
+  // The requested change of the 'broadcast_pkts' counter.
+  uint64 broadcast_pkts = 3;
+  // The requested change of the 'multicast_pkts' counter.
+  uint64 multicast_pkts = 4;
+  // The requested change of the 'octets' counter.
+  uint64 octets = 5;
+}
+
+// PortEvent requests simulation of a port event. It specifies:
+// * the port, the event should take place on,
+// * what should be the final state of the port.
+message PortEvent {
+  enum State {
+    UP = 0;
+    DOWN = 1;
+  }
+  string port_id = 1; // The target port ID.
+  State state = 2;    // The desired final state of the port.
+}
+
+// TODO(tmadejski) Add more actions.
