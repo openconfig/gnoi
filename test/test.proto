@@ -29,30 +29,28 @@ package gnoi.test;
 // This gNOI service is a collection of operational RPC's that allow for the
 // testing of a target by triggering events that otherwise would be difficult
 // to trigger without sophisticated test-bed.
-service StepExecutionService {
-
-  // ExecuteSteps executes steps specified in the stream of StepExecutionRequest
-  // messages. Execution of each step is confirmed by transmitting back a
-  // StepExecutionResult message.
-  rpc ExecuteSteps(stream StepExecutionRequest)
-      returns (stream StepExecutionResult);
+service TestService {
+  // Execute executes steps specified in the stream of ExecuteRequest messages.
+  // Execution of each step is confirmed by transmitting back a ExecuteResponse
+  // message.
+  rpc Execute(stream ExecuteRequest) returns (stream ExecuteResponse);
 }
 
-// StepExecutionRequest defines an action to be executed.
+// ExecuteRequest defines an action to be executed.
 // Only one action can be requested in this message and the response that is
 // transmitted back contains the same ID as specified in the request to simplify
 // matching a request with a response.
-message StepExecutionRequest {
+message ExecuteRequest {
   uint64 request_id = 1;  // An ID of the action to be performed.
   Step step = 2;          // An action to be performed.
 }
 
-// StepExecutionResult is transmitted by the target as result of performing a
+// ExecuteResponse is transmitted by the target as result of performing a
 // requested action. It contains the same ID as specified in the request to
 // simplify matching a request with a response.
 // If the requested action was successfully performed, the 'success' field of
 // the response will be set to 'true'. It will be set to 'false' otherwise.
-message StepExecutionResult {
+message ExecuteResult {
   uint64 request_id = 1;  // An ID of the action whose status is reported.
   bool success = 2;       // The status of the operation.
 }
@@ -64,9 +62,9 @@ message StepExecutionResult {
 message Step {
   // Delay between reception of the request and its execution.
   uint64 delay_ms = 1;
-  oneof step {                // The action to be performed.
-    Received recived = 2;     // Simulate reception of a packet.
-    PortEvent port_event = 3; // Simulate a port event.
+  oneof step {                 // The action to be performed.
+    Received received = 2;     // Simulate reception of a packet.
+    PortEvent port_event = 3;  // Simulate a port event.
   }
 }
 
@@ -94,8 +92,8 @@ message PortEvent {
     UP = 0;
     DOWN = 1;
   }
-  string port_id = 1; // The target port ID.
-  State state = 2;    // The desired final state of the port.
+  string port_id = 1;  // The target port ID.
+  State state = 2;     // The desired final state of the port.
 }
 
 // TODO(tmadejski) Add more actions.
