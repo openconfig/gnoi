@@ -18,7 +18,9 @@ syntax = "proto3";
 
 package gnoi.file;
 
-import "github.com/openconfig/gnoi/types.proto";
+option go_package = "github.com/openconfig/gnoi/file;gnoi.file";
+
+import "types.proto";
 
 service File {
   // Get read and streams the contents of a file from the target.

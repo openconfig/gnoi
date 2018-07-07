@@ -18,8 +18,9 @@ syntax = "proto3";
 
 package gnoi.layer2;
 
-import "github.com/openconfig/gnoi/types.proto";
+option go_package = "github.com/openconfig/gnoi/layer2;gnoi.layer2";
 
+import "types.proto";
 
 service Layer2 {
   // ClearNeighborDiscovery will clear either a specific neighbor entry or

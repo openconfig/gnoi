@@ -18,6 +18,8 @@ syntax = "proto3";
 
 package gnoi.mpls;
 
+option go_package = "github.com/openconfig/gnoi/mpls;gnoi.mpls";
+
 service MPLS {
   // ClearLSP clears a single tunnel (requests for it's route to be
   // recalculated).
