@@ -104,11 +104,11 @@ message GetResponse {
   }
 }
 
-// A GetRemoteRequest specifies the remote_file to transfer and the details on
-// where to transfer the data. The remote_file must be an absolute path to a
-// file.
+// A GetRemoteRequest specifies the local path to transfer to and the
+// details on where to transfer the data from. The local_path must be an
+// absolute path to the file.
 message GetRemoteRequest {
-  string remote_file = 1;
+  string local_path = 1;
 
   // Details to download the remote_file being requested to a remote location.
   gnoi.RemoteDownload remote_download = 2;
