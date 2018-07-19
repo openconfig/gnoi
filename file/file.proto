@@ -29,12 +29,12 @@ service File {
   // if the file does not exist or there was an error reading the file.
   rpc Get(GetRequest) returns (stream GetResponse) {}
 
-  // GetRemote transfers the contents of a file from the target to a specified
-  // remote location. The response contains the hash of the data transferred.
-  // An error is returned if the file does not exist, the file transfer fails,
-  // or if there was an error reading the file. This is a blocking call until
-  // the file transfer is complete.
-  rpc GetRemote(GetRemoteRequest) returns (GetRemoteResponse) {}
+  // TransferToRemote transfers the contents of a file from the target to a
+  // specified remote location. The response contains the hash of the data
+  // transferred. An error is returned if the file does not exist, the file
+  // transfer fails, or if there was an error reading the file. This is a
+  // blocking call until the file transfer is complete.
+  rpc TransferToRemote(TransferToRemoteRequest) returns (TransferToRemoteResponse) {}
 
   // Put streams data into a file on the target. The file is sent in
   // sequential messages, each message containing up to 64KB of data. A final
@@ -104,18 +104,18 @@ message GetResponse {
   }
 }
 
-// A GetRemoteRequest specifies the local path to transfer to and the
+// A TransferToRemoteRequest specifies the local path to transfer to and the
 // details on where to transfer the data from. The local_path must be an
 // absolute path to the file.
-message GetRemoteRequest {
+message TransferToRemoteRequest {
   string local_path = 1;
 
   // Details to download the remote_file being requested to a remote location.
   gnoi.RemoteDownload remote_download = 2;
 }
 
-// A GetRemoteResponse contains the hash of the data transferred.
-message GetRemoteResponse {
+// A TransferToRemoteResponse contains the hash of the data transferred.
+message TransferToRemoteResponse {
   gnoi.HashType hash = 1; // hash of the file.
 }
 
