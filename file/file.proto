@@ -18,15 +18,23 @@ syntax = "proto3";
 
 package gnoi.file;
 
+import "github.com/openconfig/gnoi/common.proto";
 import "github.com/openconfig/gnoi/types.proto";
 
 service File {
-  // Get read and streams the contents of a file from the target.
+  // Get reads and streams the contents of a file from the target.
   // The file is streamed by sequential messages, each containing up to
   // 64KB of data. A final message is sent prior to closing the stream
   // that contains the hash of the data sent. An error is returned
   // if the file does not exist or there was an error reading the file.
   rpc Get(GetRequest) returns (stream GetResponse) {}
+
+  // TransferToRemote transfers the contents of a file from the target to a
+  // specified remote location. The response contains the hash of the data
+  // transferred. An error is returned if the file does not exist, the file
+  // transfer fails, or if there was an error reading the file. This is a
+  // blocking call until the file transfer is complete.
+  rpc TransferToRemote(TransferToRemoteRequest) returns (TransferToRemoteResponse) {}
 
   // Put streams data into a file on the target. The file is sent in
   // sequential messages, each message containing up to 64KB of data. A final
@@ -94,6 +102,21 @@ message GetResponse {
     bytes contents = 1;
     gnoi.HashType hash = 2; // hash of the file.
   }
+}
+
+// A TransferToRemoteRequest specifies the local path to transfer to and the
+// details on where to transfer the data from. The local_path must be an
+// absolute path to the file.
+message TransferToRemoteRequest {
+  string local_path = 1;
+
+  // Details to download the remote_file being requested to a remote location.
+  gnoi.RemoteDownload remote_download = 2;
+}
+
+// A TransferToRemoteResponse contains the hash of the data transferred.
+message TransferToRemoteResponse {
+  gnoi.HashType hash = 1; // hash of the file.
 }
 
 // StatRequest will list files at the provided path.
