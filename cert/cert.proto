@@ -205,7 +205,7 @@ message GenerateCSRRequest {
 
 // Parameters to be used when generating a Certificate Signing Request.
 message CSRParams {
-  // The type of certificate which will be will be associated for this CSR.
+  // The type of certificate which will be associated for this CSR.
   CertificateType type = 1;
 
   // Minimum size of the key to be used by the target when generating a
@@ -269,6 +269,12 @@ message LoadCertificateRequest {
   // Certificate Id of the above certificate. This is to be provided only when
   // there is an externally generated key pair.
   string certificate_id = 3;
+
+  // Optional bundle of CA certificates. When not empty, the provided
+  // certificates should squash the existing bundle. This field provides a
+  // simplified means to provision a CA bundle that can be used to validate
+  // other peer's certificates.
+  repeated Certificate ca_certificates = 4;
 }
 
 // Response from target after Loading a Certificate.
