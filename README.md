@@ -1,6 +1,11 @@
 # gNOI - gRPC Network Operations Interface
 gNOI defines a set of gRPC-based microservices for executing operational commands on network devices.
 
+## Simplified security model
+
+See [simplified security model](simplified_security_model.md) for a security
+model that can be implemented using gNOI.
+
 # Rebuild *.pb.go files
 ```
 cd ${GOPATH}/src
