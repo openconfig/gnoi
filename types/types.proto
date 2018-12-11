@@ -16,7 +16,15 @@
 
 syntax = "proto3";
 
+import "google/protobuf/descriptor.proto";
+
 package gnoi;
+
+// Define a protobuf FileOption that defines the gNOI service version.
+extend google.protobuf.FileOptions {
+  // The gNOI service semantic version.
+  string gnoi_version = 1002;
+}
 
 // Generic Layer 3 Protocol enumeration.
 enum L3Protocol {

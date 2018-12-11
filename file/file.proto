@@ -18,8 +18,10 @@ syntax = "proto3";
 
 package gnoi.file;
 
-import "github.com/openconfig/gnoi/common.proto";
-import "github.com/openconfig/gnoi/types.proto";
+import "common/common.proto";
+import "types/types.proto";
+
+option (gnoi.gnoi_version) = "0.1.0";
 
 service File {
   // Get reads and streams the contents of a file from the target.
