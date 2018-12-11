@@ -20,7 +20,7 @@ syntax = "proto3";
 
 package gnoi.diag;
 
-import "types/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option (gnoi.gnoi_version) = "0.1.0";
 
