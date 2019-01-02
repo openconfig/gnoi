@@ -20,7 +20,7 @@ package gnoi.interface;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option (gnoi.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.1.0";
 
 service Interface {
   // SetLoopbackMode is used to set the mode of loopback on a interface.
@@ -39,7 +39,7 @@ service Interface {
 // device, available modes are "none", "mac", "phy", "phy_remote",
 // "framer_facility", and "framer_terminal".
 message SetLoopbackModeRequest {
-  gnoi.Path interface = 1;
+  types.Path interface = 1;
   string mode = 2;
 }
 
@@ -47,7 +47,7 @@ message SetLoopbackModeResponse {
 }
 
 message GetLoopbackModeRequest {
-  gnoi.Path interface = 1;
+  types.Path interface = 1;
 }
 
 message GetLoopbackModeResponse {
@@ -55,7 +55,7 @@ message GetLoopbackModeResponse {
 }
 
 message ClearInterfaceCountersRequest {
-  repeated gnoi.Path interface = 1;
+  repeated types.Path interface = 1;
 }
 
 message ClearInterfaceCountersResponse {

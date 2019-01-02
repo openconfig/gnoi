@@ -21,7 +21,7 @@ package gnoi.file;
 import "github.com/openconfig/gnoi/types/types.proto";
 import "github.com/openconfig/gnoi/common/common.proto";
 
-option (gnoi.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.1.0";
 
 service File {
   // Get reads and streams the contents of a file from the target.
@@ -84,7 +84,7 @@ message PutRequest {
   oneof request {
     Details open = 1;
     bytes contents = 2;
-    gnoi.HashType hash = 3; // hash of the file.
+    types.HashType hash = 3; // hash of the file.
   }
 }
 
@@ -102,7 +102,7 @@ message GetRequest {
 message GetResponse {
   oneof response {
     bytes contents = 1;
-    gnoi.HashType hash = 2; // hash of the file.
+    types.HashType hash = 2; // hash of the file.
   }
 }
 
@@ -113,12 +113,12 @@ message TransferToRemoteRequest {
   string local_path = 1;
 
   // Details to download the remote_file being requested to a remote location.
-  gnoi.RemoteDownload remote_download = 2;
+  common.RemoteDownload remote_download = 2;
 }
 
 // A TransferToRemoteResponse contains the hash of the data transferred.
 message TransferToRemoteResponse {
-  gnoi.HashType hash = 1; // hash of the file.
+  types.HashType hash = 1; // hash of the file.
 }
 
 // StatRequest will list files at the provided path.
