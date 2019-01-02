@@ -16,7 +16,7 @@
 
 syntax = "proto3";
 
-package gnoi;
+package common;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
@@ -38,5 +38,5 @@ message RemoteDownload {
   }
   Protocol protocol = 2;
 
-  gnoi.Credentials credentials = 3;
+  types.Credentials credentials = 3;
 }

@@ -18,7 +18,7 @@ syntax = "proto3";
 
 import "google/protobuf/descriptor.proto";
 
-package gnoi;
+package types;
 
 // Define a protobuf FileOption that defines the gNOI service version.
 extend google.protobuf.FileOptions {

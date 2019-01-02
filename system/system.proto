@@ -27,7 +27,7 @@ package gnoi.system;
 import "github.com/openconfig/gnoi/common/common.proto";
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option (gnoi.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.1.0";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
@@ -85,11 +85,11 @@ service System {
 }
 
 message SwitchControlProcessorRequest {
-  gnoi.Path control_processor = 1;
+  types.Path control_processor = 1;
 }
 
 message SwitchControlProcessorResponse {
-  gnoi.Path control_processor = 1;
+  types.Path control_processor = 1;
   string version = 2; // Current software version.
   int64 uptime = 3;   // Uptime in nanoseconds since epoch.
 }
@@ -104,7 +104,7 @@ message RebootRequest {
   // Informational reason for the reboot.
   string message = 3;
   // Optional sub-components to reboot.
-  repeated gnoi.Path subcomponents = 4;
+  repeated types.Path subcomponents = 4;
   // Force reboot if sanity checks fail. (ex. uncommited configuration)
   bool force = 5;
 }
@@ -132,14 +132,14 @@ enum RebootMethod {
 // request.
 message CancelRebootRequest {
   string message = 1;      // informational reason for the cancel
-  repeated gnoi.Path subcomponents = 2; // optional sub-components.
+  repeated types.Path subcomponents = 2; // optional sub-components.
 }
 
 message CancelRebootResponse {
 }
 
 message RebootStatusRequest {
-  repeated gnoi.Path subcomponents = 1; // optional sub-component.
+  repeated types.Path subcomponents = 1; // optional sub-component.
 }
 
 message RebootStatusResponse {
@@ -177,7 +177,7 @@ message PingRequest {
   int32 size = 6;           // Size of request packet. (excluding ICMP header)
   bool do_not_fragment = 7; // Set the do not fragment bit. (IPv4 destinations)
   bool do_not_resolve = 8;  // Do not try resolve the address returned.
-  gnoi.L3Protocol l3protocol = 9; // Layer3 protocol requested for the ping.
+  types.L3Protocol l3protocol = 9; // Layer3 protocol requested for the ping.
 }
 
 // A PingResponse represents either the reponse to a single ping packet
@@ -218,7 +218,7 @@ message TracerouteRequest {
   int64 wait = 5;            // Nanoseconds to wait for a response.
   bool do_not_fragment = 6;  // Set the do not fragment bit. (IPv4 destinations)
   bool do_not_resolve = 7;   // Do not try resolve the address returned.
-  gnoi.L3Protocol l3protocol = 8; // Layer-3 protocol requested for the ping.
+  types.L3Protocol l3protocol = 8; // Layer-3 protocol requested for the ping.
   enum L4Protocol {
     ICMP = 0; // Use ICMP ECHO for probes.
     TCP = 1;  // Use TCP SYN for probes.
@@ -289,7 +289,7 @@ message Package {
   // be active after a reboot.
   bool activate = 5;
   // Details for the device to download the package from a remote location.
-  gnoi.RemoteDownload remote_download = 6;
+  common.RemoteDownload remote_download = 6;
 }
 
 // SetPackageRequest will place the package onto the target and optionally mark
@@ -301,7 +301,7 @@ message SetPackageRequest {
   oneof request {
    Package package = 1;
    bytes contents = 2;
-   gnoi.HashType hash = 3;    // Verification hash of data.
+   types.HashType hash = 3;    // Verification hash of data.
  }
 }
 
