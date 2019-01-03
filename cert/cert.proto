@@ -18,7 +18,11 @@
 // rotation.
 syntax = "proto3";
 
+import "github.com/openconfig/gnoi/types/types.proto";
+
 package gnoi.certificate;
+
+option (types.gnoi_version) = "0.1.0";
 
 // The Certificate Management Service exported by targets.
 // The service primarily exports two main RPCs, Install & Rotate which are used

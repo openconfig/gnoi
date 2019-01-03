@@ -20,7 +20,9 @@ syntax = "proto3";
 
 package gnoi.diag;
 
-import "github.com/openconfig/gnoi/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
+
+option (types.gnoi_version) = "0.1.0";
 
 // The Diag service exports to main set of RPCs:
 // 1- BERT related RPCs: Used to perform Bit Error Rate Test (BERT)
@@ -34,7 +36,7 @@ import "github.com/openconfig/gnoi/types.proto";
 //  (unless there is something wrong HW-wise).
 // Note: By "port" we refer to a channelized frontpanel or backplane port on a
 // chassis. In OpenConfig YANG models, there is a one-to-one relationship
-// between a port as used here and an "interface". Therefore, the "gnoi.Path"
+// between a port as used here and an "interface". Therefore, the "types.Path"
 // fields below for ports correspond to "/interfaces/interface" in YANG models.
 service Diag {
   // Starts BERT operation on a set of ports. Each BERT operation is uniquely
@@ -137,7 +139,7 @@ message StartBERTRequest {
   // Per port BERT start requests.
   message PerPortRequest {
     // Path to the interface corresponding to the port.
-    gnoi.Path interface = 1;  // required
+    types.Path interface = 1;  // required
     // The selected PRBS generating polynomial for BERT.
     PrbsPolynomial prbs_polynomial = 2;  // required
     // BERT duration in seconds. Must be a positive number.
@@ -157,7 +159,7 @@ message StartBERTResponse {
   // Per-port BERT start responses.
   message PerPortResponse {
     // Path to the interface corresponding to the port.
-    gnoi.Path interface = 1;
+    types.Path interface = 1;
     // BERT start status for this port.
     BertStatus status = 2;
   }
@@ -171,7 +173,7 @@ message StopBERTRequest {
   // Per-port BERT stop requests.
   message PerPortRequest {
     // Path to the interface corresponding to the port.
-    gnoi.Path interface = 1;
+    types.Path interface = 1;
   }
   // The same BERT operation ID given when BERT operation was started.
   string bert_operation_id = 1;
@@ -184,7 +186,7 @@ message StopBERTResponse {
   // Per-port BERT stop responses.
   message PerPortResponse {
     // Path to the interface corresponding to the port.
-    gnoi.Path interface = 1;
+    types.Path interface = 1;
     // BERT stop status for this port.
     BertStatus status = 2;
   }
@@ -201,7 +203,7 @@ message GetBERTResultRequest {
   // Per-port BERT get result requests.
   message PerPortRequest {
     // Path to the interface corresponding to the port.
-    gnoi.Path interface = 1;
+    types.Path interface = 1;
   }
   // The same BERT operation ID given when BERT operation was started.
   string bert_operation_id = 1;
@@ -218,7 +220,7 @@ message GetBERTResultResponse {
   // Per-port BERT results/status.
   message PerPortResponse {
     // Path to the interface corresponding to the port.
-    gnoi.Path interface = 1;
+    types.Path interface = 1;
     // BERT result get status for this port. Only if the status is
     // BERT_STATUS_OK are the rest of the fields meaningful.
     BertStatus status = 2;
