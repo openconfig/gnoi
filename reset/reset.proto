@@ -1,4 +1,4 @@
-// This file defines a gNOI API to be used for factory reseting a Target.
+// This file defines a gNOI API used for factory reseting a Target.
 syntax = "proto3";
 
 package gnoi.reset;
