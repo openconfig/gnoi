@@ -1,0 +1,41 @@
+// This file defines a gNOI API to be used for factory reseting a Target.
+syntax = "proto3";
+
+package gnoi.reset;
+
+import "github.com/openconfig/gnoi/types/types.proto";
+
+option (types.gnoi_version) = "0.1.0";
+
+// The Reset service exported by Targets.
+service Reset {
+  // The Reset RPC allows the Client to instruct the Target to immediately
+  // clean all existing state and boot the Target in the same condition as it is
+  // shipped from factory. State includes disk, configuration, logs,
+  // certificates and licenses.
+  //
+  // It is optional for the Target to support rolling back the OS to the same
+  // version shipped from factory. If not supported, the running OS should be
+  // used.
+  //
+  // It is optional for the Target to zero fill permanent storage where state
+  // data is stored.
+  rpc Factory(FactoryRequest) returns (FactoryResponse);
+}
+
+message FactoryRequest {
+  // Instructs the Target to rollback the OS to the same version as it shipped
+  // from factory.
+  bool factory_os = 1;
+  // Instructs the Target to zero fill persistent storage state data.
+  bool zero_fill = 2;
+}
+
+message FactoryResponse {
+  // Must be set when factory_os is set and the Target does not support it.
+  // Does not halt the Factory Reset process.
+  bool error_unsupported_factory_os = 1;
+  // Must be set when zero_fill is set and the Target does not support it.
+  // Does not halt the Factory Reset process.
+  bool error_unsupported_zero_fill = 2;
+}
