@@ -1,4 +1,4 @@
-// This file defines a gNOI API to be used for OS installation.
+// This file defines a gNOI API used for OS installation.
 syntax = "proto3";
 
 package gnoi.os;
