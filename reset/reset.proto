@@ -11,7 +11,7 @@ option (types.gnoi_version) = "0.1.0";
 service Reset {
   // The Reset RPC allows the Client to instruct the Target to immediately
   // clean all existing state and boot the Target in the same condition as it is
-  // shipped from factory. State includes disk, configuration, logs,
+  // shipped from factory. State includes storage, configuration, logs,
   // certificates and licenses.
   //
   // It is optional for the Target to support rolling back the OS to the same
