@@ -161,6 +161,11 @@ func (m *AdjustPSDError) String() string            { return proto.CompactTextSt
 func (*AdjustPSDError) ProtoMessage()               {}
 func (*AdjustPSDError) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
 
+// AdjustPSDResponse describes the possible response messages that will be
+// streamed after the RPC is initiated. While the OTDR is running,
+// "progress" messages should be sent at a regular interval. When the
+// adjustment is completed, an "error" message should be streamed if an
+// error is encountered or the RPC should be terminated on success.
 type AdjustPSDResponse struct {
 	// Types that are valid to be assigned to Response:
 	//	*AdjustPSDResponse_Progress
