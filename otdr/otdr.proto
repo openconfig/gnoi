@@ -22,7 +22,7 @@ import "github.com/openconfig/gnoi/types/types.proto";
 
 option (types.gnoi_version) = "0.1.0";
 
-service Optical {
+service OTDR {
   // InitiateOTDR triggers an optical time domain reflectometer (OTDR) trace to
   // be run on a specified port. The results of the trace may be sent back in
   // the response or saved on the device to be retrieved later. If the
@@ -30,26 +30,24 @@ service Optical {
   // which can later be used by File.Get or File.TransferToRemote. The RPC
   // should initiate the OTDR trace and wait until the OTDR trace has completed
   // and the device has processed the results before returning. If the RPC is
-  // cancelled while in operation, the running OTDR trace should stop. As only
-  // one OTDR trace can take place concurrently, the RPC should error if a
-  // trace is currently running.
-  rpc InitiateOTDR(OTDRRequest) returns (stream OTDRResponse) {}
+  // cancelled while in operation, the running OTDR trace should stop.
+  rpc Initiate(InitiateRequest) returns (stream InitiateResponse) {}
 }
 
-message OTDRRequest {
+message InitiateRequest {
   // Absolute path to the /components/component list member in the OpenConfig
   // model corresponding to the port to perform the OTDR trace from.
   // (e.g., /components/component[name=otdr-1-1])
   types.Path component = 1;
 
-  enum OTDRResultsMethod {
+  enum ResultsMethod {
     RESULTS_UNKNOWN = 0;
     RESULTS_TO_LOCAL_DISK = 1;  // Results saved to a file on the device.
     RESULTS_IN_RESPONSE = 2;    // Results sent back in the response.
   }
   // Describes how the results of the OTDR trace should be made available. More
   // than one option may be specified if desired.
-  repeated OTDRResultsMethod results_method = 2;
+  repeated ResultsMethod results_method = 2;
 
   // Describes the configuration used to perform an OTDR trace for the needed
   // circumstance.
@@ -112,12 +110,8 @@ enum FiberTypeProfile {
   FTP_TERALIGHT = 8;  // TeraLight fiber.
 }
 
-message OTDRResponse {
-  // The local path in which the OTDR file is saved on the device.
-  string local_path = 1;
-  // The OTDR trace details in a structured format.
-  OTDRTrace otdr_trace = 2;
-  enum OTDRState {
+message InitiateProgress {
+  enum State {
     UNKNOWN = 0;
     RUNNING = 1;   // The OTDR is currently performing an OTDR trace.
     PENDING = 2;   // The OTDR is pending underlying resources being available.
@@ -125,7 +119,40 @@ message OTDRResponse {
   }
   // The state of the OTDR trace requested. Note that this does not include
   // error states as these should be returned as a gRPC error.
-  OTDRState state = 3;
+  State state = 1;
+}
+
+message InitiateResults {
+  // The local path in which the OTDR file is saved on the device.
+  string local_path = 1;
+  // The OTDR trace details in a structured format.
+  OTDRTrace otdr_trace = 2;
+}
+
+message InitiateError {
+  enum Type {
+    // An unspecified error. Must use the detail value to describe the issue.
+    UNSPECIFIED = 0;
+    // An existing OTDR trace is already in progress.
+    ALREADY_IN_PROGRESS = 1;
+    // The OTDR hardware has failed and cannot complete an OTDR trace.
+    HARDWARE_FAILURE = 2;
+  }
+  Type type = 1;
+  string detail = 2;
+}
+
+// IntitiateResponse describes the possible response messages that will be
+// streamed after the RPC is initiated. While the OTDR is running, "progress"
+// messages should be sent at a regular interval. When the OTDR trace is
+// completed, a final "results" or "error" message should be streamed before
+// the RPC is terminated.
+message InitiateResponse {
+  oneof response {
+    InitiateProgress progress = 1;
+    InitiateResults results = 2;
+    InitiateError error = 3;
+  }
 }
 
 message OTDRTrace {
