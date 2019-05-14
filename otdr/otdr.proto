@@ -49,26 +49,13 @@ message InitiateRequest {
   // than one option may be specified if desired.
   repeated ResultsMethod results_method = 2;
 
-  // Describes the configuration used to perform an OTDR trace for the needed
-  // circumstance.
-  OTDRConfigurationProfile configuration = 3;
+  // Describes the configuration used to perform an OTDR trace.
+  OTDRConfiguration configuration = 3;
 
   // If specified, the device will label the OTDR trace so it can be recalled
   // later. For example, the initial OTDR trace measured during span
   // commissioning might be labeled "baseline".
   string label = 4;
-}
-
-message OTDRConfigurationProfile {
-  oneof profile_type {
-    // A custom OTDR configuration profile which defines a set of OTDR
-    // configurations. The profiles are defined by the vendor implementation.
-    // (e.g., 'short', 'long', 'auto').
-    string custom_profile = 1;
-    // OTDR configuration profile which allows the user to specify granular
-    // control of the various configuration options.
-    OTDRConfiguration profile = 2;
-  }
 }
 
 // OTDR configuration options which can be set on the device. It is not required
