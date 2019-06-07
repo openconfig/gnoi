@@ -80,6 +80,9 @@ message OTDRConfiguration {
 
   // The type of fiber that is being measured.
   FiberTypeProfile fiber_type = 5;
+
+  // The sampling resolution in meters.
+  float sampling_resolution_m = 6;
 }
 
 // Type definition for different profiles of fiber types. These match what is
