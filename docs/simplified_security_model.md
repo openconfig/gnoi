@@ -94,9 +94,9 @@ In order for the Target to validate the Client or a Peer's certificates, it must
 have a pool of one or more CA certificates. These are provisioned onto the
 Target by the Client during creation or rotation of the Target’s certificates.
 
-### Validate installed certificate (optional)
+### Validate installed certificate
 
-For increased security, the Target may use certificates in its CA pool to
+For increased security, the Target must use certificates in its CA pool to
 validate a newly installed certificate. This requires the CA pool to contain a
 CA certificate that can validate the new certificate.
 
