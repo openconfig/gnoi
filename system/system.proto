@@ -124,7 +124,7 @@ enum RebootMethod {
   HALT = 3;        // Halt, if possible.
   WARM = 4;        // Reload configuration but not underlying hardware.
   NSF = 5;         // Non-stop-forwarding reboot, if possible.
-  RESET = 6;       // Reboot to factory defaults. This method is Deprecated.
+  RESET = 6;       // Reboot to factory defaults, this method is deprecated.
                    // Please use instead gNOI FactoryReset.Initiate()
   POWERUP = 7;     // Apply power, no-op if power is already on.
 }
