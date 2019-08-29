@@ -278,6 +278,12 @@ message LoadCertificateRequest {
   // certificates should squash the existing bundle. This field provides a
   // simplified means to provision a CA bundle that can be used to validate
   // other peer's certificates.
+  // To improve performance in the Target, certificates can be ordered.
+  // Groups of chained certificates should be last, where within, the root
+  // certificate is the last one. E.g.:
+  // CertA, CertB, CertB-Root, CertC, CertC-Intermediate, CertC-Root
+  // Note that on a forward looking iteration, CA Certificates will be managed
+  // by a dedicated gNOI service.
   repeated Certificate ca_certificates = 4;
 }
 
