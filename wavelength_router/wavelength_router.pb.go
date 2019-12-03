@@ -25,6 +25,95 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type AdjustPSDRequest_SignalDirection int32
+
+const (
+	AdjustPSDRequest_DIRECTION_UNKNOWN AdjustPSDRequest_SignalDirection = 0
+	AdjustPSDRequest_DIRECTION_INPUT   AdjustPSDRequest_SignalDirection = 1
+	AdjustPSDRequest_DIRECTION_OUTPUT  AdjustPSDRequest_SignalDirection = 2
+)
+
+var AdjustPSDRequest_SignalDirection_name = map[int32]string{
+	0: "DIRECTION_UNKNOWN",
+	1: "DIRECTION_INPUT",
+	2: "DIRECTION_OUTPUT",
+}
+
+var AdjustPSDRequest_SignalDirection_value = map[string]int32{
+	"DIRECTION_UNKNOWN": 0,
+	"DIRECTION_INPUT":   1,
+	"DIRECTION_OUTPUT":  2,
+}
+
+func (x AdjustPSDRequest_SignalDirection) String() string {
+	return proto.EnumName(AdjustPSDRequest_SignalDirection_name, int32(x))
+}
+
+func (AdjustPSDRequest_SignalDirection) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{0, 0}
+}
+
+type AdjustPSDProgress_State int32
+
+const (
+	AdjustPSDProgress_UNKNOWN  AdjustPSDProgress_State = 0
+	AdjustPSDProgress_RUNNING  AdjustPSDProgress_State = 1
+	AdjustPSDProgress_COMPLETE AdjustPSDProgress_State = 2
+)
+
+var AdjustPSDProgress_State_name = map[int32]string{
+	0: "UNKNOWN",
+	1: "RUNNING",
+	2: "COMPLETE",
+}
+
+var AdjustPSDProgress_State_value = map[string]int32{
+	"UNKNOWN":  0,
+	"RUNNING":  1,
+	"COMPLETE": 2,
+}
+
+func (x AdjustPSDProgress_State) String() string {
+	return proto.EnumName(AdjustPSDProgress_State_name, int32(x))
+}
+
+func (AdjustPSDProgress_State) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{1, 0}
+}
+
+type AdjustPSDError_Type int32
+
+const (
+	// An unspecified error. Must use the detail value to describe the issue.
+	AdjustPSDError_UNSPECIFIED AdjustPSDError_Type = 0
+	// An adjustment was requested for a port that is busy (e.g., requesting
+	// input adjustment for a port that is currently running an output
+	// adjustment)
+	AdjustPSDError_PORT_BUSY AdjustPSDError_Type = 1
+	// The hardware has failed and cannot complete an adjustment.
+	AdjustPSDError_HARDWARE_FAILURE AdjustPSDError_Type = 2
+)
+
+var AdjustPSDError_Type_name = map[int32]string{
+	0: "UNSPECIFIED",
+	1: "PORT_BUSY",
+	2: "HARDWARE_FAILURE",
+}
+
+var AdjustPSDError_Type_value = map[string]int32{
+	"UNSPECIFIED":      0,
+	"PORT_BUSY":        1,
+	"HARDWARE_FAILURE": 2,
+}
+
+func (x AdjustPSDError_Type) String() string {
+	return proto.EnumName(AdjustPSDError_Type_name, int32(x))
+}
+
+func (AdjustPSDError_Type) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{2, 0}
+}
+
 type AdjustSpectrumRequest_SignalDirection int32
 
 const (
@@ -50,7 +139,7 @@ func (x AdjustSpectrumRequest_SignalDirection) String() string {
 }
 
 func (AdjustSpectrumRequest_SignalDirection) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{0, 0}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{5, 0}
 }
 
 type AdjustSpectrumProgress_State int32
@@ -78,7 +167,7 @@ func (x AdjustSpectrumProgress_State) String() string {
 }
 
 func (AdjustSpectrumProgress_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{1, 0}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{6, 0}
 }
 
 type AdjustSpectrumError_Type int32
@@ -111,8 +200,265 @@ func (x AdjustSpectrumError_Type) String() string {
 }
 
 func (AdjustSpectrumError_Type) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{2, 0}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{7, 0}
 }
+
+type AdjustPSDRequest struct {
+	// Absolute path to the /components/component list member in the OpenConfig
+	// model corresponding to the port to perform the adjustment for.
+	// (e.g., /components/component[name=amp-1-1])
+	Component *types.Path `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+	// Describes the signal direction that should be adjusted relative to the
+	// device. For example, "input" would be the signal entering into the device
+	// from the far end device.
+	Direction            AdjustPSDRequest_SignalDirection `protobuf:"varint,2,opt,name=direction,proto3,enum=gnoi.optical.AdjustPSDRequest_SignalDirection" json:"direction,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                         `json:"-"`
+	XXX_unrecognized     []byte                           `json:"-"`
+	XXX_sizecache        int32                            `json:"-"`
+}
+
+func (m *AdjustPSDRequest) Reset()         { *m = AdjustPSDRequest{} }
+func (m *AdjustPSDRequest) String() string { return proto.CompactTextString(m) }
+func (*AdjustPSDRequest) ProtoMessage()    {}
+func (*AdjustPSDRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{0}
+}
+
+func (m *AdjustPSDRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AdjustPSDRequest.Unmarshal(m, b)
+}
+func (m *AdjustPSDRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AdjustPSDRequest.Marshal(b, m, deterministic)
+}
+func (m *AdjustPSDRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AdjustPSDRequest.Merge(m, src)
+}
+func (m *AdjustPSDRequest) XXX_Size() int {
+	return xxx_messageInfo_AdjustPSDRequest.Size(m)
+}
+func (m *AdjustPSDRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_AdjustPSDRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AdjustPSDRequest proto.InternalMessageInfo
+
+func (m *AdjustPSDRequest) GetComponent() *types.Path {
+	if m != nil {
+		return m.Component
+	}
+	return nil
+}
+
+func (m *AdjustPSDRequest) GetDirection() AdjustPSDRequest_SignalDirection {
+	if m != nil {
+		return m.Direction
+	}
+	return AdjustPSDRequest_DIRECTION_UNKNOWN
+}
+
+type AdjustPSDProgress struct {
+	// The state of the OTDR trace requested. Note that this does not include
+	// error states as these should be returned as a gRPC error.
+	State                AdjustPSDProgress_State `protobuf:"varint,1,opt,name=state,proto3,enum=gnoi.optical.AdjustPSDProgress_State" json:"state,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                `json:"-"`
+	XXX_unrecognized     []byte                  `json:"-"`
+	XXX_sizecache        int32                   `json:"-"`
+}
+
+func (m *AdjustPSDProgress) Reset()         { *m = AdjustPSDProgress{} }
+func (m *AdjustPSDProgress) String() string { return proto.CompactTextString(m) }
+func (*AdjustPSDProgress) ProtoMessage()    {}
+func (*AdjustPSDProgress) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{1}
+}
+
+func (m *AdjustPSDProgress) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AdjustPSDProgress.Unmarshal(m, b)
+}
+func (m *AdjustPSDProgress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AdjustPSDProgress.Marshal(b, m, deterministic)
+}
+func (m *AdjustPSDProgress) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AdjustPSDProgress.Merge(m, src)
+}
+func (m *AdjustPSDProgress) XXX_Size() int {
+	return xxx_messageInfo_AdjustPSDProgress.Size(m)
+}
+func (m *AdjustPSDProgress) XXX_DiscardUnknown() {
+	xxx_messageInfo_AdjustPSDProgress.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AdjustPSDProgress proto.InternalMessageInfo
+
+func (m *AdjustPSDProgress) GetState() AdjustPSDProgress_State {
+	if m != nil {
+		return m.State
+	}
+	return AdjustPSDProgress_UNKNOWN
+}
+
+type AdjustPSDError struct {
+	Type                 AdjustPSDError_Type `protobuf:"varint,1,opt,name=type,proto3,enum=gnoi.optical.AdjustPSDError_Type" json:"type,omitempty"`
+	Detail               string              `protobuf:"bytes,2,opt,name=detail,proto3" json:"detail,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
+}
+
+func (m *AdjustPSDError) Reset()         { *m = AdjustPSDError{} }
+func (m *AdjustPSDError) String() string { return proto.CompactTextString(m) }
+func (*AdjustPSDError) ProtoMessage()    {}
+func (*AdjustPSDError) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{2}
+}
+
+func (m *AdjustPSDError) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AdjustPSDError.Unmarshal(m, b)
+}
+func (m *AdjustPSDError) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AdjustPSDError.Marshal(b, m, deterministic)
+}
+func (m *AdjustPSDError) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AdjustPSDError.Merge(m, src)
+}
+func (m *AdjustPSDError) XXX_Size() int {
+	return xxx_messageInfo_AdjustPSDError.Size(m)
+}
+func (m *AdjustPSDError) XXX_DiscardUnknown() {
+	xxx_messageInfo_AdjustPSDError.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AdjustPSDError proto.InternalMessageInfo
+
+func (m *AdjustPSDError) GetType() AdjustPSDError_Type {
+	if m != nil {
+		return m.Type
+	}
+	return AdjustPSDError_UNSPECIFIED
+}
+
+func (m *AdjustPSDError) GetDetail() string {
+	if m != nil {
+		return m.Detail
+	}
+	return ""
+}
+
+// AdjustPSDResponse describes the possible response messages that will be
+// streamed after the RPC is initiated. While the OTDR is running,
+// "progress" messages should be sent at a regular interval. When the
+// adjustment is completed, an "error" message should be streamed if an
+// error is encountered or the RPC should be terminated on success.
+type AdjustPSDResponse struct {
+	// Types that are valid to be assigned to Response:
+	//	*AdjustPSDResponse_Progress
+	//	*AdjustPSDResponse_Error
+	Response             isAdjustPSDResponse_Response `protobuf_oneof:"response"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
+}
+
+func (m *AdjustPSDResponse) Reset()         { *m = AdjustPSDResponse{} }
+func (m *AdjustPSDResponse) String() string { return proto.CompactTextString(m) }
+func (*AdjustPSDResponse) ProtoMessage()    {}
+func (*AdjustPSDResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{3}
+}
+
+func (m *AdjustPSDResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AdjustPSDResponse.Unmarshal(m, b)
+}
+func (m *AdjustPSDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AdjustPSDResponse.Marshal(b, m, deterministic)
+}
+func (m *AdjustPSDResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AdjustPSDResponse.Merge(m, src)
+}
+func (m *AdjustPSDResponse) XXX_Size() int {
+	return xxx_messageInfo_AdjustPSDResponse.Size(m)
+}
+func (m *AdjustPSDResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_AdjustPSDResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AdjustPSDResponse proto.InternalMessageInfo
+
+type isAdjustPSDResponse_Response interface {
+	isAdjustPSDResponse_Response()
+}
+
+type AdjustPSDResponse_Progress struct {
+	Progress *AdjustPSDProgress `protobuf:"bytes,1,opt,name=progress,proto3,oneof"`
+}
+
+type AdjustPSDResponse_Error struct {
+	Error *AdjustPSDError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*AdjustPSDResponse_Progress) isAdjustPSDResponse_Response() {}
+
+func (*AdjustPSDResponse_Error) isAdjustPSDResponse_Response() {}
+
+func (m *AdjustPSDResponse) GetResponse() isAdjustPSDResponse_Response {
+	if m != nil {
+		return m.Response
+	}
+	return nil
+}
+
+func (m *AdjustPSDResponse) GetProgress() *AdjustPSDProgress {
+	if x, ok := m.GetResponse().(*AdjustPSDResponse_Progress); ok {
+		return x.Progress
+	}
+	return nil
+}
+
+func (m *AdjustPSDResponse) GetError() *AdjustPSDError {
+	if x, ok := m.GetResponse().(*AdjustPSDResponse_Error); ok {
+		return x.Error
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*AdjustPSDResponse) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*AdjustPSDResponse_Progress)(nil),
+		(*AdjustPSDResponse_Error)(nil),
+	}
+}
+
+type CancelAdjustPSDResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CancelAdjustPSDResponse) Reset()         { *m = CancelAdjustPSDResponse{} }
+func (m *CancelAdjustPSDResponse) String() string { return proto.CompactTextString(m) }
+func (*CancelAdjustPSDResponse) ProtoMessage()    {}
+func (*CancelAdjustPSDResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb8b6c17dc3d7490, []int{4}
+}
+
+func (m *CancelAdjustPSDResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CancelAdjustPSDResponse.Unmarshal(m, b)
+}
+func (m *CancelAdjustPSDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CancelAdjustPSDResponse.Marshal(b, m, deterministic)
+}
+func (m *CancelAdjustPSDResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CancelAdjustPSDResponse.Merge(m, src)
+}
+func (m *CancelAdjustPSDResponse) XXX_Size() int {
+	return xxx_messageInfo_CancelAdjustPSDResponse.Size(m)
+}
+func (m *CancelAdjustPSDResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CancelAdjustPSDResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CancelAdjustPSDResponse proto.InternalMessageInfo
 
 type AdjustSpectrumRequest struct {
 	// Absolute path to the /components/component list member in the OpenConfig
@@ -132,7 +478,7 @@ func (m *AdjustSpectrumRequest) Reset()         { *m = AdjustSpectrumRequest{} }
 func (m *AdjustSpectrumRequest) String() string { return proto.CompactTextString(m) }
 func (*AdjustSpectrumRequest) ProtoMessage()    {}
 func (*AdjustSpectrumRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{0}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{5}
 }
 
 func (m *AdjustSpectrumRequest) XXX_Unmarshal(b []byte) error {
@@ -180,7 +526,7 @@ func (m *AdjustSpectrumProgress) Reset()         { *m = AdjustSpectrumProgress{}
 func (m *AdjustSpectrumProgress) String() string { return proto.CompactTextString(m) }
 func (*AdjustSpectrumProgress) ProtoMessage()    {}
 func (*AdjustSpectrumProgress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{1}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{6}
 }
 
 func (m *AdjustSpectrumProgress) XXX_Unmarshal(b []byte) error {
@@ -220,7 +566,7 @@ func (m *AdjustSpectrumError) Reset()         { *m = AdjustSpectrumError{} }
 func (m *AdjustSpectrumError) String() string { return proto.CompactTextString(m) }
 func (*AdjustSpectrumError) ProtoMessage()    {}
 func (*AdjustSpectrumError) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{2}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{7}
 }
 
 func (m *AdjustSpectrumError) XXX_Unmarshal(b []byte) error {
@@ -274,7 +620,7 @@ func (m *AdjustSpectrumResponse) Reset()         { *m = AdjustSpectrumResponse{}
 func (m *AdjustSpectrumResponse) String() string { return proto.CompactTextString(m) }
 func (*AdjustSpectrumResponse) ProtoMessage()    {}
 func (*AdjustSpectrumResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{3}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{8}
 }
 
 func (m *AdjustSpectrumResponse) XXX_Unmarshal(b []byte) error {
@@ -350,7 +696,7 @@ func (m *CancelAdjustSpectrumResponse) Reset()         { *m = CancelAdjustSpectr
 func (m *CancelAdjustSpectrumResponse) String() string { return proto.CompactTextString(m) }
 func (*CancelAdjustSpectrumResponse) ProtoMessage()    {}
 func (*CancelAdjustSpectrumResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cb8b6c17dc3d7490, []int{4}
+	return fileDescriptor_cb8b6c17dc3d7490, []int{9}
 }
 
 func (m *CancelAdjustSpectrumResponse) XXX_Unmarshal(b []byte) error {
@@ -372,9 +718,17 @@ func (m *CancelAdjustSpectrumResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_CancelAdjustSpectrumResponse proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterEnum("gnoi.optical.AdjustPSDRequest_SignalDirection", AdjustPSDRequest_SignalDirection_name, AdjustPSDRequest_SignalDirection_value)
+	proto.RegisterEnum("gnoi.optical.AdjustPSDProgress_State", AdjustPSDProgress_State_name, AdjustPSDProgress_State_value)
+	proto.RegisterEnum("gnoi.optical.AdjustPSDError_Type", AdjustPSDError_Type_name, AdjustPSDError_Type_value)
 	proto.RegisterEnum("gnoi.optical.AdjustSpectrumRequest_SignalDirection", AdjustSpectrumRequest_SignalDirection_name, AdjustSpectrumRequest_SignalDirection_value)
 	proto.RegisterEnum("gnoi.optical.AdjustSpectrumProgress_State", AdjustSpectrumProgress_State_name, AdjustSpectrumProgress_State_value)
 	proto.RegisterEnum("gnoi.optical.AdjustSpectrumError_Type", AdjustSpectrumError_Type_name, AdjustSpectrumError_Type_value)
+	proto.RegisterType((*AdjustPSDRequest)(nil), "gnoi.optical.AdjustPSDRequest")
+	proto.RegisterType((*AdjustPSDProgress)(nil), "gnoi.optical.AdjustPSDProgress")
+	proto.RegisterType((*AdjustPSDError)(nil), "gnoi.optical.AdjustPSDError")
+	proto.RegisterType((*AdjustPSDResponse)(nil), "gnoi.optical.AdjustPSDResponse")
+	proto.RegisterType((*CancelAdjustPSDResponse)(nil), "gnoi.optical.CancelAdjustPSDResponse")
 	proto.RegisterType((*AdjustSpectrumRequest)(nil), "gnoi.optical.AdjustSpectrumRequest")
 	proto.RegisterType((*AdjustSpectrumProgress)(nil), "gnoi.optical.AdjustSpectrumProgress")
 	proto.RegisterType((*AdjustSpectrumError)(nil), "gnoi.optical.AdjustSpectrumError")
@@ -387,41 +741,50 @@ func init() {
 }
 
 var fileDescriptor_cb8b6c17dc3d7490 = []byte{
-	// 543 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x93, 0x5d, 0x6e, 0xd3, 0x40,
-	0x10, 0xc7, 0xed, 0xaa, 0x69, 0x93, 0x49, 0x49, 0xcc, 0xf6, 0x43, 0x55, 0x85, 0x50, 0x31, 0x15,
-	0x2a, 0x08, 0x6d, 0x22, 0xf7, 0x09, 0x84, 0x10, 0xf9, 0x70, 0x89, 0x45, 0x71, 0xcc, 0xda, 0x56,
-	0xc4, 0x53, 0xe4, 0x3a, 0x8b, 0x63, 0x94, 0x78, 0xcd, 0x7a, 0x03, 0xea, 0x19, 0x38, 0x06, 0x0f,
-	0xdc, 0x87, 0x03, 0x70, 0x05, 0xae, 0x80, 0xfc, 0xd1, 0x86, 0xb4, 0x51, 0xc8, 0x8b, 0xa5, 0x1d,
-	0xcf, 0x7f, 0xe7, 0x37, 0xff, 0x9d, 0x81, 0xa7, 0xdf, 0xbc, 0xaf, 0x74, 0x42, 0xa3, 0x40, 0x8c,
-	0x87, 0x9c, 0xcd, 0x04, 0xe5, 0x8d, 0x3b, 0x11, 0x1c, 0x73, 0x26, 0x18, 0xda, 0x09, 0x22, 0x16,
-	0x62, 0x16, 0x8b, 0xd0, 0xf7, 0x26, 0x47, 0xcf, 0x83, 0x50, 0x8c, 0x67, 0x97, 0xd8, 0x67, 0xd3,
-	0x06, 0x8b, 0x69, 0xe4, 0xb3, 0xe8, 0x53, 0x18, 0x34, 0xd2, 0x9c, 0x86, 0xb8, 0x8a, 0x69, 0x92,
-	0x7f, 0x73, 0xad, 0xfa, 0x47, 0x86, 0xfd, 0xd6, 0xe8, 0xf3, 0x2c, 0x11, 0x76, 0x4c, 0x7d, 0xc1,
-	0x67, 0x53, 0x42, 0xbf, 0xcc, 0x68, 0x22, 0x10, 0x86, 0x8a, 0xcf, 0xa6, 0x31, 0x8b, 0x68, 0x24,
-	0x0e, 0xe5, 0x63, 0xf9, 0xb4, 0xaa, 0x29, 0x38, 0xab, 0x94, 0xeb, 0x2d, 0x4f, 0x8c, 0xc9, 0x3c,
-	0x05, 0x7d, 0x80, 0xca, 0x28, 0xe4, 0xd4, 0x17, 0x21, 0x8b, 0x0e, 0x37, 0x8e, 0xe5, 0xd3, 0x9a,
-	0x76, 0x86, 0xff, 0x25, 0xc3, 0x4b, 0xeb, 0x60, 0x3b, 0x0c, 0x22, 0x6f, 0xd2, 0xbd, 0x96, 0x92,
-	0xf9, 0x2d, 0xaa, 0x0d, 0xf5, 0x5b, 0x7f, 0xd1, 0x3e, 0xdc, 0xef, 0x1a, 0x44, 0xef, 0x38, 0x46,
-	0xdf, 0x1c, 0xba, 0xe6, 0x3b, 0xb3, 0x3f, 0x30, 0x15, 0x09, 0xed, 0x42, 0x7d, 0x1e, 0x36, 0x4c,
-	0xcb, 0x75, 0x14, 0x19, 0xed, 0x81, 0x32, 0x0f, 0xf6, 0x5d, 0x27, 0x8d, 0x6e, 0xa8, 0xdf, 0x65,
-	0x38, 0x58, 0x24, 0xb1, 0x38, 0x0b, 0x38, 0x4d, 0x12, 0xf4, 0x06, 0x4a, 0x89, 0xf0, 0x04, 0xcd,
-	0xda, 0xad, 0x69, 0xcf, 0x56, 0xe1, 0x5f, 0x8b, 0xb0, 0x9d, 0x2a, 0x48, 0x2e, 0x54, 0x1b, 0x50,
-	0xca, 0xce, 0xa8, 0x0a, 0xdb, 0x73, 0xba, 0x2a, 0x6c, 0x13, 0xd7, 0x34, 0x0d, 0xf3, 0xad, 0x22,
-	0xa3, 0x1d, 0x28, 0x77, 0xfa, 0xef, 0xad, 0x0b, 0xdd, 0xd1, 0x95, 0x0d, 0xf5, 0xa7, 0x0c, 0xbb,
-	0x8b, 0x17, 0xeb, 0x9c, 0x33, 0x8e, 0x5e, 0xc2, 0x66, 0x6a, 0x73, 0x41, 0xf2, 0x64, 0x15, 0x49,
-	0x26, 0xc0, 0xce, 0x55, 0x4c, 0x49, 0xa6, 0x41, 0x07, 0xb0, 0x35, 0xa2, 0xc2, 0x0b, 0x27, 0xd9,
-	0x33, 0x54, 0x48, 0x71, 0x52, 0x5f, 0xc1, 0x66, 0x9a, 0x85, 0xea, 0x50, 0x75, 0x4d, 0xdb, 0xd2,
-	0x3b, 0xc6, 0xb9, 0xa1, 0x77, 0x15, 0x09, 0xdd, 0x83, 0x8a, 0xd5, 0x27, 0xce, 0xb0, 0xed, 0xda,
-	0x1f, 0x73, 0xdf, 0x7a, 0x2d, 0xd2, 0x1d, 0xb4, 0x88, 0x3e, 0x3c, 0x6f, 0x19, 0x17, 0x2e, 0x49,
-	0x49, 0x7f, 0xdc, 0xf1, 0x8d, 0xd0, 0x24, 0x66, 0x51, 0x42, 0x51, 0x1b, 0xca, 0x71, 0x61, 0x47,
-	0x31, 0x29, 0x27, 0xeb, 0x58, 0xd7, 0x93, 0xc8, 0x8d, 0x0e, 0xbd, 0x80, 0x12, 0x4d, 0x1b, 0xc9,
-	0x98, 0xab, 0xda, 0xa3, 0xff, 0x76, 0xdc, 0x93, 0x48, 0xae, 0x68, 0x03, 0x94, 0x79, 0x81, 0xa2,
-	0x3e, 0x84, 0x07, 0x1d, 0x2f, 0xf2, 0xe9, 0x64, 0x39, 0xaa, 0xf6, 0x5b, 0x06, 0x65, 0x70, 0xb3,
-	0x47, 0x24, 0x5b, 0x23, 0x34, 0x84, 0xda, 0x62, 0x3a, 0x7a, 0xbc, 0xc6, 0xe4, 0x1e, 0x9d, 0xac,
-	0x4e, 0x2a, 0x88, 0xa4, 0xa6, 0x8c, 0x42, 0xd8, 0x5b, 0x46, 0xb5, 0x5e, 0x99, 0x5b, 0x63, 0xb8,
-	0xaa, 0x3d, 0x55, 0x6a, 0x97, 0x7f, 0xbd, 0x2e, 0x35, 0xb1, 0x86, 0x9b, 0x97, 0x5b, 0xd9, 0x86,
-	0x9f, 0xfd, 0x0d, 0x00, 0x00, 0xff, 0xff, 0xd2, 0x22, 0x08, 0x5d, 0x4a, 0x04, 0x00, 0x00,
+	// 683 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x55, 0x4b, 0x6f, 0xd3, 0x4a,
+	0x18, 0xcd, 0xa4, 0x4d, 0x9b, 0x7c, 0xe9, 0x6d, 0xdc, 0xe9, 0xe3, 0xf6, 0x56, 0x55, 0x1f, 0xbe,
+	0x05, 0x95, 0x0a, 0x39, 0x51, 0x0a, 0x0b, 0x9e, 0x22, 0xaf, 0x52, 0x8b, 0xe2, 0x98, 0x71, 0xac,
+	0x8a, 0x05, 0x8a, 0x5c, 0x77, 0x48, 0x8d, 0x52, 0x8f, 0xb1, 0x27, 0xa0, 0x2e, 0xd9, 0x21, 0xb1,
+	0x43, 0x6c, 0x59, 0xb1, 0xe0, 0xff, 0xf0, 0x1f, 0x58, 0xf3, 0x17, 0x90, 0x1f, 0x71, 0x9a, 0xa4,
+	0x49, 0x2b, 0x84, 0xba, 0xb1, 0xe4, 0x6f, 0xce, 0x37, 0xe7, 0x7c, 0x47, 0x67, 0x66, 0xe0, 0xd6,
+	0x7b, 0xe3, 0x1d, 0x6d, 0x53, 0xbb, 0xc5, 0x4f, 0x9a, 0x2e, 0xeb, 0x70, 0xea, 0xe6, 0x87, 0x2a,
+	0x92, 0xe3, 0x32, 0xce, 0xf0, 0x4c, 0xcb, 0x66, 0x96, 0xc4, 0x1c, 0x6e, 0x99, 0x46, 0x7b, 0xe5,
+	0x76, 0xcb, 0xe2, 0x27, 0x9d, 0x23, 0xc9, 0x64, 0xa7, 0x79, 0xe6, 0x50, 0xdb, 0x64, 0xf6, 0x6b,
+	0xab, 0x95, 0xf7, 0x31, 0x79, 0x7e, 0xe6, 0x50, 0x2f, 0xfc, 0x86, 0xbd, 0xe2, 0x4f, 0x04, 0x42,
+	0xe9, 0xf8, 0x4d, 0xc7, 0xe3, 0xaa, 0x56, 0x25, 0xf4, 0x6d, 0x87, 0x7a, 0x1c, 0x4b, 0x90, 0x31,
+	0xd9, 0xa9, 0xc3, 0x6c, 0x6a, 0xf3, 0x65, 0xb4, 0x81, 0xb6, 0xb3, 0x45, 0x41, 0x0a, 0x48, 0xc2,
+	0x56, 0xd5, 0xe0, 0x27, 0xa4, 0x07, 0xc1, 0x07, 0x90, 0x39, 0xb6, 0x5c, 0x6a, 0x72, 0x8b, 0xd9,
+	0xcb, 0xc9, 0x0d, 0xb4, 0x3d, 0x5b, 0x94, 0xa4, 0xf3, 0xa2, 0xa4, 0x41, 0x0a, 0x49, 0xb3, 0x5a,
+	0xb6, 0xd1, 0xae, 0x76, 0xbb, 0x48, 0x6f, 0x03, 0x51, 0x83, 0xdc, 0xc0, 0x2a, 0x5e, 0x84, 0xb9,
+	0xaa, 0x4c, 0x6a, 0x95, 0x86, 0x5c, 0x57, 0x9a, 0xba, 0xf2, 0x4c, 0xa9, 0x1f, 0x2a, 0x42, 0x02,
+	0xcf, 0x43, 0xae, 0x57, 0x96, 0x15, 0x55, 0x6f, 0x08, 0x08, 0x2f, 0x80, 0xd0, 0x2b, 0xd6, 0xf5,
+	0x86, 0x5f, 0x4d, 0x8a, 0x1f, 0x10, 0xcc, 0xc5, 0x22, 0x54, 0x97, 0xb5, 0x5c, 0xea, 0x79, 0xf8,
+	0x01, 0xa4, 0x3c, 0x6e, 0x70, 0x1a, 0x0c, 0x39, 0x5b, 0xbc, 0x31, 0x42, 0x74, 0x17, 0x2f, 0x69,
+	0x3e, 0x98, 0x84, 0x3d, 0x62, 0x1e, 0x52, 0xc1, 0x3f, 0xce, 0xc2, 0x74, 0x4f, 0x53, 0x16, 0xa6,
+	0x89, 0xae, 0x28, 0xb2, 0xf2, 0x54, 0x40, 0x78, 0x06, 0xd2, 0x95, 0xfa, 0x73, 0xf5, 0xa0, 0xd6,
+	0xa8, 0x09, 0x49, 0xf1, 0x2b, 0x82, 0xd9, 0x78, 0xcf, 0x9a, 0xeb, 0x32, 0x17, 0xdf, 0x85, 0x49,
+	0xdf, 0xd2, 0x88, 0x7f, 0x73, 0x04, 0x7f, 0x80, 0x95, 0x1a, 0x67, 0x0e, 0x25, 0x01, 0x1c, 0x2f,
+	0xc1, 0xd4, 0x31, 0xe5, 0x86, 0xd5, 0x0e, 0xdc, 0xce, 0x90, 0xe8, 0x4f, 0x7c, 0x08, 0x93, 0x3e,
+	0x0a, 0xe7, 0x20, 0xab, 0x2b, 0x9a, 0x5a, 0xab, 0xc8, 0x7b, 0x72, 0xad, 0x2a, 0x24, 0xf0, 0x3f,
+	0x90, 0x51, 0xeb, 0xa4, 0xd1, 0x2c, 0xeb, 0xda, 0xcb, 0xd0, 0xa3, 0xfd, 0x12, 0xa9, 0x1e, 0x96,
+	0x48, 0xad, 0xb9, 0x57, 0x92, 0x0f, 0x74, 0xe2, 0xeb, 0xfb, 0x72, 0xde, 0x23, 0x42, 0x3d, 0x87,
+	0xd9, 0x1e, 0xc5, 0x8f, 0x20, 0xed, 0x44, 0xf3, 0x47, 0x59, 0x58, 0xbf, 0xc4, 0xa6, 0xfd, 0x04,
+	0x89, 0x5b, 0xf0, 0x1d, 0x48, 0x51, 0x5f, 0x7e, 0xa0, 0x34, 0x5b, 0x5c, 0x1d, 0x37, 0xe2, 0x7e,
+	0x82, 0x84, 0xe0, 0x32, 0x40, 0xda, 0x8d, 0x04, 0x88, 0xff, 0xc1, 0xbf, 0x15, 0xc3, 0x36, 0x69,
+	0x7b, 0x48, 0x9b, 0xf8, 0x0b, 0xc1, 0x62, 0x58, 0xd5, 0x1c, 0x6a, 0x72, 0xb7, 0x73, 0xfa, 0xa7,
+	0x11, 0x7e, 0x31, 0x1c, 0xe1, 0xdd, 0x8b, 0xa4, 0x0e, 0xf0, 0x5c, 0x7b, 0x8e, 0x3f, 0x21, 0x58,
+	0xea, 0x57, 0x12, 0x87, 0xf9, 0x49, 0x7f, 0x98, 0x77, 0xc6, 0xc9, 0xff, 0x4b, 0x89, 0xfe, 0x8e,
+	0x60, 0xbe, 0x7f, 0xe3, 0x30, 0xd6, 0xf7, 0xfb, 0x62, 0x7d, 0x73, 0x9c, 0x92, 0x6b, 0xca, 0xf6,
+	0xb7, 0x21, 0xdf, 0xe2, 0x80, 0x97, 0x87, 0x02, 0xbe, 0x75, 0x15, 0xeb, 0xfa, 0x52, 0x7e, 0xaf,
+	0x3f, 0xe5, 0x9b, 0x97, 0x4e, 0x7c, 0x71, 0xd4, 0xd7, 0x60, 0xf5, 0x7c, 0xd4, 0x07, 0xa5, 0x16,
+	0x3f, 0x4f, 0x80, 0x70, 0x18, 0xbf, 0x02, 0x24, 0x78, 0x04, 0xb0, 0x06, 0x99, 0xf8, 0x64, 0xe0,
+	0xb5, 0xf1, 0xf7, 0xee, 0xca, 0xfa, 0xc8, 0xf5, 0x48, 0xc2, 0xc4, 0xc7, 0x24, 0x2a, 0x20, 0xfc,
+	0x0a, 0x72, 0x03, 0x87, 0xee, 0xd2, 0xad, 0x07, 0x6e, 0xcf, 0x51, 0x67, 0xd6, 0x27, 0xc0, 0xcd,
+	0xee, 0x4d, 0xd8, 0x1d, 0x11, 0xff, 0x7f, 0x85, 0xd3, 0xb6, 0xb2, 0x35, 0x1e, 0x14, 0x31, 0x24,
+	0x0a, 0x08, 0x5b, 0xb0, 0x70, 0x91, 0x93, 0x57, 0xa3, 0xd9, 0x19, 0x3d, 0xc9, 0x30, 0x59, 0x39,
+	0xfd, 0xe3, 0x71, 0xaa, 0x20, 0x15, 0xa5, 0xc2, 0xd1, 0x54, 0xf0, 0xa6, 0xee, 0xfe, 0x0e, 0x00,
+	0x00, 0xff, 0xff, 0x88, 0xb8, 0xf7, 0xca, 0xbc, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -436,6 +799,30 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type WavelengthRouterClient interface {
+	// AdjustPSD performs a power spectral density (PSD) adjustment on an optical
+	// DWDM line system port.
+	//
+	// This RPC's initial message triggers adjustments. The target should validate
+	// the request, and immediately begin the adjustment as long as another
+	// adjustment is not already running. As this RPC may take multiple minutes,
+	// the state should be regularly streamed to the client. The operation should
+	// be completed on the device regardless of the state of the RPC channel to
+	// the initiating client. A client that becomes disconnected during an
+	// operation can reconnect, requesting the same operation, and receive status
+	// updates this way. There is no means by which an adjustment that has been
+	// triggered by a client can be cancelled unless the CancelAdjustPSD RPC is
+	// used.
+	// DEPRECATED, use AdjustSpectrum.
+	//
+	// Deprecated: Do not use.
+	AdjustPSD(ctx context.Context, in *AdjustPSDRequest, opts ...grpc.CallOption) (WavelengthRouter_AdjustPSDClient, error)
+	// CancelAdjustPSD cancels an in-progress AdjustPSD request. If an
+	// adjustment is not being performed for the provided request, then the RPC
+	// should return successfully.
+	// DEPRECATED, use CancelAdjustSpectrum.
+	//
+	// Deprecated: Do not use.
+	CancelAdjustPSD(ctx context.Context, in *AdjustPSDRequest, opts ...grpc.CallOption) (*CancelAdjustPSDResponse, error)
 	// AdjustSpectrum performs a spectrum power adjustment on an optical
 	// DWDM line system port.
 	//
@@ -464,8 +851,51 @@ func NewWavelengthRouterClient(cc *grpc.ClientConn) WavelengthRouterClient {
 	return &wavelengthRouterClient{cc}
 }
 
+// Deprecated: Do not use.
+func (c *wavelengthRouterClient) AdjustPSD(ctx context.Context, in *AdjustPSDRequest, opts ...grpc.CallOption) (WavelengthRouter_AdjustPSDClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_WavelengthRouter_serviceDesc.Streams[0], "/gnoi.optical.WavelengthRouter/AdjustPSD", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &wavelengthRouterAdjustPSDClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type WavelengthRouter_AdjustPSDClient interface {
+	Recv() (*AdjustPSDResponse, error)
+	grpc.ClientStream
+}
+
+type wavelengthRouterAdjustPSDClient struct {
+	grpc.ClientStream
+}
+
+func (x *wavelengthRouterAdjustPSDClient) Recv() (*AdjustPSDResponse, error) {
+	m := new(AdjustPSDResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// Deprecated: Do not use.
+func (c *wavelengthRouterClient) CancelAdjustPSD(ctx context.Context, in *AdjustPSDRequest, opts ...grpc.CallOption) (*CancelAdjustPSDResponse, error) {
+	out := new(CancelAdjustPSDResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.optical.WavelengthRouter/CancelAdjustPSD", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *wavelengthRouterClient) AdjustSpectrum(ctx context.Context, in *AdjustSpectrumRequest, opts ...grpc.CallOption) (WavelengthRouter_AdjustSpectrumClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_WavelengthRouter_serviceDesc.Streams[0], "/gnoi.optical.WavelengthRouter/AdjustSpectrum", opts...)
+	stream, err := c.cc.NewStream(ctx, &_WavelengthRouter_serviceDesc.Streams[1], "/gnoi.optical.WavelengthRouter/AdjustSpectrum", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -507,6 +937,30 @@ func (c *wavelengthRouterClient) CancelAdjustSpectrum(ctx context.Context, in *A
 
 // WavelengthRouterServer is the server API for WavelengthRouter service.
 type WavelengthRouterServer interface {
+	// AdjustPSD performs a power spectral density (PSD) adjustment on an optical
+	// DWDM line system port.
+	//
+	// This RPC's initial message triggers adjustments. The target should validate
+	// the request, and immediately begin the adjustment as long as another
+	// adjustment is not already running. As this RPC may take multiple minutes,
+	// the state should be regularly streamed to the client. The operation should
+	// be completed on the device regardless of the state of the RPC channel to
+	// the initiating client. A client that becomes disconnected during an
+	// operation can reconnect, requesting the same operation, and receive status
+	// updates this way. There is no means by which an adjustment that has been
+	// triggered by a client can be cancelled unless the CancelAdjustPSD RPC is
+	// used.
+	// DEPRECATED, use AdjustSpectrum.
+	//
+	// Deprecated: Do not use.
+	AdjustPSD(*AdjustPSDRequest, WavelengthRouter_AdjustPSDServer) error
+	// CancelAdjustPSD cancels an in-progress AdjustPSD request. If an
+	// adjustment is not being performed for the provided request, then the RPC
+	// should return successfully.
+	// DEPRECATED, use CancelAdjustSpectrum.
+	//
+	// Deprecated: Do not use.
+	CancelAdjustPSD(context.Context, *AdjustPSDRequest) (*CancelAdjustPSDResponse, error)
 	// AdjustSpectrum performs a spectrum power adjustment on an optical
 	// DWDM line system port.
 	//
@@ -531,6 +985,12 @@ type WavelengthRouterServer interface {
 type UnimplementedWavelengthRouterServer struct {
 }
 
+func (*UnimplementedWavelengthRouterServer) AdjustPSD(req *AdjustPSDRequest, srv WavelengthRouter_AdjustPSDServer) error {
+	return status.Errorf(codes.Unimplemented, "method AdjustPSD not implemented")
+}
+func (*UnimplementedWavelengthRouterServer) CancelAdjustPSD(ctx context.Context, req *AdjustPSDRequest) (*CancelAdjustPSDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelAdjustPSD not implemented")
+}
 func (*UnimplementedWavelengthRouterServer) AdjustSpectrum(req *AdjustSpectrumRequest, srv WavelengthRouter_AdjustSpectrumServer) error {
 	return status.Errorf(codes.Unimplemented, "method AdjustSpectrum not implemented")
 }
@@ -540,6 +1000,45 @@ func (*UnimplementedWavelengthRouterServer) CancelAdjustSpectrum(ctx context.Con
 
 func RegisterWavelengthRouterServer(s *grpc.Server, srv WavelengthRouterServer) {
 	s.RegisterService(&_WavelengthRouter_serviceDesc, srv)
+}
+
+func _WavelengthRouter_AdjustPSD_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(AdjustPSDRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(WavelengthRouterServer).AdjustPSD(m, &wavelengthRouterAdjustPSDServer{stream})
+}
+
+type WavelengthRouter_AdjustPSDServer interface {
+	Send(*AdjustPSDResponse) error
+	grpc.ServerStream
+}
+
+type wavelengthRouterAdjustPSDServer struct {
+	grpc.ServerStream
+}
+
+func (x *wavelengthRouterAdjustPSDServer) Send(m *AdjustPSDResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _WavelengthRouter_CancelAdjustPSD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdjustPSDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WavelengthRouterServer).CancelAdjustPSD(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.optical.WavelengthRouter/CancelAdjustPSD",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WavelengthRouterServer).CancelAdjustPSD(ctx, req.(*AdjustPSDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _WavelengthRouter_AdjustSpectrum_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -586,11 +1085,20 @@ var _WavelengthRouter_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*WavelengthRouterServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CancelAdjustPSD",
+			Handler:    _WavelengthRouter_CancelAdjustPSD_Handler,
+		},
+		{
 			MethodName: "CancelAdjustSpectrum",
 			Handler:    _WavelengthRouter_CancelAdjustSpectrum_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "AdjustPSD",
+			Handler:       _WavelengthRouter_AdjustPSD_Handler,
+			ServerStreams: true,
+		},
 		{
 			StreamName:    "AdjustSpectrum",
 			Handler:       _WavelengthRouter_AdjustSpectrum_Handler,
