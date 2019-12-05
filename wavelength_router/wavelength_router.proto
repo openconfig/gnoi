@@ -71,6 +71,7 @@ service WavelengthRouter {
 }
 
 message AdjustPSDRequest {
+  option deprecated = true;
   // Absolute path to the /components/component list member in the OpenConfig
   // model corresponding to the port to perform the adjustment for.
   // (e.g., /components/component[name=amp-1-1])
@@ -88,6 +89,7 @@ message AdjustPSDRequest {
 }
 
 message AdjustPSDProgress {
+  option deprecated = true;
   enum State {
     UNKNOWN = 0;
     RUNNING = 1;   // The PSD adjustment is running.
@@ -99,6 +101,7 @@ message AdjustPSDProgress {
 }
 
 message AdjustPSDError {
+  option deprecated = true;
   enum Type {
     // An unspecified error. Must use the detail value to describe the issue.
     UNSPECIFIED = 0;
@@ -119,18 +122,21 @@ message AdjustPSDError {
 // adjustment is completed, an "error" message should be streamed if an
 // error is encountered or the RPC should be terminated on success.
 message AdjustPSDResponse {
+  option deprecated = true;
   oneof response {
     AdjustPSDProgress progress = 1;
     AdjustPSDError error = 2;
   }
 }
 
-message CancelAdjustPSDResponse {}
+message CancelAdjustPSDResponse {
+  option deprecated = true;
+}
 
 message AdjustSpectrumRequest {
   // Absolute path to the /components/component list member in the OpenConfig
   // model corresponding to the port to perform the adjustment for.
-  // (e.g., /components/component[name=amp-1-1])
+  // (e.g., /components/component[name=wavelength-router-1-1])
   types.Path component = 1;
 
   enum SignalDirection {
