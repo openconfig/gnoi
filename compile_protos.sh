@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -euo pipefail
 
 proto_imports=".:${GOPATH}/src/github.com/google/protobuf/src:${GOPATH}/src"
