@@ -27,7 +27,7 @@ package gnoi.system;
 import "github.com/openconfig/gnoi/common/common.proto";
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option (types.gnoi_version) = "0.1.1";
+option (types.gnoi_version) = "1.0.0";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
@@ -124,7 +124,8 @@ enum RebootMethod {
   HALT = 3;        // Halt, if possible.
   WARM = 4;        // Reload configuration but not underlying hardware.
   NSF = 5;         // Non-stop-forwarding reboot, if possible.
-  reserved 6;      // Please use instead gNOI FactoryReset.Initiate().
+  reserved 6;      // RESET method is deprecated in favor of the gNOI
+                   // FactoryReset.Initiate().
   POWERUP = 7;     // Apply power, no-op if power is already on.
 }
 

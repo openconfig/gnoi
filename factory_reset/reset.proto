@@ -9,7 +9,7 @@ option (types.gnoi_version) = "0.1.0";
 
 // The FactoryReset service exported by Targets.
 service FactoryReset {
-  // The Initiate RPC allows the Client to instruct the Target to immediately
+  // The Start RPC allows the Client to instruct the Target to immediately
   // clean all existing state and boot the Target in the same condition as it is
   // shipped from factory. State includes storage, configuration, logs,
   // certificates and licenses.
@@ -20,10 +20,10 @@ service FactoryReset {
   //
   // It is optional for the Target to zero fill permanent storage where state
   // data is stored.
-  rpc Initiate(InitiateRequest) returns (InitiateResponse);
+  rpc Start(StartRequest) returns (StartResponse);
 }
 
-message InitiateRequest {
+message StartRequest {
   // Instructs the Target to rollback the OS to the same version as it shipped
   // from factory.
   bool factory_os = 1;
@@ -31,7 +31,7 @@ message InitiateRequest {
   bool zero_fill = 2;
 }
 
-message InitiateResponse {
+message StartResponse {
   // Must be set when factory_os is set and the Target does not support it.
   // Does not halt the Factory Reset process.
   bool warning_unsupported_factory_os = 1;
