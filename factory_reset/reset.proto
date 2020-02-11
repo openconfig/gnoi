@@ -24,11 +24,11 @@ service FactoryReset {
 
 message StartRequest {
   // Instructs the Target to rollback the OS to the same version as it shipped
-  // from factory. Target returns grpc status code UNIMPLEMENTED if set but not
-  // implemented.
+  // from factory. Target returns grpc status code INVALID_ARGUMENT if set but
+  // not implemented.
   bool factory_os = 1;
   // Instructs the Target to zero fill persistent storage state data. Target
-  // returns grpc status code UNIMPLEMENTED if set but not implemented.
+  // returns grpc status code INVALID_ARGUMENT if set but not implemented.
   bool zero_fill = 2;
 }
 
