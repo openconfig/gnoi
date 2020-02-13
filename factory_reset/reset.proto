@@ -24,12 +24,29 @@ service FactoryReset {
 
 message StartRequest {
   // Instructs the Target to rollback the OS to the same version as it shipped
-  // from factory. Target returns grpc status code INVALID_ARGUMENT if set but
-  // not implemented.
+  // from factory.
   bool factory_os = 1;
-  // Instructs the Target to zero fill persistent storage state data. Target
-  // returns grpc status code INVALID_ARGUMENT if set but not implemented.
+  // Instructs the Target to zero fill persistent storage state data.
   bool zero_fill = 2;
 }
 
-message StartResponse {}
+message ResetSuccess {}
+
+message ResetError {
+  // Factory OS reset is not supported.
+  bool factory_os_unsupported = 1
+  // Zero fill is not supported.
+  bool zero_fill_unsupported = 2
+  // Unspecified error, must provide detail message.
+  bool other = 3
+  string detail = 4
+}
+
+message StartResponse {
+  oneof response {
+    // Reset will be executed.
+    ResetSuccess reset_success = 1;
+    // Reset will not be executed.
+    ResetError reset_error = 2
+  }
+}
