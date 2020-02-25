@@ -19,6 +19,10 @@ service FactoryReset {
   //
   // Optionally allows for the Target to zero-fill permanent storage where state
   // data is stored.
+  //
+  // If any of the optional flags is set but not supported, a gRPC Status with
+  // code INVALID_ARGUMENT must be returned with the details value set to a
+  // properly populated ResetError message.
   rpc Start(StartRequest) returns (StartResponse);
 }
 
