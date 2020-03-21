@@ -39,12 +39,12 @@ message ResetSuccess {}
 // Message also used in gRPC status.details field.
 message ResetError {
   // Factory OS reset is not supported.
-  bool factory_os_unsupported = 1
+  bool factory_os_unsupported = 1;
   // Zero fill is not supported.
-  bool zero_fill_unsupported = 2
+  bool zero_fill_unsupported = 2;
   // Unspecified error, must provide detail message.
-  bool other = 3
-  string detail = 4
+  bool other = 3;
+  string detail = 4;
 }
 
 message StartResponse {
@@ -52,6 +52,6 @@ message StartResponse {
     // Reset will be executed.
     ResetSuccess reset_success = 1;
     // Reset will not be executed.
-    ResetError reset_error = 2
+    ResetError reset_error = 2;
   }
 }
