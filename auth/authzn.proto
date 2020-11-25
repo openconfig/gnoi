@@ -1,0 +1,179 @@
+//
+// Copyright 2020 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+syntax = "proto3";
+
+import "github.com/openconfig/gnoi/types/types.proto";
+
+// This package is a work in progress. It may change in the future. :-)
+package gnoi.authzn;
+
+option (types.gnoi_version) = "0.1.0";
+
+// Service Authzn supplies the target (i.e., network device, server end of the
+// gRPC connection) with a definition of an authentication and authorization
+// policy that should be used for the respective (authn/authz) of the relevant
+// service. 
+//
+// It is expected that when authorization and authentication details are
+// supplied via the gNOI Authzn service, this config cannot be manipulated
+// through other interfaces, such that a restriction on the gNOI.authzn RPC
+// itself restricts the set of users that are able to manipulate the auth[zn]
+// configuration of the end device.
+//
+// In order to ensure that the auth[zn] configuration supplied in the service
+// cannot be subverted by changing the configuration of the device via gNMI,
+// the following leaves with the OpenConfig system model should be ignored:
+// 
+//  - /system/aaa/authentication/config/authentication-method
+//  - /system/aaa/authorization/config/authorization-method
+//  - /system/aaa/authentication/admin-user/...
+//  - /system/aaa/authentication/users/...
+//
+// The applied state (i.e., the 'state' version of the paths above) should
+// reflect a new authentication-method and authorization-method of GNOI_AUTHZN
+// which is to be added as a new identity with the base of
+// openconfig-aaa-types:AAA_METHOD_TYPE (http://ops.openconfig.net/branches/models/master/docs/openconfig-system.html#ident-aaa_method_type)
+//
+// The motivation for this service is provided in the accompanying
+// authn-authz-intro.md document.
+service Authzn {
+    // Set allows a user to specify an authentication and authorization
+    // policy to the network element. The policy, if valid, replaces the
+    // existing policy.
+    //
+    // Canonical error codes are to be used as responses. See
+    // https://grpc.io/docs/guides/error/ for more details.
+    rpc Set(SetRequest) returns (SetResponse) {}
+}
+
+message SetRequest {
+    // A list of policies that are to be applied on the network element.
+    // Multiple policies per service MAY be specified to allow for multiple
+    // users, or specific user restrictions to be described.
+    repeated Policy policy = 1;
+}
+
+// Policy specifies an authentication/authorization policy for an individual
+// service that is instantiated on the device. Some services may only have an
+// authentication policy - where they do not support more granular authorization,
+// whereas others may have both specified.
+message Policy {
+    oneof protocol {
+        // console provides the configuration for authentication of the local
+        // system login.
+        Console console = 1;
+        // ssh provides the configuration for authentication of logins to the
+        // system via SSH.
+        SSH ssh = 2;
+        // gnmi provides a local authentication mechanism for all RPCs within
+        // the gNMI service, along with an authorization policy which allows
+        // users to be restricted to:
+        //  - specific RPCs (e.g., Get, Set, Subscribe, Capabilities)
+        //  - specific restrictions based on path within each RPC.
+        gNMI gnmi = 3;
+        // gnoi provides a local authentication mechanism for each gNOI RPC
+        // within the suite of gNOI microservices whose definitions are
+        // defined in github.com/openconfig/gnoi. Within specific microservices
+        // RPC-based restrictions may be realised.
+        gNOI gnoi = 4;
+        // gribi provides a local authentication mechanism for the gRIBI service.
+        gRIBI gribi = 5;
+    }
+}
+
+message Console {
+    // Console provides a username/password based authentication mechanism
+    // for logging in to the system. 
+    //
+    // The username of the user permitted to log in to the system via the 
+    // console. If the username is specified as an
+    // empty string, the supplied authentication details should apply to the
+    // root/superuser/admin user of the system.
+    string username = 1;
+    // TODO(robjs): How should this password be supplied to the device?
+    // Presumably we do not want it in cleartext. We could re-use the same
+    // definition that is used within the OpenConfig models:
+    // http://ops.openconfig.net/branches/models/master/docs/openconfig-system.html#type-crypt-password-type
+    string password = 2;
+}
+
+message SSH {
+    // SSH provides a key-based login for users onto the system. Only users
+    // that are specified within the SSH policy are permitted to login to the
+    // system.
+    //
+    // The username of a user for whom SSH login is permitted. If the value
+    // of the username field is an empty string, this corresponds to the
+    // root/superuser/admin user of the system.
+    string username = 1;
+    // authorized_keys specifies a list of SSH keys that are permitted for
+    // the user - each of which would correspond to a line within the
+    // authorized_users file on an openssh system. The CR/LF should be omitted
+    // from the supplied key.
+    repeated string authorized_keys = 2;
+}
+
+message gRPCID {
+    // The identify of a gRPC client is defined by its SPIFFE ID (see 
+    // https://spiffe.io/docs/latest/spiffe/concepts/) which is provided within
+    // the SVID - in this case, the X.509 client certificate.
+    string id = 1;
+}
+
+message gNMI {
+    // gNMI provides an authentication and authorization policy corresponding
+    // to an individual client. mTLS authentication should be performed, 
+    // ensuring that a valid client certificate is provided.
+    //
+    // An individual SPIFFE ID must have a corresponding policy entry
+    // to be permitted to make gNMI requests. Further restrictions are expected
+    // to be made according to RPC, and path within that RPC as this service
+    // evolves.
+    gRPCID client = 1; 
+    // It is the intention that the gNMI authz model makes use of common
+    // gRPC concepts wherever possible, such that by default, client and
+    // server support is available in the CNCF-maintained libraries.
+    // 
+    // TODO(all): add authz policy for gNMI.
+}
+
+message gNOI {
+    // gNOI provides an authentication and authorization policy corresponding
+    // to an individual client. mTLS mutual authentication should be performed.
+    // Clients (i.e. SPIFFE IDs) must have a corresponding policy entry for
+    // a particular service definition to be able to make calls. Further
+    // restrictions (e.g., per-RPC) for a client are expected as this service
+    // evolves.
+    gRPCID client = 1;
+    // service is the gNOI package name (e.g., gnoi.system) that the policy
+    // applies to.
+    string service = 2;
+}
+
+message gRIBI {
+    // gRIBI provides an authentication policy corresponding to the individual
+    // client. Per other gRPC services, mTLS mutual auth should be performed.
+    // Clients must have a correspond policy entry for gRIBI to be 
+    // allowed to call gRIBI RPCs.
+    // 
+    // At the time of writing, no further restrictions on gRIBI RPC are
+    // expected.
+    gRPCID client = 1;
+}
+
+// SetResponse is the response to the Set RPC.
+message SetResponse {}
