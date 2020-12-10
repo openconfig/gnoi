@@ -1,5 +1,9 @@
 # Modernising Authentication and Authorization for Network Devices
-**Contributors:** danielwong<sup><small>†</small></sup>, johnwestbrook<sup><small>†</small></sup>, robjs<sup><small>†</small></sup>, morrowc<sup><small>†</small></sup>, aashaikh<sup><small>†</small></sup>  
+
+**Contributors:** danielwong<sup><small>†</small></sup>,
+johnwestbrook<sup><small>†</small></sup>, robjs<sup><small>†</small></sup>,
+morrowc<sup><small>†</small></sup>, aashaikh<sup><small>†</small></sup>  
+
 <sup><small>†</small></sup> @google.com  
 **Published:** November 2020
 
@@ -47,16 +51,13 @@ particularly to provide:
 
 * A secure means by which authentication and authorization policy can be
   provided to a network device and stored locally.
- 
 * Means by which this policy can interact with user identifiers that are
   specified as part of the gRPC connection - ideally building upon wider
   industry developments.
-
 * Means by which this policy can be used as a mechanism for authenticating
   users against other access mechanisms (e.g., local console, SSH) such that an
   operator can unify their authentication and authorization policy for network
   devices into a single definition.
-
 * Means within the policy to provide for granular access to a data tree which
   is described by a specified data model. This will particularly focus around
   the YANG tree that is defined by the OpenConfig data models.
@@ -64,6 +65,13 @@ particularly to provide:
 We envisage that this approach can coexist with authentication and
 authorization mechanisms that are already implemented by typical NOS today,
 whilst also evolving towards a unified, modernised approach.
+
+In order that the new authentication and authorisation mechanisms clearly
+separate the security policy from the configuration of the device, we envisage
+that the policy that is supplied via this interface is the sole source of truth
+for authn/authz on the network device, and that the device cannot be changed to
+use alternative AAA means via other channels (e.g., gNMI-pushed configuration)
+when it is active.
 
 ### Next Steps
 
