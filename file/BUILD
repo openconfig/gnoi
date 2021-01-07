@@ -35,7 +35,7 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "types_cc_proto",
+    name = "file_cc_proto",
     deps = [":file_proto"],
 )
 
