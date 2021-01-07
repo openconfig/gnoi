@@ -34,7 +34,7 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "types_cc_proto",
-    deps = [":types_proto"],
+    name = "diag_cc_proto",
+    deps = [":diag_proto"],
 )
 

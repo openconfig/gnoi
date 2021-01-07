@@ -20,23 +20,22 @@ package(
 )
 
 filegroup(
-    name = "cert_proto_srcs",
+    name = "file_proto_srcs",
     srcs = glob(["**/*.proto"]),
     visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
 )
 
 proto_library(
-    name = "cert_proto",
-    srcs = ["cert.proto"],
+    name = "interface_proto",
+    srcs = ["interface.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
         "//types:types_proto",
+        "//common:common_proto",
     ],
 )
 
 cc_proto_library(
-    name = "cert_cc_proto",
-    deps = [":cert_proto"],
+    name = "interface_cc_proto",
+    deps = [":interface_proto"],
 )
 

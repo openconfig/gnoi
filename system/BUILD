@@ -8,7 +8,7 @@ package(default_visibility = ["//visibility:public"],
     licenses = ["notice"],)
 
 filegroup(
-    name = "gnoi_proto_srcs",
+    name = "system_proto_srcs",
     srcs = glob(["gnoi/common/*.proto",
                  "gnoi/types/*.proto"]),
 )
