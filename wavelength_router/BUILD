@@ -14,6 +14,9 @@
 #
 # Supporting infrastructure for implementing and testing PINS.
 #
+
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+
 package(
     default_visibility = ["//visibility:public"],
     licenses = ["notice"],
@@ -39,3 +42,9 @@ cc_proto_library(
     deps = [":wavelength_router_proto"],
 )
 
+cc_grpc_library(
+    name = "wavelength_router_cc_grpc_proto",
+    srcs = [":wavelength_router_proto"],
+    deps = [":wavelength_router_cc_proto"],
+    grpc_only = True,
+)
