@@ -33,4 +33,5 @@ cc_grpc_library(
     name = "system_cc_grpc_proto",
     srcs = [":system_proto"],
     deps = [":system_cc_proto"],
+    grpc_only = True,
 )
