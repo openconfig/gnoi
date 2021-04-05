@@ -22,10 +22,11 @@
 
 syntax = "proto3";
 
-import "github.com/openconfig/gnoi/types/types.proto";
-import "google/protobuf/any.proto";
 
 package gnoi.healthz;
+
+import "github.com/openconfig/gnoi/types/types.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
@@ -49,12 +50,13 @@ message GetRequest {
   types.Path path = 1;
 }
 
+enum Status {
+  STATUS_UNSPECIFIED = 0;   // The path doesn't support healthz
+  STATUS_HEALTHLY = 1;      // The path is healthy
+  STATUS_UNHEALTHY = 2;     // The path is unhealthy
+}
+
 message GetResponse {
-  enum Status {
-    UNSPECIFIED = 0;   // The path doesn't support healthz or unknown status.
-    HEALTHLY = 1;      // The path is healthy
-    UNHEALTHY = 2;     // The path is unhealthy
-  }
   Status status = 1;  // Status of the path.
   // Opaque data for how the healthcheck is implemented.  This can be any proto
   // defined by the vendor.  This could be the equivalent to outputs like
