@@ -16,16 +16,17 @@
 
 syntax = "proto3";
 
-import "github.com/openconfig/gnoi/types/types.proto";
-
 package gnoi.bgp;
+
+import "github.com/openconfig/gnoi/types/types.proto";
 
 // The current semantic version of the gNOI BGP service.
 option (types.gnoi_version) = "0.1.0";
 
 service BGP {
   // ClearBGPNeighbor clears a BGP session.
-  rpc ClearBGPNeighbor(ClearBGPNeighborRequest) returns (ClearBGPNeighborResponse) {}
+  rpc ClearBGPNeighbor(ClearBGPNeighborRequest)
+    returns (ClearBGPNeighborResponse) {}
 
 }
 
