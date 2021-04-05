@@ -22,12 +22,12 @@
 
 syntax = "proto3";
 
+import "github.com/openconfig/gnoi/types/types.proto";
+import "google/protobuf/any.proto";
+
 package gnoi.healthz;
 
 option go_package = "github.com/openconfig/gnoi/healthz";
-
-import "github.com/openconfig/gnoi/types/types.proto";
-import "google/protobuf/any.proto";
 
 option (types.gnoi_version) = "1.0.0";
 
