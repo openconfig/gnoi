@@ -18,8 +18,8 @@ syntax = "proto3";
 
 package gnoi.file;
 
-import "github.com/openconfig/gnoi/types/types.proto";
 import "github.com/openconfig/gnoi/common/common.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option (types.gnoi_version) = "0.1.0";
 
@@ -36,7 +36,8 @@ service File {
   // transferred. An error is returned if the file does not exist, the file
   // transfer fails, or if there was an error reading the file. This is a
   // blocking call until the file transfer is complete.
-  rpc TransferToRemote(TransferToRemoteRequest) returns (TransferToRemoteResponse) {}
+  rpc TransferToRemote(TransferToRemoteRequest)
+    returns (TransferToRemoteResponse) {}
 
   // Put streams data into a file on the target. The file is sent in
   // sequential messages, each message containing up to 64KB of data. A final
@@ -88,7 +89,8 @@ message PutRequest {
   }
 }
 
-message PutResponse {}
+message PutResponse {
+}
 
 // A GetRequest specifies the remote_file to be streamed back
 // to the caller. The remote_file must be an absolute path to an
@@ -151,4 +153,5 @@ message RemoveRequest {
   string remote_file = 1;
 }
 
-message RemoveResponse {}
+message RemoveResponse {
+}
