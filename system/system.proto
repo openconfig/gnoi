@@ -62,7 +62,8 @@ service System {
   // provided route processor. If the current route processor is the same as the
   // one provided it is a NOOP. If the target does not exist an error is
   // returned.
-  rpc SwitchControlProcessor(SwitchControlProcessorRequest) returns (SwitchControlProcessorResponse) {}
+  rpc SwitchControlProcessor(SwitchControlProcessorRequest)
+    returns (SwitchControlProcessorResponse) {}
 
   // Reboot causes the target to reboot, possibly at some point in the future.
   // If the method of reboot is not supported then the Reboot RPC will fail.
@@ -124,8 +125,8 @@ enum RebootMethod {
   HALT = 3;        // Halt, if possible.
   WARM = 4;        // Reload configuration but not underlying hardware.
   NSF = 5;         // Non-stop-forwarding reboot, if possible.
-  reserved 6;      // RESET method is deprecated in favor of the gNOI
-                   // FactoryReset.Start().
+  // RESET method is deprecated in favor of the gNOI FactoryReset.Start().
+  reserved 6;
   POWERUP = 7;     // Apply power, no-op if power is already on.
 }
 
@@ -300,12 +301,11 @@ message Package {
 // final message must be a hash message contains the hash of the file contents.
 message SetPackageRequest {
   oneof request {
-   Package package = 1;
-   bytes contents = 2;
-   types.HashType hash = 3;    // Verification hash of data.
- }
+    Package package = 1;
+    bytes contents = 2;
+    types.HashType hash = 3;    // Verification hash of data.
+  }
 }
-
 
 message SetPackageResponse {
 }
