@@ -14,16 +14,16 @@ or reproduce issues.
 
 ## Design
 
-*   The service definition provides a Get method which is correlated with a
-    /component in the OC tree. The Get method is responsible for getting the
-    current status of the requested component path. This will cause the system
-    to fetch the current state of component this may entail running specific
-    validations and gathering any relevant status of the component to reflect
-    the "health check"
+* The service definition provides a Get method which is correlated with a
+  /component in the OC tree. The Get method is responsible for getting the
+  current status of the requested component path. This will cause the system
+  to fetch the current state of component this may entail running specific
+  validations and gathering any relevant status of the component to reflect
+  the "health check"
 
-*   The internal design details of the "health check" and the frequency of the
-    health check are up to the implementor to determine. This presentation of
-    the status in OC is proposed to be modeled as
+* The internal design details of the "health check" and the frequency of the
+  health check are up to the implementor to determine. This presentation of
+  the status in OC is proposed to be modeled as
 
 ```yang
 component/healthz/status = Enum
