@@ -56,10 +56,18 @@ enum Status {
   STATUS_UNHEALTHY = 2;     // The path is unhealthy
 }
 
-message GetResponse {
-  Status status = 1;  // Status of the path.
+message ComponentStatus {
+  types.Path path = 1; // path of subcomponent.
+  // Subcomponents that are aggregated by this status.
+  repeated ComponentStatus subcomponents = 2;
+  // Status of this component.
+  Status status = 3;
   // Opaque data for how the healthcheck is implemented.  This can be any proto
   // defined by the vendor.  This could be the equivalent to outputs like
   // "show tech" or core files or any other diagnostic data.
-  google.protobuf.Any healthz = 2;
+  google.protobuf.Any healthz = 4;
+}
+
+message GetResponse {
+  ComponentStatus component = 1;
 }
