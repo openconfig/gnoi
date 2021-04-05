@@ -27,6 +27,8 @@ package gnoi.system;
 import "github.com/openconfig/gnoi/common/common.proto";
 import "github.com/openconfig/gnoi/types/types.proto";
 
+option go_package = "github.com/openconfig/gnoi/system";
+
 option (types.gnoi_version) = "1.0.0";
 
 // The gNOI service is a collection of operational RPC's that allow for the

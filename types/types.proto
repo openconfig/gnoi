@@ -20,6 +20,8 @@ package gnoi.types;
 
 import "google/protobuf/descriptor.proto";
 
+option go_package = "github.com/openconfig/gnoi/types";
+
 // Define a protobuf FileOption that defines the gNOI service version.
 extend google.protobuf.FileOptions {
   // The gNOI service semantic version.

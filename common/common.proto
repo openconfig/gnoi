@@ -20,6 +20,8 @@ package gnoi.common;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
+option go_package = "github.com/openconfig/gnoi/common";
+
 // RemoteDownload defines the details for a device to initiate a file transfer
 // from or to a remote location.
 message RemoteDownload {
