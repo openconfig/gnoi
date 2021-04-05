@@ -22,3 +22,5 @@ jobs:
         uses: plexsystems/protolint-action@v0.2.0
         with:
           configDirectory: .github
+        env:
+          PROTOLINT_VERSION: 0.31.0
