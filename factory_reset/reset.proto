@@ -34,7 +34,8 @@ message StartRequest {
   bool zero_fill = 2;
 }
 
-message ResetSuccess {}
+message ResetSuccess {
+}
 
 // Message also used in gRPC status.details field.
 message ResetError {
