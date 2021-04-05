@@ -22,6 +22,8 @@ package gnoi.diag;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
+option go_package = "github.com/openconfig/gnoi/diag";
+
 option (types.gnoi_version) = "0.1.0";
 
 // The Diag service exports to main set of RPCs:
