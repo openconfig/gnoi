@@ -5,6 +5,8 @@ package gnoi.factory_reset;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
+option go_package = "github.com/openconfig/gnoi/factory_reset";
+
 option (types.gnoi_version) = "0.1.0";
 
 // The FactoryReset service exported by Targets.
@@ -34,7 +36,8 @@ message StartRequest {
   bool zero_fill = 2;
 }
 
-message ResetSuccess {}
+message ResetSuccess {
+}
 
 // Message also used in gRPC status.details field.
 message ResetError {

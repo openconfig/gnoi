@@ -18,9 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Lint Code Base
-        uses: github/super-linter@v3
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: master
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint protobuf
+        uses: plexsystems/protolint-action@v0.3.0
+        with:
+          configDirectory: .github

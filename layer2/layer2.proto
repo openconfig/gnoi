@@ -20,6 +20,8 @@ package gnoi.layer2;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
+option go_package = "github.com/openconfig/gnoi/layer2";
+
 option (types.gnoi_version) = "0.1.0";
 
 service Layer2 {
@@ -27,24 +29,29 @@ service Layer2 {
   // clear the entire table based on parameters provided.
   // TODO: This method is subject to deprecation once OpenConfig models this
   // state.
-  rpc ClearNeighborDiscovery(ClearNeighborDiscoveryRequest) returns (ClearNeighborDiscoveryResponse) {}
+  rpc ClearNeighborDiscovery(ClearNeighborDiscoveryRequest)
+    returns (ClearNeighborDiscoveryResponse) {}
 
   // ClearSpanningTree will reset a blocked spanning tree interface.
   // TODO: This method is subject to deprecation once OpenConfig models this
   // state.
-  rpc ClearSpanningTree(ClearSpanningTreeRequest) returns (ClearSpanningTreeResponse) {}
+  rpc ClearSpanningTree(ClearSpanningTreeRequest)
+    returns (ClearSpanningTreeResponse) {}
 
   // PerformBERT will perform a BERT operation on a port. The stream will
   // return the current state of the operation as well as the ID for the
   // operation.
-  rpc PerformBERT(PerformBERTRequest) returns (stream PerformBERTResponse) {}
+  rpc PerformBERT(PerformBERTRequest)
+    returns (stream PerformBERTResponse) {}
 
   // ClearLLDPInterface will clear all LLDP adjacencies on the provided
   // interface.
-  rpc ClearLLDPInterface(ClearLLDPInterfaceRequest) returns (ClearLLDPInterfaceResponse) {}
+  rpc ClearLLDPInterface(ClearLLDPInterfaceRequest)
+    returns (ClearLLDPInterfaceResponse) {}
 
   // SendWakeOnLAN will send a WOL event on the requested interface.
-  rpc SendWakeOnLAN(SendWakeOnLANRequest) returns (SendWakeOnLANResponse) {}
+  rpc SendWakeOnLAN(SendWakeOnLANRequest)
+    returns (SendWakeOnLANResponse) {}
 
 }
 
@@ -82,8 +89,10 @@ message PerformBERTResponse {
   BERTState state = 2;
   int64 elapsed_period = 3; // BERT test length in nanoseconds.
   bytes pattern = 4;        // Pattern used for the BERT test.
-  int64 errors = 5;         // Number of errors experienced since the start of the BERT test.
-  int64 received_bits = 6;  // Number of bits received since the start of the BERT test.}
+  // Number of errors experienced since the start of the BERT test.
+  int64 errors = 5; 
+  // Number of bits received since the start of the BERT test.        
+  int64 received_bits = 6;  
 }
 
 message ClearLLDPInterfaceRequest {

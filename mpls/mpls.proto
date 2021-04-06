@@ -16,9 +16,11 @@
 
 syntax = "proto3";
 
+package gnoi.mpls;
+
 import "github.com/openconfig/gnoi/types/types.proto";
 
-package gnoi.mpls;
+option go_package = "github.com/openconfig/gnoi/mpls";
 
 option (types.gnoi_version) = "0.1.0";
 
@@ -28,7 +30,8 @@ service MPLS {
   rpc ClearLSP(ClearLSPRequest) returns (ClearLSPResponse) {}
 
   // ClearLSPCounters will clear the MPLS counters for the provided LSP.
-  rpc ClearLSPCounters(ClearLSPCountersRequest) returns (ClearLSPCountersResponse) {}
+  rpc ClearLSPCounters(ClearLSPCountersRequest)
+    returns (ClearLSPCountersResponse) {}
 
   // An MPLS ping, specified as per RFC4379.
   rpc MPLSPing(MPLSPingRequest) returns (stream MPLSPingResponse) {}
@@ -115,10 +118,13 @@ message MPLSPingRequest {
     // TODO(robjs): L3VPN, BGP-LU destination types. See RFC4379.
   }
   enum ReplyMode {
-    IPV4 = 0;          // Reply via an IPv4 packet to this system.
-    ROUTER_ALERT = 1;  // Reply with a labeled packet with the router alert bit set.
+    // Reply via an IPv4 packet to this system.
+    IPV4 = 0;
+    // Reply with a labeled packet with the router alert bit set.          
+    ROUTER_ALERT = 1;  
   }
-  ReplyMode reply_mode = 6;  // How the target LER should respond to the LSP ping.
+  // How the target LER should respond to the LSP ping.
+  ReplyMode reply_mode = 6;  
   // The number of MPLS echo request packets to send.
   uint32 count = 7; // default=3
   // The size (in bytes) of each MPLS echo request packet.
