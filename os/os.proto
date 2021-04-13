@@ -7,7 +7,7 @@ import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/os";
 
-option (types.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.2.0";
 
 // The OS service provides an interface for OS installation on a Target. The
 // Client progresses through 3 RPCs:
@@ -110,8 +110,9 @@ service OS {
   rpc Install(stream InstallRequest) returns (stream InstallResponse);
 
   // Activate sets the requested OS version as the version which is used at the
-  // next reboot, and reboots the Target. When booting the requested OS version
-  // fails, the Target recovers by booting the previously running OS package.
+  // next reboot, and reboots the Target if the 'activate_and_reboot' flag is
+  // set. When booting the requested OS version fails, the Target recovers by
+  // booting the previously running OS package.
   rpc Activate(ActivateRequest) returns (ActivateResponse);
 
   // Verify checks the running OS version. This RPC may be called multiple times
@@ -250,11 +251,18 @@ message InstallError {
 // The ActivateRequest is sent by the Client to the Target to initiate a change
 // in the next bootable OS version that is to be used on the Target.
 message ActivateRequest {
-  // The version that is required to be activated and booted.
+  // The version that is required to be activated and optionally immediattely
+  // booted.
   string version = 1;
   // For dual Supervisors setting this flag instructs the Target to perform the
   // action on the Standby Supervisor.
   bool standby_supervisor = 2;
+  // If set to 'True' the Target will initiate the reboot process immediatelly
+  // after changing the next bootable OS version.
+  // If set to 'False' a separate action to reboot the Target and start using
+  // the activated OS version is required. This action CAN be executing
+  // the gNOI.system.Reboot() RPC.
+  bool activate_and_reboot = 3;
 }
 
 // The ActivateResponse is sent from the Target to the Client in response to the
