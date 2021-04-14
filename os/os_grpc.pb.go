@@ -102,8 +102,8 @@ type OSClient interface {
 	//
 	Install(ctx context.Context, opts ...grpc.CallOption) (OS_InstallClient, error)
 	// Activate sets the requested OS version as the version which is used at the
-	// next reboot, and reboots the Target if the 'activate_and_reboot' flag is
-	// set. When booting the requested OS version fails, the Target recovers by
+	// next reboot, and reboots the Target if the 'no_reboot' flag is not set.
+	// When booting the requested OS version fails, the Target recovers by
 	// booting the previously running OS package.
 	Activate(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error)
 	// Verify checks the running OS version. This RPC may be called multiple times
@@ -256,8 +256,8 @@ type OSServer interface {
 	//
 	Install(OS_InstallServer) error
 	// Activate sets the requested OS version as the version which is used at the
-	// next reboot, and reboots the Target if the 'activate_and_reboot' flag is
-	// set. When booting the requested OS version fails, the Target recovers by
+	// next reboot, and reboots the Target if the 'no_reboot' flag is not set.
+	// When booting the requested OS version fails, the Target recovers by
 	// booting the previously running OS package.
 	Activate(context.Context, *ActivateRequest) (*ActivateResponse, error)
 	// Verify checks the running OS version. This RPC may be called multiple times
