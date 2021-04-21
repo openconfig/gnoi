@@ -1,0 +1,63 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Generic Network Operation Interface, GNOI, defines a set of RPC's used for
+// the operational aspects of network targets. These services are meant to be
+// used in conjunction with GNMI for all target state and operational aspects
+// of a network target. The gnoi.system.Service is the only mandatory vendor
+// implementation.
+
+syntax = "proto3";
+
+package gnoi.healthz;
+
+option go_package = "github.com/openconfig/gnoi/healthz";
+
+import "github.com/openconfig/gnoi/types/types.proto";
+import "google/protobuf/any.proto";
+
+option (types.gnoi_version) = "1.0.0";
+
+// The Healthz service provides access to the status of a path on the
+// system. Addtitionally it allows the implementor to provide path specific
+// diagnositic data into the status return.
+//
+// Healthz is expected to work in conjunction with the component OC model.
+service Healthz {
+  // Get will get health status for a gNMI path.  If no status is available for
+  // the requested path an error will be returned.
+  rpc Get(GetRequest) returns (GetResponse) {}
+}
+
+message GetRequest {
+  // Path defines the component to try to fetch healthz state for.  This will
+  // perform a full health check cycle for the component and return the status
+  // as well as any associated healthz data.
+  types.Path path = 1;
+}
+
+message GetResponse {
+  enum Status {
+    UNSPECIFIED = 0;   // The path doesn't support healthz or unknown status.
+    HEALTHLY = 1;      // The path is healthy
+    UNHEALTHY = 2;     // The path is unhealthy
+  }
+  Status status = 1;  // Status of the path.
+  // Opaque data for how the healthcheck is implemented.  This can be any proto
+  // defined by the vendor.  This could be the equivalent to outputs like
+  // "show tech" or core files or any other diagnostic data.
+  google.protobuf.Any healthz = 2;
+}
