@@ -30,6 +30,7 @@ filegroup(
 proto_library(
     name = "reset_proto",
     srcs = ["reset.proto"],
+    import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "//types:types_proto",
     ],
