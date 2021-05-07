@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,12 +20,3 @@ package(
 )
 
 exports_files(["LICENSE"])
-
-# copybara:insert_begin(For format.sh script)
-# load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
-#
-# buildifier(
-#     name = "buildifier",
-# )
-# copybara:insert_end
-

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,46 +21,48 @@ def gnoi_infra_deps():
     """Declare the third-party dependencies necessary to build GNOI infrastructure"""
 
     if not native.existing_rule("com_github_grpc_grpc"):
-       git_repository(
+       http_archive(
             name = "com_github_grpc_grpc",
-            remote = "https://github.com/grpc/grpc",
-            commit = "638c34ceba0c050574f473745a1316b3a9cf4136",
-            shallow_since = "1606864594 -0800",
-       )
+            # Move to newer commit to avoid the use of com_github_google_re2.
+            url = "https://github.com/grpc/grpc/archive/565520443bdbda0b8ac28337a4904f3f20276305.zip",
+            strip_prefix = "grpc-565520443bdbda0b8ac28337a4904f3f20276305",
+            sha256 = "7206cc8e4511620fe70da7234bc98d6a4cd2eb226a7914f68fdbd991ffe38d34",
+        )
     if not native.existing_rule("com_google_absl"):
         http_archive(
             name = "com_google_absl",
-            sha256 = "f41868f7a938605c92936230081175d1eae87f6ea2c248f41077c8f88316f111",
-            strip_prefix = "abseil-cpp-20200225.2",
-            url = "https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz",
+            url = "https://github.com/abseil/abseil-cpp/archive/refs/tags/20210324.rc1.tar.gz",
+            strip_prefix = "abseil-cpp-20210324.rc1",
+            sha256 = "7e0cf185ddd0459e8e55a9c51a548e859d98c0d7533de374bf038e4c7434f682",
         )
     if not native.existing_rule("com_google_googletest"):
         http_archive(
             name = "com_google_googletest",
-            sha256 = "9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb",
-            strip_prefix = "googletest-release-1.10.0",
             urls = ["https://github.com/google/googletest/archive/release-1.10.0.tar.gz"],
+            strip_prefix = "googletest-release-1.10.0",
+            sha256 = "9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb",
         )
     if not native.existing_rule("com_google_protobuf"):
         http_archive(
             name = "com_google_protobuf",
-            sha256 = "1a83f0525e5c8096b7b812181865da3c8637de88f9777056cefbf51a1eb0b83f",
-            strip_prefix = "protobuf-3.12.3",
-            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protobuf-all-3.12.3.tar.gz",
+            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/protobuf-all-3.14.0.tar.gz",
+            strip_prefix = "protobuf-3.14.0",
+            sha256 = "6dd0f6b20094910fbb7f1f7908688df01af2d4f6c5c21331b9f636048674aebf",
         )
     if not native.existing_rule("com_googlesource_code_re2"):
         http_archive(
             name = "com_googlesource_code_re2",
-            sha256 = "2e9489a31ae007c81e90e8ec8a15d62d58a9c18d4fd1603f6441ef248556b41f",
-            strip_prefix = "re2-2020-07-06",
-            url = "https://github.com/google/re2/archive/2020-07-06.tar.gz",
+            # Newest commit on "absl" branch as of 2021-03-25.
+            url = "https://github.com/google/re2/archive/72f110e82ccf3a9ae1c9418bfb447c3ba1cf95c2.zip",
+            strip_prefix = "re2-72f110e82ccf3a9ae1c9418bfb447c3ba1cf95c2",
+            sha256 = "146bf2e8796317843106a90543356c1baa4b48236a572e39971b839172f6270e",
         )
     if not native.existing_rule("com_google_googleapis"):
-        git_repository(
+        http_archive(
             name = "com_google_googleapis",
-            commit = "dd244bb3a5023a4a9290b21dae6b99020c026123",
-            remote = "https://github.com/googleapis/googleapis",
-            shallow_since = "1591402163 -0700",
+            url = "https://github.com/googleapis/googleapis/archive/f405c718d60484124808adb7fb5963974d654bb4.zip",
+            strip_prefix = "googleapis-f405c718d60484124808adb7fb5963974d654bb4",
+            sha256 = "406b64643eede84ce3e0821a1d01f66eaf6254e79cb9c4f53be9054551935e79",
         )
     if not native.existing_rule("rules_cc"):
         git_repository(
