@@ -30,7 +30,6 @@ filegroup(
 proto_library(
     name = "cert_proto",
     srcs = ["cert.proto"],
-    import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",

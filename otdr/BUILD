@@ -31,7 +31,6 @@ filegroup(
 proto_library(
     name = "otdr_proto",
     srcs = ["otdr.proto"],
-    import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "//types:types_proto",
         "//common:common_proto",
