@@ -12,27 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Dependencies to build PINS infra."""
+"""Dependencies to build gnoi."""
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-def gnoi_infra_deps():
-    """Declare the third-party dependencies necessary to build GNOI infrastructure"""
+def gnoi_deps():
+    """Declare the third-party dependencies necessary to build gnoi"""
 
     if not native.existing_rule("com_github_grpc_grpc"):
        http_archive(
             name = "com_github_grpc_grpc",
-            # Move to newer commit to avoid the use of com_github_google_re2.
-            url = "https://github.com/grpc/grpc/archive/565520443bdbda0b8ac28337a4904f3f20276305.zip",
-            strip_prefix = "grpc-565520443bdbda0b8ac28337a4904f3f20276305",
-            sha256 = "7206cc8e4511620fe70da7234bc98d6a4cd2eb226a7914f68fdbd991ffe38d34",
+            url = "https://github.com/grpc/grpc/archive/refs/tags/v1.37.1.tar.gz",
+            strip_prefix = "grpc-1.37.1",
+            sha256 = "acf247ec3a52edaee5dee28644a4e485c5e5badf46bdb24a80ca1d76cb8f1174",
         )
     if not native.existing_rule("com_google_protobuf"):
         http_archive(
             name = "com_google_protobuf",
-            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/protobuf-all-3.14.0.tar.gz",
-            strip_prefix = "protobuf-3.14.0",
-            sha256 = "6dd0f6b20094910fbb7f1f7908688df01af2d4f6c5c21331b9f636048674aebf",
+            url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.16.0/protobuf-all-3.16.0.tar.gz",
+            strip_prefix = "protobuf-3.16.0",
+            sha256 = "d7371dc2d46fddac1af8cb27c0394554b068768fc79ecaf5be1a1863e8ff3392",
         )
     if not native.existing_rule("com_google_googleapis"):
         http_archive(
