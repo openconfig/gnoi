@@ -1,4 +1,4 @@
-name: "build gnoi"
+name: "bazel build"
   
 on:
   push:
@@ -30,8 +30,4 @@ jobs:
           bazel-${{ runner.os }}-build-
     - name: Install bazelisk
       run: |
-        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.4.0/$BAZEL"
-        chmod +x $BAZEL
-        sudo mv $BAZEL /usr/local/bin/bazel
-    - name: Build gnoi/
-      run: cd gnoi && bazel build //...
+        curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.8.1/$BAZEL"
