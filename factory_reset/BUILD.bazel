@@ -22,21 +22,21 @@ package(
 )
 
 proto_library(
-    name = "reset_proto",
-    srcs = ["reset.proto"],
+    name = "factory_reset_proto",
+    srcs = ["factory_reset.proto"],
     deps = [
         "//types:types_proto",
     ],
 )
 
 cc_proto_library(
-    name = "reset_cc_proto",
-    deps = [":reset_proto"],
+    name = "factory_reset_cc_proto",
+    deps = [":factory_reset_proto"],
 )
 
 cc_grpc_library(
-    name = "reset_cc_grpc_proto",
-    srcs = [":reset_proto"],
+    name = "factory_reset_cc_grpc_proto",
+    srcs = [":factory_reset_proto"],
     grpc_only = True,
-    deps = [":reset_cc_proto"],
+    deps = [":factory_reset_cc_proto"],
 )
