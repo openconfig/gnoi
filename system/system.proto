@@ -83,6 +83,9 @@ service System {
   // CancelReboot cancels any pending reboot request.
   rpc CancelReboot(CancelRebootRequest) returns (CancelRebootResponse) {}
 
+  // RestartProcess restarts an OS process.
+  rpc RestartProcess(RestartProcessRequest) returns (RestartProcessResponse) {}
+
   // TODO(hines): Add RotateCertificate workflow
   // TODO(hines): Add SetSSHPrivateKey
 }
@@ -311,3 +314,19 @@ message SetPackageRequest {
 
 message SetPackageResponse {
 }
+
+// RestartProcessRequest describes the process restart operation.
+message RestartProcessRequest {
+  // Name of the process to be restarted.
+  string name = 1;
+  // Mode of restarting.
+  enum Mode {
+    DEFAULT = 0;  // Invalid default mode.
+    GRACEFUL = 1;
+    IMMEDIATE = 2;
+  }
+  Mode mode = 2;
+}
+
+// RestartProcessResponse describes the result of the process restart operation.
+message RestartProcessResponse {}
