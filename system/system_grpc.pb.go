@@ -58,6 +58,8 @@ type SystemClient interface {
 	RebootStatus(ctx context.Context, in *RebootStatusRequest, opts ...grpc.CallOption) (*RebootStatusResponse, error)
 	// CancelReboot cancels any pending reboot request.
 	CancelReboot(ctx context.Context, in *CancelRebootRequest, opts ...grpc.CallOption) (*CancelRebootResponse, error)
+	// KillProcess kills an OS process and optionally restarts it.
+	KillProcess(ctx context.Context, in *KillProcessRequest, opts ...grpc.CallOption) (*KillProcessResponse, error)
 }
 
 type systemClient struct {
@@ -211,6 +213,15 @@ func (c *systemClient) CancelReboot(ctx context.Context, in *CancelRebootRequest
 	return out, nil
 }
 
+func (c *systemClient) KillProcess(ctx context.Context, in *KillProcessRequest, opts ...grpc.CallOption) (*KillProcessResponse, error) {
+	out := new(KillProcessResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.system.System/KillProcess", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SystemServer is the server API for System service.
 // All implementations must embed UnimplementedSystemServer
 // for forward compatibility
@@ -255,6 +266,8 @@ type SystemServer interface {
 	RebootStatus(context.Context, *RebootStatusRequest) (*RebootStatusResponse, error)
 	// CancelReboot cancels any pending reboot request.
 	CancelReboot(context.Context, *CancelRebootRequest) (*CancelRebootResponse, error)
+	// KillProcess kills an OS process and optionally restarts it.
+	KillProcess(context.Context, *KillProcessRequest) (*KillProcessResponse, error)
 	mustEmbedUnimplementedSystemServer()
 }
 
@@ -285,6 +298,9 @@ func (UnimplementedSystemServer) RebootStatus(context.Context, *RebootStatusRequ
 }
 func (UnimplementedSystemServer) CancelReboot(context.Context, *CancelRebootRequest) (*CancelRebootResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelReboot not implemented")
+}
+func (UnimplementedSystemServer) KillProcess(context.Context, *KillProcessRequest) (*KillProcessResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KillProcess not implemented")
 }
 func (UnimplementedSystemServer) mustEmbedUnimplementedSystemServer() {}
 
@@ -457,6 +473,24 @@ func _System_CancelReboot_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _System_KillProcess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KillProcessRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).KillProcess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.system.System/KillProcess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).KillProcess(ctx, req.(*KillProcessRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // System_ServiceDesc is the grpc.ServiceDesc for System service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -483,6 +517,10 @@ var System_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelReboot",
 			Handler:    _System_CancelReboot_Handler,
+		},
+		{
+			MethodName: "KillProcess",
+			Handler:    _System_KillProcess_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
