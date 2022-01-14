@@ -20,8 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type SystemClient interface {
 	// Ping executes the ping command on the target and streams back
 	// the results.  Some targets may not stream any results until all
-	// results are in.  If a packet count is not explicitly provided,
-	// 5 is used.
+	// results are in.
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (System_PingClient, error)
 	// Traceroute executes the traceroute command on the target and streams back
 	// the results.  Some targets may not stream any results until all
@@ -228,8 +227,7 @@ func (c *systemClient) KillProcess(ctx context.Context, in *KillProcessRequest, 
 type SystemServer interface {
 	// Ping executes the ping command on the target and streams back
 	// the results.  Some targets may not stream any results until all
-	// results are in.  If a packet count is not explicitly provided,
-	// 5 is used.
+	// results are in.
 	Ping(*PingRequest, System_PingServer) error
 	// Traceroute executes the traceroute command on the target and streams back
 	// the results.  Some targets may not stream any results until all

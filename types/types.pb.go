@@ -23,9 +23,9 @@
 package types
 
 import (
-	descriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -404,7 +404,7 @@ func (*Credentials_Hashed) isCredentials_Password() {}
 
 var file_types_types_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
-		ExtendedType:  (*descriptor.FileOptions)(nil),
+		ExtendedType:  (*descriptorpb.FileOptions)(nil),
 		ExtensionType: (*string)(nil),
 		Field:         1002,
 		Name:          "gnoi.types.gnoi_version",
@@ -413,7 +413,7 @@ var file_types_types_proto_extTypes = []protoimpl.ExtensionInfo{
 	},
 }
 
-// Extension fields to descriptor.FileOptions.
+// Extension fields to descriptorpb.FileOptions.
 var (
 	// The gNOI service semantic version.
 	//
@@ -487,14 +487,14 @@ func file_types_types_proto_rawDescGZIP() []byte {
 var file_types_types_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_types_types_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_types_types_proto_goTypes = []interface{}{
-	(L3Protocol)(0),                // 0: gnoi.types.L3Protocol
-	(HashType_HashMethod)(0),       // 1: gnoi.types.HashType.HashMethod
-	(*HashType)(nil),               // 2: gnoi.types.HashType
-	(*Path)(nil),                   // 3: gnoi.types.Path
-	(*PathElem)(nil),               // 4: gnoi.types.PathElem
-	(*Credentials)(nil),            // 5: gnoi.types.Credentials
-	nil,                            // 6: gnoi.types.PathElem.KeyEntry
-	(*descriptor.FileOptions)(nil), // 7: google.protobuf.FileOptions
+	(L3Protocol)(0),                  // 0: gnoi.types.L3Protocol
+	(HashType_HashMethod)(0),         // 1: gnoi.types.HashType.HashMethod
+	(*HashType)(nil),                 // 2: gnoi.types.HashType
+	(*Path)(nil),                     // 3: gnoi.types.Path
+	(*PathElem)(nil),                 // 4: gnoi.types.PathElem
+	(*Credentials)(nil),              // 5: gnoi.types.Credentials
+	nil,                              // 6: gnoi.types.PathElem.KeyEntry
+	(*descriptorpb.FileOptions)(nil), // 7: google.protobuf.FileOptions
 }
 var file_types_types_proto_depIdxs = []int32{
 	1, // 0: gnoi.types.HashType.method:type_name -> gnoi.types.HashType.HashMethod
