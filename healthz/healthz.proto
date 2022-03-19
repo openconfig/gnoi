@@ -30,17 +30,17 @@ import "google/protobuf/any.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
-option (types.gnoi_version) = "1.0.0";
+option (types.gnoi_version) = "2.0.0";
 
 // The Healthz service provides access to the status of a path on the
-// system. Addtitionally it allows the implementor to provide path specific
-// diagnositic data into the status return.
+// system. Additionally it allows the implementor to provide path specific
+// diagnostic data into the status return.
 //
 // Healthz is expected to work in conjunction with the component OC model.
 service Healthz {
   // Get will get health status for a gNMI path.  If no status is available for
   // the requested path an error will be returned.
-  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc Get(GetRequest) returns (stream GetResponse);
 }
 
 message GetRequest {
