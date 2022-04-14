@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package gnoi.pcap;
+
+option go_package = "github.com/openconfig/gnoi/pcap";
+
+service PacketCapture {
+  rpc Pcap(PcapRequest) returns (stream PcapResponse) {}
+}
+
+enum OperatingBand {
+  BAND_2G = 0;
+  BAND_5G = 1;
+  BAND_6G = 2;
+  BAND_ALL = 3;
+}
+
+enum Protocol {
+  TCP = 0;
+  UDP = 1;
+}
+
+enum Direction {
+  // When applied to an interface, the Direction of packets to capture, receive
+  // transmit, or both.
+  RX = 0;
+  TX = 1;
+  BOTH = 2;
+}
+
+message AccessCaptureType {
+  // Operating band: 2.4G, 5G, 6G
+  repeated OperatingBand operating_band = 1;
+  oneof filter_type {
+    // Optional, SSID of a VAP
+    string ssid = 2;
+    // Optional, MAC addresss matching a BSSID or a client MAC
+    string mac = 3;
+  }
+  // Capture packets in promiscuous mode
+  bool promiscuous_mode = 4;
+}
+
+message ScanCaptureType {
+  repeated BandChannelCombo combo = 1;
+}
+
+message BandChannelCombo {
+  // Operating band: 2.4G, 5G, 6G
+  OperatingBand operating_band = 1;
+  // Channels
+  repeated string channel = 2;
+}
+
+message Filter {
+  // Different types of filtering options.
+  
+  // filter_name can be a reference to a filter already configured on the device
+  // such as an ACL/class-map or other platform-specific abstraction that
+  // may allow for the configuration of other filtering not otherwise available.
+  string filter_name = 1;
+  // Source/destination net may be used to match traffic and should be specified
+  // using CIDR notation.  eg. 1.1.1.1/32
+  string src_net = 2;
+  string dest_net = 3;
+  repeated Protocol protocol = 4;
+  repeated uint32 port = 5;
+  repeated uint32 vlan = 6;
+}
+
+message WiredRequest {
+  // Interface name
+  string ifname = 1;
+  // The Direction to capture from, if not specified defaults to BOTH.
+  Direction direction = 2;
+  // Filtering based on protocols.
+  oneof filter_type {
+    string tcpdump_expression = 3;
+    Filter filter = 4;
+  }
+}
+
+message WirelessRequest {
+  oneof capture_type {
+    // Access radio
+    AccessCaptureType access_type = 1;
+    // Scan radio
+    ScanCaptureType scan_type = 2;
+  }
+}
+
+message PcapRequest {
+  oneof request_type {
+    // Wired capture request
+    WiredRequest wired_request = 1;
+    // Wireless capture request
+    WirelessRequest wireless_request = 2;
+  }
+  // To trim the data during packet capture: 0 for entire packet
+  uint32 trim_payload = 3;
+  // The number of pakets to capture, after which the capture will end; 0 for
+  // for unlimited.
+  uint32 packet_count = 4;
+  // Capture duration in nanosec; 0 for indefinite
+  uint64 duration = 5;
+}
+
+message Packet {
+  // Packets
+  bytes data = 1;
+}
+
+message PcapResponse {
+  repeated Packet packets = 1;
+}
