@@ -4,7 +4,10 @@ package gnoi.pcap;
 
 option go_package = "github.com/openconfig/gnoi/pcap";
 
+// The PacketCapture service exported by targets.
 service PacketCapture {
+  // Pcap starts packet capture on the target and streams back
+  // the results.
   rpc Pcap(PcapRequest) returns (stream PcapResponse) {}
 }
 
