@@ -3,7 +3,7 @@
 
 syntax = "proto3";
 
-package gpins.gnoi;
+package gnoi.qualification;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 import "google/rpc/status.proto";
@@ -86,6 +86,9 @@ message StartPacketQualificationRequest {
 
     // Path to the interface corresponding to the port to test.
     .gnoi.types.Path interface = 2;
+
+    // default packet_size is 1500 bytes.
+    uint16 packet_size = 1500;
 
     // The minimum amount of wait time before sending packets on the link. It
     // gives peer additional time to prepare. The default value for this field
