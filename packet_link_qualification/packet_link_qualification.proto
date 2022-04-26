@@ -3,7 +3,7 @@
 
 syntax = "proto3";
 
-package gnoi.qualification;
+package gnoi.packet_link_qualification;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 import "google/rpc/status.proto";
