@@ -87,8 +87,8 @@ message StartPacketQualificationRequest {
     // Path to the interface corresponding to the port to test.
     .gnoi.types.Path interface = 2;
 
-    // default packet_size is 1500 bytes.
-    uint16 packet_size = 1500;
+    // default packet_size is 10 bytes.
+    uint16 packet_size = 10;
 
     // The minimum amount of wait time before sending packets on the link. It
     // gives peer additional time to prepare. The default value for this field
