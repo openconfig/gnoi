@@ -87,9 +87,6 @@ message StartPacketQualificationRequest {
     // Path to the interface corresponding to the port to test.
     .gnoi.types.Path interface = 2;
 
-    // default packet_size is 10 bytes.
-    uint16 packet_size = 10;
-
     // The minimum amount of wait time before sending packets on the link. It
     // gives peer additional time to prepare. The default value for this field
     // is 70 seconds.
@@ -101,6 +98,13 @@ message StartPacketQualificationRequest {
     // The amount of time in which the preparation must complete.
     int32 preparation_timeout_seconds = 5;
     
+    // The amount of time the qualification will run before we recapture the
+    // packets and check if there was any drop.
+    int32 qualification_duration_seconds = 6;
+    
+    // Qualification end.
+    QualificationEnd qualification_end = 7;
+    
     // The default value for this field is 10 seconds. This is the 
     // time period that the link qualification service should wait 
     // between the two samples of port counters that it reads from the 
@@ -108,19 +112,15 @@ message StartPacketQualificationRequest {
     // qualification. The qualification itself runs for 
     // Qaulification_duration_seconds.
     int32 test_wait_between_sample_seconds = 8;
-
-    // The amount of time the qualification will run before we recapture the
-    // packets and check if there was any drop.
-    int32 qualification_duration_seconds = 6;
     
     // The default value of this field is 10 seconds. During this period, the 
     // link qualification state machine must undo things it setup during start 
     // of the test and ensure all packets circulating as part of the test have
     // been dropped.
     int32 minimum_wait_post_qualification_seconds = 9;
-
-    // Qualification end.
-    QualificationEnd qualification_end = 7;
+    
+    // default packet_size is 1500 bytes.
+    uint16 packet_size = 10;
     
   }
 
