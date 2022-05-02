@@ -120,7 +120,7 @@ message StartPacketQualificationRequest {
     int32 minimum_wait_post_qualification_seconds = 9;
     
     // default packet_size is 1500 bytes.
-    int16 packet_size = 10;
+    int32 packet_size = 10;
     
   }
 
