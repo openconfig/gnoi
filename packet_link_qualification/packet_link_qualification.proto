@@ -6,7 +6,9 @@ syntax = "proto3";
 package gnoi.packet_link_qualification;
 
 import "github.com/openconfig/gnoi/types/types.proto";
-import "google/rpc/status.proto";
+
+option (types.gnoi_version) = "0.1.0";
+option go_package = "github.com/openconfig/gnoi/packet_link_qualification";
 
 // Note: The RPCs defined here are stateless operations and them failing/passing
 // should not leave any permanent artifact on the network device (unless there
@@ -29,9 +31,11 @@ service PacketLinkQual {
   // the test perspective. On receiving the request, the device performs the
   // setup, and qualifies the link for the supplied test duration. The device
   // keeps the results until the corresponding stop request. Each start response
-  // matches with a corresponding unique operation ID. If there is any error
-  // starting the qualification, status is populated with canonical error code
-  // and message to denote the details.
+  // matches with a corresponding unique operation ID.
+  //
+  // If there is any error starting the qualification, the RPC is returned with
+  // a non-zero code in the corresponding status, and a message to denote the
+  // details.
   rpc StartPacketQualification(StartPacketQualificationRequest)
       returns (StartPacketQualificationResponse) {}
 
@@ -42,9 +46,11 @@ service PacketLinkQual {
   // stop request for an interface which has completed qualification, as long as
   // the recorded operation ID matches the one specified by the request. Devices
   // should clean up at stop request. Each stop response matches with a
-  // corresponding unique operation ID supplied in the request. If there is any
-  // error processing the request, status is populated with canonical error
-  // code and message to denote the details.
+  // corresponding unique operation ID supplied in the request.
+  //
+  // If there is any error starting the qualification, the RPC is returned with
+  // a non-zero code in the corresponding status, and a message to denote the
+  // details.
   rpc StopPacketQualification(StopPacketQualificationRequest)
       returns (StopPacketQualificationResponse) {}
 
@@ -53,9 +59,11 @@ service PacketLinkQual {
   // uses the operation ID it previously used when starting the operation to
   // query it. The device is expected to keep the results until the
   // corresponding stop request. Each get response matches with a corresponding
-  // unique operation ID supplied in the request. If there is any error getting
-  // the results, status is populated with canonical error code and message to
-  // denote the details.
+  // unique operation ID supplied in the request.
+  //
+  // If there is any error starting the qualification, the RPC is returned with
+  // a non-zero code in the corresponding status, and a message to denote the
+  // details.
   rpc GetPacketQualificationResult(GetPacketQualificationResultRequest)
       returns (GetPacketQualificationResultResponse) {}
 }
@@ -70,75 +78,72 @@ enum QualificationState {
   QUALIFICATION_STATE_FAILED = 5;     // Qualification failed for some reasons.
 }
 
+enum QualificationEnd {
+  END_UNSPECIFIED = 0;
+  // Responsible for generating loopback packets, etc.
+  END_NEAR = 1;
+  // Responsible for looping back packets only.
+  END_FAR = 2;
+}
+
 message StartPacketQualificationRequest {
-  enum QualificationEnd {
-    END_UNSPECIFIED = 0;
-    // Responsible for generating loopback packets, etc.
-    NEAR_END = 1;
-    // Responsible for looping back packets only.
-    FAR_END = 2;
-  }
-
-  message QualificationConfiguration {
-    // The ID assigned to the given test. The ID value must be unique among the
-    // tests running on this agent.
-    string id = 1;
-
-    // Path to the interface corresponding to the port to test.
-    .gnoi.types.Path interface = 2;
-
-    // The minimum amount of wait time before sending packets on the link. It
-    // gives peer additional time to prepare. The default value for this field
-    // is 70 seconds.
-    int32 minimum_wait_before_preparation_seconds = 3;
-
-    // The total number of packets to send on the link in the preparation phase.
-    int64 num_preparation_packets = 4;
-
-    // The amount of time in which the preparation must complete.
-    int32 preparation_timeout_seconds = 5;
-    
-    // The amount of time the qualification will run before we recapture the
-    // packets and check if there was any drop.
-    int32 qualification_duration_seconds = 6;
-    
-    // Qualification end.
-    QualificationEnd qualification_end = 7;
-    
-    // The default value for this field is 10 seconds. This is the 
-    // time period that the link qualification service should wait 
-    // between the two samples of port counters that it reads from the 
-    // device - both prior to starting qualification, and right after 
-    // qualification. The qualification itself runs for 
-    // Qaulification_duration_seconds.
-    int32 test_wait_between_sample_seconds = 8;
-    
-    // The default value of this field is 10 seconds. During this period, the 
-    // link qualification state machine must undo things it setup during start 
-    // of the test and ensure all packets circulating as part of the test have
-    // been dropped.
-    int32 minimum_wait_post_qualification_seconds = 9;
-    
-    // default packet_size is 1500 bytes.
-    uint16 packet_size = 10;
-    
-  }
-
   // Per interface start configuration request.
   repeated QualificationConfiguration configs = 1;
 }
 
+message QualificationConfiguration {
+  // The ID assigned to the given test. The ID value must be unique among the
+  // tests running on this agent.
+  string id = 1;
+
+  // Path to the interface corresponding to the port to test.
+  types.Path interface = 2;
+
+  // The minimum amount of wait time before sending packets on the link. It
+  // gives peer additional time to prepare. The default value for this field
+  // is 70 seconds.
+  int32 minimum_wait_before_preparation_seconds = 3;
+
+  // The total number of packets to send on the link in the preparation phase.
+  int64 num_preparation_packets = 4;
+
+  // The amount of time in which the preparation must complete.
+  int32 preparation_timeout_seconds = 5;
+
+  // The amount of time the qualification will run before we recapture the
+  // packets and check if there was any drop.
+  int32 qualification_duration_seconds = 6;
+
+  // Qualification end.
+  QualificationEnd qualification_end = 7;
+
+  // The default value for this field is 10 seconds. This is the
+  // time period that the link qualification service should wait
+  // between the two samples of port counters that it reads from the
+  // device - both prior to starting qualification, and right after
+  // qualification. The qualification itself runs for
+  // Qaulification_duration_seconds.
+  int32 test_wait_between_sample_seconds = 8;
+
+  // The default value of this field is 10 seconds. During this period, the
+  // link qualification state machine must undo things it setup during start
+  // of the test and ensure all packets circulating as part of the test have
+  // been dropped.
+  int32 minimum_wait_post_qualification_seconds = 9;
+
+  // default packet_size is 1500 bytes.
+  uint32 packet_size = 10;
+
+}
+
 message StartPacketQualificationResponse {
   // Per interface start response.
-  message StartResponse {
-    // The same ID given in the start request.
-    string id = 1;
-    // Status of the operation. In case of failures, canonical error code and
-    // message will show the details.
-    google.rpc.Status status = 2;
-  }
-
   repeated StartResponse responses = 1;
+}
+
+message StartResponse {
+  // The same ID given in the start request.
+  string id = 1;
 }
 
 message StopPacketQualificationRequest {
@@ -148,15 +153,12 @@ message StopPacketQualificationRequest {
 
 message StopPacketQualificationResponse {
   // Per interface stop response.
-  message StopResponse {
-    // The same ID given in the stop request.
-    string id = 1;
-    // Status of the operation. In case of failures, canonical error code and
-    // message will show the details.
-    google.rpc.Status status = 2;
-  }
-
   repeated StopResponse responses = 1;
+}
+
+message StopResponse {
+  // The same ID given in the stop request.
+  string id = 1;
 }
 
 message GetPacketQualificationResultRequest {
@@ -198,15 +200,12 @@ message QualificationResults {
 
 message GetPacketQualificationResultResponse {
   // Per interface qualification response.
-  message GetResponse {
-    // The same ID given in the get request.
-    string id = 1;
-    // Status of the operation. In case of failures, canonical error code and
-    // message will show the details.
-    google.rpc.Status status = 2;
-    // Qualification results.
-    QualificationResults results = 3;
-  }
-
   repeated GetResponse responses = 1;
+}
+
+message GetResponse {
+  // The same ID given in the get request.
+  string id = 1;
+  // Qualification results.
+  QualificationResults results = 3;
 }
