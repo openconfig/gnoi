@@ -88,7 +88,7 @@ enum QualificationEnd {
 
 message StartPacketQualificationRequest {
   // Per interface start configuration request.
-  repeated QualificationConfiguration configs = 1;
+  repeated QualificationConfiguration config = 1;
 }
 
 message QualificationConfiguration {
@@ -138,7 +138,7 @@ message QualificationConfiguration {
 
 message StartPacketQualificationResponse {
   // Per interface start response.
-  repeated StartResponse responses = 1;
+  repeated StartResponse response = 1;
 }
 
 message StartResponse {
@@ -148,12 +148,12 @@ message StartResponse {
 
 message StopPacketQualificationRequest {
   // The IDs assigned to the given qualification operations.
-  repeated string ids = 1;
+  repeated string id = 1;
 }
 
 message StopPacketQualificationResponse {
   // Per interface stop response.
-  repeated StopResponse responses = 1;
+  repeated StopResponse response = 1;
 }
 
 message StopResponse {
@@ -163,7 +163,7 @@ message StopResponse {
 
 message GetPacketQualificationResultRequest {
   // The IDs assigned to the given qualification operations.
-  repeated string ids = 1;
+  repeated string id = 1;
 }
 
 message QualificationResults {
@@ -200,12 +200,12 @@ message QualificationResults {
 
 message GetPacketQualificationResultResponse {
   // Per interface qualification response.
-  repeated GetResponse responses = 1;
+  repeated GetResponse response = 1;
 }
 
 message GetResponse {
   // The same ID given in the get request.
   string id = 1;
   // Qualification results.
-  QualificationResults results = 3;
+  QualificationResults result = 3;
 }
