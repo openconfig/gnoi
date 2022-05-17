@@ -231,6 +231,7 @@ message TracerouteRequest {
     UDP = 2;  // Use UDP for probes.
   }
   L4Protocol l4protocol = 9;
+  bool do_not_lookup_asn = 10; // Do not try to lookup ASN
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.
