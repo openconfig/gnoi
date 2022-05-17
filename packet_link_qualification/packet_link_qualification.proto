@@ -1,41 +1,75 @@
-// A generic network operational interface gRPC service to perform packet based
-// link qualification operations on a network device.
+// A gNOI service to perform packet based link
+// qualification operations on a network device.
 
 syntax = "proto3";
 
 package gnoi.packet_link_qualification;
 
-import "github.com/openconfig/gnoi/types/types.proto";
+import "third_party/openconfig/gnoi/types/types.proto";
+import "google/rpc/status.proto";
 
-option (types.gnoi_version) = "0.1.0";
-option go_package = "github.com/openconfig/gnoi/packet_link_qualification";
 
-// Note: The RPCs defined here are stateless operations and them failing/passing
-// should not leave any permanent artifact on the network device (unless there
-// is something wrong HW-wise). Note: By "port" we refer to a channelized
-// frontpanel or backplane port on a chassis. In OpenConfig YANG models, there
-// is a one-to-one relationship between a port as used here and an "interface".
-// Therefore, the "types.Path" fields below for ports correspond to
-// "/interfaces/interface" in YANG models.
+// Overview:
+// The general use case of this service is to provide validation of the links
+// between devices in a network. The RPC server design allows for the target
+// devices to become unreachable to callers for the duration of the
+// qualification procedures. After the qualfications are completed the devices
+// must be restored to their pre-link qualification states.
+//
+// The PacketLinkQual service defines two endpoint types for the service. The
+// generator is expected to generate the packet flow and recieve loopbacked
+// packets and keep count of all sent, received, dropped, and errored packets.
+// The loopback side of the link is only required to provide:
+// current_state, end_time_nanos, packet_drops, packet_errors, error_message.
+// The interfaces will be identified by thier yang path in the interfaces
+// OC model i.e. /interfaces/interface[name=<interface name>]
 
-service PacketLinkQual {
+
+// Service implementation expectations:
+// 1. State management on device reboot.
+//   On reboot all link qualification requests should be deleted and the device
+//   should come up with the expected boot configuration and production state.
+// 2. State management on PacketLinkQual service restart.
+//   After the service restarts it should reset the packet forwarding state to
+//   the production state and for all previous running qualifications set them
+//   to QUALIFICATION_STATE_FAILED with an error messge that the service was
+//   restarted.
+// 3. History retention.
+//    The service should maintain at least 2 link qualification histories for
+//    each interface. It is up the server implementation to remove previous
+//    link qualification results if the system needs to free up resources for
+//    new qualifications if an explicit Stop has not been issued.
+//
+// 4. Traffic stream.
+//    The current traffic stream contents and rate during preparation is up to
+//    the service implementor.
+//    The qualification stream packets should be sent at line rate for the
+//    specified size and duration.  In a future version, we will expand the API
+//    to specify a specific frame / packet format.
+
+service PacketLinkQualfication {
   // Packet based link qualification related RPCs.
 
   // Starts packet based link qualification on a set of interfaces. Each start
   // operation is uniquely identified by an ID supplied by the caller. This ID
   // must be used by other operations (e.g., stop, get results, etc.) to select
   // the test associated with the ID. Caller specifies the minimum wait time
-  // before warming up the link, number of packets, and preparation time to warm
-  // up the link, and the actual duration of the qualification. It also
-  // specifies if the interface under test is used as a near-end/ far-end from
-  // the test perspective. On receiving the request, the device performs the
-  // setup, and qualifies the link for the supplied test duration. The device
-  // keeps the results until the corresponding stop request. Each start response
-  // matches with a corresponding unique operation ID.
-  //
-  // If there is any error starting the qualification, the RPC is returned with
-  // a non-zero code in the corresponding status, and a message to denote the
-  // details.
+  // before warming up the link, number of packets, size of the packet and
+  // preparation time to warm up the link, and the actual duration of the
+  // qualification. It also specifies if the interface under test is used as a
+  // generator or reflector from the test perspective. On receiving the request,
+  // the device performs the setup, and qualifies the link for the supplied test
+  // duration. The device keeps the results until the corresponding stop request
+  // or required to be GC'ed by the service. Each start response matches with a
+  // corresponding unique operation ID. If there is an error starting the
+  // qualification for the port, individual status will be populated with a
+  // canonical error code and message to denote the details.
+  // The following canonical errors are supported:
+  // NOT_FOUND: if the port cannot be found.
+  // ALREADY_EXISTS: if the interface has an ongoing link qual request.
+  // PERMISSION_DENIED: if the port has RBAC rule prohibiting the qual.
+  // The RPC itself will only return an error if the service has an internal
+  // error.
   rpc StartPacketQualification(StartPacketQualificationRequest)
       returns (StartPacketQualificationResponse) {}
 
@@ -46,11 +80,15 @@ service PacketLinkQual {
   // stop request for an interface which has completed qualification, as long as
   // the recorded operation ID matches the one specified by the request. Devices
   // should clean up at stop request. Each stop response matches with a
-  // corresponding unique operation ID supplied in the request.
-  //
-  // If there is any error starting the qualification, the RPC is returned with
-  // a non-zero code in the corresponding status, and a message to denote the
-  // details.
+  // corresponding unique operation ID supplied in the request. The list of
+  // provided id's will all be stopped, Each StatusReponse in the RPC response
+  // contains a status that is populated with canonical error code and message
+  // to denote the details.
+  // The following canonical errors are supported:
+  // NOT_FOUND: if the id cannot be found.
+  // PERMISSION_DENIED: if the port has RBAC rule prohibiting the qual.
+  // The RPC itself will only return an error if the service has an internal
+  // error.
   rpc StopPacketQualification(StopPacketQualificationRequest)
       returns (StopPacketQualificationResponse) {}
 
@@ -58,12 +96,13 @@ service PacketLinkQual {
   // Note that the results will be incomplete during the operation. The caller
   // uses the operation ID it previously used when starting the operation to
   // query it. The device is expected to keep the results until the
-  // corresponding stop request. Each get response matches with a corresponding
-  // unique operation ID supplied in the request.
-  //
-  // If there is any error starting the qualification, the RPC is returned with
-  // a non-zero code in the corresponding status, and a message to denote the
-  // details.
+  // corresponding stop request. Each QualificationResultResponse matches with
+  // a corresponding unique operation ID supplied in the request. Each
+  // QualificationResultResponse will contain either a status in the case of an
+  // errror or a valid QualificationResult.
+  // The following canonical errors are supported:
+  // NOT_FOUND: if the id cannot be found.
+  // PERMISSION_DENIED: if the port has RBAC rule prohibiting the qual.
   rpc GetPacketQualificationResult(GetPacketQualificationResultRequest)
       returns (GetPacketQualificationResultResponse) {}
 }
@@ -78,134 +117,134 @@ enum QualificationState {
   QUALIFICATION_STATE_FAILED = 5;     // Qualification failed for some reasons.
 }
 
-enum QualificationEnd {
-  END_UNSPECIFIED = 0;
-  // Responsible for generating loopback packets, etc.
-  END_NEAR = 1;
-  // Responsible for looping back packets only.
-  END_FAR = 2;
-}
 
-message StartPacketQualificationRequest {
-  // Per interface start configuration request.
-  repeated QualificationConfiguration config = 1;
+enum QualificationEndpointType {
+  QUALIFICATION_ENDPOINT_TYPE_UNSPECIFIED = 0;
+  // Responsible for generating packets and measuring stats.
+  QUALIFICATION_ENDPOINT_TYPE_GENERATOR = 1;
+  // Responsible for looping back packets to the generator and measuring
+  // received errors.
+  QUALIFICATION_ENDPOINT_TYPE_LOOPBACK = 2;
 }
 
 message QualificationConfiguration {
-  // The ID assigned to the given test. The ID value must be unique among the
-  // tests running on this agent.
+    // The ID assigned to the given test. The ID value must be unique among the
+    // tests running on this agent.
+    string id = 1;
+
+    // Path to the interface corresponding to the port to test.
+    .gnoi.types.Path interface = 2;
+
+    // The minimum amount of wait time before sending packets on the link. It
+    // gives peer additional time to prepare.
+    // If unspecified, the default preparation time is 70 sec.
+    uint32 preparation_wait_seconds = 3;
+
+    // The total number of packets to send on the link in the qualification
+    // phase.
+    uint64 qualification_packets = 4;
+
+    // The amount of time in which the preparation must complete.
+    uint32 preparation_timeout_seconds = 5;
+
+    // The total duration to run qualification after the reparation has
+    // successfully completed. The results should be updated every
+    // update_interval_seconds.
+    uint32 qualification_duration_seconds = 6;
+
+    // Qualification endpoint type used for the interface on the device.
+    QualificationEndpointType endpoint = 7;
+
+    // The interval to update the current status of the test and to calculate
+    // the counters and rates for the result during the qualification. If
+    // unspecified the default value is 30 secs.
+    uint32 update_interval_seconds = 8;
+
+    // The size of the frame to use for this test.
+    // A default value will be interpreted as 1500 bytes.
+    uint32 packet_size_bytes = 9;
+  }
+
+message StartPacketQualificationRequest {
+  // Per interface start configuration request.
+  repeated QualificationConfiguration configs = 1;
+}
+
+
+message StatusResponse {
+  // The ID provided in the request.
   string id = 1;
-
-  // Path to the interface corresponding to the port to test.
-  types.Path interface = 2;
-
-  // The minimum amount of wait time before sending packets on the link. It
-  // gives peer additional time to prepare. The default value for this field
-  // is 70 seconds.
-  int32 minimum_wait_before_preparation_seconds = 3;
-
-  // The total number of packets to send on the link in the preparation phase.
-  int64 num_preparation_packets = 4;
-
-  // The amount of time in which the preparation must complete.
-  int32 preparation_timeout_seconds = 5;
-
-  // The amount of time the qualification will run before we recapture the
-  // packets and check if there was any drop.
-  int32 qualification_duration_seconds = 6;
-
-  // Qualification end.
-  QualificationEnd qualification_end = 7;
-
-  // The default value for this field is 10 seconds. This is the
-  // time period that the link qualification service should wait
-  // between the two samples of port counters that it reads from the
-  // device - both prior to starting qualification, and right after
-  // qualification. The qualification itself runs for
-  // Qaulification_duration_seconds.
-  int32 test_wait_between_sample_seconds = 8;
-
-  // The default value of this field is 10 seconds. During this period, the
-  // link qualification state machine must undo things it setup during start
-  // of the test and ensure all packets circulating as part of the test have
-  // been dropped.
-  int32 minimum_wait_post_qualification_seconds = 9;
-
-  // default packet_size is 1500 bytes.
-  uint32 packet_size = 10;
-
+  // Status of the operation. In case of failures, canonical error code and
+  // message will show the details.
+  // Valid response codes:
+  //
+  google.rpc.Status status = 2;
 }
 
 message StartPacketQualificationResponse {
   // Per interface start response.
-  repeated StartResponse response = 1;
-}
-
-message StartResponse {
-  // The same ID given in the start request.
-  string id = 1;
+  repeated StatusResponse responses = 1;
 }
 
 message StopPacketQualificationRequest {
   // The IDs assigned to the given qualification operations.
-  repeated string id = 1;
+  repeated string ids = 1;
 }
 
 message StopPacketQualificationResponse {
   // Per interface stop response.
-  repeated StopResponse response = 1;
-}
-
-message StopResponse {
-  // The same ID given in the stop request.
-  string id = 1;
+  repeated StatusResponse responses = 1;
 }
 
 message GetPacketQualificationResultRequest {
   // The IDs assigned to the given qualification operations.
-  repeated string id = 1;
+  repeated string ids = 1;
 }
 
-message QualificationResults {
+message QualificationResult {
   // The state the test was in when the results were snapshotted.
   QualificationState current_state = 1;
 
   // The total number of test packets sent.
-  int64 num_sent_packets = 2;
+  uint64 packets_sent = 2;
 
-  // The number of packets that were recaptured.
-  int64 num_ok_packets = 3;
+  // The number of packets that were received.
+  uint64 packets_received = 3;
 
-  // The number of packets transmitted, but which experienced corruption.
-  int64 num_corrupt_packets = 4;
+  // The number of packets transmitted that experienced corruption.
+  uint64 packets_error = 4;
+
+  // The number of packets dropped by the device due to internal drop,
+  // lookup or forwarding errors.
+  uint64 packets_dropped = 5;
 
   // The test start time since epoch.
-  int64 start_time_nanos = 5;
+  uint64 start_time_nanos = 6;
 
-  // The test end time, or the current snapshot time since epoch.
-  int64 end_time_nanos = 6;
+  // The test end time or the current snapshot time since epoch.
+  uint64 end_time_nanos = 7;
 
-  // The bitrate before the qualification is started. Bytes per second.
-  int64 initial_rate_bytes_per_second = 7;
+  // The rate before the qualification is started. Bytes per second.
+  uint64 preparation_rate_bytes_per_second = 8;
 
-  // The bitrate after the qualification is completed. Bytes per second.
-  int64 final_rate_bytes_per_second = 8;
-
-  // The number of packets that were dropped by the MMU for the port under test.
-  int64 num_packets_dropped_by_mmu = 9;
+  // The rate after the qualification is completed. Bytes per second.
+  uint64 qualification_rate_bytes_per_second = 9;
 
   // Error message if something failed during qualification.
   string error_message = 10;
 }
 
-message GetPacketQualificationResultResponse {
-  // Per interface qualification response.
-  repeated GetResponse response = 1;
-}
-
-message GetResponse {
+// Per interface qualification response.
+message QualificationResultResponse {
   // The same ID given in the get request.
   string id = 1;
+  // Status of the operation. In case of failures, canonical error code and
+  // message will show the details.
+  google.rpc.Status status = 2;
   // Qualification results.
-  QualificationResults result = 3;
+  QualificationResult result = 3;
+}
+
+message GetPacketQualificationResultResponse {
+  repeated QualificationResultResponse responses = 1;
 }
