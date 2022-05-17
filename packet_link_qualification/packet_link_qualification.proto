@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package gnoi.packet_link_qualification;
 
-import "third_party/openconfig/gnoi/types/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 import "google/rpc/status.proto";
 
 
@@ -157,11 +157,11 @@ message QualificationConfiguration {
 
     // The interval to update the current status of the test and to calculate
     // the counters and rates for the result during the qualification. If
-    // unspecified the default value is 30 secs.
+    // unspecified, the default value is 30 secs.
     uint32 update_interval_seconds = 8;
 
     // The size of the frame to use for this test.
-    // A default value will be interpreted as 1500 bytes.
+    // if unspecified, the default value is 1500 bytes.
     uint32 packet_size_bytes = 9;
   }
 
@@ -176,8 +176,6 @@ message StatusResponse {
   string id = 1;
   // Status of the operation. In case of failures, canonical error code and
   // message will show the details.
-  // Valid response codes:
-  //
   google.rpc.Status status = 2;
 }
 
