@@ -79,7 +79,7 @@ message ArtifactHeader {
   // Proto artifacts should either use the generic ProtoArtifactType
   // or the implementer can provide a specific artifact type
   // which can add any additional metadata the implementor wants.
-  google.protobuf.Any artifact_type = 4;
+  ArtifactType artifact_type = 4;
 }  
 
 ```
