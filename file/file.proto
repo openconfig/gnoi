@@ -143,6 +143,10 @@ message StatInfo {
   // file permissions.
   // ex. 775: user read/write/execute, group read/write/execute,
   // global read/execute.
+  // The value returned in this field should be the octal number. No base
+  // conversion should be required to read the value. For example, 0755
+  // should result in the permissions field holding the value 755, 4644
+  // results in the permissions field being 4644, and so on.
   uint32 permissions = 3;
   uint64 size = 4;
   // Default file creation mask. Represented as the octal format of
