@@ -51,15 +51,6 @@ message ComponentStatus {
   // Status of this component.
   Status status = 3;
 
-  // Id is the event id (timestamp in nanos)
-  uint64 id = 6;
-
-  // Acknowledged is set when a caller has processed the event.
-  bool acknowledged = 7;
-
-  // Expires is the timestamp in nanos when the system will clean up the artifact.
-  uint64 expires = 8;
-
   // Opaque data for how the healthcheck is implemented.  This can be any proto
   // defined by the vendor.  This could be the equivalent to outputs like
   // "show tech" or core files or any other diagnostic data.
@@ -67,9 +58,20 @@ message ComponentStatus {
 
   // Artifacts provides links to all artifacts contained in this event.
   // The individual artifacts can be retrieved via the Artifact() RPC.
-  // The Artifact list is expected to contain all artifacts used by the
-  // the status check for the referenced component.
   repeated ArtifactHeader artifacts = 5;
+
+  // ID is the unique key for this event in the system.
+  string id = 6; 
+
+  // Acknowledged is set when a caller has processed the event.
+  bool acknowledged = 7;
+
+  // Create is the timestamp when this event was created.
+  google.protobuf.Timestamp created = 8;
+  
+  // Expires is the timestamp when the system will clean up the
+  // artifact. If unset, the artifact is not scheduled for GC.
+  google.protobuf.Timestamp expires = 9;
 }
 
 
