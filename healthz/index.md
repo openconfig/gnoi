@@ -67,6 +67,8 @@ message ComponentStatus {
 
   // Artifacts provides links to all artifacts contained in this event.
   // The individual artifacts can be retrieved via the Artifact() RPC.
+  // The Artifact list is expected to contain all artifacts used by the
+  // the status check for the referenced component.
   repeated ArtifactHeader artifacts = 5;
 }
 
@@ -144,7 +146,11 @@ service Healthz {
   // the requested path an error will be returned.
   rpc Get(GetRequest) returns (GetResponse) {}
 
-  rpc Artifact(Artifact) returns (stream ArtifactResponse) {}
+  rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
+}
+
+message ArtifactRequest {
+  string id = 1;
 }
 
 message ArtifactResponse {
@@ -156,7 +162,7 @@ message ArtifactResponse {
     ArtifactHeader header = 1;
     // Trailer contains the checksum for the streamed artifact.
     Trailer trailer = 2;
-    ByteData bytes = 3;    
+    bytes bytes = 3;    
     google.protobuf.Any proto = 4;
   }
 }

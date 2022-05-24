@@ -41,6 +41,20 @@ service Healthz {
   // Get will get health status for a gNMI path.  If no status is available for
   // the requested path an error will be returned.
   rpc Get(GetRequest) returns (GetResponse) {}
+
+  // List returns all events for the provided component.
+  rpc List(ListRequest) returns (ListResponse) {}
+
+  // Acknowledge will set the acknowledged field for the event.
+  // This is an idempotent operation.
+  rpc Acknowledge(AcknowlegeRequest) returns (AcknowledgeResponse) {}
+
+  // Artifact will stream the artifact contents for the provided artifact id.
+  rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
+
+  // Check will invoke the healthz on the provided component. This RPC can be
+  // expensive depending on the vendor implementation.
+  rpc Check(CheckRequest) returns (CheckResponse) {}
 }
 
 message GetRequest {
@@ -50,24 +64,126 @@ message GetRequest {
   types.Path path = 1;
 }
 
+message GetResponse {
+  ComponentStatus component = 1;
+}
+
 enum Status {
   STATUS_UNSPECIFIED = 0;   // The path doesn't support healthz
   STATUS_HEALTHLY = 1;      // The path is healthy
   STATUS_UNHEALTHY = 2;     // The path is unhealthy
 }
 
+message ArtifactHeader {
+  // ID of the artifact.
+  string id = 1;
+  // Artifact type describes data contents in the artifact.
+  // File artifacts should use the defined FileArtifactType.
+  // Proto artifacts should either use the generic ProtoArtifactType
+  // or the implementer can provide a specific artifact type
+  // which can add any additional metadata the implementor wants.
+  oneof artifact_type {
+    FileArtifactType file = 101;
+    ProtoArtifactType proto = 102;
+    google.protobuf.Any custom = 103;
+  }
+}
+
 message ComponentStatus {
   types.Path path = 1; // path of subcomponent.
+
   // Subcomponents that are aggregated by this status.
   repeated ComponentStatus subcomponents = 2;
+
   // Status of this component.
   Status status = 3;
+
+  // Id is the event id (timestamp in nanos)
+  uint64 id = 6;
+
+  // Acknowledged is set when a caller has processed the event.
+  bool acknowledged = 7;
+
+  // Expires is the timestamp in nanos when the system will clean up the artifact.
+  uint64 expires = 8;
+
   // Opaque data for how the healthcheck is implemented.  This can be any proto
   // defined by the vendor.  This could be the equivalent to outputs like
   // "show tech" or core files or any other diagnostic data.
-  google.protobuf.Any healthz = 4;
+  google.protobuf.Any healthz = 4 [deprecated=true];
+
+  // Artifacts provides links to all artifacts contained in this event.
+  // The individual artifacts can be retrieved via the Artifact() RPC.
+  repeated ArtifactHeader artifacts = 5;
 }
 
-message GetResponse {
-  ComponentStatus component = 1;
+message ListRequest {
+  types.Path path = 1;
+  // By default only the unacknowledged events for the component will be returned.
+  bool include_acknowledged = 2;
+}
+
+message ListResponse {
+  repeated ComponentStatus status = 1;
+}
+
+message AcknowlegeRequest {
+  types.Path path = 1;
+  // Healthz event id.
+  string id = 2;
+}
+
+message AcknowledgeResponse {
+  ComponentStatus status = 1;
+}
+
+message ArtifactRequest {
+  string id = 1;
+}
+
+message ArtifactResponse {
+  oneof contents {
+    // Header is the first message in the stream. It contains
+    // the id of the artifact and metadata for the artifact
+    // based on the type of the artifact.
+    // OC defines FileArtifactType and ProtoArtifactType.
+    ArtifactHeader header = 1;
+    // Trailer contains the checksum for the streamed artifact.
+    Trailer trailer = 2;
+    bytes bytes = 3;    
+    google.protobuf.Any proto = 4;
+  }
+}
+
+message FileArtifactType {
+  // Local file name of the artifact.
+  string name = 1;
+  // Path to file on the local file system. (optional)
+  string path = 2;
+  // Mimetype of the file.
+  string mimetype = 3;
+  // Size of the file.
+  int64 size = 4;
+  // Hash of the file.
+  types.HashType hash = 5;
+}
+
+// Generic proto message artifact stream.
+// This proto tells the caller that the artifact stream 
+// will be a stream of proto encoded messages that make up
+// the artifact. Each message must be deserialized by the caller
+// and there are no other assumptions about the number of
+// messages or length of the stream or how those messages are to
+// be reassembled.
+message ProtoArtifactType {}
+
+// Trailer is the last message in the stream.
+message Trailer {}
+
+message CheckRequest{
+  types.Path path = 1;
+}
+
+message CheckResponse{
+  ComponentStatus status = 1;
 }

@@ -143,6 +143,162 @@ func (x *GetRequest) GetPath() *types.Path {
 	return nil
 }
 
+type GetResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Component *ComponentStatus `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+}
+
+func (x *GetResponse) Reset() {
+	*x = GetResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetResponse) ProtoMessage() {}
+
+func (x *GetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
+func (*GetResponse) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetResponse) GetComponent() *ComponentStatus {
+	if x != nil {
+		return x.Component
+	}
+	return nil
+}
+
+type ArtifactHeader struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// ID of the artifact.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Artifact type describes data contents in the artifact.
+	// File artifacts should use the defined FileArtifactType.
+	// Proto artifacts should either use the generic ProtoArtifactType
+	// or the implementer can provide a specific artifact type
+	// which can add any additional metadata the implementor wants.
+	//
+	// Types that are assignable to ArtifactType:
+	//	*ArtifactHeader_File
+	//	*ArtifactHeader_Proto
+	//	*ArtifactHeader_Custom
+	ArtifactType isArtifactHeader_ArtifactType `protobuf_oneof:"artifact_type"`
+}
+
+func (x *ArtifactHeader) Reset() {
+	*x = ArtifactHeader{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ArtifactHeader) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArtifactHeader) ProtoMessage() {}
+
+func (x *ArtifactHeader) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArtifactHeader.ProtoReflect.Descriptor instead.
+func (*ArtifactHeader) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ArtifactHeader) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (m *ArtifactHeader) GetArtifactType() isArtifactHeader_ArtifactType {
+	if m != nil {
+		return m.ArtifactType
+	}
+	return nil
+}
+
+func (x *ArtifactHeader) GetFile() *FileArtifactType {
+	if x, ok := x.GetArtifactType().(*ArtifactHeader_File); ok {
+		return x.File
+	}
+	return nil
+}
+
+func (x *ArtifactHeader) GetProto() *ProtoArtifactType {
+	if x, ok := x.GetArtifactType().(*ArtifactHeader_Proto); ok {
+		return x.Proto
+	}
+	return nil
+}
+
+func (x *ArtifactHeader) GetCustom() *anypb.Any {
+	if x, ok := x.GetArtifactType().(*ArtifactHeader_Custom); ok {
+		return x.Custom
+	}
+	return nil
+}
+
+type isArtifactHeader_ArtifactType interface {
+	isArtifactHeader_ArtifactType()
+}
+
+type ArtifactHeader_File struct {
+	File *FileArtifactType `protobuf:"bytes,101,opt,name=file,proto3,oneof"`
+}
+
+type ArtifactHeader_Proto struct {
+	Proto *ProtoArtifactType `protobuf:"bytes,102,opt,name=proto,proto3,oneof"`
+}
+
+type ArtifactHeader_Custom struct {
+	Custom *anypb.Any `protobuf:"bytes,103,opt,name=custom,proto3,oneof"`
+}
+
+func (*ArtifactHeader_File) isArtifactHeader_ArtifactType() {}
+
+func (*ArtifactHeader_Proto) isArtifactHeader_ArtifactType() {}
+
+func (*ArtifactHeader_Custom) isArtifactHeader_ArtifactType() {}
+
 type ComponentStatus struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -153,16 +309,27 @@ type ComponentStatus struct {
 	Subcomponents []*ComponentStatus `protobuf:"bytes,2,rep,name=subcomponents,proto3" json:"subcomponents,omitempty"`
 	// Status of this component.
 	Status Status `protobuf:"varint,3,opt,name=status,proto3,enum=gnoi.healthz.Status" json:"status,omitempty"`
+	// Id is the event id (timestamp in nanos)
+	Id uint64 `protobuf:"varint,6,opt,name=id,proto3" json:"id,omitempty"`
+	// Acknowledged is set when a caller has processed the event.
+	Acknowledged bool `protobuf:"varint,7,opt,name=acknowledged,proto3" json:"acknowledged,omitempty"`
+	// Expires is the timestamp in nanos when the system will clean up the artifact.
+	Expires uint64 `protobuf:"varint,8,opt,name=expires,proto3" json:"expires,omitempty"`
 	// Opaque data for how the healthcheck is implemented.  This can be any proto
 	// defined by the vendor.  This could be the equivalent to outputs like
 	// "show tech" or core files or any other diagnostic data.
+	//
+	// Deprecated: Do not use.
 	Healthz *anypb.Any `protobuf:"bytes,4,opt,name=healthz,proto3" json:"healthz,omitempty"`
+	// Artifacts provides links to all artifacts contained in this event.
+	// The individual artifacts can be retrieved via the Artifact() RPC.
+	Artifacts []*ArtifactHeader `protobuf:"bytes,5,rep,name=artifacts,proto3" json:"artifacts,omitempty"`
 }
 
 func (x *ComponentStatus) Reset() {
 	*x = ComponentStatus{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_healthz_healthz_proto_msgTypes[1]
+		mi := &file_healthz_healthz_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -175,7 +342,7 @@ func (x *ComponentStatus) String() string {
 func (*ComponentStatus) ProtoMessage() {}
 
 func (x *ComponentStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_healthz_healthz_proto_msgTypes[1]
+	mi := &file_healthz_healthz_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -188,7 +355,7 @@ func (x *ComponentStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComponentStatus.ProtoReflect.Descriptor instead.
 func (*ComponentStatus) Descriptor() ([]byte, []int) {
-	return file_healthz_healthz_proto_rawDescGZIP(), []int{1}
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ComponentStatus) GetPath() *types.Path {
@@ -212,6 +379,28 @@ func (x *ComponentStatus) GetStatus() Status {
 	return Status_STATUS_UNSPECIFIED
 }
 
+func (x *ComponentStatus) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *ComponentStatus) GetAcknowledged() bool {
+	if x != nil {
+		return x.Acknowledged
+	}
+	return false
+}
+
+func (x *ComponentStatus) GetExpires() uint64 {
+	if x != nil {
+		return x.Expires
+	}
+	return 0
+}
+
+// Deprecated: Do not use.
 func (x *ComponentStatus) GetHealthz() *anypb.Any {
 	if x != nil {
 		return x.Healthz
@@ -219,31 +408,40 @@ func (x *ComponentStatus) GetHealthz() *anypb.Any {
 	return nil
 }
 
-type GetResponse struct {
+func (x *ComponentStatus) GetArtifacts() []*ArtifactHeader {
+	if x != nil {
+		return x.Artifacts
+	}
+	return nil
+}
+
+type ListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Component *ComponentStatus `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+	Path *types.Path `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	// By default only the unacknowledged events for the component will be returned.
+	IncludeAcknowledged bool `protobuf:"varint,2,opt,name=include_acknowledged,json=includeAcknowledged,proto3" json:"include_acknowledged,omitempty"`
 }
 
-func (x *GetResponse) Reset() {
-	*x = GetResponse{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_healthz_healthz_proto_msgTypes[2]
+		mi := &file_healthz_healthz_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *GetResponse) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetResponse) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_healthz_healthz_proto_msgTypes[2]
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -254,14 +452,593 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
-func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_healthz_healthz_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetResponse) GetComponent() *ComponentStatus {
+func (x *ListRequest) GetPath() *types.Path {
 	if x != nil {
-		return x.Component
+		return x.Path
+	}
+	return nil
+}
+
+func (x *ListRequest) GetIncludeAcknowledged() bool {
+	if x != nil {
+		return x.IncludeAcknowledged
+	}
+	return false
+}
+
+type ListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Status []*ComponentStatus `protobuf:"bytes,1,rep,name=status,proto3" json:"status,omitempty"`
+}
+
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResponse) ProtoMessage() {}
+
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListResponse) GetStatus() []*ComponentStatus {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+type AcknowlegeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Path *types.Path `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	// Healthz event id.
+	Id string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *AcknowlegeRequest) Reset() {
+	*x = AcknowlegeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AcknowlegeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcknowlegeRequest) ProtoMessage() {}
+
+func (x *AcknowlegeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcknowlegeRequest.ProtoReflect.Descriptor instead.
+func (*AcknowlegeRequest) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *AcknowlegeRequest) GetPath() *types.Path {
+	if x != nil {
+		return x.Path
+	}
+	return nil
+}
+
+func (x *AcknowlegeRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type AcknowledgeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Status *ComponentStatus `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+}
+
+func (x *AcknowledgeResponse) Reset() {
+	*x = AcknowledgeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AcknowledgeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcknowledgeResponse) ProtoMessage() {}
+
+func (x *AcknowledgeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcknowledgeResponse.ProtoReflect.Descriptor instead.
+func (*AcknowledgeResponse) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AcknowledgeResponse) GetStatus() *ComponentStatus {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+type ArtifactRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *ArtifactRequest) Reset() {
+	*x = ArtifactRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ArtifactRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArtifactRequest) ProtoMessage() {}
+
+func (x *ArtifactRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArtifactRequest.ProtoReflect.Descriptor instead.
+func (*ArtifactRequest) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ArtifactRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type ArtifactResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Contents:
+	//	*ArtifactResponse_Header
+	//	*ArtifactResponse_Trailer
+	//	*ArtifactResponse_Bytes
+	//	*ArtifactResponse_Proto
+	Contents isArtifactResponse_Contents `protobuf_oneof:"contents"`
+}
+
+func (x *ArtifactResponse) Reset() {
+	*x = ArtifactResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ArtifactResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArtifactResponse) ProtoMessage() {}
+
+func (x *ArtifactResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArtifactResponse.ProtoReflect.Descriptor instead.
+func (*ArtifactResponse) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{9}
+}
+
+func (m *ArtifactResponse) GetContents() isArtifactResponse_Contents {
+	if m != nil {
+		return m.Contents
+	}
+	return nil
+}
+
+func (x *ArtifactResponse) GetHeader() *ArtifactHeader {
+	if x, ok := x.GetContents().(*ArtifactResponse_Header); ok {
+		return x.Header
+	}
+	return nil
+}
+
+func (x *ArtifactResponse) GetTrailer() *Trailer {
+	if x, ok := x.GetContents().(*ArtifactResponse_Trailer); ok {
+		return x.Trailer
+	}
+	return nil
+}
+
+func (x *ArtifactResponse) GetBytes() []byte {
+	if x, ok := x.GetContents().(*ArtifactResponse_Bytes); ok {
+		return x.Bytes
+	}
+	return nil
+}
+
+func (x *ArtifactResponse) GetProto() *anypb.Any {
+	if x, ok := x.GetContents().(*ArtifactResponse_Proto); ok {
+		return x.Proto
+	}
+	return nil
+}
+
+type isArtifactResponse_Contents interface {
+	isArtifactResponse_Contents()
+}
+
+type ArtifactResponse_Header struct {
+	// Header is the first message in the stream. It contains
+	// the id of the artifact and metadata for the artifact
+	// based on the type of the artifact.
+	// OC defines FileArtifactType and ProtoArtifactType.
+	Header *ArtifactHeader `protobuf:"bytes,1,opt,name=header,proto3,oneof"`
+}
+
+type ArtifactResponse_Trailer struct {
+	// Trailer contains the checksum for the streamed artifact.
+	Trailer *Trailer `protobuf:"bytes,2,opt,name=trailer,proto3,oneof"`
+}
+
+type ArtifactResponse_Bytes struct {
+	Bytes []byte `protobuf:"bytes,3,opt,name=bytes,proto3,oneof"`
+}
+
+type ArtifactResponse_Proto struct {
+	Proto *anypb.Any `protobuf:"bytes,4,opt,name=proto,proto3,oneof"`
+}
+
+func (*ArtifactResponse_Header) isArtifactResponse_Contents() {}
+
+func (*ArtifactResponse_Trailer) isArtifactResponse_Contents() {}
+
+func (*ArtifactResponse_Bytes) isArtifactResponse_Contents() {}
+
+func (*ArtifactResponse_Proto) isArtifactResponse_Contents() {}
+
+type FileArtifactType struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Local file name of the artifact.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Path to file on the local file system. (optional)
+	Path string `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	// Mimetype of the file.
+	Mimetype string `protobuf:"bytes,3,opt,name=mimetype,proto3" json:"mimetype,omitempty"`
+	// Size of the file.
+	Size int64 `protobuf:"varint,4,opt,name=size,proto3" json:"size,omitempty"`
+	// Hash of the file.
+	Hash *types.HashType `protobuf:"bytes,5,opt,name=hash,proto3" json:"hash,omitempty"`
+}
+
+func (x *FileArtifactType) Reset() {
+	*x = FileArtifactType{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FileArtifactType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileArtifactType) ProtoMessage() {}
+
+func (x *FileArtifactType) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileArtifactType.ProtoReflect.Descriptor instead.
+func (*FileArtifactType) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *FileArtifactType) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *FileArtifactType) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *FileArtifactType) GetMimetype() string {
+	if x != nil {
+		return x.Mimetype
+	}
+	return ""
+}
+
+func (x *FileArtifactType) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *FileArtifactType) GetHash() *types.HashType {
+	if x != nil {
+		return x.Hash
+	}
+	return nil
+}
+
+// Generic proto message artifact stream.
+// This proto tells the caller that the artifact stream
+// will be a stream of proto encoded messages that make up
+// the artifact. Each message must be deserialized by the caller
+// and there are no other assumptions about the number of
+// messages or length of the stream or how those messages are to
+// be reassembled.
+type ProtoArtifactType struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ProtoArtifactType) Reset() {
+	*x = ProtoArtifactType{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProtoArtifactType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProtoArtifactType) ProtoMessage() {}
+
+func (x *ProtoArtifactType) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProtoArtifactType.ProtoReflect.Descriptor instead.
+func (*ProtoArtifactType) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{11}
+}
+
+// Trailer is the last message in the stream.
+type Trailer struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *Trailer) Reset() {
+	*x = Trailer{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Trailer) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Trailer) ProtoMessage() {}
+
+func (x *Trailer) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Trailer.ProtoReflect.Descriptor instead.
+func (*Trailer) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{12}
+}
+
+type CheckRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Path *types.Path `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+}
+
+func (x *CheckRequest) Reset() {
+	*x = CheckRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CheckRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckRequest) ProtoMessage() {}
+
+func (x *CheckRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckRequest.ProtoReflect.Descriptor instead.
+func (*CheckRequest) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CheckRequest) GetPath() *types.Path {
+	if x != nil {
+		return x.Path
+	}
+	return nil
+}
+
+type CheckResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Status *ComponentStatus `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+}
+
+func (x *CheckResponse) Reset() {
+	*x = CheckResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_healthz_healthz_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CheckResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckResponse) ProtoMessage() {}
+
+func (x *CheckResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_healthz_healthz_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckResponse.ProtoReflect.Descriptor instead.
+func (*CheckResponse) Descriptor() ([]byte, []int) {
+	return file_healthz_healthz_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CheckResponse) GetStatus() *ComponentStatus {
+	if x != nil {
+		return x.Status
 	}
 	return nil
 }
@@ -279,38 +1056,134 @@ var file_healthz_healthz_proto_rawDesc = []byte{
 	0x0a, 0x0a, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x24, 0x0a, 0x04,
 	0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x67, 0x6e, 0x6f,
 	0x69, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x50, 0x61, 0x74, 0x68, 0x52, 0x04, 0x70, 0x61,
-	0x74, 0x68, 0x22, 0xda, 0x01, 0x0a, 0x0f, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74,
-	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x24, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x74, 0x79, 0x70, 0x65,
-	0x73, 0x2e, 0x50, 0x61, 0x74, 0x68, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x12, 0x43, 0x0a, 0x0d,
-	0x73, 0x75, 0x62, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x02, 0x20,
-	0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74,
-	0x68, 0x7a, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61, 0x74,
-	0x75, 0x73, 0x52, 0x0d, 0x73, 0x75, 0x62, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74,
-	0x73, 0x12, 0x2c, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x0e, 0x32, 0x14, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a,
-	0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12,
-	0x2e, 0x0a, 0x07, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b,
+	0x74, 0x68, 0x22, 0x4a, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x3b, 0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c,
+	0x74, 0x68, 0x7a, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61,
+	0x74, 0x75, 0x73, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x22, 0xd0,
+	0x01, 0x0a, 0x0e, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x48, 0x65, 0x61, 0x64, 0x65,
+	0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x34, 0x0a, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x65, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1e, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x46,
+	0x69, 0x6c, 0x65, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x48,
+	0x00, 0x52, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x12, 0x37, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x18, 0x66, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65,
+	0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x41, 0x72, 0x74, 0x69, 0x66,
+	0x61, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x12, 0x2e, 0x0a, 0x06, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x18, 0x67, 0x20, 0x01, 0x28, 0x0b,
 	0x32, 0x14, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
-	0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79, 0x52, 0x07, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x22,
-	0x4a, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3b,
-	0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a,
-	0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
-	0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x2a, 0x4b, 0x0a, 0x06, 0x53,
-	0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x16, 0x0a, 0x12, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f,
-	0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x13, 0x0a,
-	0x0f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x48, 0x45, 0x41, 0x4c, 0x54, 0x48, 0x4c, 0x59,
-	0x10, 0x01, 0x12, 0x14, 0x0a, 0x10, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x55, 0x4e, 0x48,
-	0x45, 0x41, 0x4c, 0x54, 0x48, 0x59, 0x10, 0x02, 0x32, 0x47, 0x0a, 0x07, 0x48, 0x65, 0x61, 0x6c,
-	0x74, 0x68, 0x7a, 0x12, 0x3c, 0x0a, 0x03, 0x47, 0x65, 0x74, 0x12, 0x18, 0x2e, 0x67, 0x6e, 0x6f,
-	0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c,
-	0x74, 0x68, 0x7a, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x00, 0x42, 0x2c, 0x5a, 0x22, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
-	0x6f, 0x70, 0x65, 0x6e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2f, 0x67, 0x6e, 0x6f, 0x69, 0x2f,
-	0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0xd2, 0x3e, 0x05, 0x31, 0x2e, 0x30, 0x2e, 0x30, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x75, 0x66, 0x2e, 0x41, 0x6e, 0x79, 0x48, 0x00, 0x52, 0x06, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d,
+	0x42, 0x0f, 0x0a, 0x0d, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x5f, 0x74, 0x79, 0x70,
+	0x65, 0x22, 0xe8, 0x02, 0x0a, 0x0f, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53,
+	0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x24, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73,
+	0x2e, 0x50, 0x61, 0x74, 0x68, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x12, 0x43, 0x0a, 0x0d, 0x73,
+	0x75, 0x62, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68,
+	0x7a, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75,
+	0x73, 0x52, 0x0d, 0x73, 0x75, 0x62, 0x63, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x73,
+	0x12, 0x2c, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e,
+	0x32, 0x14, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e,
+	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x22,
+	0x0a, 0x0c, 0x61, 0x63, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64, 0x67, 0x65, 0x64, 0x18, 0x07,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x0c, 0x61, 0x63, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64, 0x67,
+	0x65, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x73, 0x18, 0x08, 0x20,
+	0x01, 0x28, 0x04, 0x52, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x73, 0x12, 0x32, 0x0a, 0x07,
+	0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x41, 0x6e, 0x79, 0x42, 0x02, 0x18, 0x01, 0x52, 0x07, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a,
+	0x12, 0x3a, 0x0a, 0x09, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x73, 0x18, 0x05, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74,
+	0x68, 0x7a, 0x2e, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x48, 0x65, 0x61, 0x64, 0x65,
+	0x72, 0x52, 0x09, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x73, 0x22, 0x66, 0x0a, 0x0b,
+	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x24, 0x0a, 0x04, 0x70,
+	0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x67, 0x6e, 0x6f, 0x69,
+	0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x50, 0x61, 0x74, 0x68, 0x52, 0x04, 0x70, 0x61, 0x74,
+	0x68, 0x12, 0x31, 0x0a, 0x14, 0x69, 0x6e, 0x63, 0x6c, 0x75, 0x64, 0x65, 0x5f, 0x61, 0x63, 0x6b,
+	0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64, 0x67, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x13, 0x69, 0x6e, 0x63, 0x6c, 0x75, 0x64, 0x65, 0x41, 0x63, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65,
+	0x64, 0x67, 0x65, 0x64, 0x22, 0x45, 0x0a, 0x0c, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c,
+	0x74, 0x68, 0x7a, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61,
+	0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x49, 0x0a, 0x11, 0x41,
+	0x63, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x24, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10,
+	0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x50, 0x61, 0x74, 0x68,
+	0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x4c, 0x0a, 0x13, 0x41, 0x63, 0x6b, 0x6e, 0x6f, 0x77,
+	0x6c, 0x65, 0x64, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a,
+	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e,
+	0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x43, 0x6f, 0x6d,
+	0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74,
+	0x61, 0x74, 0x75, 0x73, 0x22, 0x21, 0x0a, 0x0f, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0xcf, 0x01, 0x0a, 0x10, 0x41, 0x72, 0x74, 0x69,
+	0x66, 0x61, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x36, 0x0a, 0x06,
+	0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x67,
+	0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x41, 0x72, 0x74, 0x69,
+	0x66, 0x61, 0x63, 0x74, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72, 0x48, 0x00, 0x52, 0x06, 0x68, 0x65,
+	0x61, 0x64, 0x65, 0x72, 0x12, 0x31, 0x0a, 0x07, 0x74, 0x72, 0x61, 0x69, 0x6c, 0x65, 0x72, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61,
+	0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x54, 0x72, 0x61, 0x69, 0x6c, 0x65, 0x72, 0x48, 0x00, 0x52, 0x07,
+	0x74, 0x72, 0x61, 0x69, 0x6c, 0x65, 0x72, 0x12, 0x16, 0x0a, 0x05, 0x62, 0x79, 0x74, 0x65, 0x73,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x48, 0x00, 0x52, 0x05, 0x62, 0x79, 0x74, 0x65, 0x73, 0x12,
+	0x2c, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x41, 0x6e, 0x79, 0x48, 0x00, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x42, 0x0a, 0x0a,
+	0x08, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x73, 0x22, 0x94, 0x01, 0x0a, 0x10, 0x46, 0x69,
+	0x6c, 0x65, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x12,
+	0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x12, 0x1a, 0x0a, 0x08, 0x6d, 0x69, 0x6d, 0x65, 0x74, 0x79,
+	0x70, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6d, 0x69, 0x6d, 0x65, 0x74, 0x79,
+	0x70, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x69, 0x7a, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x04, 0x73, 0x69, 0x7a, 0x65, 0x12, 0x28, 0x0a, 0x04, 0x68, 0x61, 0x73, 0x68, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x74, 0x79, 0x70, 0x65,
+	0x73, 0x2e, 0x48, 0x61, 0x73, 0x68, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x68, 0x61, 0x73, 0x68,
+	0x22, 0x13, 0x0a, 0x11, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63,
+	0x74, 0x54, 0x79, 0x70, 0x65, 0x22, 0x09, 0x0a, 0x07, 0x54, 0x72, 0x61, 0x69, 0x6c, 0x65, 0x72,
+	0x22, 0x34, 0x0a, 0x0c, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x24, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10,
+	0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x50, 0x61, 0x74, 0x68,
+	0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x22, 0x46, 0x0a, 0x0d, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75,
+	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68,
+	0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x43, 0x6f, 0x6d, 0x70, 0x6f, 0x6e, 0x65, 0x6e, 0x74,
+	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x2a, 0x4b,
+	0x0a, 0x06, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x16, 0x0a, 0x12, 0x53, 0x54, 0x41, 0x54,
+	0x55, 0x53, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00,
+	0x12, 0x13, 0x0a, 0x0f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x48, 0x45, 0x41, 0x4c, 0x54,
+	0x48, 0x4c, 0x59, 0x10, 0x01, 0x12, 0x14, 0x0a, 0x10, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f,
+	0x55, 0x4e, 0x48, 0x45, 0x41, 0x4c, 0x54, 0x48, 0x59, 0x10, 0x02, 0x32, 0xf0, 0x02, 0x0a, 0x07,
+	0x48, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x12, 0x3c, 0x0a, 0x03, 0x47, 0x65, 0x74, 0x12, 0x18,
+	0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x47, 0x65,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e,
+	0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3f, 0x0a, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x19, 0x2e,
+	0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e,
+	0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x53, 0x0a, 0x0b, 0x41, 0x63, 0x6b, 0x6e, 0x6f, 0x77,
+	0x6c, 0x65, 0x64, 0x67, 0x65, 0x12, 0x1f, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61,
+	0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x41, 0x63, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x67, 0x65, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65,
+	0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x41, 0x63, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64, 0x67,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4d, 0x0a, 0x08, 0x41,
+	0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x12, 0x1d, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68,
+	0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65,
+	0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x42, 0x0a, 0x05, 0x43, 0x68,
+	0x65, 0x63, 0x6b, 0x12, 0x1a, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74,
+	0x68, 0x7a, 0x2e, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1b, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x68, 0x65, 0x61, 0x6c, 0x74, 0x68, 0x7a, 0x2e, 0x43,
+	0x68, 0x65, 0x63, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x2c,
+	0x5a, 0x22, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70, 0x65,
+	0x6e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2f, 0x67, 0x6e, 0x6f, 0x69, 0x2f, 0x68, 0x65, 0x61,
+	0x6c, 0x74, 0x68, 0x7a, 0xd2, 0x3e, 0x05, 0x31, 0x2e, 0x30, 0x2e, 0x30, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -326,29 +1199,64 @@ func file_healthz_healthz_proto_rawDescGZIP() []byte {
 }
 
 var file_healthz_healthz_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_healthz_healthz_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_healthz_healthz_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_healthz_healthz_proto_goTypes = []interface{}{
-	(Status)(0),             // 0: gnoi.healthz.Status
-	(*GetRequest)(nil),      // 1: gnoi.healthz.GetRequest
-	(*ComponentStatus)(nil), // 2: gnoi.healthz.ComponentStatus
-	(*GetResponse)(nil),     // 3: gnoi.healthz.GetResponse
-	(*types.Path)(nil),      // 4: gnoi.types.Path
-	(*anypb.Any)(nil),       // 5: google.protobuf.Any
+	(Status)(0),                 // 0: gnoi.healthz.Status
+	(*GetRequest)(nil),          // 1: gnoi.healthz.GetRequest
+	(*GetResponse)(nil),         // 2: gnoi.healthz.GetResponse
+	(*ArtifactHeader)(nil),      // 3: gnoi.healthz.ArtifactHeader
+	(*ComponentStatus)(nil),     // 4: gnoi.healthz.ComponentStatus
+	(*ListRequest)(nil),         // 5: gnoi.healthz.ListRequest
+	(*ListResponse)(nil),        // 6: gnoi.healthz.ListResponse
+	(*AcknowlegeRequest)(nil),   // 7: gnoi.healthz.AcknowlegeRequest
+	(*AcknowledgeResponse)(nil), // 8: gnoi.healthz.AcknowledgeResponse
+	(*ArtifactRequest)(nil),     // 9: gnoi.healthz.ArtifactRequest
+	(*ArtifactResponse)(nil),    // 10: gnoi.healthz.ArtifactResponse
+	(*FileArtifactType)(nil),    // 11: gnoi.healthz.FileArtifactType
+	(*ProtoArtifactType)(nil),   // 12: gnoi.healthz.ProtoArtifactType
+	(*Trailer)(nil),             // 13: gnoi.healthz.Trailer
+	(*CheckRequest)(nil),        // 14: gnoi.healthz.CheckRequest
+	(*CheckResponse)(nil),       // 15: gnoi.healthz.CheckResponse
+	(*types.Path)(nil),          // 16: gnoi.types.Path
+	(*anypb.Any)(nil),           // 17: google.protobuf.Any
+	(*types.HashType)(nil),      // 18: gnoi.types.HashType
 }
 var file_healthz_healthz_proto_depIdxs = []int32{
-	4, // 0: gnoi.healthz.GetRequest.path:type_name -> gnoi.types.Path
-	4, // 1: gnoi.healthz.ComponentStatus.path:type_name -> gnoi.types.Path
-	2, // 2: gnoi.healthz.ComponentStatus.subcomponents:type_name -> gnoi.healthz.ComponentStatus
-	0, // 3: gnoi.healthz.ComponentStatus.status:type_name -> gnoi.healthz.Status
-	5, // 4: gnoi.healthz.ComponentStatus.healthz:type_name -> google.protobuf.Any
-	2, // 5: gnoi.healthz.GetResponse.component:type_name -> gnoi.healthz.ComponentStatus
-	1, // 6: gnoi.healthz.Healthz.Get:input_type -> gnoi.healthz.GetRequest
-	3, // 7: gnoi.healthz.Healthz.Get:output_type -> gnoi.healthz.GetResponse
-	7, // [7:8] is the sub-list for method output_type
-	6, // [6:7] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	16, // 0: gnoi.healthz.GetRequest.path:type_name -> gnoi.types.Path
+	4,  // 1: gnoi.healthz.GetResponse.component:type_name -> gnoi.healthz.ComponentStatus
+	11, // 2: gnoi.healthz.ArtifactHeader.file:type_name -> gnoi.healthz.FileArtifactType
+	12, // 3: gnoi.healthz.ArtifactHeader.proto:type_name -> gnoi.healthz.ProtoArtifactType
+	17, // 4: gnoi.healthz.ArtifactHeader.custom:type_name -> google.protobuf.Any
+	16, // 5: gnoi.healthz.ComponentStatus.path:type_name -> gnoi.types.Path
+	4,  // 6: gnoi.healthz.ComponentStatus.subcomponents:type_name -> gnoi.healthz.ComponentStatus
+	0,  // 7: gnoi.healthz.ComponentStatus.status:type_name -> gnoi.healthz.Status
+	17, // 8: gnoi.healthz.ComponentStatus.healthz:type_name -> google.protobuf.Any
+	3,  // 9: gnoi.healthz.ComponentStatus.artifacts:type_name -> gnoi.healthz.ArtifactHeader
+	16, // 10: gnoi.healthz.ListRequest.path:type_name -> gnoi.types.Path
+	4,  // 11: gnoi.healthz.ListResponse.status:type_name -> gnoi.healthz.ComponentStatus
+	16, // 12: gnoi.healthz.AcknowlegeRequest.path:type_name -> gnoi.types.Path
+	4,  // 13: gnoi.healthz.AcknowledgeResponse.status:type_name -> gnoi.healthz.ComponentStatus
+	3,  // 14: gnoi.healthz.ArtifactResponse.header:type_name -> gnoi.healthz.ArtifactHeader
+	13, // 15: gnoi.healthz.ArtifactResponse.trailer:type_name -> gnoi.healthz.Trailer
+	17, // 16: gnoi.healthz.ArtifactResponse.proto:type_name -> google.protobuf.Any
+	18, // 17: gnoi.healthz.FileArtifactType.hash:type_name -> gnoi.types.HashType
+	16, // 18: gnoi.healthz.CheckRequest.path:type_name -> gnoi.types.Path
+	4,  // 19: gnoi.healthz.CheckResponse.status:type_name -> gnoi.healthz.ComponentStatus
+	1,  // 20: gnoi.healthz.Healthz.Get:input_type -> gnoi.healthz.GetRequest
+	5,  // 21: gnoi.healthz.Healthz.List:input_type -> gnoi.healthz.ListRequest
+	7,  // 22: gnoi.healthz.Healthz.Acknowledge:input_type -> gnoi.healthz.AcknowlegeRequest
+	9,  // 23: gnoi.healthz.Healthz.Artifact:input_type -> gnoi.healthz.ArtifactRequest
+	14, // 24: gnoi.healthz.Healthz.Check:input_type -> gnoi.healthz.CheckRequest
+	2,  // 25: gnoi.healthz.Healthz.Get:output_type -> gnoi.healthz.GetResponse
+	6,  // 26: gnoi.healthz.Healthz.List:output_type -> gnoi.healthz.ListResponse
+	8,  // 27: gnoi.healthz.Healthz.Acknowledge:output_type -> gnoi.healthz.AcknowledgeResponse
+	10, // 28: gnoi.healthz.Healthz.Artifact:output_type -> gnoi.healthz.ArtifactResponse
+	15, // 29: gnoi.healthz.Healthz.Check:output_type -> gnoi.healthz.CheckResponse
+	25, // [25:30] is the sub-list for method output_type
+	20, // [20:25] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_healthz_healthz_proto_init() }
@@ -370,18 +1278,6 @@ func file_healthz_healthz_proto_init() {
 			}
 		}
 		file_healthz_healthz_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ComponentStatus); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_healthz_healthz_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetResponse); i {
 			case 0:
 				return &v.state
@@ -393,6 +1289,173 @@ func file_healthz_healthz_proto_init() {
 				return nil
 			}
 		}
+		file_healthz_healthz_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ArtifactHeader); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ComponentStatus); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AcknowlegeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AcknowledgeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ArtifactRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ArtifactResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FileArtifactType); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProtoArtifactType); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Trailer); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CheckRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_healthz_healthz_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CheckResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
+	file_healthz_healthz_proto_msgTypes[2].OneofWrappers = []interface{}{
+		(*ArtifactHeader_File)(nil),
+		(*ArtifactHeader_Proto)(nil),
+		(*ArtifactHeader_Custom)(nil),
+	}
+	file_healthz_healthz_proto_msgTypes[9].OneofWrappers = []interface{}{
+		(*ArtifactResponse_Header)(nil),
+		(*ArtifactResponse_Trailer)(nil),
+		(*ArtifactResponse_Bytes)(nil),
+		(*ArtifactResponse_Proto)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -400,7 +1463,7 @@ func file_healthz_healthz_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_healthz_healthz_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   3,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
