@@ -35,6 +35,7 @@ jobs:
         uses: shogo82148/actions-goveralls@v1
         with:
           path-to-profile: profile.cov
+          
   static_analysis:
     name: Static Analysis
     runs-on: ubuntu-latest
