@@ -5,59 +5,56 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+  schedule:
+    - cron: "0 0 * * *"
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: ["1.16","1.17"]
+        go: ["1.17","1.18", "1.x"]
     steps:
-
+    - uses: actions/checkout@v2
     - name: Set up Go ${{ matrix.go }}
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v2.1.3
       with:
         go-version: ${{ matrix.go }}
-      id: go
-
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-
-    - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
-
     - name: Build
       run: go build -v ./...
-
-    - name: Test
-      run: go test -v -coverprofile=profile.cov ./... 
-    
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: '1.18'
+      - name: Run Coverage
+        run: go test -v -coverprofile=profile.cov ./...
+      - name: Send coverage
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          path-to-profile: profile.cov
+          
   static_analysis:
     name: Static Analysis
     runs-on: ubuntu-latest
-
     steps:
+      - uses: actions/checkout@v2
       - name: Install Go
         uses: actions/setup-go@v2
         with:
-          go-version: '1.17'
+          go-version: '1.18'
         id: go
-
       - name: Install required static analysis tools
         run: |
           go get -u honnef.co/go/tools/cmd/staticcheck
-
       - name: Check out code
-        uses: actions/checkout@v2
-
+        uses: actions/setup-go@v2.1.3
       - name: get dependencies
         run: |
           go get -v -t -d ./...
-
       - name: Go vet
         run: go vet ./...
-
       - name: Check gofmt
         run: diff -u <(echo -n) <(gofmt -d -s .)
