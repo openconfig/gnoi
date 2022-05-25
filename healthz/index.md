@@ -70,7 +70,8 @@ message ComponentStatus {
   google.protobuf.Timestamp created = 8;
   
   // Expires is the timestamp when the system will clean up the
-  // artifact. If unset, the artifact is not scheduled for GC.
+  // artifact. If unset, the artifact is not scheduled for garbage
+  // collection.
   google.protobuf.Timestamp expires = 9;
 }
 
@@ -162,25 +163,9 @@ message ArtifactResponse {
     // based on the type of the artifact.
     // OC defines FileArtifactType and ProtoArtifactType.
     ArtifactHeader header = 1;
-    // Trailer contains the checksum for the streamed artifact.
-    Trailer trailer = 2;
+    ArtifactTrailer trailer = 2;
     bytes bytes = 3;    
     google.protobuf.Any proto = 4;
-  }
-}
-
-message ArtifactHeader {
-  // ID of the artifact.
-  string id = 1;
-  // Artifact type describes data contents in the artifact.
-  // File artifacts should use the defined FileArtifactType.
-  // Proto artifacts should either use the generic ProtoArtifactType
-  // or the implementer can provide a specific artifact type
-  // which can add any additional metadata the implementor wants.
-  oneof artifact_type {
-    FileArtifactType file = 101;
-    ProtoArtifactType proto = 102;
-    google.protobuf.Any custom = 103;
   }
 }
 
@@ -204,10 +189,12 @@ message FileArtifactType {
 // and there are no other assumptions about the number of
 // messages or length of the stream or how those messages are to
 // be reassembled.
-message ProtoArtifactType {}
+message ProtoArtifactType {
+}
 
-// Trailer is the last message in the stream.
-message Trailer {}
+// ArtifactTrailer is the last message in the artifact stream.
+message ArtifactTrailer {
+}
 ```
 
 The general flow would be to check healthz for an endpoint and it would then

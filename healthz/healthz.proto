@@ -31,7 +31,7 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
-option (types.gnoi_version) = "1.0.0";
+option (types.gnoi_version) = "1.1.0";
 
 // The Healthz service provides access to the status of a path on the
 // system. Addtitionally it allows the implementor to provide path specific
@@ -43,7 +43,7 @@ service Healthz {
   // the requested path an error will be returned.
   rpc Get(GetRequest) returns (GetResponse) {}
 
-  // List returns all events for the provided component.
+  // List returns all events for the provided component path.
   rpc List(ListRequest) returns (ListResponse) {}
 
   // Acknowledge will set the acknowledged field for the event.
@@ -81,8 +81,11 @@ message ArtifactHeader {
   // Artifact type describes data contents in the artifact.
   // File artifacts should use the defined FileArtifactType.
   // Proto artifacts should either use the generic ProtoArtifactType
-  // or the implementer can provide a specific artifact type
-  // which can add any additional metadata the implementor wants.
+  // which means the artifact is made up a sequence of proto.Any
+  // messages which can be deserialized directly into thier message
+  // types. Otherwise the implementer can provide a specific artifact type
+  // which can add any additional metadata the implementor wants and define
+  // a custom format for the message stream.
   oneof artifact_type {
     FileArtifactType file = 101;
     ProtoArtifactType proto = 102;
@@ -114,11 +117,12 @@ message ComponentStatus {
   // Acknowledged is set when a caller has processed the event.
   bool acknowledged = 7;
 
-  // Create is the timestamp when this event was created.
+  // Created is the timestamp when this event was created.
   google.protobuf.Timestamp created = 8;
   
   // Expires is the timestamp when the system will clean up the
-  // artifact. If unset, the artifact is not scheduled for GC.
+  // artifact. If unset, the artifact is not scheduled for garbage
+  // collection.
   google.protobuf.Timestamp expires = 9;
 }
 
@@ -155,8 +159,7 @@ message ArtifactResponse {
     // based on the type of the artifact.
     // OC defines FileArtifactType and ProtoArtifactType.
     ArtifactHeader header = 1;
-    // Trailer contains the checksum for the streamed artifact.
-    Trailer trailer = 2;
+    ArtifactTrailer trailer = 2;
     bytes bytes = 3;    
     google.protobuf.Any proto = 4;
   }
@@ -185,8 +188,8 @@ message FileArtifactType {
 message ProtoArtifactType {
 }
 
-// Trailer is the last message in the stream.
-message Trailer {
+// ArtifactTrailer is the last message in the artifact stream.
+message ArtifactTrailer {
 }
 
 message CheckRequest{

@@ -21,7 +21,7 @@ type HealthzClient interface {
 	// Get will get health status for a gNMI path.  If no status is available for
 	// the requested path an error will be returned.
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	// List returns all events for the provided component.
+	// List returns all events for the provided component path.
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
 	// Acknowledge will set the acknowledged field for the event.
 	// This is an idempotent operation.
@@ -116,7 +116,7 @@ type HealthzServer interface {
 	// Get will get health status for a gNMI path.  If no status is available for
 	// the requested path an error will be returned.
 	Get(context.Context, *GetRequest) (*GetResponse, error)
-	// List returns all events for the provided component.
+	// List returns all events for the provided component path.
 	List(context.Context, *ListRequest) (*ListResponse, error)
 	// Acknowledge will set the acknowledged field for the event.
 	// This is an idempotent operation.
