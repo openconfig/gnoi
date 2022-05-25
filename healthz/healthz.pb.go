@@ -324,7 +324,7 @@ type ComponentStatus struct {
 	Artifacts []*ArtifactHeader `protobuf:"bytes,5,rep,name=artifacts,proto3" json:"artifacts,omitempty"`
 	// ID is the unique key for this event in the system.
 	Id string `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
-	// Acknowledged is set when a caller has processed the event.
+	// Acknowledged is set when at least one caller has processed the event.
 	Acknowledged bool `protobuf:"varint,7,opt,name=acknowledged,proto3" json:"acknowledged,omitempty"`
 	// Created is the timestamp when this event was created.
 	Created *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created,proto3" json:"created,omitempty"`

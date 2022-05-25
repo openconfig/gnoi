@@ -28,8 +28,8 @@ type HealthzClient interface {
 	Acknowledge(ctx context.Context, in *AcknowlegeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error)
 	// Artifact will stream the artifact contents for the provided artifact id.
 	Artifact(ctx context.Context, in *ArtifactRequest, opts ...grpc.CallOption) (Healthz_ArtifactClient, error)
-	// Check will invoke the healthz on the provided component. This RPC can be
-	// expensive depending on the vendor implementation.
+	// Check will invoke the healthz on the provided component path. This RPC
+	// can be expensive depending on the vendor implementation.
 	Check(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckResponse, error)
 }
 
@@ -123,8 +123,8 @@ type HealthzServer interface {
 	Acknowledge(context.Context, *AcknowlegeRequest) (*AcknowledgeResponse, error)
 	// Artifact will stream the artifact contents for the provided artifact id.
 	Artifact(*ArtifactRequest, Healthz_ArtifactServer) error
-	// Check will invoke the healthz on the provided component. This RPC can be
-	// expensive depending on the vendor implementation.
+	// Check will invoke the healthz on the provided component path. This RPC
+	// can be expensive depending on the vendor implementation.
 	Check(context.Context, *CheckRequest) (*CheckResponse, error)
 	mustEmbedUnimplementedHealthzServer()
 }

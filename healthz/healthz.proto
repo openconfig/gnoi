@@ -53,8 +53,8 @@ service Healthz {
   // Artifact will stream the artifact contents for the provided artifact id.
   rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
 
-  // Check will invoke the healthz on the provided component. This RPC can be
-  // expensive depending on the vendor implementation.
+  // Check will invoke the healthz on the provided component path. This RPC 
+  // can be expensive depending on the vendor implementation.
   rpc Check(CheckRequest) returns (CheckResponse) {}
 }
 
@@ -114,7 +114,7 @@ message ComponentStatus {
   // ID is the unique key for this event in the system.
   string id = 6; 
 
-  // Acknowledged is set when a caller has processed the event.
+  // Acknowledged is set when at least one caller has processed the event.
   bool acknowledged = 7;
 
   // Created is the timestamp when this event was created.
