@@ -51,15 +51,6 @@ message ComponentStatus {
   // Status of this component.
   Status status = 3;
 
-  // Id is the event id (timestamp in nanos)
-  uint64 id = 6;
-
-  // Acknowledged is set when a caller has processed the event.
-  bool acknowledged = 7;
-
-  // Expires is the timestamp in nanos when the system will clean up the artifact.
-  uint64 expires = 8;
-
   // Opaque data for how the healthcheck is implemented.  This can be any proto
   // defined by the vendor.  This could be the equivalent to outputs like
   // "show tech" or core files or any other diagnostic data.
@@ -68,6 +59,20 @@ message ComponentStatus {
   // Artifacts provides links to all artifacts contained in this event.
   // The individual artifacts can be retrieved via the Artifact() RPC.
   repeated ArtifactHeader artifacts = 5;
+
+  // ID is the unique key for this event in the system.
+  string id = 6; 
+
+  // Acknowledged is set when a caller has processed the event.
+  bool acknowledged = 7;
+
+  // Create is the timestamp when this event was created.
+  google.protobuf.Timestamp created = 8;
+  
+  // Expires is the timestamp when the system will clean up the
+  // artifact. If unset, the artifact is not scheduled for garbage
+  // collection.
+  google.protobuf.Timestamp expires = 9;
 }
 
 
@@ -144,7 +149,11 @@ service Healthz {
   // the requested path an error will be returned.
   rpc Get(GetRequest) returns (GetResponse) {}
 
-  rpc Artifact(Artifact) returns (stream ArtifactResponse) {}
+  rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
+}
+
+message ArtifactRequest {
+  string id = 1;
 }
 
 message ArtifactResponse {
@@ -154,25 +163,9 @@ message ArtifactResponse {
     // based on the type of the artifact.
     // OC defines FileArtifactType and ProtoArtifactType.
     ArtifactHeader header = 1;
-    // Trailer contains the checksum for the streamed artifact.
-    Trailer trailer = 2;
-    ByteData bytes = 3;    
+    ArtifactTrailer trailer = 2;
+    bytes bytes = 3;    
     google.protobuf.Any proto = 4;
-  }
-}
-
-message ArtifactHeader {
-  // ID of the artifact.
-  string id = 1;
-  // Artifact type describes data contents in the artifact.
-  // File artifacts should use the defined FileArtifactType.
-  // Proto artifacts should either use the generic ProtoArtifactType
-  // or the implementer can provide a specific artifact type
-  // which can add any additional metadata the implementor wants.
-  oneof artifact_type {
-    FileArtifactType file = 101;
-    ProtoArtifactType proto = 102;
-    google.protobuf.Any custom = 103;
   }
 }
 
@@ -196,10 +189,12 @@ message FileArtifactType {
 // and there are no other assumptions about the number of
 // messages or length of the stream or how those messages are to
 // be reassembled.
-message ProtoArtifactType {}
+message ProtoArtifactType {
+}
 
-// Trailer is the last message in the stream.
-message Trailer {}
+// ArtifactTrailer is the last message in the artifact stream.
+message ArtifactTrailer {
+}
 ```
 
 The general flow would be to check healthz for an endpoint and it would then
