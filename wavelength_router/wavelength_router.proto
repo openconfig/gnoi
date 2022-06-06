@@ -87,11 +87,6 @@ message AdjustPSDError {
   string detail = 2;
 }
 
-// AdjustPSDResponse describes the possible response messages that will be
-// streamed after the RPC is initiated. While the OTDR is running,
-// "progress" messages should be sent at a regular interval. When the
-// adjustment is completed, an "error" message should be streamed if an
-// error is encountered or the RPC should be terminated on success.
 message AdjustPSDResponse {
   oneof response {
     AdjustPSDProgress progress = 1;
