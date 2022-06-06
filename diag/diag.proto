@@ -25,10 +25,8 @@ package gnoi.diag;
 //    operations on a set of ports.
 // 2- BURNING related RPCs: Used to perform a vendor-provided Burnin test on the
 //    switch to ensure the box is ready to start serving traffic. Burnin tests
-//    are typically run in the datacenter, as part of turnup or repair workflow.
-// Note: The RPCs defined here are are stateless operations and them
-// failing/passing should not leave any permanent artifact on the switch (unless
-// there is something wrong HW-wise).
+//    are typically run by HwOps in the datacenter, as part of turnup or repair
+//    workflow.
 service Diag {
   // Starts BERT operation on a set of ports. Each BERT operation is uniquely
   // identified by an ID, which is given by the caller. The caller can then
