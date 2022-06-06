@@ -80,8 +80,9 @@ certificate or reuses a default one.
 
 The first installed certificate and CA certificate pool is used for the gNOI and
 gNMI services. No other certificates should be installed during the default
-stage. The certificate ID specified, becomes the associated certificate ID for
-the gNMI/gNOI service.
+stage. If the certificate ID is specified, then that becomes the associated
+certificate ID for the gNMI/gNOI service. If none is specified then one is
+assigned by the Target.
 
 ##### Target behaviour
 
