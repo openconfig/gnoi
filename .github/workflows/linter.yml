@@ -20,4 +20,3 @@ jobs:
 
       - name: Lint protobuf
         uses: plexsystems/protolint-action@v0.2.0
-	configDirectory: .github
