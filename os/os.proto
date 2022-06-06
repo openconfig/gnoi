@@ -160,8 +160,7 @@ message TransferRequest {
 // omitting the InstallRequest->TransferRequest->version value, and the OS
 // package is the same as the one running in the Target, the RPC MUST
 // immediately abort and reply with an InstallError->type->INSTALL_RUN_PACKAGE.
-message TransferEnd {
-}
+message TransferEnd {}
 
 // The InstallResponse is used by the Target to inform the Client about the
 // state of the Install RPC. At any stage of the process the Target can reply
@@ -179,8 +178,7 @@ message InstallResponse {
 // The TransferReady message tells the Client that the Target is ready to accept
 // the transfer of the OS package. At this stage the Target MUST have cleared
 // enough space to accept the incoming OS package.
-message TransferReady {
-}
+message TransferReady {}
 
 // The TransferProgress message is sent by the target asynchronously during a
 // file transfer. The device SHOULD not respond to each input block received
@@ -272,8 +270,7 @@ message ActivateResponse {
 // Supervisor triggers a switchover before booting the (old)Active Supervisor.
 // The Target should always perform a switchover with the least impact possible
 // to forwarding.
-message ActivateOK {
-}
+message ActivateOK {}
 
 message ActivateError {
   enum Type {
@@ -287,8 +284,7 @@ message ActivateError {
   string detail = 2;
 }
 
-message VerifyRequest {
-}
+message VerifyRequest {}
 
 message VerifyResponse {
   // The OS version currently running.
