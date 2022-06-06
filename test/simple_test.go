@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/golang/protobuf/proto"
-	tpb "github.com/openconfig/gnoi/types"
+	gpb "github.com/openconfig/gnoi"
 	bgppb "github.com/openconfig/gnoi/bgp"
 )
 
@@ -28,16 +28,16 @@ func TestGNOI(t *testing.T) {
 		in   proto.Message
 		want string
 	}{{
-		desc: "tpb.Path",
-		in: &tpb.Path{
+		desc: "gpb.Path",
+		in: &gpb.Path{
 			Origin: "oc",
-			Elem:   []*tpb.PathElem{{Name: "interfaces", Key: map[string]string{"name": "Ethernet1/1/0"}}},
+			Elem:   []*gpb.PathElem{{Name: "interfaces", Key: map[string]string{"name": "Ethernet1/1/0"}}},
 		},
 		want: "origin: \"oc\"\nelem: <\n  name: \"interfaces\"\n  key: <\n    key: \"name\"\n    value: \"Ethernet1/1/0\"\n  >\n>\n",
 	}, {
-		desc: "tpb.HashType",
-		in: &tpb.HashType{
-			Method: tpb.HashType_MD5,
+		desc: "gpb.HashType",
+		in: &gpb.HashType{
+			Method: gpb.HashType_MD5,
 			Hash:   []byte("foo"),
 		},
 		want: "method: MD5\nhash: \"foo\"\n",
