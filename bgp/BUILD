@@ -34,7 +34,7 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "bgp_cc_proto",
-    deps = [":bgp_proto"],
+    name = "types_cc_proto",
+    deps = [":types_proto"],
 )
 

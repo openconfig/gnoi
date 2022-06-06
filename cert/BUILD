@@ -36,7 +36,7 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "cert_cc_proto",
-    deps = [":cert_proto"],
+    name = "types_cc_proto",
+    deps = [":types_proto"],
 )
 
