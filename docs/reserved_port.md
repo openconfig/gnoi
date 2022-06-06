@@ -1,7 +1,6 @@
 # IANA reserved port
 
-gNMI and gNOI services have a reserved port since May the 9th, 2019. Please use
-this port as the default & configured port in your systems.
+gNMI and gNOI services have a reserved port.
 
 `
 service: gnmi-gnoi
