@@ -1,5 +1,5 @@
 # Copyright 2021 Google LLC
-#
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -20,7 +20,7 @@ def gnoi_deps():
     """Declare the third-party dependencies necessary to build gnoi"""
 
     if not native.existing_rule("com_github_grpc_grpc"):
-        http_archive(
+       http_archive(
             name = "com_github_grpc_grpc",
             url = "https://github.com/grpc/grpc/archive/refs/tags/v1.37.1.tar.gz",
             strip_prefix = "grpc-1.37.1",
