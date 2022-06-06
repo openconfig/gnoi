@@ -83,8 +83,8 @@ service System {
   // CancelReboot cancels any pending reboot request.
   rpc CancelReboot(CancelRebootRequest) returns (CancelRebootResponse) {}
 
-  // KillProcess kills an OS process, and optionally restarts it.
-  rpc KillProcess(KillProcessRequest) returns (KillProcessResponse) {}
+  // RestartProcess restarts an OS process.
+  rpc RestartProcess(RestartProcessRequest) returns (RestartProcessResponse) {}
 
   // TODO(hines): Add RotateCertificate workflow
   // TODO(hines): Add SetSSHPrivateKey
@@ -315,26 +315,19 @@ message SetPackageRequest {
 message SetPackageResponse {
 }
 
-// KillProcessRequest describes the process kill operation.
-// Either a pid or name of the procss must be specified.
-message KillProcessRequest {
-  // Process ID of the process to be killed.
-  uint32 pid = 1;
-  // Name of the process to be killed.
-  string name = 2;
-  // Termination signal sent to the process.
-  enum Signal {
-    SIGNAL_UNSPECIFIED = 0;  // Invalid default.
-    SIGNAL_TERM = 1;         // Terminate the process gracefully.
-    SIGNAL_KILL = 2;         // Terminate the process immediately.
-    SIGNAL_HUP = 3;          // Reload the process configuration.
+// RestartProcessRequest describes the process restart operation.
+message RestartProcessRequest {
+  // Name of the process to be restarted.
+  string name = 1;
+  // Mode of restarting.
+  enum Mode {
+    DEFAULT = 0;  // Invalid default mode.
+    GRACEFUL = 1;
+    IMMEDIATE = 2;
   }
-  Signal signal = 3;
-  // Whether the process should be restarted after termination.
-  // This value is ignored when the termination signal is SIGHUP.
-  bool restart = 4;
+  Mode mode = 2;
 }
 
-// KillProcessResponse describes the result of the process kill operation.
-message KillProcessResponse {
+// RestartProcessResponse describes the result of the process restart operation.
+message RestartProcessResponse {
 }
