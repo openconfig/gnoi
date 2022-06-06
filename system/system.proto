@@ -275,37 +275,11 @@ message TracerouteResponse {
   repeated int32 as_path = 12;   // AS path.
 }
 
-// RemoteDownload defines the details for a device to initiate a download of a
-// package from a remote location.
-message RemoteDownload {
-  // The path information containing where to download the package from.
-  // For HTTP(S), this will be the URL (i.e. foo.com/file.tbz2).
-  // For SFTP and SCP, this will be the address:/path/to/file
-  // (i.e. host.foo.com:/bar/baz).
-  string path = 1;
-
-  enum DownloadType {
-    DL_UNKNOWN = 0;
-    DL_SFTP = 1;
-    DL_HTTP = 2;
-    DL_HTTPS = 3;
-    DL_SCP = 4;
-  }
-  DownloadType download_type = 2;
-
-  gnoi.Credentials credentials = 3;
-}
-
 // Package defines a single package file to be placed on the target.
 message Package {
-  // Destination path and filename of the package.
-  string filename = 1;
-  // Version of the package. (vendor internal name)
-  string version = 4;
-  // For system packages this will take effect after reboot.
-  bool activate = 5;
-  // Details for the device to download the package from a remote location.
-  RemoteDownload remote_download = 6;
+  string filename = 1;  // Destination path and filename of the package.
+  string version = 4;   // Version of the package. (vendor internal name)
+  bool activate = 5;    // For system packages this will take effect after reboot.
 }
 
 // SetPackageRequest will place the package onto the target and optionally mark
