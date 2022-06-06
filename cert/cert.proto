@@ -18,9 +18,9 @@
 // rotation.
 syntax = "proto3";
 
-package gnoi.certificate;
-
 import "github.com/openconfig/gnoi/types/types.proto";
+
+package gnoi.certificate;
 
 option (types.gnoi_version) = "0.2.0";
 
@@ -89,7 +89,7 @@ service CertificateManagement {
   //   Step 6: Final commit.
   //     Client ---> FinalizeRequest ----> Target
   rpc Rotate(stream RotateCertificateRequest)
-    returns (stream RotateCertificateResponse);
+      returns (stream RotateCertificateResponse);
 
   // Install will put a new Certificate on the target by creating a new CSR
   // request and placing the new Certificate based on the CSR on the target.The
@@ -134,7 +134,7 @@ service CertificateManagement {
   //     Client <- LoadCertificateResponse() <--- Target
   //
   rpc Install(stream InstallCertificateRequest)
-    returns (stream InstallCertificateResponse);
+      returns (stream InstallCertificateResponse);
 
   // When credentials are generated on the device, generates a keypair and
   // returns the Certificate Signing Request (CSR). The CSR has the public key,
