@@ -268,8 +268,6 @@ message ActivateResponse {
 // requested in ActivateRequest then it replies with ActivateOK and proceeds to
 // boot. In a Target with dual Supervisor, performing this RPC on the Active
 // Supervisor triggers a switchover before booting the (old)Active Supervisor.
-// The Target should always perform a switchover with the least impact possible
-// to forwarding.
 message ActivateOK {}
 
 message ActivateError {
