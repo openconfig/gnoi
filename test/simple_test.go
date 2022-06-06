@@ -18,10 +18,8 @@ import (
 	"testing"
 
 	"github.com/golang/protobuf/proto"
-	bgppb "github.com/openconfig/gnoi/bgp"
-	cpb "github.com/openconfig/gnoi/common"
-	spb "github.com/openconfig/gnoi/system"
 	tpb "github.com/openconfig/gnoi/types"
+	bgppb "github.com/openconfig/gnoi/bgp"
 )
 
 func TestGNOI(t *testing.T) {
@@ -51,19 +49,6 @@ func TestGNOI(t *testing.T) {
 			Mode:            bgppb.ClearBGPNeighborRequest_HARD,
 		},
 		want: "address: \"foo\"\nrouting_instance: \"bar\"\nmode: HARD\n",
-	}, {
-		desc: "system.SetPackage",
-		in: &spb.Package{
-			Filename: "filename",
-			RemoteDownload: &cpb.RemoteDownload{
-				Path:     "foo",
-				Protocol: cpb.RemoteDownload_SCP,
-				Credentials: &tpb.Credentials{
-					Username: "bar",
-				},
-			},
-		},
-		want: "filename: \"filename\"\nremote_download: <\n  path: \"foo\"\n  protocol: SCP\n  credentials: <\n    username: \"bar\"\n  >\n>\n",
 	}}
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {

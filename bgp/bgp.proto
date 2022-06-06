@@ -21,7 +21,7 @@ import "github.com/openconfig/gnoi/types/types.proto";
 package gnoi.bgp;
 
 // The current semantic version of the gNOI BGP service.
-option (types.gnoi_version) = "0.1.0";
+option (gnoi.gnoi_version) = "0.1.0";
 
 service BGP {
   // ClearBGPNeighbor clears a BGP session.

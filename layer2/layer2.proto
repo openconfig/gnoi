@@ -20,7 +20,7 @@ package gnoi.layer2;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option (types.gnoi_version) = "0.1.0";
+option (gnoi.gnoi_version) = "0.1.0";
 
 service Layer2 {
   // ClearNeighborDiscovery will clear either a specific neighbor entry or
@@ -49,7 +49,7 @@ service Layer2 {
 }
 
 message ClearNeighborDiscoveryRequest {
-  types.L3Protocol protocol = 1;
+  gnoi.L3Protocol protocol = 1;
   string address = 2;
 }
 
@@ -58,7 +58,7 @@ message ClearNeighborDiscoveryResponse {
 
 
 message ClearSpanningTreeRequest {
-  types.Path interface = 1;
+  gnoi.Path interface = 1;
 }
 
 message ClearSpanningTreeResponse {
@@ -67,7 +67,7 @@ message ClearSpanningTreeResponse {
 message PerformBERTRequest {
   // ID for retrieving a previous BERT run data - optional.
   string id = 1;
-  types.Path interface = 2;
+  gnoi.Path interface = 2;
 }
 
 message PerformBERTResponse {
@@ -87,14 +87,14 @@ message PerformBERTResponse {
 }
 
 message ClearLLDPInterfaceRequest {
-  types.Path interface = 1;
+  gnoi.Path interface = 1;
 }
 
 message ClearLLDPInterfaceResponse {
 }
 
 message SendWakeOnLANRequest {
-  types.Path interface = 1;
+  gnoi.Path interface = 1;
   string address = 2;  // IP address of the WOL target.
   bytes mac_address = 3; // MAC address of the target.
 }
