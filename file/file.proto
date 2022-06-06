@@ -28,12 +28,12 @@ service File {
   // if the file does not exist or there was an error reading the file.
   rpc Get(GetRequest) returns (stream GetResponse) {}
 
-  // Put streams data into a file on the target. The file is sent in
+  // Put streamd data into a file on the target. The file is sent in
   // sequential messages, each message containing up to 64KB of data. A final
   // message must be sent that includes the hash of the data sent. An
   // error is returned if the location does not exist or there is an error
   // writing the data. If no checksum is received, the target must assume the
-  // operation is incomplete and remove the partially transmitted file. The
+  // the operation is incomplete and remove the partially transmitted file. The
   // target should initially write the file to a temporary location so a failure
   // does not destroy the original file.
   rpc Put(stream PutRequest) returns (PutResponse) {}
