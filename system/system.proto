@@ -24,7 +24,7 @@ syntax = "proto3";
 
 package gnoi.system;
 
-import "github.com/openconfig/gnoi/common.proto";
+import "third_party/openconfig/gnoi/common.proto";
 import "github.com/openconfig/gnoi/types.proto";
 
 // The gNOI service is a collection of operational RPC's that allow for the

@@ -18,11 +18,11 @@ syntax = "proto3";
 
 package gnoi.file;
 
-import "github.com/openconfig/gnoi/common.proto";
+import "third_party/openconfig/gnoi/common.proto";
 import "github.com/openconfig/gnoi/types.proto";
 
 service File {
-  // Get reads and streams the contents of a file from the target.
+  // Get read and streams the contents of a file from the target.
   // The file is streamed by sequential messages, each containing up to
   // 64KB of data. A final message is sent prior to closing the stream
   // that contains the hash of the data sent. An error is returned
