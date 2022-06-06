@@ -16,7 +16,7 @@
 
 syntax = "proto3";
 
-package gnoi.common;
+package common;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
