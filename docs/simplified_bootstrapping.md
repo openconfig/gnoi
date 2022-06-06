@@ -86,13 +86,12 @@ assigned by the Target.
 
 ##### Target behaviour
 
-The Target must restart its gNOI/gNMI service and exclusively perform secure
-connections as soon as the certificate and CA certificates have been
-successfully installed, thus transitioning from the default state to the
-provisioned state. The previously used default certificate must not be used once
-in the provisioned state.
+The Target must restart its gNOI/gNMI service in secure mode as soon as the
+certificate and CA certificates have been successfully installed, thus
+transitioning from the default state to the provisioned state. The previously
+used default certificate must not be used once in the provisioned state.
 
-##### Client behavior
+##### Client behaviour
 
 The Client, when bootstrapping a Target must not attempt to authenticate the
 Target when establishing a connection. However it should still encrypt that
@@ -108,5 +107,5 @@ encryption rules apply.
 It must be possible to reset a Target to its default state. For a Network
 Element this would be a factory reset triggered via gNOI. When executed, all
 certificates and CA certificates should be cleared. A default certificate must
-be generated if it does not already exist. The entire bootstrapping process
+be generated if it does not already exist. The entire boostrapping process
 should be applicable again.
