@@ -282,8 +282,6 @@ message LoadCertificateRequest {
   // Groups of chained certificates should be last, where within, the root
   // certificate is the last one. E.g.:
   // CertA, CertB, CertB-Root, CertC, CertC-Intermediate, CertC-Root
-  // Note that on a forward looking iteration, CA Certificates will be managed
-  // by a dedicated gNOI service.
   repeated Certificate ca_certificates = 4;
 }
 
