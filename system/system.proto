@@ -47,7 +47,7 @@ service System {
 
   // SetPackage places a software package (possibly including bootable images)
   // on the target.
-  rpc SetPackage(stream SetPackageRequest) returns (SetPackageResponse) {}
+  rpc SetPackage(SetPackageRequest) returns (SetPackageResponse) {}
 
   // SwitchControlProcessor will switch from the current route processor to the
   // provided route processor. If the current route processor is the same as the
@@ -272,23 +272,17 @@ message TracerouteResponse {
 // Package defines a single package file to be placed on the target.
 message Package {
   string filename = 1;  // Destination path and filename of the package.
+  bytes data = 2;       // Contents of the package.
+  gnoi.HashType hash = 3;    // Verification hash of data.
   string version = 4;   // Version of the package. (vendor internal name)
   bool activate = 5;    // For system packages this will take effect after reboot.
 }
 
 // SetPackageRequest will place the package onto the target and optionally mark
-// it as the next bootable image. The initial message must be a package
-// message containing the filename and information about the file.
-// The final message must be a hash message contains the hash of the file
-// contents.
+// it as the next bootable image.
 message SetPackageRequest {
-  oneof request {
-   Package package = 1;
-   bytes contents = 2;
-   gnoi.HashType hash = 3;    // Verification hash of data.
- }
+  repeated Package packages = 1;
 }
-
 
 message SetPackageResponse {
 }
