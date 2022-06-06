@@ -49,12 +49,8 @@ jobs:
         run: |
           go get -u honnef.co/go/tools/cmd/staticcheck
 
-      - name: Check out code
+      - name: Check out ygot code
         uses: actions/checkout@v2
-
-      - name: get dependencies
-        run: |
-          go get -v -t -d ./...
 
       - name: Go vet
         run: go vet ./...
