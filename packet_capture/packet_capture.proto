@@ -35,10 +35,10 @@ enum Direction {
 }
 
 enum ChannelWidth {
-  WIDTH_20MHz = 0;
-  WIDTH_40MHz = 1;
-  WIDTH_80MHz = 2;
-  WIDTH_160MHz = 3;
+  WIDTH_20MHZ = 0;
+  WIDTH_40MHZ = 1;
+  WIDTH_80MHZ = 2;
+  WIDTH_160MHZ = 3;
 }
 
 // The capture is performed on the operating access radio(s) and it is not
@@ -58,24 +58,29 @@ message AccessCaptureType {
   bool promiscuous_mode = 4;
 }
 
-// A ScanCaptureType on a dedicated scan radio.  If a dedicated scan radio does
-// not exist, the device may turn an access radio(s) into scan radio(s), which
-// may impact clients.
-message ScanCaptureType {
-  repeated BandChannelCombo combo = 1;
+message ChannelInfo {
+  // Channels.
+  string channel = 1;
+  // Channel width: 20/40/80/160 MHz, if not specified defaults to 20MHz.
+  ChannelWidth channel_width = 2;
 }
 
 // BandChannelCombo specifies the bands and channels to capture on.  
 message BandChannelCombo {
   // Operating band: 2.4G, 5G, 6G.
   OperatingBand operating_band = 1;
-  // Channels.
-  repeated string channel = 2;
-  // Channel width: 20/40/80/160 MHz, if not specified defaults to 20MHz.
-  ChannelWidth channel_width = 3;
-  // Each channel capture duration in milliseconds, if not specified
+  // Channel Info.
+  repeated ChannelInfo channel_info = 2;
+}
+
+// A ScanCaptureType on a dedicated scan radio.  If a dedicated scan radio does
+// not exist, the device may turn an access radio(s) into scan radio(s), which
+// may impact clients.
+message ScanCaptureType {
+  repeated BandChannelCombo combo = 1;
+  // Channel capture duration in nanoseconds, if not specified
   // defaults to something, supported by the platform.
-  uint32 dwell_time = 4;
+  uint64 dwell_time = 2;
 }
 
 message Filter {
