@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package gnoi.optical;
 
-import "github.com/openconfig/gnoi/types/types.proto";
+import "third_party/openconfig/gnoi/types/types.proto";
 
 option (types.gnoi_version) = "0.1.0";
 
@@ -79,7 +79,7 @@ message OTDRConfigurationProfile {
 message OTDRConfiguration {
   // The time in seconds in which the OTDR trace will run continuously to
   // collect data.
-  uint32 acquisition_time_s = 1;
+  uint16 acquisition_time_s = 1;
 
   // The pulse width in nanoseconds which defines how long pulses sent by the
   // OTDR will be during the test.
