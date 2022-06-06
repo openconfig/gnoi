@@ -31,7 +31,6 @@ filegroup(
 proto_library(
     name = "types_proto",
     srcs = ["types.proto"],
-    import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",

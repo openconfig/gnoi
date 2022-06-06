@@ -3,7 +3,8 @@ syntax = "proto3";
 
 package gnoi.factory_reset;
 
-import "github.com/openconfig/gnoi/types/types.proto";
+// import "github.com/openconfig/gnoi/types/types.proto";
+import "types/types.proto";
 
 option (types.gnoi_version) = "0.1.0";
 

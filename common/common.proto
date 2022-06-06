@@ -18,7 +18,8 @@ syntax = "proto3";
 
 package gnoi.common;
 
-import "github.com/openconfig/gnoi/types/types.proto";
+// import "github.com/openconfig/gnoi/types/types.proto";
+import "types/types.proto";
 
 // RemoteDownload defines the details for a device to initiate a file transfer
 // from or to a remote location.

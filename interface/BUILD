@@ -29,7 +29,6 @@ filegroup(
 proto_library(
     name = "interface_proto",
     srcs = ["interface.proto"],
-    import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "//types:types_proto",
         "//common:common_proto",
