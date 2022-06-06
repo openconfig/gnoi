@@ -282,9 +282,7 @@ message Package {
   string filename = 1;
   // Version of the package. (vendor internal name)
   string version = 4;
-  // Indicates that the package should be made active after receipt on
-  // the device. For system image packages, the new image is expected to
-  // be active after a reboot.
+  // For system packages this will take effect after reboot.
   bool activate = 5;
   // Details for the device to download the package from a remote location.
   gnoi.RemoteDownload remote_download = 6;
