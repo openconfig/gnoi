@@ -329,5 +329,4 @@ message RestartProcessRequest {
 }
 
 // RestartProcessResponse describes the result of the process restart operation.
-message RestartProcessResponse {
-}
+message RestartProcessResponse {}
