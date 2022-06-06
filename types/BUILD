@@ -14,29 +14,38 @@
 #
 # Supporting infrastructure for implementing and testing PINS.
 #
+
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+
 package(
     default_visibility = ["//visibility:public"],
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "types_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "layer2_proto",
-    srcs = ["layer2.proto"],
+    name = "types_proto",
+    srcs = ["types.proto"],
+    import_prefix = "github.com/openconfig/gnoi",
     deps = [
-        "//types:types_proto",
-        "//common:common_proto",
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
 cc_proto_library(
-    name = "layer2_cc_proto",
-    deps = [":layer2_proto"],
+    name = "types_cc_proto",
+    deps = [":types_proto"],
 )
 
 cc_grpc_library(
-    name = "layer2_cc_grpc_proto",
-    srcs = [":layer2_proto"],
-    deps = [":layer2_cc_proto"],
+    name = "types_cc_grpc_proto",
+    srcs = [":types_proto"],
+    deps = [":types_cc_proto"],
     grpc_only = True,
 )

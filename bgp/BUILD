@@ -22,25 +22,29 @@ package(
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "bgp_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "common_proto",
-    srcs = ["common.proto"],
+    name = "bgp_proto",
+    srcs = ["bgp.proto"],
     import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "//types:types_proto",
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
 cc_proto_library(
-    name = "common_cc_proto",
-    deps = [":common_proto"],
+    name = "bgp_cc_proto",
+    deps = [":bgp_proto"],
 )
 
 cc_grpc_library(
-    name = "common_cc_grpc_proto",
-    srcs = [":common_proto"],
-    deps = [":common_cc_proto"],
+    name = "bgp_cc_grpc_proto",
+    srcs = [":bgp_proto"],
+    deps = [":bgp_cc_proto"],
     grpc_only = True,
 )

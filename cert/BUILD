@@ -14,7 +14,6 @@
 #
 # Supporting infrastructure for implementing and testing PINS.
 #
-
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 package(
@@ -22,22 +21,30 @@ package(
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "cert_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "diag_proto",
-    srcs = ["diag.proto"],
+    name = "cert_proto",
+    srcs = ["cert.proto"],
     deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "//types:types_proto",
     ],
 )
 
 cc_proto_library(
-    name = "diag_cc_proto",
-    deps = [":diag_proto"],
+    name = "cert_cc_proto",
+    deps = [":cert_proto"],
 )
 
 cc_grpc_library(
-    name = "diag_cc_grpc_proto",
-    srcs = [":diag_proto"],
-    deps = [":diag_cc_proto"],
+    name = "cert_cc_grpc_proto",
+    srcs = [":cert_proto"],
+    deps = [":cert_cc_proto"],
     grpc_only = True,
 )

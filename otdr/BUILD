@@ -22,23 +22,29 @@ package(
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "otdr_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "wavelength_router_proto",
-    srcs = ["wavelength_router.proto"],
+    name = "otdr_proto",
+    srcs = ["otdr.proto"],
     deps = [
-         "//common:common_proto",
         "//types:types_proto",
+        "//common:common_proto",
     ],
 )
 
 cc_proto_library(
-    name = "wavelength_router_cc_proto",
-    deps = [":wavelength_router_proto"],
+    name = "otdr_cc_proto",
+    deps = [":otdr_proto"],
 )
 
 cc_grpc_library(
-    name = "wavelength_router_cc_grpc_proto",
-    srcs = [":wavelength_router_proto"],
-    deps = [":wavelength_router_cc_proto"],
+    name = "otdr_cc_grpc_proto",
+    srcs = [":otdr_proto"],
+    deps = [":otdr_cc_proto"],
     grpc_only = True,
 )

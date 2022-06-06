@@ -20,9 +20,15 @@ package(
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "file_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "interface_proto",
-    srcs = ["interface.proto"],
+    name = "file_proto",
+    srcs = ["file.proto"],
     deps = [
         "//types:types_proto",
         "//common:common_proto",
@@ -30,13 +36,13 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "interface_cc_proto",
-    deps = [":interface_proto"],
+    name = "file_cc_proto",
+    deps = [":file_proto"],
 )
 
 cc_grpc_library(
-    name = "interface_cc_grpc_proto",
-    srcs = [":interface_proto"],
-    deps = [":interface_cc_proto"],
+    name = "file_cc_grpc_proto",
+    srcs = [":file_proto"],
+    deps = [":file_cc_proto"],
     grpc_only = True,
 )

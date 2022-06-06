@@ -22,23 +22,28 @@ package(
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "diag_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "otdr_proto",
-    srcs = ["otdr.proto"],
+    name = "diag_proto",
+    srcs = ["diag.proto"],
     deps = [
         "//types:types_proto",
-        "//common:common_proto",
     ],
 )
 
 cc_proto_library(
-    name = "otdr_cc_proto",
-    deps = [":otdr_proto"],
+    name = "diag_cc_proto",
+    deps = [":diag_proto"],
 )
 
 cc_grpc_library(
-    name = "otdr_cc_grpc_proto",
-    srcs = [":otdr_proto"],
-    deps = [":otdr_cc_proto"],
+    name = "diag_cc_grpc_proto",
+    srcs = [":diag_proto"],
+    deps = [":diag_cc_proto"],
     grpc_only = True,
 )

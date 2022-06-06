@@ -21,24 +21,28 @@ package(
     licenses = ["notice"],
 )
 
+filegroup(
+    name = "reset_proto_srcs",
+    srcs = glob(["**/*.proto"]),
+    visibility = ["//third_party/pins_infra/thinkit:__pkg__"],
+)
+
 proto_library(
-    name = "cert_proto",
-    srcs = ["cert.proto"],
+    name = "reset_proto",
+    srcs = ["reset.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
         "//types:types_proto",
     ],
 )
 
 cc_proto_library(
-    name = "cert_cc_proto",
-    deps = [":cert_proto"],
+    name = "reset_cc_proto",
+    deps = [":reset_proto"],
 )
 
 cc_grpc_library(
-    name = "cert_cc_grpc_proto",
-    srcs = [":cert_proto"],
-    deps = [":cert_cc_proto"],
+    name = "reset_cc_grpc_proto",
+    srcs = [":reset_proto"],
+    deps = [":reset_cc_proto"],
     grpc_only = True,
 )

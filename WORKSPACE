@@ -12,18 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-workspace(name = "com_github_openconfig_gnoi")
+workspace(name = "gnoi")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # -- Load Dependencies ---------------------------------------------------------
-load("gnoi_deps.bzl", "gnoi_deps")
+load("gnoi_infra_deps.bzl", "gnoi_infra_deps")
 
-gnoi_deps()
+gnoi_infra_deps()
+
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
+
+bind(
+    name = "grpc_cpp_plugin",
+    actual = "@com_github_grpc_grpc//:grpc_cpp_plugin",
+)
+
+bind(
+    name = "grpc++_codegen_proto",
+    actual = "@com_github_grpc_grpc//:grpc++_codegen_proto",
+)
 
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 
