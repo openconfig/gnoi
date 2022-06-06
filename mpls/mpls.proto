@@ -16,11 +16,7 @@
 
 syntax = "proto3";
 
-import "types/types.proto";
-
 package gnoi.mpls;
-
-option (gnoi.gnoi_version) = "0.1.0";
 
 service MPLS {
   // ClearLSP clears a single tunnel (requests for it's route to be

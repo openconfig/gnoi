@@ -20,9 +20,7 @@ syntax = "proto3";
 
 package gnoi.diag;
 
-import "types/types.proto";
-
-option (gnoi.gnoi_version) = "0.1.0";
+import "github.com/openconfig/gnoi/types.proto";
 
 // The Diag service exports to main set of RPCs:
 // 1- BERT related RPCs: Used to perform Bit Error Rate Test (BERT)
