@@ -36,7 +36,8 @@ option (types.gnoi_version) = "1.0.0";
 service System {
   // Ping executes the ping command on the target and streams back
   // the results.  Some targets may not stream any results until all
-  // results are in.
+  // results are in.  If a packet count is not explicitly provided,
+  // 5 is used.
   rpc Ping(PingRequest) returns (stream PingResponse) {}
 
   // Traceroute executes the traceroute command on the target and streams back
