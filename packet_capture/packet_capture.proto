@@ -57,7 +57,7 @@ message BandChannelCombo {
 
 message Filter {
   // Different types of filtering options.
-  
+
   // filter_name can be a reference to a filter already configured on the device
   // such as an ACL/class-map or other platform-specific abstraction that
   // may allow for the configuration of other filtering not otherwise available.
