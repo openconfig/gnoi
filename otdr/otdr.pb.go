@@ -113,8 +113,6 @@ func (InitiateRequest_ResultsMethod) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor0, []int{0, 0}
 }
 
-// The State enum defines possible states that the OTDR trace may be in
-// while running the operation.
 type InitiateProgress_State int32
 
 const (
@@ -611,7 +609,7 @@ const _ = grpc.SupportPackageIsVersion3
 // Client API for OTDR service
 
 type OTDRClient interface {
-	// Initiate triggers an optical time domain reflectometer (OTDR) trace to
+	// InitiateOTDR triggers an optical time domain reflectometer (OTDR) trace to
 	// be run on a specified port. The results of the trace may be sent back in
 	// the response or saved on the device to be retrieved later. If the
 	// information is saved on the device a path to the file must be returned
@@ -665,7 +663,7 @@ func (x *oTDRInitiateClient) Recv() (*InitiateResponse, error) {
 // Server API for OTDR service
 
 type OTDRServer interface {
-	// Initiate triggers an optical time domain reflectometer (OTDR) trace to
+	// InitiateOTDR triggers an optical time domain reflectometer (OTDR) trace to
 	// be run on a specified port. The results of the trace may be sent back in
 	// the response or saved on the device to be retrieved later. If the
 	// information is saved on the device a path to the file must be returned

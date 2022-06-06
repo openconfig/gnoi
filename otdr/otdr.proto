@@ -23,7 +23,7 @@ import "github.com/openconfig/gnoi/types/types.proto";
 option (types.gnoi_version) = "0.1.0";
 
 service OTDR {
-  // Initiate triggers an optical time domain reflectometer (OTDR) trace to
+  // InitiateOTDR triggers an optical time domain reflectometer (OTDR) trace to
   // be run on a specified port. The results of the trace may be sent back in
   // the response or saved on the device to be retrieved later. If the
   // information is saved on the device a path to the file must be returned
@@ -111,8 +111,6 @@ enum FiberTypeProfile {
 }
 
 message InitiateProgress {
-  // The State enum defines possible states that the OTDR trace may be in
-  // while running the operation.
   enum State {
     UNKNOWN = 0;
     RUNNING = 1;   // The OTDR is currently performing an OTDR trace.
