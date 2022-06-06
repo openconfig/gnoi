@@ -41,9 +41,4 @@ message RemoteDownload {
   Protocol protocol = 2;
 
   types.Credentials credentials = 3;
-
-  // Optional source address used to initiate connections from the device.
-  // It can be either an IPv4 address or an IPv6 address, depending on the
-  // connection's destination address.
-  string source_address = 4;
 }
