@@ -58,7 +58,7 @@ type SystemClient interface {
 	RebootStatus(ctx context.Context, in *RebootStatusRequest, opts ...grpc.CallOption) (*RebootStatusResponse, error)
 	// CancelReboot cancels any pending reboot request.
 	CancelReboot(ctx context.Context, in *CancelRebootRequest, opts ...grpc.CallOption) (*CancelRebootResponse, error)
-	// KillProcess kills an OS process and optionally restarts it.
+	// KillProcess kills an OS process, and optionally restarts it.
 	KillProcess(ctx context.Context, in *KillProcessRequest, opts ...grpc.CallOption) (*KillProcessResponse, error)
 }
 
@@ -266,7 +266,7 @@ type SystemServer interface {
 	RebootStatus(context.Context, *RebootStatusRequest) (*RebootStatusResponse, error)
 	// CancelReboot cancels any pending reboot request.
 	CancelReboot(context.Context, *CancelRebootRequest) (*CancelRebootResponse, error)
-	// KillProcess kills an OS process and optionally restarts it.
+	// KillProcess kills an OS process, and optionally restarts it.
 	KillProcess(context.Context, *KillProcessRequest) (*KillProcessResponse, error)
 	mustEmbedUnimplementedSystemServer()
 }

@@ -1572,8 +1572,8 @@ func (*SetPackageResponse) Descriptor() ([]byte, []int) {
 	return file_system_system_proto_rawDescGZIP(), []int{16}
 }
 
-// KillProcessRequest describes the process kill operation. Either a pid or
-// process name must be specified, and a termination signal must be specified.
+// KillProcessRequest describes the process kill operation.
+// Either a pid or name of the procss must be specified.
 type KillProcessRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
