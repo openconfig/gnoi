@@ -5,8 +5,6 @@ package gnoi.os;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option go_package = "github.com/openconfig/gnoi/os";
-
 option (types.gnoi_version) = "0.1.0";
 
 // The OS service provides an interface for OS installation on a Target. The

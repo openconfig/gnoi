@@ -20,8 +20,6 @@ package gnoi.layer2;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option go_package = "github.com/openconfig/gnoi/layer2";
-
 option (types.gnoi_version) = "0.1.0";
 
 service Layer2 {

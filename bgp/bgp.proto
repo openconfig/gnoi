@@ -20,8 +20,6 @@ package gnoi.bgp;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option go_package = "github.com/openconfig/gnoi/bgp";
-
 // The current semantic version of the gNOI BGP service.
 option (types.gnoi_version) = "0.1.0";
 

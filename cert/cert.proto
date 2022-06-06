@@ -22,8 +22,6 @@ package gnoi.certificate;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option go_package = "github.com/openconfig/gnoi/cert";
-
 option (types.gnoi_version) = "0.2.0";
 
 // The Certificate Management Service exported by targets.
