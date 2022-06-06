@@ -62,14 +62,12 @@ service WavelengthRouter {
   // updates this way. There is no means by which an adjustment that has been
   // triggered by a client can be cancelled unless the CancelAdjustSpectrum
   // RPC is used.
-  rpc AdjustSpectrum(AdjustSpectrumRequest)
-    returns (stream AdjustSpectrumResponse) {}
+  rpc AdjustSpectrum(AdjustSpectrumRequest) returns (stream AdjustSpectrumResponse) {}
 
   // CancelAdjustSpectrum cancels an in-progress AdjustSpectrum request. If an
   // adjustment is not being performed for the provided request, then the RPC
   // should return successfully.
-  rpc CancelAdjustSpectrum(AdjustSpectrumRequest)
-    returns (CancelAdjustSpectrumResponse) {}
+  rpc CancelAdjustSpectrum(AdjustSpectrumRequest) returns (CancelAdjustSpectrumResponse) {}
 }
 
 message AdjustPSDRequest {
@@ -190,6 +188,5 @@ message AdjustSpectrumResponse {
   }
 }
 
-message CancelAdjustSpectrumResponse {
-}
+message CancelAdjustSpectrumResponse {}
 
