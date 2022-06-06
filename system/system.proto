@@ -284,7 +284,7 @@ message Package {
 
 // SetPackageRequest will place the package onto the target and optionally mark
 // it as the next bootable image. The initial message must be a package
-// message containing the filename and information about the file. Following the
+// message containing the filename and information about the file. Folloing the
 // initial message the contents are then streamed in maximum 64k chunks. The
 // final message must be a hash message contains the hash of the file contents.
 message SetPackageRequest {
