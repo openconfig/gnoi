@@ -14,9 +14,6 @@
 #
 # Supporting infrastructure for implementing and testing PINS.
 #
-
-load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
-
 package(
     default_visibility = ["//visibility:public"],
     licenses = ["notice"],
@@ -42,9 +39,3 @@ cc_proto_library(
     deps = [":types_proto"],
 )
 
-cc_grpc_library(
-    name = "types_cc_grpc_proto",
-    srcs = [":types_proto"],
-    deps = [":types_cc_proto"],
-    grpc_only = True,
-)
