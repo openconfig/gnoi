@@ -31,6 +31,7 @@ filegroup(
 proto_library(
     name = "wavelength_router_proto",
     srcs = ["wavelength_router.proto"],
+    import_prefix = "github.com/openconfig/gnoi",
     deps = [
          "//common:common_proto",
         "//types:types_proto",
