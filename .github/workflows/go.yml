@@ -61,3 +61,7 @@ jobs:
 
       - name: Check gofmt
         run: diff -u <(echo -n) <(gofmt -d -s .)
+
+      - name: Staticcheck
+        run: |
+          staticcheck ./...
