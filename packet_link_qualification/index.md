@@ -684,7 +684,7 @@ message NTPSyncedTiming {
 *   Call generator and reflector Create()
 *   Generator
     *   Validate that `start_time >= time.Now() + min_setup_duration`
-    *   if teardown\_time is set
+    *   if `teardown_time` is set
         *   `teardown_time` must be >= `end_time`
         *   If not, `teardown_time` will be `end_time`
     *   Begin setup at `start_time` - `min_setup_duration`
