@@ -4,7 +4,15 @@
 
 ### Background
 
-The link qualification service is meant to provide a way to certify link quality on two devices. This service defines a protocol for setting up the peer devices to allow for the generation of packets from one device to another and validate those packets are sent and received, then restoring the devices to their previous state. This service's intent is to allow for different generation and reflection modes of operation based on the hardware capabilities of the device. There is a standard report generated regardless of modes selected and that common report can be used by upstream services to aggregate network wide link quality.
+The link qualification service is meant to provide a way to certify link
+quality on two devices. This service defines a protocol for setting up the peer
+devices to allow for the generation of packets from one device to another and
+validate those packets are sent and received, then restoring the devices to
+their previous state. This service's intent is to allow for different
+generation and reflection modes of operation based on the hardware capabilities
+of the device. There is a standard report generated regardless of modes
+selected and that common report can be used by upstream services to aggregate
+network wide link quality.
 
 ### TLDR
 
@@ -14,50 +22,54 @@ The link qualification service is meant to provide a way to certify link quality
 
 ##### Connectivity to devices during link qualification maybe interrupted
 
-Upon calling Create, the interfaces on the device will be put into a forwarding mode which must not contain other traffic, control or data. This may cause the generator or reflector endpoint to become unreachable.  The service implementation must gracefully handle this state.
+Upon calling Create, the interfaces on the device will be put into a forwarding
+mode which must not contain other traffic, control or data. This may cause the
+generator or reflector endpoint to become unreachable.  The service
+implementation must gracefully handle this state.
 
 
 ##### Devices must return to pre-link qualification state after the link qualification has completed or errored
 
-The service is not expected to persist state across reboots of the device. Since no state is changed in the configuration of the device, on boot the system should boot normally and there will be no side effects left from previous link qualifications.
+The service is not expected to persist state across reboots of the device.
+Since no state is changed in the configuration of the device, on boot the
+system should boot normally and there will be no side effects left from
+previous link qualifications.
 
-During the link qualification the device must put the interfaces into a `TESTING` `oper-status` for the duration of the qualification. Once complete, the `oper-status` should be restored to the previously configured state.
-
+During the link qualification the device must put the interfaces into a
+`TESTING` `oper-status` for the duration of the qualification. Once complete,
+the `oper-status` should be restored to the previously configured state.
 
 ##### Devices must garbage collect results after some period to keep from filling up storage on the device.
 
-The service should store at least 2 qualification results for each interface.  The results are not expected to persist across reboots of the device.
+The service should store at least 2 qualification results for each interface.
+The results are not expected to persist across reboots of the device.
 
 
 ##### The service implementation must support multiple generations of forwarding hardware which have different capabilities with regards to both generation and reflection of packets.
 
-
-
 *   Packet Generators
-
-The preferred method for the generation of frames for the link qualification is via a packet generator. This mode provides the most flexibility around packet rates, packet sizes and packet content. 
-
-
+The preferred method for the generation of frames for the link qualification is
+via a packet generator. This mode provides the most flexibility around packet
+rates, packet sizes and packet content. 
 
 *   Packet Injectors
-
-To support hardware which doesn't have a built in packet generator, link qualification provides a packet injector mode to support a loop between both endpoints in the qualification for packets to be injected and looped.
-
-
+To support hardware which doesn't have a built in packet generator, link
+qualification provides a packet injector mode to support a loop between both
+endpoints in the qualification for packets to be injected and looped.
 
 *   ASIC Loopback
-
-The ASIC loopback mode allows for the loopback of frames to happen in the forwarding path of the device.  This enables the most comprehensive testing results as all counters should be available to the qualification.  This is the preferred mode of reflection.
-
-
+The ASIC loopback mode allows for the loopback of frames to happen in the
+forwarding path of the device.  This enables the most comprehensive testing
+results as all counters should be available to the qualification.  This is the
+preferred mode of reflection.
 
 *   PMD Loopback
-
-For devices which cannot implement an ASIC based loopback. The PMD loopback mode can be supported.  This mode allows for the interface to be looped back at either the PMD or in the interface.  This will likely limit what counters are available for results on the reflector but can still validate the link.
-
+For devices which cannot implement an ASIC based loopback. The PMD loopback
+mode can be supported.  This mode allows for the interface to be looped back at
+either the PMD or in the interface.  This will likely limit what counters are
+available for results on the reflector but can still validate the link.
 
 ### Definition
-
 
 #### Service Definition
 
@@ -94,10 +106,7 @@ service LinkQualification {
 
 ```
 
-
-
 #### Create Messages 
-
 
 ```
 // CreateRequest contains the list of interfaces to be Qualified.
@@ -247,10 +256,7 @@ message AsicLoopbackConfiguration {
 }
 ```
 
-
-
 #### Get Messages
-
 
 ```
 // GetRequest returns the status for the provided ids.
@@ -323,14 +329,9 @@ message QualificationResult {
   // state is QUALIFICATION_STATE_ERROR.
   google.rpc.Status status = 12;
 }
-
-
 ```
 
-
-
 #### Delete Messages
-
 
 ```
 // DeleteRequest will delete the qualification results for the provided id.
@@ -346,10 +347,7 @@ message DeleteResponse{
 
 ```
 
-
-
 #### Capabilities Messages
-
 
 ```
 message CapabilitiesRequest {
@@ -437,8 +435,6 @@ message ReflectorCapabilities {
 
 ```
 
-
-
 #### List Messages
 
 
@@ -458,42 +454,28 @@ message ListResult {
 
 ```
 
-
-
 ### Use Cases
 
-
 #### Duplicate test ID called
-
-
 
 *   Create with config.id=”Test1” for interface Ethernet1
 *   While the above is still ongoing, Create with config.id=”Test1” for interface Ethernet2
 *   Second call to Create will return AlreadyExists error code
 
-
 #### Existing Qualification running on interface
-
-
 
 *   StartPacketQualification with config.id=”Test1” for interface Ethernet1
 *   After the above is completed, StartPacketQualification with config.id=”Test1” for interface Ethernet 2
 *   Second call to Create will return AlreadyExists error code
 
-
 #### Duplicate id but called after previous id is deleted
-
-
 
 *   Create with config.id=”Test1” for interface Ethernet1
 *   Delete with id=”Test1”
 *   Create with config.id=”Test1” for interface Ethernet 2
 *   Second call to StartPacketQualification is expected to go through without errors.
 
-
 #### How a based generator walks through setting itself up
-
-
 
 *   Create call is made
 *   Service validates the interface\_name is valid
@@ -554,7 +536,6 @@ message ListResult {
 #### Call graph for NTP synchronization
 
 #### Call example for RPC synchronization with packet injector and PMD loopback
-
 
 
 *   Caller gets Capabilities
@@ -744,4 +725,10 @@ message NTPSyncedTiming {
 
 #### Inband signaled link qualification
 
-Using this API as a general purpose framework, it could be extended to support an inband signaled mode of operation.  In the currently defined implementations the calling service must orchestrate both ends of the link via create / get / delete calls.  An inband version could allow the caller to only need to orchestrate the one side of the link. Also there could even be internal use cases in which the devices themselves could initiate a link qualification without external prompting.
+Using this API as a general purpose framework, it could be extended to support
+an inband signaled mode of operation.  In the currently defined implementations
+the calling service must orchestrate both ends of the link via create / get /
+delete calls.  An inband version could allow the caller to only need to
+orchestrate the one side of the link. Also there could even be internal use
+cases in which the devices themselves could initiate a link qualification
+without external prompting.
