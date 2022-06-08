@@ -296,9 +296,9 @@ message PacketGeneratorCapabilities {
   uint64 max_pps = 2;  // packets per second
   uint32 min_mtu = 3;  // minimum MTU supported.
   uint32 max_mtu = 4;  // max MTU supported.
-  google.protobuf.Duration min_setup_duration = 5;
-  google.protobuf.Duration min_teardown_duration = 6;
-  google.protobuf.Duration min_sample_interval = 7;
+  google.protobuf.Duration min_setup_duration = 5; // The minimum duration required to set up a packet generator-based qualification.
+  google.protobuf.Duration min_teardown_duration = 6; // The minimum time required to return the affected interface to the pre-test state. 
+  google.protobuf.Duration min_sample_interval = 7; // The minimum interval between samples for statistics relating to the qualification.
 }
 
 enum PacketInjectorLoopbackMode {
@@ -308,6 +308,7 @@ enum PacketInjectorLoopbackMode {
 }
 
 message PacketInjectorCapabilities {
+  // The definitions of fields 1-6 are the same as those described in the PacketGeneratorCapabilities message.
   uint32 min_mtu = 1;
   uint32 max_mtu =2;
   uint32 min_injected_packets = 3;
@@ -315,7 +316,7 @@ message PacketInjectorCapabilities {
   google.protobuf.Duration min_setup_duration = 5;
   google.protobuf.Duration min_teardown_duration = 6;
   google.protobuf.Duration min_sample_interval = 7;
-  repeated PacketInjectorLoopbackMode loopback_modes = 8;  
+  repeated PacketInjectorLoopbackMode loopback_modes = 8;  // Loopback modes that are supported by the device when using the packet injector mode.
 }
 
 // If the service does not support any of the defined
@@ -341,8 +342,8 @@ enum HeaderMatchField {
 }
 
 message AsicLoopbackCapabilities {
-  google.protobuf.Duration min_setup_duration = 1;
-  google.protobuf.Duration min_teardown_duration = 2;
+  google.protobuf.Duration min_setup_duration = 1; // The minimum time required to set up the ASIC loopback mode.
+  google.protobuf.Duration min_teardown_duration = 2; // The minimum time required to return the interfaces to their pre-test state following a qualification.
   repeated HeaderMatchField fields = 3;
 }
 
@@ -357,6 +358,7 @@ message ListRequest {
 }
 
 message ListResponse {
+  // The results that have not yet been deleted from the device.
   repeated ListResult results = 1;
 }
 

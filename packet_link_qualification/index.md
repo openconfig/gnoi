@@ -107,7 +107,8 @@ List returns the list of all current and previous qualifications on the device.
 
 *   Create with config.id=”Test1” for interface Ethernet1
 *   While the above is still ongoing, Create with config.id=”Test1” for interface Ethernet2
-*   Second call to Create will return AlreadyExists error code
+*   Second call to Create will return `AlreadyExists` error code within the gRPC error
+    response.
 
 ### Existing Qualification running on interface
 
@@ -124,7 +125,10 @@ List returns the list of all current and previous qualifications on the device.
 
 ### How a based generator walks through setting itself up
 
-*   Create call is made
+*   Create call is made.
+*   Service validates the request according to the criteria below. In all cases if an
+    invalid request is found, the error code specified is returned within the gRPC
+    status sent along with the `CreateResponse`.
 *   Service validates the `interface_name` is valid
     *   if not return `INVALID_PARAMETER`
 *   Service validates the `interface_name` is found
@@ -385,7 +389,7 @@ without external prompting.
 ### Link round-trip or one-way latency measurements
 
 Some service providers use measured link round trip or one way latency as part of their
-qualification process for link turn, often by comparing such values with those the
+qualification process for link turn-up, often by comparing such values with those the
 circuit design predicts. For example, this informs us whether the path was built on
 “the correct side of the mountain”. A generator could be defined that passes timestamps
 in-band in both directions that the devices at the ends of the link under test would
