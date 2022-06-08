@@ -193,7 +193,7 @@ List returns the list of all current and previous qualifications on the device.
 *   Caller gets Capabilities
     *   generator supports:
 
-        ```
+```
 message PacketInjectorCapabilities {
   min_mtu: 64
   max_mtu: 1500
@@ -206,10 +206,9 @@ message PacketInjectorCapabilities {
 }
 ```
 
-
 *   loopback supports:
 
-        ```
+```
 message PmdLoopbackCapabilities {
   min_setup_duration: "10s"
   min_teardown_duration: "10s"
@@ -278,7 +277,7 @@ message PmdLoopbackCapabilities {
 *   Caller gets Capabilities
     *   generator supports:
 
-        ```
+```
 message PacketGeneratorCapabilities {
   max_bps: 250000000000
   max_pps: 200000000
@@ -293,7 +292,7 @@ message PacketGeneratorCapabilities {
 
 *   loopback supports:
 
-        ```
+```
 message PmdLoopbackCapabilities {
   min_setup_duration: "10s"
   min_teardown_duration: "10s"
@@ -305,13 +304,12 @@ message PmdLoopbackCapabilities {
     *   **This assumes that both rpc's are sent in parallel**
     *   Generator
 
-        ```
+```
 message NTPSyncedTiming {
   start_time: time.Now()+"60s"
   end_time: time.Now()+"180s"
 }
 ```
-
 
         *   `start_time`
             *   adding 60 secs just to show how to balance out the loopback side via RPC
@@ -358,8 +356,6 @@ message NTPSyncedTiming {
 
 
 ### Workflow for Delete in the case of canceling early
-
-
 
 *   A caller may want cancel a running qualification early due to several administrative reasons
     *   Noticing the errors have already exceeded a threshold 
