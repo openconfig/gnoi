@@ -377,7 +377,7 @@ message PacketGeneratorCapabilities {
   uint32 max_mtu = 4;  // max MTU supported.
   google.protobuf.Duration min_setup_duration = 5; // minimum time required for the device to begin packet generation.
   google.protobuf.Duration min_teardown_duration = 6;
-  google.protobuf.Duration min_sample_interval = 7;
+  google.protobuf.Duration min_sample_interval = 7; // minimum time between samples of counters whilst performing a link qualification.
 }
 
 enum PacketInjectorLoopbackMode {
