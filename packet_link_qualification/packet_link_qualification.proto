@@ -18,7 +18,7 @@ service LinkQualification {
   // Create will dispatch a create operation for each interface and return.
   // The rpc will only return an error in the case that gNOI service cannot
   // handle the RPC request. Create will return an error on failure to
-  // create the 
+  // create the qualfication.
   rpc Create(CreateRequest) returns (CreateResponse);
 
   // Get will return the status for the provided qualification ids.
@@ -252,7 +252,7 @@ message QualificationResult {
   uint64 expected_rate_bytes_per_second = 10;
 
   // The qualification rate observed during the qualification. 
-  // It is updated every update_interval in bytes per second.
+  // It is updated every min_sample_interval in bytes per second.
   uint64 qualification_rate_bytes_per_second = 11;
 
   // Status response for the Qualification result. Will only be set if the
