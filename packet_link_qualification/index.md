@@ -74,7 +74,7 @@ available for results on the reflector but can still validate the link.
 
 ## Service Definition
 
-see proto for rpc and message defintions 
+See [proto](packet_link_qualification.proto) for rpc and message definitions. 
 
 ### Capabilities
 
@@ -125,10 +125,9 @@ List returns the list of all current and previous qualifications on the device.
 
 ### How a based generator walks through setting itself up
 
-*   Create call is made.
-*   Service validates the request according to the criteria below. In all cases if an
-    invalid request is found, the error code specified is returned within the gRPC
-    status sent along with the `CreateResponse`.
+*   Create call is made
+*   For all status errors described below are part of the individual qualification status
+    and not part of the RPC status.
 *   Service validates the `interface_name` is valid
     *   if not return `INVALID_PARAMETER`
 *   Service validates the `interface_name` is found
