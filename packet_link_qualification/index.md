@@ -595,7 +595,7 @@ message PmdLoopbackCapabilities {
             *   The reflector side teardown duration
             *   The `min_teardown_duration` will be used if left unset
 *   Call generator and reflector Create()
-*   Generator (PacketInjector)
+*   On the device acting as the Generator (PacketInjector)
     *   Validate that `setup_duration` is >= `min_setup_duration`
     *   Validate that `teardown_duration` is >= `min_teardown_duration`
     *   Schedule the work with backend which should being with waiting for `pre_sync_duration` if set
@@ -608,9 +608,9 @@ message PmdLoopbackCapabilities {
     *   After `post_sync_duration` is reached begin teardown
 *   Reflector (PmdLoopback)
     *   Validate that `setup_duration` is >= `min_setup_duration`
-    *   Validate that teardown\_duration is >= min\_teardown\_duration
-    *   Schedule the work with backend which should being with waiting for pre\_sync\_duration if set (for reflector this value is not expected to be set)
-    *   Once the pre\_sync\_duration duration is reached
+    *   Validate that `teardown_duration` is >= `min_teardown_duration`
+    *   Schedule the work with backend which should being with waiting for `pre_sync_duration` if set (for reflector this value is not expected to be set)
+    *   Once the `pre_sync_duration` duration is reached
         *   Begin putting interface into reflector mode
         *   If `setup_duration` has not been reached wait for the remaining duration
     *   Take first snapshot of packets and rates for the initial result
