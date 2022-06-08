@@ -18,6 +18,8 @@ network wide link quality.
 
 ### General flow
 
+[General Flow](img/link_qual.svg)
+
 ### Specific requirements around the service
 
 #### Connectivity to devices during link qualification maybe interrupted
@@ -179,6 +181,8 @@ List returns the list of all current and previous qualifications on the device.
 
 
 ### Call graph for NTP synchronization
+
+[NTP Flow](img/link_qual_ntp.svg)
 
 ### Call example for RPC synchronization with packet injector and PMD loopback
 
