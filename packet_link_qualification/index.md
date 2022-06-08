@@ -607,7 +607,7 @@ message PmdLoopbackCapabilities {
     *   Once duration is reached wait for `post_sync_duration` if set (for generators this value is not expected to be set)
     *   After `post_sync_duration` is reached begin teardown
 *   Reflector (PmdLoopback)
-    *   Validate that setup\_duration is >= min\_setup\_duration
+    *   Validate that `setup_duration` is >= `min_setup_duration`
     *   Validate that teardown\_duration is >= min\_teardown\_duration
     *   Schedule the work with backend which should being with waiting for pre\_sync\_duration if set (for reflector this value is not expected to be set)
     *   Once the pre\_sync\_duration duration is reached
