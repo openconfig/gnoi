@@ -10,7 +10,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
-option go_package = "github.com/openconfig/gnoi/healthz";
+option go_package = "github.com/openconfig/gnoi/linkqual";
 
 option (types.gnoi_version) = "1.1.0";
 
