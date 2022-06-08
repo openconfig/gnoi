@@ -4,7 +4,7 @@
 
 ### Background
 
-The link qualification service is meant to provide a way to certify link
+The link qualification service is provides a way to certify link
 quality on two devices. This service defines a protocol for setting up the peer
 devices to allow for the generation of packets from one device to another and
 validate those packets are sent and received, then restoring the devices to
