@@ -277,7 +277,7 @@ message CapabilitiesRequest {
 message CapabilitiesResponse {
   // Current timestamp on the service.
   google.protobuf.Timestamp time = 1;
-  // Does the service support NTP based synchronization.
+  // Indicates that the device's time is currently synchronised via NTP.
   bool ntp_synced = 2;
   
   // Capabilities that the generator and reflect support on the
