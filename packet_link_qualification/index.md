@@ -615,7 +615,7 @@ message PmdLoopbackCapabilities {
         *   If setup\_duration has not been reached wait for the remaining duration
     *   Take first snapshot of packets and rates for the initial result
     *   Repeat taking snapshots of results every update\_interval
-    *   Once duration is reached wait for post\_sync\_duration if set
+    *   Once duration is reached wait for `post_sync_duration` if set
     *   After `post_sync_duration` is reached begin teardown
 
 
