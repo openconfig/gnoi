@@ -612,7 +612,7 @@ message PmdLoopbackCapabilities {
     *   Schedule the work with backend which should being with waiting for pre\_sync\_duration if set (for reflector this value is not expected to be set)
     *   Once the pre\_sync\_duration duration is reached
         *   Begin putting interface into reflector mode
-        *   If setup\_duration has not been reached wait for the remaining duration
+        *   If `setup_duration` has not been reached wait for the remaining duration
     *   Take first snapshot of packets and rates for the initial result
     *   Repeat taking snapshots of results every update\_interval
     *   Once duration is reached wait for `post_sync_duration` if set
