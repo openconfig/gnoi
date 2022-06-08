@@ -120,7 +120,7 @@ message CreateRequest {
 // The map key is the qualification id requested in the CreateRequest.
 // Valid Status responses are:
 // OK: create has been accepted.
-// NOT_FOUND: interface_name could not be found on the service.
+// NOT_FOUND: interface_name could not be found on the device.
 // INVALID_ARGUMENT: if any of the configuration is not supported.
 // ALREADY_EXISTS: if the qualification id is already in use.
 message CreateResponse {
