@@ -366,7 +366,7 @@ message CapabilitiesResponse {
   ReflectorCapabilities reflector = 4;
   
   // Maximum number of results allowed to be stored per interface.
-  // The minimum supported just be 2 or greater.
+  // The minimum supported must be 2 or greater.
   uint64 max_historical_results_per_interface = 5;
 }
 
