@@ -20,7 +20,8 @@ package gnoi.interface;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 
-option go_package = "github.com/openconfig/gnoi/interface";
+// Short name is required in order to avoid using a reserved name.
+option go_package = "github.com/openconfig/gnoi/interface;intf";
 
 option (types.gnoi_version) = "0.1.0";
 
