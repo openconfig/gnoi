@@ -375,7 +375,7 @@ message PacketGeneratorCapabilities {
   uint64 max_pps = 2;  // packets per second
   uint32 min_mtu = 3;  // minimum MTU supported.
   uint32 max_mtu = 4;  // max MTU supported.
-  google.protobuf.Duration min_setup_duration = 5;
+  google.protobuf.Duration min_setup_duration = 5; // minimum time required for the device to begin packet generation.
   google.protobuf.Duration min_teardown_duration = 6;
   google.protobuf.Duration min_sample_interval = 7;
 }
