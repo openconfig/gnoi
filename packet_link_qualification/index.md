@@ -478,7 +478,7 @@ message ListResult {
 #### How a based generator walks through setting itself up
 
 *   Create call is made
-*   Service validates the interface\_name is valid
+*   Service validates the `interface_name` is valid
     *   if not return `INVALID_PARAMETER`
 *   Service validates the `interface_name` is found
     *   if not return `NOT_FOUND`
