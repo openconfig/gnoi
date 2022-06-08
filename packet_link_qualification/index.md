@@ -37,7 +37,7 @@ previous link qualifications.
 
 During the link qualification the device must put the interfaces into a
 `TESTING` `oper-status` for the duration of the qualification. Once complete,
-the `oper-status` should be restored to the previously configured state.
+the `oper-status` should be restored to the previous state.
 
 ##### Devices must garbage collect results after some period to keep from filling up storage on the device.
 
