@@ -311,7 +311,7 @@ message PmdLoopbackCapabilities {
         }
         ```
 
-        *   `start_time`    
+        *   `start_time`
             *   adding 60 secs just to show how to balance out the loopback side via RPC
         *   `end_time` = `start_time` + "180s"
             *   qualification duration
