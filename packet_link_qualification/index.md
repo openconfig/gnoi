@@ -304,14 +304,14 @@ message PmdLoopbackCapabilities {
     *   **This assumes that both rpc's are sent in parallel**
     *   Generator
 
-```
-message NTPSyncedTiming {
-  start_time: time.Now()+"60s"
-  end_time: time.Now()+"180s"
-}
-```
+        ```
+        message NTPSyncedTiming {
+        start_time: time.Now()+"60s"
+        end_time: time.Now()+"180s"
+        }
+        ```
 
-        *   `start_time`
+        *   `start_time`    
             *   adding 60 secs just to show how to balance out the loopback side via RPC
         *   `end_time` = `start_time` + "180s"
             *   qualification duration
