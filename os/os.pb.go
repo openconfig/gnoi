@@ -332,7 +332,12 @@ type TransferRequest struct {
 	// For a Target with dual Supervisors setting this flag instructs the Target
 	// to perform the action on the Standby Supervisor.
 	StandbySupervisor bool `protobuf:"varint,2,opt,name=standby_supervisor,json=standbySupervisor,proto3" json:"standby_supervisor,omitempty"`
-	// The size (in bytes) of the OS package being transferred
+	// Optionally specify the package size in bytes of the OS package being
+	// transferred.
+	// If 1) the value is different than 0
+	// and 2) the required space in the Target is larger than the available space
+	// and 3) the Target is unable to release space for the incoming OS package,
+	// then the Target must reply with InstallError->Type->TOO_LARGE.
 	PackageSize uint64 `protobuf:"varint,3,opt,name=package_size,json=packageSize,proto3" json:"package_size,omitempty"`
 }
 
