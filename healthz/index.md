@@ -41,7 +41,7 @@ We would add an "artifacts" repeated into the proto to describe what if any
 artifacts are provided at this endpoint for the healthz event.
 
 
-```
+```protobuf
 message ComponentStatus {
   types.Path path = 1; // path of subcomponent.
 
@@ -94,7 +94,7 @@ message ArtifactHeader {
 Healthz.List() will list all events for the provided component.
 
 
-```
+```protobuf
 service Healthz {
   // List returns all events for the provided component.
   rpc List(ListRequest) returns (ListResponse) {}
@@ -118,7 +118,7 @@ message ListResponse {
 Healthz.Acknowledge() will acknowledge a specific component and event id.
 
 
-```
+```protobuf
 service Healthz {
   // Acknowledge will set the acknowledged field for the event. This is an idempotent operation.
   rpc Acknowledge(AcknowlegeRequest) returns (AcknowledgeResponse) {}
@@ -143,7 +143,7 @@ Healthz.Artifact() introduces a new artifact stream implementation for
 streaming artifacts related to Healthz. 
 
 
-```
+```protobuf
 service Healthz {
   // Get will return health status for a gNMI path.  If no status is available for
   // the requested path an error will be returned.
@@ -217,7 +217,7 @@ The result of the Check() will produce a gnmi healthz status message which will
 contain a list of the generated artifacts used in the validation process.
 
 
-```
+```protobuf
 service Healthz {
   rpc Check(CheckRequest) returns (CheckResponse) {}
 }
