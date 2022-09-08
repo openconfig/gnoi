@@ -31,7 +31,7 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
-option (types.gnoi_version) = "1.1.0";
+option (types.gnoi_version) = "1.2.0";
 
 // The Healthz service provides access to the status of a path on the
 // system. Addtitionally it allows the implementor to provide path specific
@@ -71,7 +71,7 @@ message GetResponse {
 
 enum Status {
   STATUS_UNSPECIFIED = 0;   // The path doesn't support healthz
-  STATUS_HEALTHLY = 1;      // The path is healthy
+  STATUS_HEALTHY = 1;       // The path is healthy
   STATUS_UNHEALTHY = 2;     // The path is unhealthy
 }
 
