@@ -29,12 +29,13 @@
 package system
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	common "github.com/openconfig/gnoi/common"
 	types "github.com/openconfig/gnoi/types"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -400,7 +401,7 @@ func (x *SwitchControlProcessorResponse) GetUptime() int64 {
 }
 
 // A RebootRequest requests the specified target be rebooted using the specified
-// method aftar the specified delay.  Only the DEFAULT method with a delay of 0
+// method after the specified delay.  Only the DEFAULT method with a delay of 0
 // is guaranteed to be accepted for all target types.
 type RebootRequest struct {
 	state         protoimpl.MessageState
