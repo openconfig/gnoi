@@ -101,7 +101,7 @@ message SwitchControlProcessorResponse {
 }
 
 // A RebootRequest requests the specified target be rebooted using the specified
-// method aftar the specified delay.  Only the DEFAULT method with a delay of 0
+// method after the specified delay.  Only the DEFAULT method with a delay of 0
 // is guaranteed to be accepted for all target types.
 message RebootRequest {
   RebootMethod method = 1;
