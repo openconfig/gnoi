@@ -1,6 +1,5 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 #Copyright 2021 Google LLC
 #
@@ -16,10 +15,8 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Supporting infrastructure for implementing and testing PINS.
-#
-
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+load("@rules_proto_grpc//go:defs.bzl", "go_grpc_library", "go_proto_library")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -27,29 +24,34 @@ package(
 )
 
 proto_library(
-    name = "diag_proto",
-    srcs = ["diag.proto"],
+    name = "healthz_proto",
+    srcs = ["healthz.proto"],
     deps = [
         "//types:types_proto",
+        "//common:common_proto",
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+go_proto_library(
+    name = "healthz_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/openconfig/gnoi/healthz",
+    protos = [":healthz_proto"],
+    deps = [
+        "//types:types_go_proto",
     ],
 )
 
 cc_proto_library(
-    name = "diag_cc_proto",
-    deps = [":diag_proto"],
+    name = "healthz_cc_proto",
+    deps = [":healthz_proto"],
 )
 
 cc_grpc_library(
-    name = "diag_cc_grpc_proto",
-    srcs = [":diag_proto"],
+    name = "healthz_cc_grpc_proto",
+    srcs = [":healthz_proto"],
     grpc_only = True,
-    deps = [":diag_cc_proto"],
-)
-
-go_proto_library(
-    name = "diag_go_proto",
-    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-    importpath = "github.com/openconfig/gnoi/diag",
-    proto = ":diag_proto",
-    deps = ["//types:types_go_proto"],
+    deps = [":healthz_cc_proto"],
 )

@@ -18,8 +18,8 @@ syntax = "proto3";
 
 package gnoi.file;
 
-import "github.com/openconfig/gnoi/common/common.proto";
-import "github.com/openconfig/gnoi/types/types.proto";
+import "common/common.proto";
+import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/file";
 
@@ -87,7 +87,7 @@ message PutRequest {
   oneof request {
     Details open = 1;
     bytes contents = 2;
-    types.HashType hash = 3; // hash of the file.
+    gnoi.types.HashType hash = 3; // hash of the file.
   }
 }
 
@@ -106,7 +106,7 @@ message GetRequest {
 message GetResponse {
   oneof response {
     bytes contents = 1;
-    types.HashType hash = 2; // hash of the file.
+    gnoi.types.HashType hash = 2; // hash of the file.
   }
 }
 
@@ -117,7 +117,7 @@ message TransferToRemoteRequest {
   string local_path = 1;
 
   // Details to download the remote_file being requested to a remote location.
-  common.RemoteDownload remote_download = 2;
+  gnoi.common.RemoteDownload remote_download = 2;
 }
 
 // A TransferToRemoteResponse contains the hash of the data transferred.

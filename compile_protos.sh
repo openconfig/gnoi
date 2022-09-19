@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-proto_imports=".:${GOPATH}/src/github.com/google/protobuf/src:${GOPATH}/src/github.com/googleapis/googleapis:${GOPATH}/src"
+proto_imports=".:${GOPATH}/src/github.com/google/protobuf/src:${GOPATH}/src/github.com/googleapis/googleapis:${GOPATH}/src:."
 
 # Go
 for p in types common diag bgp cert factory_reset file healthz interface layer2 mpls system os otdr wavelength_router packet_link_qualification; do
