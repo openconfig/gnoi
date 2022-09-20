@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package gnoi.interface;
 
-import "github.com/openconfig/gnoi/types/types.proto";
+import "types/types.proto";
 
 // Short name is required in order to avoid using a reserved name.
 option go_package = "github.com/openconfig/gnoi/interface;intf";

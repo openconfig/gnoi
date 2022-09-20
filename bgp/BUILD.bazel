@@ -1,3 +1,7 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
 #Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,4 +44,12 @@ cc_grpc_library(
     srcs = [":bgp_proto"],
     grpc_only = True,
     deps = [":bgp_cc_proto"],
+)
+
+go_proto_library(
+    name = "bgp_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/openconfig/gnoi/bgp",
+    proto = ":bgp_proto",
+    deps = ["//types:types_go_proto"],
 )

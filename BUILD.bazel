@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 # Supporting infrastructure for implementing and testing PINS.
+load("@bazel_gazelle//:def.bzl", "gazelle")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -20,3 +21,6 @@ package(
 )
 
 exports_files(["LICENSE"])
+
+# gazelle:prefix github.com/openconfig/gnoi
+gazelle(name = "gazelle")

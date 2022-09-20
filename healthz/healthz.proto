@@ -25,9 +25,9 @@ syntax = "proto3";
 
 package gnoi.healthz;
 
-import "github.com/openconfig/gnoi/types/types.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
+import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
@@ -94,7 +94,7 @@ message ArtifactHeader {
 }
 
 message ComponentStatus {
-  types.Path path = 1; // path of subcomponent.
+  gnoi.types.Path path = 1; // path of subcomponent.
 
   // Subcomponents that are aggregated by this status.
   repeated ComponentStatus subcomponents = 2;
@@ -134,7 +134,7 @@ message ListRequest {
 }
 
 message ListResponse {
-  repeated ComponentStatus status = 1;
+  repeated ComponentStatus statuses = 1;
 }
 
 message AcknowlegeRequest {
@@ -175,7 +175,7 @@ message FileArtifactType {
   // Size of the file.
   int64 size = 4;
   // Hash of the file.
-  types.HashType hash = 5;
+  gnoi.types.HashType hash = 5;
 }
 
 // Generic proto message artifact stream.
@@ -193,7 +193,7 @@ message ArtifactTrailer {
 }
 
 message CheckRequest{
-  types.Path path = 1;
+  gnoi.types.Path path = 1;
 }
 
 message CheckResponse{
