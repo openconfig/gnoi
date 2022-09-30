@@ -160,12 +160,15 @@ message RebootStatusResponse {
   uint32 count = 5 [deprecated = true];   // Number of reboots since active.
 
   message Status {
-    bool active = 1;    // If reboot is active.
-    uint64 wait = 2;    // Time left until reboot.
-    uint64 when = 3;    // Time to reboot in nanoseconds since the epoch.
-    string reason = 4;  // Reason for reboot.
-    uint32 count = 5;   // Number of reboots since active.
+    types.Path subcomponent =
+        1;              // sub-component that the reboot status is for.
+    bool active = 2;    // If reboot is active.
+    uint64 wait = 3;    // Time left until reboot.
+    uint64 when = 4;    // Time to reboot in nanoseconds since the epoch.
+    string reason = 5;  // Reason for reboot.
+    uint32 count = 6;   // Number of reboots since active.
   }
+
   repeated Status statuses = 6;
 }
 
