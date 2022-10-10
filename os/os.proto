@@ -7,7 +7,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/os";
 
-option (types.gnoi_version) = "0.1.1";
+option (types.gnoi_version) = "0.1.2";
 
 // The OS service provides an interface for OS installation on a Target. The
 // Client progresses through 3 RPCs:
@@ -149,6 +149,14 @@ message TransferRequest {
   // For a Target with dual Supervisors setting this flag instructs the Target
   // to perform the action on the Standby Supervisor.
   bool standby_supervisor = 2;
+
+  // Optionally specify the package size in bytes of the OS package being
+  // transferred.
+  // If 1) the value is different than 0
+  // and 2) the required space in the Target is larger than the available space
+  // and 3) the Target is unable to release space for the incoming OS package,
+  // then the Target must reply with InstallError->Type->TOO_LARGE.
+  uint64 package_size = 3;
 }
 
 // The TransferEnd message is sent whenever the Client finishes transferring
@@ -224,9 +232,12 @@ message InstallError {
     INCOMPATIBLE = 1;
     // The OS package being transferred is larger than the available size the
     // Target provisioned. This is unexpected since the Target MUST clear disk
-    // space for the new OS packages. The available space and the OS package
-    // size MUST be guaranteed by the platform maker, therefore the most likely
-    // cause of this error is that a wrong package is being transferred.
+    // space for the new OS packages. The most likely cause of this error is
+    // that a wrong package is being transferred, as the available space and
+    // the OS package size MUST be guaranteed by the platform maker.
+    // However, this error may also be returned if the target does not have
+    // enough space for both the new OS package and the current running package
+    // (which must be preserved as a fallback).
     TOO_LARGE = 2;
     // Used whenever the system is unable to parse the newly transferred
     // package, like reading the OS version or the integrity checksums.
