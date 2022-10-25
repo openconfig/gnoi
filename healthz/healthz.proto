@@ -48,7 +48,7 @@ service Healthz {
 
   // Acknowledge will set the acknowledged field for the event.
   // This is an idempotent operation.
-  rpc Acknowledge(AcknowlegeRequest) returns (AcknowledgeResponse) {}
+  rpc Acknowledge(AcknowledgeRequest) returns (AcknowledgeResponse) {}
 
   // Artifact will stream the artifact contents for the provided artifact id.
   rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
@@ -137,7 +137,7 @@ message ListResponse {
   repeated ComponentStatus statuses = 1;
 }
 
-message AcknowlegeRequest {
+message AcknowledgeRequest {
   types.Path path = 1;
   // Healthz event id.
   string id = 2;

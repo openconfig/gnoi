@@ -25,7 +25,7 @@ type HealthzClient interface {
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
 	// Acknowledge will set the acknowledged field for the event.
 	// This is an idempotent operation.
-	Acknowledge(ctx context.Context, in *AcknowlegeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error)
+	Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error)
 	// Artifact will stream the artifact contents for the provided artifact id.
 	Artifact(ctx context.Context, in *ArtifactRequest, opts ...grpc.CallOption) (Healthz_ArtifactClient, error)
 	// Check will invoke the healthz on the provided component path. This RPC
@@ -59,7 +59,7 @@ func (c *healthzClient) List(ctx context.Context, in *ListRequest, opts ...grpc.
 	return out, nil
 }
 
-func (c *healthzClient) Acknowledge(ctx context.Context, in *AcknowlegeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error) {
+func (c *healthzClient) Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error) {
 	out := new(AcknowledgeResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.healthz.Healthz/Acknowledge", in, out, opts...)
 	if err != nil {
@@ -120,7 +120,7 @@ type HealthzServer interface {
 	List(context.Context, *ListRequest) (*ListResponse, error)
 	// Acknowledge will set the acknowledged field for the event.
 	// This is an idempotent operation.
-	Acknowledge(context.Context, *AcknowlegeRequest) (*AcknowledgeResponse, error)
+	Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error)
 	// Artifact will stream the artifact contents for the provided artifact id.
 	Artifact(*ArtifactRequest, Healthz_ArtifactServer) error
 	// Check will invoke the healthz on the provided component path. This RPC
@@ -139,7 +139,7 @@ func (UnimplementedHealthzServer) Get(context.Context, *GetRequest) (*GetRespons
 func (UnimplementedHealthzServer) List(context.Context, *ListRequest) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedHealthzServer) Acknowledge(context.Context, *AcknowlegeRequest) (*AcknowledgeResponse, error) {
+func (UnimplementedHealthzServer) Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Acknowledge not implemented")
 }
 func (UnimplementedHealthzServer) Artifact(*ArtifactRequest, Healthz_ArtifactServer) error {
@@ -198,7 +198,7 @@ func _Healthz_List_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Healthz_Acknowledge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AcknowlegeRequest)
+	in := new(AcknowledgeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -210,7 +210,7 @@ func _Healthz_Acknowledge_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/gnoi.healthz.Healthz/Acknowledge",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HealthzServer).Acknowledge(ctx, req.(*AcknowlegeRequest))
+		return srv.(HealthzServer).Acknowledge(ctx, req.(*AcknowledgeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
