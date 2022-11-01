@@ -39,8 +39,8 @@ option (types.gnoi_version) = "1.2.0";
 //
 // Healthz is expected to work in conjunction with the component OC model.
 service Healthz {
-  // Get will get health status for a gNMI path.  If no status is available for
-  // the requested path an error will be returned.
+  // Get will get the latest health status for a gNMI path.  If no status is
+  // available for the requested path an error will be returned.
   rpc Get(GetRequest) returns (GetResponse) {}
 
   // List returns all events for the provided component path.
@@ -59,9 +59,10 @@ service Healthz {
 }
 
 message GetRequest {
-  // Path defines the component to try to fetch healthz state for.  This will
-  // perform a full health check cycle for the component and return the status
-  // as well as any associated healthz data.
+  // Path defines the component to try to fetch healthz state for. Get
+  // retrieves the latest healthz results for a specific component
+  // that have been collected as a result of a call to Check, or by
+  // the target itself.
   types.Path path = 1;
 }
 
