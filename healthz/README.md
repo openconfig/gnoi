@@ -31,7 +31,7 @@ subcomponents. Each artifact reflects an entity that is required to debug or
 further root cause the fault that occurs with it.
 
 The `Artifact` RPC is used to retrieve specific artifacts that are listed by
-the target system in the `List` RPC. Once retrieved each artifact can be
+the target system in the `List` or `Get` RPC. Once retrieved each artifact can be
 'acknowledged' by the client of the RPC. Acknowledged artifacts are no longer
 returned in a list of the corresponding artifacts, and a device may use this
 status as a hint to allow garbage collection of artifacts that are no longer
