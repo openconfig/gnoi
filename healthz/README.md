@@ -25,7 +25,7 @@ triage or reproduce issues.
 (through the `Check` RPC) or a system may report the results of a check that it
 has initiated of its own accord. 
 
-Following a health check occuring, a caller uses the `List` RPC to discover the
+Following a health check occurring, a caller uses the `List` or `Get` RPC to discover the
 artifacts that are assoicated with a component and its corresponding
 subcomponents. Each artifact reflects an entity that is required to debug or
 further root cause the fault that occurs with it.
