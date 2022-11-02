@@ -1,6 +1,6 @@
 # gNOI `Healthz` Streaming RPC Design
-**Contributors**: hines@google.com, robjs@google.com, bneville@arista.com  
-**Last Updated**: 2022-05-17
+**Contributors**: hines@google.com, robjs@google.com, bneville@arista.com, roman.dodin@nokia.com
+**Last Updated**: 2022-11-02
 
 ## Background
 
