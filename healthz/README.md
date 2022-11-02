@@ -26,9 +26,10 @@ triage or reproduce issues.
 has initiated of its own accord. 
 
 Following a health check occurring, a caller uses the `List` or `Get` RPC to discover the
-artifacts that are assoicated with a component and its corresponding
-subcomponents. Each artifact reflects an entity that is required to debug or
-further root cause the fault that occurs with it.
+health "events" (expressed as a `ComponentStatus` message) that are assoicated
+with a component and its corresponding subcomponents. Each event reflects an
+collection of data that is required to debug or further root cause the fault
+that occurs with an entity in the system.
 
 The `Artifact` RPC is used to retrieve specific artifacts that are listed by
 the target system in the `List` or `Get` RPC. Once retrieved each artifact can be
@@ -36,7 +37,10 @@ the target system in the `List` or `Get` RPC. Once retrieved each artifact can b
 returned in a list of the corresponding artifacts, and a device may use this
 status as a hint to allow garbage collection of artifacts that are no longer
 relevant. The device itself is responsible for garbage collection any may,
-if necessary, garbage collect artifacts that are not yet acknowledged.
+if necessary, garbage collect artifacts that are not yet acknowledged. It is
+expected that events are persisted across restarts of the system or its
+hardware and software components, and they are removed only for resource
+management reasons.
 
 Whilst the system may initiate health checks itself, these should be safe to
 perform operations that do not impact the device's functionality. Expensive
@@ -68,8 +72,7 @@ requirement that it support the ability to stream a status from the device.
 To ensure that this can be done using a secure channel with the relevant
 ACL and encryption, this streaming is implemented within the `Healthz` service.
 This approach further allows the concept of a historical set of collected
-articacts to be reported by the device.
-
+artifacts to be reported by the device.
 
 ## Architecture
 
@@ -88,7 +91,8 @@ rpc Get(GetRequest) returns (GetResponse) {}
 
 `Get` allows a user to retrieve the latest set of health statuses that are associated
 with a specific component and any of its corresponding subcomponents. In contrast to
-`List` the `Get` RPC should return only the latest event.
+`List` the `Get` RPC should return only the latest event (i.e.,
+`ComponentStatus` message).
 
 The `GetResponse` returned includes a `ComponentStatus` message which
 corresponds to the latest health event for the  component itself and each subcomponent
