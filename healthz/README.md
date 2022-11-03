@@ -4,8 +4,8 @@
 
 ## Background
 
- * [gNOI Repository](https://github.com/openconfig/gnoi)
- * [gNOI `Healthz` service](https://github.com/openconfig/gnoi/tree/master/healthz)
+* [gNOI Repository](https://github.com/openconfig/gnoi)
+* [gNOI `Healthz` service](https://github.com/openconfig/gnoi/tree/master/healthz)
 
 The purpose of Healthz is to allow a component inside of a system to report its
 health. The concept of asking "Are you healthy?" is a general design principle
@@ -23,11 +23,11 @@ triage or reproduce issues.
 
 `Healthz` provides a means by which a user may initiate checks of health
 (through the `Check` RPC) or a system may report the results of a check that it
-has initiated of its own accord. 
+has initiated of its own accord.
 
 Following a health check occurring, a caller uses the `List` or `Get` RPC to discover the
-health "events" (expressed as a `ComponentStatus` message) that are assoicated
-with a component and its corresponding subcomponents. Each event reflects an
+health "events" (expressed as a `ComponentStatus` message) that are associated
+with a component and its corresponding subcomponents. Each event reflects a
 collection of data that is required to debug or further root cause the fault
 that occurs with an entity in the system.
 
@@ -61,13 +61,12 @@ component/healthz/state/unhealthy-count (int64)
 
 ### Choice of Streaming for Artifacts
 
-
 [Background comment](https://github.com/openconfig/gnoi/pull/65#issuecomment-1090547841)
 
 Originally, the gNOI Healthz endpoint defined single transactional API for
 getting the "healthz" status of a component.  As discussed in the above issue,
 due to large data volume or to an interactive debug output there is a
-requirement that it support the ability to stream a status from the device.  
+requirement that it support the ability to stream a status from the device.
 
 To ensure that this can be done using a secure channel with the relevant
 ACL and encryption, this streaming is implemented within the `Healthz` service.
@@ -95,7 +94,7 @@ with a specific component and any of its corresponding subcomponents. In contras
 `ComponentStatus` message).
 
 The `GetResponse` returned includes a `ComponentStatus` message which
-corresponds to the latest health event for the  component itself and each subcomponent
+corresponds to the latest health event for the component itself and each subcomponent
 being reported on. Thus, multiple `ComponentStatus` messages may be reported for
 a single component. Each message includes a set of `ArtifactHeader` messages
 that correspond to the health event -- and provide identifiers and types for the
@@ -128,7 +127,7 @@ particular (component, event) tuple has been retrieved by the client. This
 allows a device to intelligently determine whether to retain artifacts. Devices
 MUST ensure that artifact storage for healthz does not cause resource exhaustion
 and SHOULD remove acknowledged artifacts before those that have not yet received
-an acknowledgement.
+an acknowledgment.
 
 ### Healthz.Artifact() 
 
@@ -136,10 +135,10 @@ an acknowledgement.
 rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
 ```
 
-`Artifact` allows a user to retrieve a specific artifact that is related with
+`Artifact` allows a user to retrieve a specific artifact that is related to
 an event that has occurred. Since these artifacts may be large, the `Artifact`
-RPC is implemented as a server-side streaming RPC. Use of the `Artifact` RPC
-ensures that the resources to send these potentially large artifacts only
+RPC is implemented as a server-side streaming RPC. The `Artifact` RPC
+ensures that a target sends these potentially large artifacts only
 when explicitly requested by the client.
 
 #### Healthz.Check()
@@ -150,7 +149,7 @@ rpc Check(CheckRequest) returns (CheckResponse) {}
 
 `Check` allows a client to execute a set of "validations" against the specified
 component. The component, as with other operations, is specified in terms of
-the gNMI path.  
+the gNMI path.
 
 The result of the `Check` produces a healthz `ComponentStatus` message which
 will contain a list of the generated artifacts used in the validation process.
@@ -164,38 +163,38 @@ their use during normal operations of the device.
 
 ## User Experience
 
-#### A BGP routing process goes unhealthy due to a crash.
+### A BGP routing process goes unhealthy due to a crash.
 
-##### Expected Action
+#### Expected Action
 
 Write the core dump to a file system.
 
 A call to `Healthz.Get` should respond with the current state of the component
 and provide feedback that there is an artifact available to be requested.
 
-A Healthz call should stream the core dump over the service back to the caller.
+A `Healthz.Artifact()` call should stream the core dump over the service back to the caller.
 
 The component that is specified should correspond to the software process that
 implements the BGP protocol in the system.
 
-#### A chassis linecard goes unhealthy due to hardware failure.
+### A chassis linecard goes unhealthy due to hardware failure.
 
-##### Expected Action
+#### Expected Action
 
 Logs / dumps collected and the gNMI components are marked unhealthy.
 
 A call to Healthz.Get should respond with the current state of the component
 and provide feedback that there is an artifact available to be requested.
 
-A Healthz call should stream the core dump over the service back to the caller.
+A `Healthz.Artifact()` call should stream the core dump over the service back to the caller.
 
-A Healthz call should stream the logs over the service back to the caller.
+A `Healthz.Artifact()` call should stream the logs over the service back to the caller.
 
 The component that is reported on should be of type
 [`CHASSIS`](https://openconfig.net/projects/models/schemadocs/yangdoc/openconfig-platform.html#ident-chassis).
 
 
-#### A chassis file storage is over a configured capacity and reports itself unhealthy.
+### A chassis file storage is over a configured capacity and reports itself unhealthy.
 
 Since there are no artifacts the Healthz.Get should just return the status of
 the component and no other action is necessary
@@ -204,7 +203,7 @@ The component reported on via telemetry should correspond to the device's chassi
 and be of type
 [`CHASSIS`](https://openconfig.net/projects/models/schemadocs/yangdoc/openconfig-platform.html#ident-chassis).
 
-#### A user would like to stream console debugging or other shell output for collection
+### A user would like to stream console debugging or other shell output for collection
 
 For a component healthz could be used to provide an I/O dump of a specific
 debugging command redirected as a byte stream.  It could also be output like a
@@ -215,7 +214,7 @@ programmatic secure way but not completely reinventing the wheel.
 
 To achieve this use case, extensions to the existing specification are required.
 
-#### Collect a snapshot of a particular component.
+### Collect a snapshot of a particular component.
 
 For components which can provide a "snapshot" of state the healthz artifact
 endpoint can be provided to take a snapshot of state (ideally serialized as a
@@ -223,10 +222,10 @@ proto or other typed data structure) and provided to the caller.
 
 Examples:
 
- * Get optical data from i2c bus on optical systems
- * Get system database state for the core pub/sub of a device
+* Get optical data from i2c bus on optical systems
+* Get system database state for the core pub/sub of a device
 
-#### Exporting internal or specific debug logs
+### Exporting internal or specific debug logs
 
 For a component in the system the developers could provide a debug log for that
 specific component or other trace / dump information.  The `Check()` and
@@ -234,10 +233,10 @@ specific component or other trace / dump information.  The `Check()` and
 download the specific data in a secure, reliable way (rather than a general file
 scp). If the device can "automatically" generate these specific
 data the `Get` API can also be used to check for existence and to download the
-artifacts. Note that to support this use case, asdditional gNMI paths are likely required to
+artifacts. Note that to support this use case, additional gNMI paths are likely required to
 signal existence of this type of data.
 
-#### Event lifecycle
+### Event lifecycle
 
 An event is created internally by the system for a linecard rebooting
 unexpectedly. The chassis process will take a core of the component.  Snapshot
