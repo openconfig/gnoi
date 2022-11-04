@@ -181,7 +181,9 @@ message PacketInjectorConfiguration {
   }
 }
 
-message PmdLoopbackConfiguration {}
+message PmdLoopbackConfiguration {
+
+}
 
 message AsicLoopbackConfiguration {
   // This is where any l2/l3/l4 match criteria would be described.
@@ -268,7 +270,9 @@ message DeleteResponse {
   map<string, google.rpc.Status> results = 1;
 }
 
-message CapabilitiesRequest {}
+message CapabilitiesRequest {
+
+}
 
 message CapabilitiesResponse {
   // Current timestamp on the service.
@@ -362,7 +366,9 @@ message ReflectorCapabilities {
   AsicLoopbackCapabilities asic_loopback = 2;
 }
 
-message ListRequest {}
+message ListRequest {
+
+}
 
 message ListResponse {
   // The results that have not yet been deleted from the device.
