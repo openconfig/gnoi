@@ -18,31 +18,30 @@ service LinkQualification {
   // Create will dispatch a create operation for each interface and return.
   // The rpc will only return an error in the case that gNOI service cannot
   // handle the RPC request. Create will return an error on failure to
-  // create the qualfication.
+  // create the qualification.
   rpc Create(CreateRequest) returns (CreateResponse);
 
   // Get will return the status for the provided qualification ids.
   rpc Get(GetRequest) returns (GetResponse);
 
-  // Capabilities will return the  capabilities of the gnoi.LinkQualification
-  // service implementation.  This RPC is used to allow the caller to 
+  // Capabilities will return the capabilities of the gnoi.LinkQualification
+  // service implementation.  This RPC is used to allow the caller to
   // orchestrate the peer requirements of the service to complete a link
   // qualification between two devices.
   rpc Capabilities(CapabilitiesRequest) returns (CapabilitiesResponse);
-  
-  // Delete will remove the qualification results for the provided based on the
-  // ids provided. If the qualification is not in QUALIFICATION_STATE_COMPLETED
+
+  // Delete will remove the qualification results for the provided ids.
+  // If the qualification is not in QUALIFICATION_STATE_COMPLETED
   // or QUALIFICATION_STATE_ERROR, the qualification will be canceled then
   // deleted as requested.
   // If the qualification cannot be stopped or deleted a status will be returned
-  // with the error. 
-  // If the id is not found NOT_FOUND will be returned. 
+  // with the error.
+  // If the id is not found NOT_FOUND will be returned.
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 
   // List qualifications currently on the target.
   rpc List(ListRequest) returns (ListResponse);
 }
-
 
 // CreateRequest contains the list of interfaces to be Qualified.
 // Each interface must only appear once and all IDs to be used
@@ -65,7 +64,7 @@ message CreateResponse {
 message NTPSyncedTiming {
   // The timestamp for the start of the qualification. Based on the
   // provided configuration the qualification setup must
-  // at least start at (start_time - min_setup_time). 
+  // at least start at (start_time - min_setup_time).
   google.protobuf.Timestamp start_time = 1;
   // The timestamp for the end of qualification.
   google.protobuf.Timestamp end_time = 2;
@@ -97,7 +96,7 @@ message RPCSyncedTiming {
   // The requested setup time for the endpoint. setup_duration must be >=
   // min_setup_duration in the service capabilities. If the service
   // completes setup before setup_duration it must wait setup_duration
-  // before moving to qualification. 
+  // before moving to qualification.
   google.protobuf.Duration setup_duration = 2;
 
   // duration is the length of the qualification.
@@ -109,7 +108,7 @@ message RPCSyncedTiming {
   // For loopbacks this would be the duration it takes for the generator
   // to stop sending packets before starting a teardown.
   google.protobuf.Duration post_sync_duration = 4;
- 
+
   // This requested teardown duration for the endpoint. teardown_duration
   // must be >= min_teardown_duration in the service capabilities. If the
   // service completes before the teardown_duration it must wait teardown
@@ -124,7 +123,7 @@ message QualificationConfiguration {
   // interface name on the device must be unique to the device.
   string interface_name = 2;
 
-  // timing allows for specifying either NTP or by using the Create RPC as 
+  // timing allows for specifying either NTP or by using the Create RPC as
   // the synchronization method for the qualification.
   oneof timing {
     NTPSyncedTiming ntp = 101;
@@ -168,8 +167,8 @@ message PacketInjectorConfiguration {
   uint32 packet_size = 2;
 
   // Loopback mode for this qualification.
-  oneof loopback_mode  {
-    // PMD based loopback encompass either PHY based port
+  oneof loopback_mode {
+    // PMD based loopback encompasses either PHY based port
     // loopbacks or port based ASIC loopbacks which do
     // use forwarding engine processing.
     // Their use may limit the stats available for the
@@ -178,20 +177,20 @@ message PacketInjectorConfiguration {
     // ASIC based loops are done inside the forwarding
     // engine and must have stats available to the
     // qualification.
-    AsicLoopbackConfiguration asic_loopback = 102;    
+    AsicLoopbackConfiguration asic_loopback = 102;
   }
 }
 
-
 message PmdLoopbackConfiguration {
+
 }
 
 message AsicLoopbackConfiguration {
   // This is where any l2/l3/l4 match criteria would be described.
 }
 // GetRequest returns the status for the provided ids.
-message GetRequest{
-  repeated string ids =1;
+message GetRequest {
+  repeated string ids = 1;
 }
 
 // GetResponse returns a map containing the values for all requested
@@ -201,18 +200,18 @@ message GetRequest{
 // Expected errors codes:
 // NOT_FOUND when the requested id was not found by the service.
 // INVALID_ARGUMENT for any configuration parameter which is unsupported.
-message GetResponse{
+message GetResponse {
   map<string, QualificationResult> results = 1;
 }
 
 // States of qualification.
 enum QualificationState {
   QUALIFICATION_STATE_UNSPECIFIED = 0;
-  QUALIFICATION_STATE_ERROR = 1;  // The qualification has errored.
+  QUALIFICATION_STATE_ERROR = 1;      // The qualification has errored.
   QUALIFICATION_STATE_IDLE = 2;       // Initial state for the qualification.
-  QUALIFICATION_STATE_SETUP = 3;       // Interface is being configured.
+  QUALIFICATION_STATE_SETUP = 3;      // Interface is being configured.
   QUALIFICATION_STATE_RUNNING = 4;    // Qualification underway.
-  QUALIFICATION_STATE_TEARDOWN = 5;    // Interface is being reset.
+  QUALIFICATION_STATE_TEARDOWN = 5;   // Interface is being reset.
   QUALIFICATION_STATE_COMPLETED = 6;  // Qualification is complete.
 }
 
@@ -251,7 +250,7 @@ message QualificationResult {
   // throughout the qualification duration.
   uint64 expected_rate_bytes_per_second = 10;
 
-  // The qualification rate observed during the qualification. 
+  // The qualification rate observed during the qualification.
   // It is updated every min_sample_interval in bytes per second.
   uint64 qualification_rate_bytes_per_second = 11;
 
@@ -261,17 +260,18 @@ message QualificationResult {
 }
 
 // DeleteRequest will delete the qualification results for the provided id.
-message DeleteRequest{
+message DeleteRequest {
   repeated string ids = 1;
 }
 
 // Delete response will contain a list of all id's in the request to be deleted.
 // If the id was not found NOT_FOUND will be returned.
-message DeleteResponse{
+message DeleteResponse {
   map<string, google.rpc.Status> results = 1;
 }
 
 message CapabilitiesRequest {
+
 }
 
 message CapabilitiesResponse {
@@ -279,13 +279,13 @@ message CapabilitiesResponse {
   google.protobuf.Timestamp time = 1;
   // Indicates that the device's time is currently synchronised via NTP.
   bool ntp_synced = 2;
-  
+
   // Capabilities that the generator and reflect support on the
   // service. If the top level field is unset the service cannot act
   // as any defined generator or reflector.
   GeneratorCapabilities generator = 3;
   ReflectorCapabilities reflector = 4;
-  
+
   // Maximum number of results allowed to be stored per interface.
   // The minimum supported just be 2 or greater.
   uint64 max_historical_results_per_interface = 5;
@@ -317,7 +317,7 @@ message PacketInjectorCapabilities {
   // The definitions of fields 1-7 are the same as those described in the
   // PacketGeneratorCapabilities message.
   uint32 min_mtu = 1;
-  uint32 max_mtu =2;
+  uint32 max_mtu = 2;
   uint32 min_injected_packets = 3;
   uint32 max_injected_packets = 4;
   google.protobuf.Duration min_setup_duration = 5;
@@ -367,6 +367,7 @@ message ReflectorCapabilities {
 }
 
 message ListRequest {
+
 }
 
 message ListResponse {
@@ -379,6 +380,3 @@ message ListResult {
   QualificationState state = 2;
   string interface_name = 3;
 }
-
-
-
