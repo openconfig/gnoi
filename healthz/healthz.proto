@@ -22,7 +22,6 @@
 
 syntax = "proto3";
 
-
 package gnoi.healthz;
 
 import "google/protobuf/any.proto";
@@ -53,7 +52,7 @@ service Healthz {
   // Artifact will stream the artifact contents for the provided artifact id.
   rpc Artifact(ArtifactRequest) returns (stream ArtifactResponse) {}
 
-  // Check will invoke the healthz on the provided component path. This RPC 
+  // Check will invoke the healthz on the provided component path. This RPC
   // can be expensive depending on the vendor implementation.
   rpc Check(CheckRequest) returns (CheckResponse) {}
 }
@@ -113,14 +112,14 @@ message ComponentStatus {
   repeated ArtifactHeader artifacts = 5;
 
   // ID is the unique key for this event in the system.
-  string id = 6; 
+  string id = 6;
 
   // Acknowledged is set when at least one caller has processed the event.
   bool acknowledged = 7;
 
   // Created is the timestamp when this event was created.
   google.protobuf.Timestamp created = 8;
-  
+
   // Expires is the timestamp when the system will clean up the
   // artifact. If unset, the artifact is not scheduled for garbage
   // collection.
@@ -161,7 +160,7 @@ message ArtifactResponse {
     // OC defines FileArtifactType and ProtoArtifactType.
     ArtifactHeader header = 1;
     ArtifactTrailer trailer = 2;
-    bytes bytes = 3;    
+    bytes bytes = 3;
     google.protobuf.Any proto = 4;
   }
 }
@@ -180,7 +179,7 @@ message FileArtifactType {
 }
 
 // Generic proto message artifact stream.
-// This proto tells the caller that the artifact stream 
+// This proto tells the caller that the artifact stream
 // will be a stream of proto encoded messages that make up
 // the artifact. Each message must be deserialized by the caller
 // and there are no other assumptions about the number of
@@ -193,8 +192,15 @@ message ProtoArtifactType {
 message ArtifactTrailer {
 }
 
-message CheckRequest{
+message CheckRequest {
   gnoi.types.Path path = 1;
+
+  // When event_id is populated the check request refers to an
+  // event that has already been reported by the system. The
+  // device receiving the CheckRequest should populate artifacts
+  // that are relevant to the event that were not automatically
+  // collected. Previous artifacts MUST NOT be overwritten.
+  string event_id = 2;
 }
 
 message CheckResponse{

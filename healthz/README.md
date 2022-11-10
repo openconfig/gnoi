@@ -1,5 +1,6 @@
 # gNOI `Healthz` Streaming RPC Design
-**Contributors**: hines@google.com, robjs@google.com, bneville@arista.com, roman.dodin@nokia.com
+**Contributors**: hines@google.com, robjs@google.com, bneville@arista.com,
+roman.dodin@nokia.com
 **Last Updated**: 2022-11-02
 
 ## Background
@@ -7,14 +8,14 @@
 * [gNOI Repository](https://github.com/openconfig/gnoi)
 * [gNOI `Healthz` service](https://github.com/openconfig/gnoi/tree/master/healthz)
 
-The purpose of Healthz is to allow a component inside of a system to report its
+The purpose of `Healthz` is to allow a component inside of a system to report its
 health. The concept of asking "Are you healthy?" is a general design principle
 in distributed systems.
 
 The ability to also include "implementation specific" details about the health
 of the system or component is very standard for network devices in the form for
 "show tech", "diag" or "debug" commands. These are very useful for getting
-diagnostics about the system state to the implementers. Healthz exposes these
+diagnostics about the system state to the implementers. `Healthz` exposes these
 interfaces as queryable endpoints to allow operators to validate "health" on
 components and if "unhealthy" gather implementor specific data to help triage
 or reproduce issues.
@@ -94,10 +95,17 @@ to consider the following workflow.
    collected and a `Check` RPC may be required to collect the artifacts that
    were considered performance impacting. This allows the client systems to
    co-ordinate to reduce the operational risk of collecting this data (e.g, by
-   removing traffic from the netwrok device).
+   removing traffic from the network device). In order to specify that the
+   `Check` refers to a previously reported event, the `event_id` field in
+   the request must be populated with the ID reported in `Get` or `List`.
 3. If the component becomes healthy again, even if no `Healthz` calls were made
    to the system, telemetry information MUST be updated to ensure that external
    clients are updated as to the current health status.
+
+In order that the relevant information for a particular event is collected, the
+device SHOULD ensure that the non-system-impacting artifact collection that
+is performed at the time of the event is sufficient that error conditions can
+be understood and debugged.
 
 ## Architecture
 
@@ -185,6 +193,14 @@ or to examine the state of a protocol.  These commands will likely be
 considered "service impacting" and should have a clear security ACL restricting
 their use during normal operations of the device.
 
+The `CheckRequest` message includes an `event_id` field. When populated this
+indicates that the `Check` should be performed for an event that has already
+occurred within the system. The device should trigger artifact collection of
+those artifacts that were not automatically collected. A `CheckRequest` for
+a previous `event_id` MUST NOT overwrite previous artifacts that were collected
+at the time of the event. The artifacts that are collected MUST be returned
+in the artifact list for the event when reported by the `Get` or `List` RPCs.
+
 ## User Experience
 
 ### A BGP routing process goes unhealthy due to a crash.
@@ -245,7 +261,7 @@ required.
 
 For components which can provide a "snapshot" of state the healthz artifact
 endpoint can be provided to take a snapshot of state (ideally serialized as a
-proto or other typed data structure) and provided to the caller. 
+protobuf or other typed data structure) and provided to the caller.
 
 Examples:
 * Get optical data from i2c bus on optical systems.
@@ -266,8 +282,8 @@ required to signal existence of this type of data.
 
 An event is created internally by the system for a linecard rebooting
 unexpectedly. The chassis process will take a core of the component.  Snapshot
-it's log for the component. Snapshot any relevant state in sysdb for the
-component and create a healthz event which includes pointers to these 3
+it's log for the component. Snapshot any relevant state in a system database for
+the component and create a healthz event which includes pointers to these 3
 artifacts.
 
 The external monitoring system will receive a gNMI update reporting that the
