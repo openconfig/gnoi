@@ -33,7 +33,7 @@ reflects a collection of data that is required to debug or further root cause
 the fault that occurs with an entity in the system.
 
 The `Artifact` RPC is used to retrieve specific artifacts that are listed by
-the target system in the `List` or `Get` RPC.  Once retrieved an event, which
+the target system in the `List` or `Get` RPC. Once retrieved an event, which
 corresponds to a series of artifacts, can be 'acknowledged' by the client of
 the RPC. Acknowledged events are no longer returned in the list of events by
 default. The device may use the acknowledged status as a hint to allow garbage
@@ -87,7 +87,7 @@ to consider the following workflow.
    a health state via telemetry that indicates that the `healthz/state/status`
    of the component has transitioned to `UNHEALTHY`. It is left for the device
    implementor to determine which artifacts are generated automatically by the
-   system immediately. The artifact collection SHOULD NOt impact the performance
+   system immediately. The artifact collection SHOULD NOT impact the performance
    of the system.
 2. The responding client system observes the transition to `UNHEALTHY` and can
    `List` events that have occurred on the component. The client SHOULD be aware
