@@ -18,8 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HealthzClient interface {
-	// Get will get health status for a gNMI path.  If no status is available for
-	// the requested path an error will be returned.
+	// Get will get the latest health status for a gNMI path.  If no status is
+	// available for the requested path an error will be returned.
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	// List returns all events for the provided component path.
 	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
@@ -113,8 +113,8 @@ func (c *healthzClient) Check(ctx context.Context, in *CheckRequest, opts ...grp
 // All implementations must embed UnimplementedHealthzServer
 // for forward compatibility
 type HealthzServer interface {
-	// Get will get health status for a gNMI path.  If no status is available for
-	// the requested path an error will be returned.
+	// Get will get the latest health status for a gNMI path.  If no status is
+	// available for the requested path an error will be returned.
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	// List returns all events for the provided component path.
 	List(context.Context, *ListRequest) (*ListResponse, error)
