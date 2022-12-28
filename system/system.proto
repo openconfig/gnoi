@@ -176,15 +176,17 @@ message TimeResponse {
 //
 // If the size is 0, the vendor default size will be used (typically 56 bytes).
 message PingRequest {
-  string destination = 1;   // Destination address to ping. required.
-  string source = 2;        // Source address to ping from.
-  int32 count = 3;          // Number of packets.
-  int64 interval = 4;       // Nanoseconds between requests.
-  int64 wait = 5;           // Nanoseconds to wait for a response.
-  int32 size = 6;           // Size of request packet. (excluding ICMP header)
-  bool do_not_fragment = 7; // Set the do not fragment bit. (IPv4 destinations)
-  bool do_not_resolve = 8;  // Do not try resolve the address returned.
-  types.L3Protocol l3protocol = 9; // Layer3 protocol requested for the ping.
+  string destination = 1;           // Destination address to ping. required.
+  string source = 2;                // Source address to ping from.
+  int32 count = 3;                  // Number of packets.
+  int64 interval = 4;               // Nanoseconds between requests.
+  int64 wait = 5;                   // Nanoseconds to wait for a response.
+  int32 size = 6;                   // Size of request packet. (excluding ICMP header)
+  bool do_not_fragment = 7;         // Set the do not fragment bit. (IPv4 destinations)
+  bool do_not_resolve = 8;          // Do not try resolve the address returned.
+  types.L3Protocol l3protocol = 9;  // Layer3 protocol requested for the ping.
+  string routing_instance = 10;     // Routing instance that the source address is located in
+
 }
 
 // A PingResponse represents either the reponse to a single ping packet
@@ -218,21 +220,22 @@ message PingResponse {
 // If the hop_count is -1 the traceroute will continue forever.
 //
 message TracerouteRequest {
-  string source = 1;         // Source address to ping from.
-  string destination = 2;    // Destination address to ping.
-  uint32 initial_ttl = 3;    // Initial TTL. (default=1)
-  int32 max_ttl = 4;         // Maximum number of hops. (default=30)
-  int64 wait = 5;            // Nanoseconds to wait for a response.
-  bool do_not_fragment = 6;  // Set the do not fragment bit. (IPv4 destinations)
-  bool do_not_resolve = 7;   // Do not try resolve the address returned.
-  types.L3Protocol l3protocol = 8; // Layer-3 protocol requested for the ping.
+  string source = 1;                // Source address to ping from.
+  string destination = 2;           // Destination address to ping.
+  uint32 initial_ttl = 3;           // Initial TTL. (default=1)
+  int32 max_ttl = 4;                // Maximum number of hops. (default=30)
+  int64 wait = 5;                   // Nanoseconds to wait for a response.
+  bool do_not_fragment = 6;         // Set the do not fragment bit. (IPv4 destinations)
+  bool do_not_resolve = 7;          // Do not try resolve the address returned.
+  types.L3Protocol l3protocol = 8;  // Layer-3 protocol requested for the ping.
   enum L4Protocol {
     ICMP = 0; // Use ICMP ECHO for probes.
     TCP = 1;  // Use TCP SYN for probes.
     UDP = 2;  // Use UDP for probes.
   }
   L4Protocol l4protocol = 9;
-  bool do_not_lookup_asn = 10; // Do not try to lookup ASN
+  bool do_not_lookup_asn = 10;      // Do not try to lookup ASN
+  string routing_instance = 11;     // Routing instance that the source address is located in
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.

@@ -841,19 +841,20 @@ func (x *TimeResponse) GetTime() uint64 {
 //
 // If the size is 0, the vendor default size will be used (typically 56 bytes).
 type PingRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
+	state         	protoimpl.MessageState
+	sizeCache     	protoimpl.SizeCache
+	unknownFields 	protoimpl.UnknownFields
 
-	Destination   string           `protobuf:"bytes,1,opt,name=destination,proto3" json:"destination,omitempty"`                             // Destination address to ping. required.
-	Source        string           `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`                                       // Source address to ping from.
-	Count         int32            `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`                                        // Number of packets.
-	Interval      int64            `protobuf:"varint,4,opt,name=interval,proto3" json:"interval,omitempty"`                                  // Nanoseconds between requests.
-	Wait          int64            `protobuf:"varint,5,opt,name=wait,proto3" json:"wait,omitempty"`                                          // Nanoseconds to wait for a response.
-	Size          int32            `protobuf:"varint,6,opt,name=size,proto3" json:"size,omitempty"`                                          // Size of request packet. (excluding ICMP header)
-	DoNotFragment bool             `protobuf:"varint,7,opt,name=do_not_fragment,json=doNotFragment,proto3" json:"do_not_fragment,omitempty"` // Set the do not fragment bit. (IPv4 destinations)
-	DoNotResolve  bool             `protobuf:"varint,8,opt,name=do_not_resolve,json=doNotResolve,proto3" json:"do_not_resolve,omitempty"`    // Do not try resolve the address returned.
-	L3Protocol    types.L3Protocol `protobuf:"varint,9,opt,name=l3protocol,proto3,enum=gnoi.types.L3Protocol" json:"l3protocol,omitempty"`   // Layer3 protocol requested for the ping.
+	Destination   	string           	`protobuf:"bytes,1,opt,name=destination,proto3" json:"destination,omitempty"`                             	// Destination address to ping. required.
+	Source        	string           	`protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`                                       	// Source address to ping from.
+	Count         	int32            	`protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`                                        	// Number of packets.
+	Interval      	int64            	`protobuf:"varint,4,opt,name=interval,proto3" json:"interval,omitempty"`                                  	// Nanoseconds between requests.
+	Wait          	int64            	`protobuf:"varint,5,opt,name=wait,proto3" json:"wait,omitempty"`                                          	// Nanoseconds to wait for a response.
+	Size          	int32            	`protobuf:"varint,6,opt,name=size,proto3" json:"size,omitempty"`                                          	// Size of request packet. (excluding ICMP header)
+	DoNotFragment 	bool             	`protobuf:"varint,7,opt,name=do_not_fragment,json=doNotFragment,proto3" json:"do_not_fragment,omitempty"` 	// Set the do not fragment bit. (IPv4 destinations)
+	DoNotResolve  	bool             	`protobuf:"varint,8,opt,name=do_not_resolve,json=doNotResolve,proto3" json:"do_not_resolve,omitempty"`    	// Do not try resolve the address returned.
+	L3Protocol    	types.L3Protocol 	`protobuf:"varint,9,opt,name=l3protocol,proto3,enum=gnoi.types.L3Protocol" json:"l3protocol,omitempty"`   	// Layer3 protocol requested for the ping.
+	RoutingInstance	string 				`protobuf:"bytes,14,opt,name=routing_instance,proto3" json:"routing_instance,omitempty"`					// Routing instance that the source address is located in. 
 }
 
 func (x *PingRequest) Reset() {
@@ -951,6 +952,13 @@ func (x *PingRequest) GetL3Protocol() types.L3Protocol {
 	return types.L3Protocol(0)
 }
 
+func (x *PingRequest) GetRoutingInstance() types.RoutingInstance {
+	if x != nil {
+		return x.RoutingInstance
+	}
+	return ""
+}
+
 // A PingResponse represents either the reponse to a single ping packet
 // (the bytes field is non-zero) or the summary statistics (sent is non-zero).
 //
@@ -963,17 +971,17 @@ type PingResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Source   string `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"` // Source of received bytes.
-	Time     int64  `protobuf:"varint,2,opt,name=time,proto3" json:"time,omitempty"`
-	Sent     int32  `protobuf:"varint,3,opt,name=sent,proto3" json:"sent,omitempty"`                      // Total packets sent.
-	Received int32  `protobuf:"varint,4,opt,name=received,proto3" json:"received,omitempty"`              // Total packets received.
-	MinTime  int64  `protobuf:"varint,5,opt,name=min_time,json=minTime,proto3" json:"min_time,omitempty"` // Minimum round trip time in nanoseconds.
-	AvgTime  int64  `protobuf:"varint,6,opt,name=avg_time,json=avgTime,proto3" json:"avg_time,omitempty"` // Average round trip time in nanoseconds.
-	MaxTime  int64  `protobuf:"varint,7,opt,name=max_time,json=maxTime,proto3" json:"max_time,omitempty"` // Maximum round trip time in nanoseconds.
-	StdDev   int64  `protobuf:"varint,8,opt,name=std_dev,json=stdDev,proto3" json:"std_dev,omitempty"`    // Standard deviation in round trip time.
-	Bytes    int32  `protobuf:"varint,11,opt,name=bytes,proto3" json:"bytes,omitempty"`                   // Bytes received.
-	Sequence int32  `protobuf:"varint,12,opt,name=sequence,proto3" json:"sequence,omitempty"`             // Sequence number of received packet.
-	Ttl      int32  `protobuf:"varint,13,opt,name=ttl,proto3" json:"ttl,omitempty"`                       // Remaining time to live value.
+	Source   		string `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"` 					 	// Source of received bytes.
+	Time     		int64  `protobuf:"varint,2,opt,name=time,proto3" json:"time,omitempty"`	
+	Sent     		int32  `protobuf:"varint,3,opt,name=sent,proto3" json:"sent,omitempty"`                      	// Total packets sent.
+	Received 		int32  `protobuf:"varint,4,opt,name=received,proto3" json:"received,omitempty"`              	// Total packets received.
+	MinTime  		int64  `protobuf:"varint,5,opt,name=min_time,json=minTime,proto3" json:"min_time,omitempty"` 	// Minimum round trip time in nanoseconds.
+	AvgTime  		int64  `protobuf:"varint,6,opt,name=avg_time,json=avgTime,proto3" json:"avg_time,omitempty"` 	// Average round trip time in nanoseconds.
+	MaxTime  		int64  `protobuf:"varint,7,opt,name=max_time,json=maxTime,proto3" json:"max_time,omitempty"` 	// Maximum round trip time in nanoseconds.
+	StdDev   		int64  `protobuf:"varint,8,opt,name=std_dev,json=stdDev,proto3" json:"std_dev,omitempty"`    	// Standard deviation in round trip time.
+	Bytes    		int32  `protobuf:"varint,11,opt,name=bytes,proto3" json:"bytes,omitempty"`                   	// Bytes received.
+	Sequence 		int32  `protobuf:"varint,12,opt,name=sequence,proto3" json:"sequence,omitempty"`             	// Sequence number of received packet.
+	Ttl      		int32  `protobuf:"varint,13,opt,name=ttl,proto3" json:"ttl,omitempty"`                       	// Remaining time to live value.
 }
 
 func (x *PingResponse) Reset() {
@@ -1097,16 +1105,17 @@ type TracerouteRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Source         string                       `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`                                       // Source address to ping from.
-	Destination    string                       `protobuf:"bytes,2,opt,name=destination,proto3" json:"destination,omitempty"`                             // Destination address to ping.
-	InitialTtl     uint32                       `protobuf:"varint,3,opt,name=initial_ttl,json=initialTtl,proto3" json:"initial_ttl,omitempty"`            // Initial TTL. (default=1)
-	MaxTtl         int32                        `protobuf:"varint,4,opt,name=max_ttl,json=maxTtl,proto3" json:"max_ttl,omitempty"`                        // Maximum number of hops. (default=30)
-	Wait           int64                        `protobuf:"varint,5,opt,name=wait,proto3" json:"wait,omitempty"`                                          // Nanoseconds to wait for a response.
-	DoNotFragment  bool                         `protobuf:"varint,6,opt,name=do_not_fragment,json=doNotFragment,proto3" json:"do_not_fragment,omitempty"` // Set the do not fragment bit. (IPv4 destinations)
-	DoNotResolve   bool                         `protobuf:"varint,7,opt,name=do_not_resolve,json=doNotResolve,proto3" json:"do_not_resolve,omitempty"`    // Do not try resolve the address returned.
-	L3Protocol     types.L3Protocol             `protobuf:"varint,8,opt,name=l3protocol,proto3,enum=gnoi.types.L3Protocol" json:"l3protocol,omitempty"`   // Layer-3 protocol requested for the ping.
-	L4Protocol     TracerouteRequest_L4Protocol `protobuf:"varint,9,opt,name=l4protocol,proto3,enum=gnoi.system.TracerouteRequest_L4Protocol" json:"l4protocol,omitempty"`
-	DoNotLookupAsn bool                         `protobuf:"varint,10,opt,name=do_not_lookup_asn,json=doNotLookupAsn,proto3" json:"do_not_lookup_asn,omitempty"` // Do not try to lookup ASN
+	Source         	string                       `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`                                       					// Source address to ping from.
+	Destination    	string                       `protobuf:"bytes,2,opt,name=destination,proto3" json:"destination,omitempty"`                             					// Destination address to ping.
+	InitialTtl     	uint32                       `protobuf:"varint,3,opt,name=initial_ttl,json=initialTtl,proto3" json:"initial_ttl,omitempty"`            					// Initial TTL. (default=1)
+	MaxTtl         	int32                        `protobuf:"varint,4,opt,name=max_ttl,json=maxTtl,proto3" json:"max_ttl,omitempty"`                        					// Maximum number of hops. (default=30)
+	Wait           	int64                        `protobuf:"varint,5,opt,name=wait,proto3" json:"wait,omitempty"`                                          					// Nanoseconds to wait for a response.
+	DoNotFragment  	bool                         `protobuf:"varint,6,opt,name=do_not_fragment,json=doNotFragment,proto3" json:"do_not_fragment,omitempty"` 					// Set the do not fragment bit. (IPv4 destinations)
+	DoNotResolve   	bool                         `protobuf:"varint,7,opt,name=do_not_resolve,json=doNotResolve,proto3" json:"do_not_resolve,omitempty"`    					// Do not try resolve the address returned.
+	L3Protocol     	types.L3Protocol             `protobuf:"varint,8,opt,name=l3protocol,proto3,enum=gnoi.types.L3Protocol" json:"l3protocol,omitempty"`   					// Layer-3 protocol requested for the ping.
+	L4Protocol     	TracerouteRequest_L4Protocol `protobuf:"varint,9,opt,name=l4protocol,proto3,enum=gnoi.system.TracerouteRequest_L4Protocol" json:"l4protocol,omitempty"`
+	DoNotLookupAsn 	bool                         `protobuf:"varint,10,opt,name=do_not_lookup_asn,json=doNotLookupAsn,proto3" json:"do_not_lookup_asn,omitempty"` 			// Do not try to lookup ASN
+	RoutingInstance	string 						 `protobuf:"bytes,11,opt,name=routing_instance,proto3" json:"routing_instance,omitempty"`									// Routing instance that the source address is located in 
 }
 
 func (x *TracerouteRequest) Reset() {
@@ -1209,6 +1218,13 @@ func (x *TracerouteRequest) GetDoNotLookupAsn() bool {
 		return x.DoNotLookupAsn
 	}
 	return false
+}
+
+func (x *TracerouteRequest) GetRoutingInstance() string {
+	if x != nil {
+		return x.RoutingInstance
+	}
+	return ""
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.
