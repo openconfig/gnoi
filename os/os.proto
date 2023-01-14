@@ -7,7 +7,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/os";
 
-option (types.gnoi_version) = "0.1.2";
+option (types.gnoi_version) = "0.1.3";
 
 // The OS service provides an interface for OS installation on a Target. The
 // Client progresses through 3 RPCs:
@@ -16,7 +16,9 @@ option (types.gnoi_version) = "0.1.2";
 //   3) Verification - verify that the Activation was successful.
 //
 // Dual Supervisor Target is supported, where the above process is executed once
-// for each Supervisor.
+// for the whole Target or once for each Supervisor. Targets that require the above
+// process executed once per Supervisor will reply with the flag
+// Verify->VerifyResponse->individual_supervisor_install set to true.
 //
 // Note that certain platforms may have particular approaches to upgrade the
 // firmware of specific components, eg., power supply units, etc.. In addition,
@@ -68,8 +70,7 @@ service OS {
   // Service. 
   // On systems which support installing the entire system with
   // one upgrade command, one install RPC is sufficient to install the package 
-  // on all Supervisors. Such systems respond with cluster_validated set to true 
-  // in the Validated message. 
+  // on all Supervisors. 
   // On other systems, the Install RPC applies to the Active Supervisor unless
   // InstallRequest->TransferRequest->standby_supervisor is set, in which case
   // it applies to the Standby Supervisor. One Install RPC is required for each
@@ -249,9 +250,6 @@ message Validated {
   // used, and can contain information such as build date, target platform,
   // developer, etc.
   string description = 2;
-  // On systems which install the package on all Supervisors, cluster_validated
-  // is set to true
-  bool cluster_validated = 3;
 }
 
 // The InstallError message MUST be sent by the Target to the Client whenever an
@@ -302,8 +300,6 @@ message InstallError {
 // in the next bootable OS version that is to be used on the Target.
 // On systems which install the image on the entire system in one command,
 // the package is activated on all Supervisors upon one ActivateRequest. 
-// Upon activating the package on all Supervisors, ActivateResponse will
-// return cluster_activated as true.
 // Target will not support activating on standby Supervisor only and will return 
 // error NOT_SUPPORTED_ON_BACKUP.
 message ActivateRequest {
@@ -337,15 +333,13 @@ message ActivateResponse {
 // boot. 
 // Systems which install the image on all Supervisors in one command will
 // activate the image on all Supervisors in response to one Activate RPC.
-// The entire system will be rebooted including both Supervisors. Such
-// systems will return cluster_activated set to true.
+// The entire system will be rebooted including both Supervisors.
 //
 // On other systems, in a Target with dual Supervisor, performing this RPC on 
 // the Active Supervisor triggers a switchover before booting the (old)Active 
 // Supervisor. The Target should always perform a switchover with the least impact 
 // possible to forwarding.
 message ActivateOK {
-    bool cluster_activated = 1;
 }
 
 message ActivateError {
@@ -376,6 +370,9 @@ message VerifyResponse {
   string activation_fail_message = 2;
 
   VerifyStandby verify_standby = 3;
+  // Targets that require the Install/Activate/Verify process executed once
+  // per supervisor reply with individual_supervisor_install set to true
+  bool individual_supervisor_install = 4;
 }
 
 message VerifyStandby {
