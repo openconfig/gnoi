@@ -16,8 +16,8 @@ option (types.gnoi_version) = "0.1.3";
 //   3) Verification - verify that the Activation was successful.
 //
 // Dual Supervisor Target is supported, where the above process is executed once
-// for the whole Target or once for each Supervisor. Targets that require the above
-// process executed once per Supervisor will reply with the flag
+// for the whole Target or once for each Supervisor. Targets that require the 
+// above process executed once per Supervisor will reply with the flag
 // Verify->VerifyResponse->individual_supervisor_install set to true.
 //
 // Note that certain platforms may have particular approaches to upgrade the
@@ -66,23 +66,24 @@ service OS {
   //                  TransferEnd -->
   //                              <-- [Validated|InstallError]
   //
-  // On a dual Supervisor Target, only the Active Supervisor runs this gNOI
-  // Service. 
-  // On systems which support installing the entire system with
-  // one upgrade command, one install RPC is sufficient to install the package 
-  // on all Supervisors. 
-  // On other systems, the Install RPC applies to the Active Supervisor unless
-  // InstallRequest->TransferRequest->standby_supervisor is set, in which case
-  // it applies to the Standby Supervisor. One Install RPC is required for each
-  // Supervisor. The Supervisor order of package installation MUST not be fixed.
-  //
-  // On systems which support installing the entire system with one upgrade
-  // command, package is available on all Supervisors or none. If the package
-  // is absent on the Active Supervisor, Target does not try to copy the package
-  // from the standby Supervisor.
-  // On other systems, the Target MUST always attempt to copy the OS package 
-  // between Supervisors first before accepting the transfer from the Client. The 
-  // syncing progress is reported to the client with InstallResponse->SyncProgress messages.
+  // On a dual Supervisor Target which requires installing the entire 
+  // system with one Install RPC, one Install RPC is sufficient to 
+  // install the package on all Supervisors.
+  // On a dual Supervisor Target which requires one Install RPC per 
+  // supervisor, the Install RPC applies to the Active Supervisor unless 
+  // InstallRequest->TransferRequest->standby_supervisor is set, in which 
+  // case it applies to the Standby Supervisor. The Target MUST accept any 
+  // order of package installation.
+  // On a dual Supervisor Target which requires installing the entire 
+  // system with one Install RPC, the package MUST be made available on 
+  // all Supervisors or none. If upon installation the package is absent 
+  // from either Supervisor, the Target will transfer to both Supervisors 
+  // overwriting the existing one.
+  // On a dual Supervisor Target which requires one Install RPC per 
+  // supervisor, the Target MUST always attempt to copy the OS package 
+  // between Supervisors first before accepting the transfer from the 
+  // Client. The syncing progress is reported to the client with 
+  // InstallResponse->SyncProgress messages.
   //
   // If a switchover is triggered during the Install RPC, the RPC MUST
   // immediately abort with Error->type->UNEXPECTED_SWITCHOVER.
@@ -95,8 +96,9 @@ service OS {
   //                              <-- [Validated|InstallError]
   //
   //
-  // Scenario 4 - When one of the Supervisors already has the OS package but the
-  //              other Supervisor is the target of the Install:
+  // Scenario 4 - On a dual Supervisor Target which requires one Install RPC
+  // per supervisor, and when one of the Supervisors already has the OS 
+  // package but the other Supervisor is the target of the Install:
   //
   //         Client :--------------|--------------> Target
   //              TransferRequest -->
@@ -104,8 +106,6 @@ service OS {
   //                              ...
   //                              <-- [Validated|InstallError]
   //
-  //		- This scenario is not applicable to systems which install the package on all Supervisors
-  //		  with one command as one Install RPC updates the package on all Supervisors..
   //
   // Scenario 5 - When neither of the two Supervisors has the OS package:
   //
@@ -132,18 +132,12 @@ service OS {
   rpc Verify(VerifyRequest) returns (VerifyResponse);
 }
 
-// Systems which save image and config to secondary disk on the same Supervisor for
-// auto recovery from failed upgrade will snapshot to secondary disk if snapshot_to_secondary_disk
-// is true
 message InstallRequest {
   oneof request {
     TransferRequest transfer_request = 1;
     bytes transfer_content = 2;
     TransferEnd transfer_end = 3;
   }
-  // For auto-recovery, snapshot will save the image and config to secondary disk 
-  // on the same Supervisor.
-  bool snapshot_to_secondary_disk = 4;
 }
 
 message TransferRequest {
@@ -162,17 +156,18 @@ message TransferRequest {
   // transferred to the Target. The Target MUST never validate that this value
   // matches the one in the InstallResponse->Validated message, that is the
   // Client's responsibility.
-  // Systems which install the image on all Supervisors in one command
-  // will either have the image on both Supervisors or neither Supervisor.
-  // Such systems do not need to sync the image from peer Supervisor and
-  // will respond with TransferReady. 
+  // A dual Supervisor Target which requires installing the entire system 
+  // with one Install RPC, will either have the image on both Supervisors 
+  // or neither Supervisor. Such Targets do not need to sync the image 
+  // from peer Supervisor and MUST immediately respond with TransferReady
+
   string version = 1;
 
   // For a Target with dual Supervisors setting this flag instructs the Target
   // to perform the action on the Standby Supervisor.
-  // Systems which install the package on all Supervisors will return an
-  // error code of NOT_SUPPORTED_ON_STANDBY if requested to install on standby
-  // only.
+  // A dual Supervisor Target which requires installing the entire system 
+  // with one Install RPC MUST return an error code of NOT_SUPPORTED_ON_BACKUP 
+  // if requested to install on standby only.
   bool standby_supervisor = 2;
 
   // Optionally specify the package size in bytes of the OS package being
@@ -287,9 +282,9 @@ message InstallError {
     // On systems which install the package on all Supervisors in one command,
     // SYNC_FAIL will not be returned.
     SYNC_FAIL = 8;
-    // Systems which install the package on all Supervisors in one command
-    // will not support Install on backup Supervisor only and return this error
-    // when requested to install on standby Supervisor only.
+    // Dual Supervisor Target which requires installing the entire system 
+    // with one Install RPC MUST return this error when requested to 
+    // install on standby Supervisor.
     NOT_SUPPORTED_ON_BACKUP = 9;
   }
   Type type = 1;
@@ -298,10 +293,10 @@ message InstallError {
 
 // The ActivateRequest is sent by the Client to the Target to initiate a change
 // in the next bootable OS version that is to be used on the Target.
-// On systems which install the image on the entire system in one command,
-// the package is activated on all Supervisors upon one ActivateRequest. 
-// Target will not support activating on standby Supervisor only and will return 
-// error NOT_SUPPORTED_ON_BACKUP.
+// Dual Supervisor Target which requires installing the entire system with 
+// one Install RPC MUST return NOT_SUPPORTED_ON_BACKUP error when requested 
+// to Activate on standby Supervisor.
+
 message ActivateRequest {
   // The version that is required to be activated and optionally immediattely
   // booted.
@@ -331,14 +326,15 @@ message ActivateResponse {
 // then it replies with ActivateOK. If the Target has the OS package version
 // requested in ActivateRequest then it replies with ActivateOK and proceeds to
 // boot. 
-// Systems which install the image on all Supervisors in one command will
-// activate the image on all Supervisors in response to one Activate RPC.
-// The entire system will be rebooted including both Supervisors.
+// A dual Supervisor Target which requires installing the entire system with 
+// one Install RPC, will activate the image on all Supervisors in response to 
+// one Activate RPC. The Target should activate the image on both Supervisors 
+// with the least impact possible to forwarding.
 //
-// On other systems, in a Target with dual Supervisor, performing this RPC on 
-// the Active Supervisor triggers a switchover before booting the (old)Active 
-// Supervisor. The Target should always perform a switchover with the least impact 
-// possible to forwarding.
+// On a dual Supervisor Target which requires one Install RPC per supervisor, 
+// performing this RPC on the Active Supervisor triggers a switchover before 
+// booting the (old)Active Supervisor. The Target should perform a switchover 
+// with the least impact possible to forwarding.
 message ActivateOK {
 }
 
@@ -349,8 +345,9 @@ message ActivateError {
     // There is no OS package with the version requested for activation. This is
     // also used for an empty version string.
     NON_EXISTENT_VERSION = 1;
-    // Systems which activate on all Supervisors will return NOT_SUPPORTED_ON_BACKUP
-    // when asked to activate on standby Supervisor only.
+    // Dual Supervisor Target which requires installing the entire system 
+    // with one Install RPC MUST return NOT_SUPPORTED_ON_BACKUP error when 
+    // requested to Activate on standby Supervisor.
     NOT_SUPPORTED_ON_BACKUP = 2;
   }
   Type type = 1;
@@ -370,8 +367,9 @@ message VerifyResponse {
   string activation_fail_message = 2;
 
   VerifyStandby verify_standby = 3;
-  // Targets that require the Install/Activate/Verify process executed once
-  // per supervisor reply with individual_supervisor_install set to true
+  // Dual Supervisor Targets that require the Install/Activate/Verify process 
+  // executed once per supervisor reply with individual_supervisor_install set 
+  // to true
   bool individual_supervisor_install = 4;
 }
 
