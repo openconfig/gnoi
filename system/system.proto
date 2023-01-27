@@ -91,10 +91,12 @@ service System {
 }
 
 message SwitchControlProcessorRequest {
+  // Path to the target Control Processor.
   types.Path control_processor = 1;
 }
 
 message SwitchControlProcessorResponse {
+  // Path to the Control Processor that the system switched to.
   types.Path control_processor = 1;
   // Current software version of the target Control Processor.
   string version = 2;
