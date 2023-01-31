@@ -7,7 +7,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/os";
 
-option (types.gnoi_version) = "0.1.3";
+option (types.gnoi_version) = "0.1.4";
 
 // The OS service provides an interface for OS installation on a Target. The
 // Client progresses through 3 RPCs:
@@ -197,10 +197,11 @@ message TransferEnd {
 // The InstallResponse is used by the Target to inform the Client about the
 // state of the Install RPC. At any stage of the process the Target can reply
 // with an Error message which MUST terminate the stream.
-// Systems which install the image on all Supervisors in one command
-// will either have the image on both Supervisors or neither Supervisor.
-// Such systems do not need to sync the image from peer Supervisor and
-// will respond with TransferReady if the package is absent on the Supervisor.
+// A dual Supervisor Target which requires installing the entire system with one 
+// Install RPC, will either have the image on both Supervisors or neither 
+// Supervisor. Such Targets do not need to sync the image from peer Supervisor and 
+// MUST immediately respond with TransferReady
+
 message InstallResponse {
   oneof response {
     TransferReady transfer_ready = 1;
@@ -228,8 +229,10 @@ message TransferProgress {
 
 // The SyncProgress message signals the Client about the progress of
 // transferring the OS package between Supervisors.
-// Systems which install the package on all Supervisors do not need to
-// transfer the package between Supervisors and will not send SyncProgress.
+// A dual Supervisor Target which requires installing the entire system with 
+// one Install RPC, does not need to transfer the package between Supervisors 
+// and MUST not send SyncProgress.
+
 message SyncProgress {
   // The percentage that has transferred between Supervisors.
   uint32 percentage_transferred = 1;
@@ -279,8 +282,8 @@ message InstallError {
     UNEXPECTED_SWITCHOVER = 7;
     // Failed to sync the transferred OS package to the standby Supervisor. The
     // detail value MUST have more information.
-    // On systems which install the package on all Supervisors in one command,
-    // SYNC_FAIL will not be returned.
+    // A dual Supervisor Target which requires installing the entire system with 
+    // one Install RPC, MUST not return SYNC_FAIL.
     SYNC_FAIL = 8;
     // Dual Supervisor Target which requires installing the entire system 
     // with one Install RPC MUST return this error when requested to 
