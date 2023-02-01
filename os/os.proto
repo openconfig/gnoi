@@ -201,7 +201,6 @@ message TransferEnd {
 // Install RPC, will either have the image on both Supervisors or neither 
 // Supervisor. Such Targets do not need to sync the image from peer Supervisor and 
 // MUST immediately respond with TransferReady
-
 message InstallResponse {
   oneof response {
     TransferReady transfer_ready = 1;
@@ -232,7 +231,6 @@ message TransferProgress {
 // A dual Supervisor Target which requires installing the entire system with 
 // one Install RPC, does not need to transfer the package between Supervisors 
 // and MUST not send SyncProgress.
-
 message SyncProgress {
   // The percentage that has transferred between Supervisors.
   uint32 percentage_transferred = 1;
@@ -299,7 +297,6 @@ message InstallError {
 // Dual Supervisor Target which requires installing the entire system with 
 // one Install RPC MUST return NOT_SUPPORTED_ON_BACKUP error when requested 
 // to Activate on standby Supervisor.
-
 message ActivateRequest {
   // The version that is required to be activated and optionally immediattely
   // booted.
