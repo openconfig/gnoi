@@ -160,7 +160,6 @@ message TransferRequest {
   // with one Install RPC, will either have the image on both Supervisors 
   // or neither Supervisor. Such Targets do not need to sync the image 
   // from peer Supervisor and MUST immediately respond with TransferReady
-
   string version = 1;
 
   // For a Target with dual Supervisors setting this flag instructs the Target
