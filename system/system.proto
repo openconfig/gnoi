@@ -185,7 +185,7 @@ message PingRequest {
   bool do_not_fragment = 7;         // Set the do not fragment bit. (IPv4 destinations)
   bool do_not_resolve = 8;          // Do not try resolve the address returned.
   types.L3Protocol l3protocol = 9;  // Layer3 protocol requested for the ping.
-  string routing_instance = 10;     // Routing instance that the source address is located in
+  string network_instance = 10;     // Network instance that the source address is located in
 
 }
 
@@ -220,13 +220,13 @@ message PingResponse {
 // If the hop_count is -1 the traceroute will continue forever.
 //
 message TracerouteRequest {
-  string source = 1;                // Source address to ping from.
-  string destination = 2;           // Destination address to ping.
-  uint32 initial_ttl = 3;           // Initial TTL. (default=1)
-  int32 max_ttl = 4;                // Maximum number of hops. (default=30)
-  int64 wait = 5;                   // Nanoseconds to wait for a response.
-  bool do_not_fragment = 6;         // Set the do not fragment bit. (IPv4 destinations)
-  bool do_not_resolve = 7;          // Do not try resolve the address returned.
+  string source = 1;         // Source address to ping from.
+  string destination = 2;    // Destination address to ping.
+  uint32 initial_ttl = 3;    // Initial TTL. (default=1)
+  int32 max_ttl = 4;         // Maximum number of hops. (default=30)
+  int64 wait = 5;            // Nanoseconds to wait for a response.
+  bool do_not_fragment = 6;  // Set the do not fragment bit. (IPv4 destinations)
+  bool do_not_resolve = 7;   // Do not try resolve the address returned.
   types.L3Protocol l3protocol = 8;  // Layer-3 protocol requested for the ping.
   enum L4Protocol {
     ICMP = 0; // Use ICMP ECHO for probes.
@@ -234,8 +234,8 @@ message TracerouteRequest {
     UDP = 2;  // Use UDP for probes.
   }
   L4Protocol l4protocol = 9;
-  bool do_not_lookup_asn = 10;      // Do not try to lookup ASN
-  string routing_instance = 11;     // Routing instance that the source address is located in
+  bool do_not_lookup_asn = 10; // Do not try to lookup ASN
+  string network_instance = 11; // Network instance that the source address is located in
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.
