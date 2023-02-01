@@ -197,10 +197,10 @@ message TransferEnd {
 // The InstallResponse is used by the Target to inform the Client about the
 // state of the Install RPC. At any stage of the process the Target can reply
 // with an Error message which MUST terminate the stream.
-// A dual Supervisor Target which requires installing the entire system with one 
-// Install RPC, will either have the image on both Supervisors or neither 
-// Supervisor. Such Targets do not need to sync the image from peer Supervisor and 
-// MUST immediately respond with TransferReady
+// A dual Supervisor Target which requires installing the entire system with
+// one Install RPC, will either have the image on both Supervisors or neither 
+// Supervisor. Such Targets do not need to sync the image from peer Supervisor
+// and MUST immediately respond with TransferReady.
 message InstallResponse {
   oneof response {
     TransferReady transfer_ready = 1;
@@ -280,8 +280,8 @@ message InstallError {
     UNEXPECTED_SWITCHOVER = 7;
     // Failed to sync the transferred OS package to the standby Supervisor. The
     // detail value MUST have more information.
-    // A dual Supervisor Target which requires installing the entire system with 
-    // one Install RPC, MUST not return SYNC_FAIL.
+    // A dual Supervisor Target which requires installing the entire system
+    // with one Install RPC, MUST not return SYNC_FAIL.
     SYNC_FAIL = 8;
     // Dual Supervisor Target which requires installing the entire system 
     // with one Install RPC MUST return this error when requested to 
