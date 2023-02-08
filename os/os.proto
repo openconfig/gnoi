@@ -9,6 +9,7 @@ option go_package = "github.com/openconfig/gnoi/os";
 
 option (types.gnoi_version) = "0.1.4";
 
+
 // The OS service provides an interface for OS installation on a Target. The
 // Client progresses through 3 RPCs:
 //   1) Installation - provide the Target with the OS package.
@@ -127,8 +128,15 @@ service OS {
   // booting the previously running OS package.
   rpc Activate(ActivateRequest) returns (ActivateResponse);
 
-  // Verify checks the running OS version. This RPC may be called multiple times
-  // while the Target boots, until successful.
+  // Verify checks the running OS version. During reboot, gRPC client returns
+  // the gRPC status code UNAVAILABLE while the Target is unreachable, which
+  // should be retried by the client until successful. After the Target becomes
+  // reachable, it should report all ready or error states normally through
+  // VerifyResponse.
+  //
+  // On a dual Supervisor system, if the Standby Supervisor is rebooting, it
+  // should be reported in the VerifyResponse via verify_standby as
+  // StandbyState UNAVAILABLE.
   rpc Verify(VerifyRequest) returns (VerifyResponse);
 }
 
@@ -374,7 +382,9 @@ message VerifyResponse {
 
 message VerifyStandby {
   oneof state {
+    // Standby state indicates problems with the standby.
     StandbyState standby_state = 1;
+    // Standby response indicates that the standby is present and ready.
     StandbyResponse verify_response = 2;
   }
 }
@@ -383,7 +393,7 @@ message StandbyState {
   enum State {
     UNSPECIFIED = 0;
     // The Target does not support dual Supervisors.
-    UNSUPORTED = 1;
+    UNSUPPORTED = 1;
     // Standby Supervisor is supported but does not exist.
     NON_EXISTENT = 2;
     // Standby Supervisor is supported but is not available, eg.: rebooting.

@@ -30,7 +30,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
-option (types.gnoi_version) = "1.2.0";
+option (types.gnoi_version) = "1.3.0";
 
 // The Healthz service provides access to the status of a path on the
 // system. Addtitionally it allows the implementor to provide path specific
