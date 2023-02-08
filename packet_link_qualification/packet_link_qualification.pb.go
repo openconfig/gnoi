@@ -371,9 +371,7 @@ func (x *NTPSyncedTiming) GetTeardownTime() *timestamppb.Timestamp {
 // results.
 // The pre_qual_wait will allow the caller to adjust any setup timing
 // differences between peers. The post_qual_wait will allow for the caller to
-//
-//	adjust any teardown differences in timing between peers.
-//
+// adjust any teardown differences in timing between peers.
 // pre_qual_wait cannot be less than selected endpoint type's min_setup_time.
 // post_qual_wait cannot be less than the selected endpoint type's
 // min_teardown_time.
@@ -404,7 +402,7 @@ type RPCSyncedTiming struct {
 	// This requested teardown duration for the endpoint. teardown_duration
 	// must be >= min_teardown_duration in the service capabilities. If the
 	// service completes before the teardown_duration it must wait teardown
-	// _duration before completing.
+	// duration before completing.
 	TeardownDuration *durationpb.Duration `protobuf:"bytes,5,opt,name=teardown_duration,json=teardownDuration,proto3" json:"teardown_duration,omitempty"`
 }
 
