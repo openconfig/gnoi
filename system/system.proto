@@ -29,7 +29,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/system";
 
-option (types.gnoi_version) = "1.0.0";
+option (types.gnoi_version) = "1.1.0";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
@@ -85,9 +85,6 @@ service System {
 
   // KillProcess kills an OS process and optionally restarts it.
   rpc KillProcess(KillProcessRequest) returns (KillProcessResponse) {}
-
-  // TODO(hines): Add RotateCertificate workflow
-  // TODO(hines): Add SetSSHPrivateKey
 }
 
 message SwitchControlProcessorRequest {
@@ -329,7 +326,10 @@ message KillProcessRequest {
     SIGNAL_TERM = 1;         // Terminate the process gracefully.
     SIGNAL_KILL = 2;         // Terminate the process immediately.
     SIGNAL_HUP = 3;          // Reload the process configuration.
+    // Terminate the process immediately and dump a core file.
+    SIGNAL_ABRT = 4;
   }
+
   Signal signal = 3;
   // Whether the process should be restarted after termination.
   // This value is ignored when the termination signal is SIGHUP.
