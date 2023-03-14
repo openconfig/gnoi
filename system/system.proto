@@ -292,7 +292,7 @@ message TracerouteResponse {
     PRECEDENCE_CUTOFF = 11;    // Precedence cutoff in  effect.
   }
 
-  message icmpExtData{
+  message IcmpExtData{
     uint32 class = 1;      // class number
     uint32 type = 2;       // class type
     repeated uint32 data = 3;     // raw words associated with this data
@@ -308,7 +308,7 @@ message TracerouteResponse {
   int32 icmp_code = 10;          // Code terminating hop.
   map<string, string> mpls = 11; // MPLS key/value pairs.
   repeated int32 as_path = 12;   // AS path.
-  repeated icmpExtData icmp_ext_data = 13;  // ICMP extension data
+  repeated IcmpExtData icmp_ext_data = 13;  // ICMP extension data
 }
 
 // Package defines a single package file to be placed on the target.
