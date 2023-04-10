@@ -1,0 +1,39 @@
+// WhiteBoxTest represents a list of test APIs that facilitates testing the
+// switch/controller (injecting events, mutating switch state etc.)
+
+syntax = "proto3";
+
+package gnoi.gnoi;
+
+service WhiteBoxTest {
+  // This RPC blocks or permits GNMI and P4RT connections from controller either
+  // on in band or out of band or on both channels.
+  // The goal is to simulate controller connection loss in various tests.
+  rpc SetControllerConnectionState(SetControllerConnectionStateRequest)
+      returns (SetControllerConnectionStateResponse) {}
+}
+
+message SetControllerConnectionStateRequest {
+  enum State {
+    UNKNOWN_STATE = 0;
+    BLOCK = 1;         // Block connections to switch.
+    REMOVE_BLOCK = 2;  // Permit connections to switch.
+  }
+
+  enum ConnectionType {
+    UNKNOWN_TYPE = 0;
+    ALL_CONNECTIONS = 1;  // Both in band and out of band connecions.
+    IN_BAND = 2;          // only in band connections.
+    OUT_OF_BAND = 3;      // only out of band connections.
+  }
+
+  State state = 1;
+  ConnectionType type = 2;
+  // Controller ipv4 addresses in prefix format ex: 10.1.1.1/32.
+  repeated string ipv4_prefix = 3;
+
+  // Controller ipv6 addresses in prefix format ex: 1000::1/128.
+  repeated string ipv6_prefix = 4;
+}
+
+message SetControllerConnectionStateResponse {}

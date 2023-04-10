@@ -1,0 +1,127 @@
+// BlackBoxTest represents a list of test APIs that facilitates testing the
+// switch/network (injecting events, mutating switch state etc.)
+
+syntax = "proto3";
+
+package gnoi.test;
+
+//import "enums/enums.proto";
+import "types/types.proto";
+import "google/rpc/status.proto";
+
+service BlackBoxTest {
+  // This RPC allows the state of a transceiver (for both optical, and copper
+  // cable) to be set on the switch. The goal is to simulate the
+  // insertion/removal of a transceiver and verify that the switch initializes
+  // the transceiver correctly. This RPC maps to the `fake` removal of a
+  // physical module, and un-doing the `fake` removal (i.e., insert). This does
+  // not implement any fake insertion of a non-present module. The switch
+  // remembers the state of a transceiver based on this RPC (until reboot).
+  rpc SetTransceiverState(SetTransceiverStateRequest)
+      returns (SetTransceiverStateResponse) {}
+
+  // This RPC changes the state of the link connected to the specified port(s).
+  // The goal is to simulate a link going up/down due to factors external to the
+  // switch: copper cable/fiber removed, cable/fiber gone bad, etc.
+  rpc SetHardwareLinkState(SetHardwareLinkStateRequest)
+      returns (SetHardwareLinkStateResponse) {}
+
+  // This RPC sets the Alarm state in the switch. The caller is able to set the
+  // id, resource, description, alarm severity, and type. One goal is to put the
+  // switch into a critical state to verify that the switch prevents write
+  // operations to the switch over P4RT/gNMI/gNOI and that the switch continues
+  // to forward packets and export telemetry.
+  rpc SetAlarm(SetAlarmRequest) returns (SetAlarmResponse) {}
+
+  // Switch performs an internal consistency check. It verifies if the hardware
+  // contents match with the corresponding software contents. If no component is
+  // specified, verification runs for all valid components. It performs
+  // verification on the supplied components otherwise. RPC fails for any
+  // invalid component.
+  rpc VerifyState(VerifyStateRequest) returns (VerifyStateResponse);
+}
+
+message SetTransceiverStateRequest {
+  message TransceiverStateRequest {
+    enum TransceiverState {
+      STATE_UNSPECIFIED = 0;
+      REMOVE = 1;       // Remove a module.
+      UNDO_REMOVE = 2;  // Undo removal (i.e., insertion) of a module.
+    }
+
+    // Path to the transceiver component.
+    .gnoi.types.Path transceiver = 1;
+    TransceiverState state = 2;
+  }
+
+  repeated TransceiverStateRequest transceiver_requests = 1;
+}
+
+message SetTransceiverStateResponse {
+  message TransceiverStateResponse {
+    // Path to the transceiver component.
+    .gnoi.types.Path transceiver = 1;
+    // Status of the operation. In case of failures, canonical error code and
+    // message show the details.
+    google.rpc.Status status = 2;
+  }
+
+  repeated TransceiverStateResponse transceiver_responses = 1;
+}
+
+message SetHardwareLinkStateRequest {
+  message HardwareLinkStateInfo {
+    // Path to the interface.
+    .gnoi.types.Path interface = 1;
+    bool enabled = 2;
+  }
+
+  repeated HardwareLinkStateInfo link_requests = 1;
+}
+
+message SetHardwareLinkStateResponse {
+  message SetHardwareLinkStateStatus {
+    // Path to the interface.
+    .gnoi.types.Path interface = 1;
+    // Status of the operation. In case of failures, canonical error code and
+    // message show the details.
+    google.rpc.Status status = 2;
+  }
+
+  repeated SetHardwareLinkStateStatus link_responses = 1;
+}
+
+message SetAlarmRequest {
+  // ID associated with the alarm.
+  string id = 1;
+  // Resource that raises the alarm. Must be a valid component ID.
+  string resource = 2;
+  // Description of the alarm.
+  string description = 3;
+  // OPENCONFIG_ALARM_SEVERITY from the OpenConfig system model.
+  // openconfig.enums.OpenconfigAlarmTypesOPENCONFIGALARMSEVERITY severity = 4;
+  // OPENCONFIG_ALARM_TYPE_ID from the OpenConfig system model.
+  // openconfig.enums.OpenconfigAlarmTypesOPENCONFIGALARMTYPEID type = 5;
+}
+
+message SetAlarmResponse {}
+
+message VerifyStateRequest {
+  // Resources that verify states. Must be valid component IDs.
+  repeated string components = 1;
+}
+
+message VerifyStateResponse {
+  message VerifyStateResult {
+    string component = 1;
+    // Status of the operation. In case of failures, canonical error code
+    // and message show the details.
+    google.rpc.Status status = 2;
+  }
+
+  // Overall (aggregated) test result. Overall result succeeds if and only
+  // if the test passes for all components. If it fails for any component,
+  // the overall result is a failure.
+  bool success = 1;
+  repeated VerifyStateResult results = 2;
+}
