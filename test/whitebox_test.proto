@@ -36,4 +36,5 @@ message SetControllerConnectionStateRequest {
   repeated string ipv6_prefix = 4;
 }
 
-message SetControllerConnectionStateResponse {}
+message SetControllerConnectionStateResponse {
+}
