@@ -52,8 +52,8 @@ go_proto_library(
     importpath = "github.com/openconfig/gnoi/file",
     proto = ":file_proto",
     deps = [
-        "//common:common_go_proto",
-        "//types:types_go_proto",
+        "//common",
+        "//types",
     ],
 )
 

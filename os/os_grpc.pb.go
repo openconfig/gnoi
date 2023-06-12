@@ -60,15 +60,24 @@ type OSClient interface {
 	//	         TransferEnd -->
 	//	                     <-- [Validated|InstallError]
 	//
-	// On a dual Supervisor Target, only the Active Supervisor runs this gNOI
-	// Service. The Install RPC applies to the Active Supervisor unless
-	// InstallRequest->TransferRequest->standby_supervisor is set, in which case
-	// it applies to the Standby Supervisor. One Install RPC is required for each
-	// Supervisor. The Supervisor order of package installation MUST not be fixed.
-	//
-	// The Target MUST always attempt to copy the OS package between Supervisors
-	// first before accepting the transfer from the Client. The syncing progress
-	// is reported to the client with InstallResponse->SyncProgress messages.
+	// On a dual Supervisor Target which requires installing the entire
+	// system with one Install RPC, one Install RPC is sufficient to
+	// install the package on all Supervisors.
+	// On a dual Supervisor Target which requires one Install RPC per
+	// supervisor, the Install RPC applies to the Active Supervisor unless
+	// InstallRequest->TransferRequest->standby_supervisor is set, in which
+	// case it applies to the Standby Supervisor. The Target MUST accept any
+	// order of package installation.
+	// On a dual Supervisor Target which requires installing the entire
+	// system with one Install RPC, the package MUST be made available on
+	// all Supervisors or none. If upon installation the package is absent
+	// from either Supervisor, the Target will transfer to both Supervisors
+	// overwriting the existing one.
+	// On a dual Supervisor Target which requires one Install RPC per
+	// supervisor, the Target MUST always attempt to copy the OS package
+	// between Supervisors first before accepting the transfer from the
+	// Client. The syncing progress is reported to the client with
+	// InstallResponse->SyncProgress messages.
 	//
 	// If a switchover is triggered during the Install RPC, the RPC MUST
 	// immediately abort with Error->type->UNEXPECTED_SWITCHOVER.
@@ -81,9 +90,9 @@ type OSClient interface {
 	//	     TransferRequest -->
 	//	                     <-- [Validated|InstallError]
 	//
-	// Scenario 4 - When one of the Supervisors already has the OS package but the
-	//
-	//	     other Supervisor is the target of the Install:
+	// Scenario 4 - On a dual Supervisor Target which requires one Install RPC
+	// per supervisor, and when one of the Supervisors already has the OS
+	// package but the other Supervisor is the target of the Install:
 	//
 	//	Client :--------------|--------------> Target
 	//	     TransferRequest -->
@@ -219,15 +228,24 @@ type OSServer interface {
 	//	         TransferEnd -->
 	//	                     <-- [Validated|InstallError]
 	//
-	// On a dual Supervisor Target, only the Active Supervisor runs this gNOI
-	// Service. The Install RPC applies to the Active Supervisor unless
-	// InstallRequest->TransferRequest->standby_supervisor is set, in which case
-	// it applies to the Standby Supervisor. One Install RPC is required for each
-	// Supervisor. The Supervisor order of package installation MUST not be fixed.
-	//
-	// The Target MUST always attempt to copy the OS package between Supervisors
-	// first before accepting the transfer from the Client. The syncing progress
-	// is reported to the client with InstallResponse->SyncProgress messages.
+	// On a dual Supervisor Target which requires installing the entire
+	// system with one Install RPC, one Install RPC is sufficient to
+	// install the package on all Supervisors.
+	// On a dual Supervisor Target which requires one Install RPC per
+	// supervisor, the Install RPC applies to the Active Supervisor unless
+	// InstallRequest->TransferRequest->standby_supervisor is set, in which
+	// case it applies to the Standby Supervisor. The Target MUST accept any
+	// order of package installation.
+	// On a dual Supervisor Target which requires installing the entire
+	// system with one Install RPC, the package MUST be made available on
+	// all Supervisors or none. If upon installation the package is absent
+	// from either Supervisor, the Target will transfer to both Supervisors
+	// overwriting the existing one.
+	// On a dual Supervisor Target which requires one Install RPC per
+	// supervisor, the Target MUST always attempt to copy the OS package
+	// between Supervisors first before accepting the transfer from the
+	// Client. The syncing progress is reported to the client with
+	// InstallResponse->SyncProgress messages.
 	//
 	// If a switchover is triggered during the Install RPC, the RPC MUST
 	// immediately abort with Error->type->UNEXPECTED_SWITCHOVER.
@@ -240,9 +258,9 @@ type OSServer interface {
 	//	     TransferRequest -->
 	//	                     <-- [Validated|InstallError]
 	//
-	// Scenario 4 - When one of the Supervisors already has the OS package but the
-	//
-	//	     other Supervisor is the target of the Install:
+	// Scenario 4 - On a dual Supervisor Target which requires one Install RPC
+	// per supervisor, and when one of the Supervisors already has the OS
+	// package but the other Supervisor is the target of the Install:
 	//
 	//	Client :--------------|--------------> Target
 	//	     TransferRequest -->
