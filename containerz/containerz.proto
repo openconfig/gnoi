@@ -20,8 +20,8 @@ syntax = "proto3";
 
 package gnoi.containerz;
 
-import "google/rpc/status.proto";
 import "common/common.proto";
+import "google/rpc/status.proto";
 import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
@@ -93,7 +93,8 @@ message ImageTransfer {
 // and therefore no more content will be sent. Any content sent after this
 // message should be discarded. This message serves as a signal to the target
 // to begin integrity verifications on the received data.
-message ImageTransferEnd {}
+message ImageTransferEnd {
+}
 
 message DeployResponse {
   oneof response {
@@ -106,7 +107,8 @@ message DeployResponse {
 
 // ImageTransferReady indicates to the client that the target is ready to
 // receive the container image content.
-message ImageTransferReady {}
+message ImageTransferReady {
+}
 
 // ImageTransferProgress is sent periodically to the client during the transfer.
 message ImageTransferProgress {
