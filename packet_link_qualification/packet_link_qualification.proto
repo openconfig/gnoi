@@ -10,6 +10,7 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "types/types.proto";
 
+// protolint:disable MAX_LINE_LENGTH
 option go_package = "github.com/openconfig/gnoi/packet_link_qualification;linkqual";
 
 option (types.gnoi_version) = "1.1.0";
