@@ -329,8 +329,8 @@ message PmdLoopbackCapabilities {
   * Repeat taking snapshots of results every `min_sample_interval` until `end_time`
   * if `teardown_time` is not set, begin teardown.
     * if set wait until `teardown_time` then begin teardown
-  * Once the teardown is complete, take the final reading on packets_sent, packets_received, packets_error and packets_dropped at the Generator end.
-    *  Make sure that the expected_rate_bytes_per_second and qualification_rate_bytes_per_second counters are not updated post teardown. 
+  * Once the teardown is complete, take the final reading on `packets_sent`, `packets_received`, `packets_error` and `packets_dropped` at the Generator end.
+    *  `qualification_rate_bytes_per_second` counter should be computed only during the test duration using the bytes sent in the `min_sample_interval`. 
 * Reflector
   * Validate that `setup_duration` is >= `min_setup_duration`
   * Validate that `teardown_duration` is >= `min_teardown_duration`
@@ -342,8 +342,8 @@ message PmdLoopbackCapabilities {
   * Repeat taking snapshots of results every `update_interva`l
   * Once duration is reached wait for `post_sync_duration` if set
   * After `post_sync_duration` is reached begin teardown
-  * Once the teardown is complete, take the final reading on packets_sent, packets_received, packets_error and packets_dropped at the reflector end.
-    *  Make sure that the qualification_rate_bytes_per_second counter is not updated post teardown. 
+  * Once the teardown is complete, take the final reading on `packets_sent`, `packets_received`, `packets_error` and `packets_dropped` at the reflector end.
+    *  `qualification_rate_bytes_per_second` counter should be computed only during the test duration using the bytes sent in the `min_sample_interval`.
 
 ### Workflow for Delete in the case of canceling early
 
