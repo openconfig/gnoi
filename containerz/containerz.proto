@@ -15,7 +15,8 @@
 //
 
 // This file defines the gNOI APIs used to perform container operations on a
-// network device.
+// network device. This specification is still under design and subject to
+// change.
 syntax = "proto3";
 
 package gnoi.containerz;
@@ -25,6 +26,7 @@ import "google/rpc/status.proto";
 import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
+option (types.gnoi_version) = "0.1.0";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
