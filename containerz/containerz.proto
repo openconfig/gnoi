@@ -90,8 +90,7 @@ message ImageTransfer {
 // and therefore no more content will be sent. Any content sent after this
 // message should be discarded. This message serves as a signal to the target
 // to begin integrity verifications on the received data.
-message ImageTransferEnd {
-}
+message ImageTransferEnd {}
 
 message DeployResponse {
   oneof response {
@@ -105,7 +104,8 @@ message DeployResponse {
 // ImageTransferReady indicates to the client that the target is ready to
 // receive the container image content.
 message ImageTransferReady {
-  // Indicates the size of the chunks to use.
+  // Indicates the size of the chunks that the client should break the
+  // container into as it is transferred.
   int32 chunk_size = 1;
 }
 
@@ -211,8 +211,8 @@ message StartRequest {
   // the target should assign one.
   string instance_name = 4;
   message Port {
-    string internal = 1;
-    string external = 2;
+    uint32 internal = 1;
+    uint32 external = 2;
   }
 
   // List of internal ports to expose outside the container.
