@@ -30,8 +30,7 @@ option (types.gnoi_version) = "0.1.0";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
-  // a sequential stream of messages containing up to 64KB of data. The final
-  // message must contain the hash of the container that was sent. Upon
+  // a sequential stream of messages containing up to 64KB of data. Upon
   // reception of a valid container, the target must load it into its registry.
   // Whether the registry is local or remote is target and deployment specific.
   // A valid container is one that has passed its checksum.
@@ -79,16 +78,12 @@ message ImageTransfer {
   // container image.
   string tag = 2;
 
-  // The hash must be used to validate and verify that the transferred completed
-  // sucessfully.
-  types.HashType hash = 3;
-
   // Optional. Indicates the size (in bytes) of the container image.
-  uint64 image_size = 4;
+  uint64 image_size = 3;
 
   // Optional. Instructs the target to fetch the image from a remote location.
   // The above name and tag must be applied to the container once downloaded.
-  common.RemoteDownload remote_download = 5;
+  common.RemoteDownload remote_download = 4;
 }
 
 // ImageTransferEnd indicates to the target that the client is finished sending
@@ -110,6 +105,9 @@ message DeployResponse {
 // ImageTransferReady indicates to the client that the target is ready to
 // receive the container image content.
 message ImageTransferReady {
+  // Indicates the size of the chunks that the client should break the
+  // container into as it is transferred.
+  int32 chunk_size = 1;
 }
 
 // ImageTransferProgress is sent periodically to the client during the transfer.
@@ -137,6 +135,10 @@ message RemoveRequest {
 
   // The container tag to be removed.
   string tag = 2;
+
+  // If force is set, the target should attempt to forcibly remove the
+  // container.
+  bool force = 3;
 }
 
 message RemoveResponse {
@@ -204,20 +206,21 @@ message StartRequest {
   // The name and tag of the container to start.
   string image_name = 1;
   string tag = 2;
+  string cmd = 3;
 
   // Optional. The name to give the running continer. If none is specified,
   // the target should assign one.
-  string instance_name = 3;
+  string instance_name = 4;
   message Port {
     uint32 internal = 1;
     uint32 external = 2;
   }
 
   // List of internal ports to expose outside the container.
-  repeated Port ports = 4;
+  repeated Port ports = 5;
 
   // Environment to set in the container.
-  map<string, string> environment = 5;
+  map<string, string> environment = 6;
 
   // Other container properties will be added as it becomes necessary.
 }
