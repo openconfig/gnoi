@@ -90,7 +90,8 @@ message ImageTransfer {
 // and therefore no more content will be sent. Any content sent after this
 // message should be discarded. This message serves as a signal to the target
 // to begin integrity verifications on the received data.
-message ImageTransferEnd {}
+message ImageTransferEnd {
+}
 
 message DeployResponse {
   oneof response {
@@ -105,7 +106,7 @@ message DeployResponse {
 // receive the container image content.
 message ImageTransferReady {
   // Indicates the size of the chunks to use.
-  int32 chunkSize = 1;
+  int32 chunk_size = 1;
 }
 
 // ImageTransferProgress is sent periodically to the client during the transfer.
