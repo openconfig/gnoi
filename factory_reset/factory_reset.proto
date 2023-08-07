@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package gnoi.factory_reset;
 
-import "github.com/openconfig/gnoi/types/types.proto";
+import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/factory_reset";
 
@@ -34,6 +34,8 @@ message StartRequest {
   bool factory_os = 1;
   // Instructs the Target to zero fill persistent storage state data.
   bool zero_fill = 2;
+  // Instructs the Target to retain certificates
+  bool retain_certs = 3;
 }
 
 message ResetSuccess {

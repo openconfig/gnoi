@@ -1,0 +1,291 @@
+//
+// Copyright 2023 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// This file defines the gNOI APIs used to perform container operations on a
+// network device. This specification is still under design and subject to
+// change.
+syntax = "proto3";
+
+package gnoi.containerz;
+
+import "common/common.proto";
+import "google/rpc/status.proto";
+import "types/types.proto";
+
+option go_package = "github.com/openconfig/gnoi/containerz";
+option (types.gnoi_version) = "0.1.0";
+
+service Containerz {
+  // Deploy sets a container image on the target. The container is sent as
+  // a sequential stream of messages containing up to 64KB of data. Upon
+  // reception of a valid container, the target must load it into its registry.
+  // Whether the registry is local or remote is target and deployment specific.
+  // A valid container is one that has passed its checksum.
+  rpc Deploy(stream DeployRequest) returns (stream DeployResponse) {}
+
+  // Remove deletes containers that match the spec defined in the request. If
+  // the specified container does not exist, this operation is a no-op.
+  rpc Remove(RemoveRequest) returns (RemoveResponse) {}
+
+  // List returns all containers that match the spec defined in the request.
+  rpc List(ListRequest) returns (stream ListResponse) {}
+
+  // Start starts a container. If the image does not exist on the target,
+  // Start returns an error. A started container is identified by an instance
+  // name, which  can optionally be supplied by the caller otherwise the target
+  // should provide one. If the instance name already exists, the target should
+  // return an error.
+  rpc Start(StartRequest) returns (StartResponse) {}
+
+  // Stop stops a container. If the container does not exist or is not running
+  // this operation returns an error. This operation can, optionally, force
+  // (i.e. kill) a container.
+  rpc Stop(StopRequest) returns (StopResponse) {}
+
+  // Log streams the logs of a running container. If the container if no longer
+  // running this operation streams the latest logs and returns.
+  rpc Log(LogRequest) returns (stream LogResponse) {}
+}
+
+message DeployRequest {
+  oneof request {
+    ImageTransfer image_transfer = 1;
+    bytes content = 2;
+    ImageTransferEnd image_transfer_end = 3;
+  }
+}
+
+message ImageTransfer {
+  // The image name. This is the name the container image must have after the
+  // is completed.
+  string name = 1;
+
+  // The tag is a version identifier for this container image. After the
+  // transfer successfully completes, the tag must be applied to the
+  // container image.
+  string tag = 2;
+
+  // Optional. Indicates the size (in bytes) of the container image.
+  uint64 image_size = 3;
+
+  // Optional. Instructs the target to fetch the image from a remote location.
+  // The above name and tag must be applied to the container once downloaded.
+  common.RemoteDownload remote_download = 4;
+}
+
+// ImageTransferEnd indicates to the target that the client is finished sending
+// and therefore no more content will be sent. Any content sent after this
+// message should be discarded. This message serves as a signal to the target
+// to begin integrity verifications on the received data.
+message ImageTransferEnd {
+}
+
+message DeployResponse {
+  oneof response {
+    ImageTransferReady image_transfer_ready = 1;
+    ImageTransferProgress image_transfer_progress = 2;
+    ImageTransferSuccess image_transfer_success = 3;
+    google.rpc.Status image_transfer_error = 4;
+  }
+}
+
+// ImageTransferReady indicates to the client that the target is ready to
+// receive the container image content.
+message ImageTransferReady {
+  // Indicates the size of the chunks that the client should break the
+  // container into as it is transferred.
+  int32 chunk_size = 1;
+}
+
+// ImageTransferProgress is sent periodically to the client during the transfer.
+message ImageTransferProgress {
+  // The number of bytes transferred so far.
+  uint64 bytes_received = 1;
+}
+
+// ImageTransferSuccess indicates to the client that the container image
+// transfer was successful.
+message ImageTransferSuccess {
+  // The name of the container image.
+  string name = 1;
+
+  // The tag of the container image.
+  string tag = 2;
+
+  // The total size of the image.
+  uint64 image_size = 3;
+}
+
+message RemoveRequest {
+  // The container image name to be removed.
+  string name = 1;
+
+  // The container tag to be removed.
+  string tag = 2;
+
+  // If force is set, the target should attempt to forcibly remove the
+  // container.
+  bool force = 3;
+}
+
+message RemoveResponse {
+  enum Code {
+    // An unspecified error. Must use the detail value to describe the issue.
+    UNSPECIFIED = 0;
+
+    // Indicates the image was not found in the remote location.
+    NOT_FOUND = 1;
+
+    // Indicates that a container using this image is running.
+    RUNNING = 2;
+
+    // The container image was successfully removed.
+    SUCCESS = 3;
+  }
+
+  Code code = 1;
+  string detail = 2;
+}
+
+message ListRequest {
+  // List all containers, by default only running ones are returned.
+  bool all = 1;
+
+  // Only return limit number of containers.
+  int32 limit = 2;
+
+  // A filter is a mapping from a key to a list of values.
+  // TODO(alshabib) document possible keys
+  message Filter {
+    string key = 1;
+    repeated string value = 2;
+  }
+
+  Filter filter = 3;
+}
+
+message ListResponse {
+  string id = 1;
+  string name = 2;
+  string image_name = 3;
+
+  enum Status {
+    // An unspecified state.
+    UNSPECIFIED = 0;
+
+    // Container was running and is now stopped.
+    STOPPED = 1;
+
+    // Container is running.
+    RUNNING = 2;
+
+    // Container has never been run but exists on the target.
+    PRESENT = 3;
+
+    // The container does not exist on the target.
+    NOT_FOUND = 4;
+  }
+
+  Status status = 4;
+}
+
+message StartRequest {
+  // The name and tag of the container to start.
+  string image_name = 1;
+  string tag = 2;
+  string cmd = 3;
+
+  // Optional. The name to give the running continer. If none is specified,
+  // the target should assign one.
+  string instance_name = 4;
+  message Port {
+    uint32 internal = 1;
+    uint32 external = 2;
+  }
+
+  // List of internal ports to expose outside the container.
+  repeated Port ports = 5;
+
+  // Environment to set in the container.
+  map<string, string> environment = 6;
+
+  // Other container properties will be added as it becomes necessary.
+}
+
+message StartResponse {
+  oneof response {
+    StartOK start_ok = 1;
+    StartError start_error = 2;
+  }
+}
+
+message StartOK {
+  // The running containers name.
+  string instance_name = 1;
+}
+
+message StartError {
+  enum Code {
+    // An unspecified error. The details field should provide more information.
+    UNSPECIFIED = 0;
+
+    // The container image was not found.
+    NOT_FOUND = 1;
+
+    // Exposed port is already used by another container.
+    PORT_USED = 2;
+  }
+
+  Code error_code = 1;
+  string details = 2;
+}
+
+message StopRequest {
+  string instance_name = 1;
+
+  // If force is set, the target should attempt to forcibly kill the container.
+  bool force = 2;
+}
+
+message StopResponse {
+  enum Code {
+    // An unspecified error. The details field should provide more information.
+    UNSPECIFIED = 0;
+
+    // Container is busy.
+    BUSY = 1;
+
+    // Instance was not found on the target.
+    NOT_FOUND = 2;
+
+    // The container was removed.
+    SUCCESS = 3;
+  }
+
+  Code code = 1;
+  string details = 2;
+}
+
+message LogRequest {
+  string instance_name = 1;
+
+  // If set, the stream remains open until the client cancels it.
+  bool follow = 2;
+}
+
+message LogResponse {
+  string msg = 1;
+}

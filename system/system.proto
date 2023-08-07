@@ -24,20 +24,20 @@ syntax = "proto3";
 
 package gnoi.system;
 
-import "github.com/openconfig/gnoi/common/common.proto";
-import "github.com/openconfig/gnoi/types/types.proto";
+import "common/common.proto";
+import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/system";
 
-option (types.gnoi_version) = "1.0.0";
+option (types.gnoi_version) = "1.1.0";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
 service System {
   // Ping executes the ping command on the target and streams back
   // the results.  Some targets may not stream any results until all
-  // results are in.  If a packet count is not explicitly provided,
-  // 5 is used.
+  // results are in.  The stream should provide single ping packet responses
+  // and must provide summary statistics.
   rpc Ping(PingRequest) returns (stream PingResponse) {}
 
   // Traceroute executes the traceroute command on the target and streams back
@@ -83,8 +83,8 @@ service System {
   // CancelReboot cancels any pending reboot request.
   rpc CancelReboot(CancelRebootRequest) returns (CancelRebootResponse) {}
 
-  // TODO(hines): Add RotateCertificate workflow
-  // TODO(hines): Add SetSSHPrivateKey
+  // KillProcess kills an OS process and optionally restarts it.
+  rpc KillProcess(KillProcessRequest) returns (KillProcessResponse) {}
 }
 
 message SwitchControlProcessorRequest {
@@ -98,7 +98,7 @@ message SwitchControlProcessorResponse {
 }
 
 // A RebootRequest requests the specified target be rebooted using the specified
-// method aftar the specified delay.  Only the DEFAULT method with a delay of 0
+// method after the specified delay.  Only the DEFAULT method with a delay of 0
 // is guaranteed to be accepted for all target types.
 message RebootRequest {
   RebootMethod method = 1;
@@ -229,6 +229,7 @@ message TracerouteRequest {
     UDP = 2;  // Use UDP for probes.
   }
   L4Protocol l4protocol = 9;
+  bool do_not_lookup_asn = 10; // Do not try to lookup ASN
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.
@@ -310,4 +311,31 @@ message SetPackageRequest {
 }
 
 message SetPackageResponse {
+}
+
+// KillProcessRequest describes the process kill operation. Either a pid or
+// process name must be specified, and a termination signal must be specified.
+message KillProcessRequest {
+  // Process ID of the process to be killed.
+  uint32 pid = 1;
+  // Name of the process to be killed.
+  string name = 2;
+  // Termination signal sent to the process.
+  enum Signal {
+    SIGNAL_UNSPECIFIED = 0;  // Invalid default.
+    SIGNAL_TERM = 1;         // Terminate the process gracefully.
+    SIGNAL_KILL = 2;         // Terminate the process immediately.
+    SIGNAL_HUP = 3;          // Reload the process configuration.
+    // Terminate the process immediately and dump a core file.
+    SIGNAL_ABRT = 4;
+  }
+
+  Signal signal = 3;
+  // Whether the process should be restarted after termination.
+  // This value is ignored when the termination signal is SIGHUP.
+  bool restart = 4;
+}
+
+// KillProcessResponse describes the result of the process kill operation.
+message KillProcessResponse {
 }
