@@ -17,7 +17,8 @@ package simple
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
+
 	bgppb "github.com/openconfig/gnoi/bgp"
 	cpb "github.com/openconfig/gnoi/common"
 	spb "github.com/openconfig/gnoi/system"
