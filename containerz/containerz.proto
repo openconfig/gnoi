@@ -19,14 +19,14 @@
 // change.
 syntax = "proto3";
 
-package gnoi.containerz;
+package containerz;
 
 import "common/common.proto";
 import "google/rpc/status.proto";
 import "types/types.proto";
 
-option go_package = "github.com/openconfig/gnoi/containerz";
-option (types.gnoi_version) = "0.1.0";
+option go_package = "google3/third_party/openconfig/gnoi/containerz";
+option (gnoi.types.gnoi_version) = "0.1.0";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
@@ -83,15 +83,14 @@ message ImageTransfer {
 
   // Optional. Instructs the target to fetch the image from a remote location.
   // The above name and tag must be applied to the container once downloaded.
-  common.RemoteDownload remote_download = 4;
+  gnoi.common.RemoteDownload remote_download = 4;
 }
 
 // ImageTransferEnd indicates to the target that the client is finished sending
 // and therefore no more content will be sent. Any content sent after this
 // message should be discarded. This message serves as a signal to the target
 // to begin integrity verifications on the received data.
-message ImageTransferEnd {
-}
+message ImageTransferEnd {}
 
 message DeployResponse {
   oneof response {
