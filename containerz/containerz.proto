@@ -90,7 +90,8 @@ message ImageTransfer {
 // and therefore no more content will be sent. Any content sent after this
 // message should be discarded. This message serves as a signal to the target
 // to begin integrity verifications on the received data.
-message ImageTransferEnd {}
+message ImageTransferEnd {
+}
 
 message DeployResponse {
   oneof response {
