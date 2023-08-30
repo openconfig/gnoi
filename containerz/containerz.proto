@@ -26,7 +26,7 @@ import "google/rpc/status.proto";
 import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
-option (types.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.1.1";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
