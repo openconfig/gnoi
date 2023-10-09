@@ -182,7 +182,7 @@ message PingRequest {
   bool do_not_fragment = 7; // Set the do not fragment bit. (IPv4 destinations)
   bool do_not_resolve = 8;  // Do not try resolve the address returned.
   types.L3Protocol l3protocol = 9; // Layer3 protocol requested for the ping.
-  string network_instance = 10;    // Network instance in which the destination should be pinged.
+  string network_instance = 10; // Network instance of the destination
 }
 
 // A PingResponse represents either the reponse to a single ping packet
@@ -231,7 +231,7 @@ message TracerouteRequest {
   }
   L4Protocol l4protocol = 9;
   bool do_not_lookup_asn = 10; // Do not try to lookup ASN
-  string network_instance = 11; // Network instance in which the destination should be traced
+  string network_instance = 11; // Network instance of the destination
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.
