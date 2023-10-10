@@ -858,7 +858,7 @@ type PingRequest struct {
 	DoNotFragment   bool             `protobuf:"varint,7,opt,name=do_not_fragment,json=doNotFragment,proto3" json:"do_not_fragment,omitempty"`     // Set the do not fragment bit. (IPv4 destinations)
 	DoNotResolve    bool             `protobuf:"varint,8,opt,name=do_not_resolve,json=doNotResolve,proto3" json:"do_not_resolve,omitempty"`        // Do not try resolve the address returned.
 	L3Protocol      types.L3Protocol `protobuf:"varint,9,opt,name=l3protocol,proto3,enum=gnoi.types.L3Protocol" json:"l3protocol,omitempty"`       // Layer3 protocol requested for the ping.
-	NetworkInstance string           `protobuf:"bytes,10,opt,name=network_instance,json=networkInstance,proto3" json:"network_instance,omitempty"` // Network instance in which the destination should be pinged.
+	NetworkInstance string           `protobuf:"bytes,10,opt,name=network_instance,json=networkInstance,proto3" json:"network_instance,omitempty"` // Network instance to ping the destination in
 }
 
 func (x *PingRequest) Reset() {
@@ -1118,7 +1118,7 @@ type TracerouteRequest struct {
 	L3Protocol      types.L3Protocol             `protobuf:"varint,8,opt,name=l3protocol,proto3,enum=gnoi.types.L3Protocol" json:"l3protocol,omitempty"`   // Layer-3 protocol requested for the ping.
 	L4Protocol      TracerouteRequest_L4Protocol `protobuf:"varint,9,opt,name=l4protocol,proto3,enum=gnoi.system.TracerouteRequest_L4Protocol" json:"l4protocol,omitempty"`
 	DoNotLookupAsn  bool                         `protobuf:"varint,10,opt,name=do_not_lookup_asn,json=doNotLookupAsn,proto3" json:"do_not_lookup_asn,omitempty"` // Do not try to lookup ASN
-	NetworkInstance string                       `protobuf:"bytes,11,opt,name=network_instance,json=networkInstance,proto3" json:"network_instance,omitempty"`   // Network instance in which the destination should be traced
+	NetworkInstance string                       `protobuf:"bytes,11,opt,name=network_instance,json=networkInstance,proto3" json:"network_instance,omitempty"`   // Network instance to trace the destination in
 }
 
 func (x *TracerouteRequest) Reset() {
