@@ -45,6 +45,8 @@ message HashType {
     MD5 = 3;
   }
   HashMethod method = 1;
+  // hash is the raw byte string returned by the hash function.
+  // It is not an hex encoded string or other representation.
   bytes hash = 2;
 }
 
