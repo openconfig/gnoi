@@ -117,10 +117,8 @@ message RebootResponse {
 
 // A RebootMethod determines what should be done with a target when a Reboot is
 // requested.  Only the COLD method is required to be supported by all
-// targets.  Methods the target does not support should result in failure.
-// 
-// If a target does not support a method, `INVALID_ARGUEMENT` should be
-// returned.
+// targets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other
+// unsupported method is called.
 //
 // It is vendor defined if a WARM reboot is the same as an NSF reboot.
 enum RebootMethod {
