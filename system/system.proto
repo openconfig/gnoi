@@ -119,7 +119,8 @@ message RebootResponse {
 // requested.  Only the COLD method is required to be supported by all
 // targets.  Methods the target does not support should result in failure.
 // 
-// If a target does not support a method, `INVALID_ARGUEMENT` should be returned.
+// If a target does not support a method, `INVALID_ARGUEMENT` should be
+// returned.
 //
 // It is vendor defined if a WARM reboot is the same as an NSF reboot.
 enum RebootMethod {
