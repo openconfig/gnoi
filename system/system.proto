@@ -29,7 +29,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/system";
 
-option (types.gnoi_version) = "1.1.1";
+option (types.gnoi_version) = "1.1.2";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
@@ -98,7 +98,7 @@ message SwitchControlProcessorResponse {
 }
 
 // A RebootRequest requests the specified target be rebooted using the specified
-// method after the specified delay.  Only the DEFAULT method with a delay of 0
+// method after the specified delay.  Only the COLD method with a delay of 0
 // is guaranteed to be accepted for all target types.
 message RebootRequest {
   RebootMethod method = 1;
@@ -117,7 +117,8 @@ message RebootResponse {
 
 // A RebootMethod determines what should be done with a target when a Reboot is
 // requested.  Only the COLD method is required to be supported by all
-// targets.  Methods the target does not support should result in failure.
+// targets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other
+// unsupported method is called.
 //
 // It is vendor defined if a WARM reboot is the same as an NSF reboot.
 enum RebootMethod {
