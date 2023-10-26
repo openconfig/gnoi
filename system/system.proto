@@ -153,6 +153,14 @@ message RebootStatusResponse {
   uint64 when = 3;      // Time to reboot in nanoseconds since the epoch.
   string reason = 4;    // Reason for reboot.
   uint32 count = 5;     // Number of reboots since active.
+  RebootMethod method = 6; // Type of reboot.
+  bool success = 7;        // If reboot operation was successful.
+  RebootFailureInfo fail_info = 8; // Failure information.
+}
+
+message RebootFailureInfo {
+  string message = 1;   // Error message.
+  bool fatal = 2;       // If the failure is fatal.
 }
 
 // A TimeRequest requests the current time accodring to the target.
