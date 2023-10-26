@@ -154,13 +154,19 @@ message RebootStatusResponse {
   string reason = 4;    // Reason for reboot.
   uint32 count = 5;     // Number of reboots since active.
   RebootMethod method = 6; // Type of reboot.
-  bool success = 7;        // If reboot operation was successful.
-  RebootFailureInfo fail_info = 8; // Failure information.
+  RebootStatus status = 7; // Applicable only when active = false.
 }
 
-message RebootFailureInfo {
-  string message = 1;   // Error message.
-  bool fatal = 2;       // If the failure is fatal.
+message RebootStatus {
+  enum Status {
+    STATUS_UNKNOWN = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_RETRIABLE_FAILURE = 2;
+    STATUS_FAILURE = 3;
+  }
+
+  Status status = 1;
+  string message = 2;
 }
 
 // A TimeRequest requests the current time accodring to the target.
