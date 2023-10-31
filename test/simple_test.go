@@ -17,6 +17,7 @@ package simple
 import (
 	"testing"
 
+	//lint:ignore SA1019 Test depends on deprecated proto marshal API.
 	"github.com/golang/protobuf/proto"
 	bgppb "github.com/openconfig/gnoi/bgp"
 	cpb "github.com/openconfig/gnoi/common"

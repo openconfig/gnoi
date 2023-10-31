@@ -4,9 +4,9 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
   schedule:
     - cron: "0 0 * * *"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -58,3 +58,5 @@ jobs:
         run: go vet ./...
       - name: Check gofmt
         run: diff -u <(echo -n) <(gofmt -d -s .)
+  go:
+    uses: openconfig/common-ci/.github/workflows/basic_go.yml@c2294c3c86c90e75e58c24a40d6f7f3364bbae9d

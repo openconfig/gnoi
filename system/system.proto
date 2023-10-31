@@ -29,7 +29,7 @@ import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/system";
 
-option (types.gnoi_version) = "1.1.0";
+option (types.gnoi_version) = "1.2.0";
 
 // The gNOI service is a collection of operational RPC's that allow for the
 // management of a target outside of the configuration and telemetry pipeline.
@@ -98,7 +98,7 @@ message SwitchControlProcessorResponse {
 }
 
 // A RebootRequest requests the specified target be rebooted using the specified
-// method after the specified delay.  Only the DEFAULT method with a delay of 0
+// method after the specified delay.  Only the COLD method with a delay of 0
 // is guaranteed to be accepted for all target types.
 message RebootRequest {
   RebootMethod method = 1;
@@ -117,7 +117,8 @@ message RebootResponse {
 
 // A RebootMethod determines what should be done with a target when a Reboot is
 // requested.  Only the COLD method is required to be supported by all
-// targets.  Methods the target does not support should result in failure.
+// targets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other
+// unsupported method is called.
 //
 // It is vendor defined if a WARM reboot is the same as an NSF reboot.
 enum RebootMethod {
@@ -182,6 +183,7 @@ message PingRequest {
   bool do_not_fragment = 7; // Set the do not fragment bit. (IPv4 destinations)
   bool do_not_resolve = 8;  // Do not try resolve the address returned.
   types.L3Protocol l3protocol = 9; // Layer3 protocol requested for the ping.
+  string network_instance = 10; // Network instance to ping the destination in
 }
 
 // A PingResponse represents either the reponse to a single ping packet
@@ -230,6 +232,7 @@ message TracerouteRequest {
   }
   L4Protocol l4protocol = 9;
   bool do_not_lookup_asn = 10; // Do not try to lookup ASN
+  string network_instance = 11; // Network instance to trace the destination in
 }
 
 // A TraceRouteResponse contains the result of a single traceoute packet.

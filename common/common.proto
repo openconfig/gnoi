@@ -46,4 +46,7 @@ message RemoteDownload {
   // It can be either an IPv4 address or an IPv6 address, depending on the
   // connection's destination address.
   string source_address = 4;
+
+  // Optional source vrf used to initiate connections from the device.
+  string source_vrf = 5;
 }
