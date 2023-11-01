@@ -19,6 +19,6 @@ jobs:
           fetch-depth: 0
 
       - name: Lint protobuf
-        uses: plexsystems/protolint-action@v0.3.0
+        uses: plexsystems/protolint-action@v0.7.0
         with:
           configDirectory: .github
