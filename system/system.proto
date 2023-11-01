@@ -88,13 +88,17 @@ service System {
 }
 
 message SwitchControlProcessorRequest {
+  // Path to the target Control Processor.
   types.Path control_processor = 1;
 }
 
 message SwitchControlProcessorResponse {
+  // Path to the Control Processor that the system switched to.
   types.Path control_processor = 1;
-  string version = 2; // Current software version.
-  int64 uptime = 3;   // Uptime in nanoseconds since epoch.
+  // Current software version of the target Control Processor.
+  string version = 2;
+  // Uptime of the target Control Processor in nanoseconds.
+  int64 uptime = 3;
 }
 
 // A RebootRequest requests the specified target be rebooted using the specified
