@@ -261,7 +261,7 @@ message StopRequest {
 
   // If auto_restart is set, the target should start the container immediately
   // after stopping it.
-  bool auto_restart = 3;
+  bool restart = 3;
 }
 
 message StopResponse {
