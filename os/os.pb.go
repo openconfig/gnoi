@@ -1168,7 +1168,8 @@ type VerifyResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The OS version currently running.
+	// The OS version currently running.  This string should match OC path
+	// /system/state/software-version
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Informational message describing fail details of the last boot. This MUST
 	// be set when a newly transferred OS fails to boot and the system falls back
