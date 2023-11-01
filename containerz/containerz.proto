@@ -259,7 +259,7 @@ message StopRequest {
   // If force is set, the target should attempt to forcibly kill the container.
   bool force = 2;
 
-  // If auto_restart is set, the target should start the container immediately
+  // If restart is set, the target should start the container immediately
   // after stopping it.
   bool restart = 3;
 }
