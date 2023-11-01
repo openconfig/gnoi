@@ -26,7 +26,7 @@ import "google/rpc/status.proto";
 import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
-option (types.gnoi_version) = "0.1.1";
+option (types.gnoi_version) = "0.1.2";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
@@ -258,6 +258,10 @@ message StopRequest {
 
   // If force is set, the target should attempt to forcibly kill the container.
   bool force = 2;
+
+  // If restart is set, the target should start the container immediately
+  // after stopping it.
+  bool restart = 3;
 }
 
 message StopResponse {
