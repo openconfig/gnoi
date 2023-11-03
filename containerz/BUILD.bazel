@@ -28,9 +28,9 @@ proto_library(
     name = "containerz_proto",
     srcs = ["containerz.proto"],
     deps = [
-        "@go_googleapis//google/rpc:status_proto",
+        "//common:common_proto",
         "//types:types_proto",
-        "//common:common_proto"
+        "@go_googleapis//google/rpc:status_proto",
     ],
 )
 
@@ -52,8 +52,14 @@ go_proto_library(
     importpath = "github.com/openconfig/gnoi/containerz",
     proto = ":containerz_proto",
     deps = [
+        "//common",
+        "//types",
         "@go_googleapis//google/rpc:status_go_proto",
-        "//types:types_go_proto",
-        "//common:common_go_proto"
     ],
+)
+
+go_library(
+    name = "containerz",
+    embed = [":containerz_go_proto"],
+    importpath = "github.com/openconfig/gnoi/containerz",
 )

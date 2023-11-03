@@ -27,8 +27,8 @@ proto_library(
     name = "healthz_proto",
     srcs = ["healthz.proto"],
     deps = [
-        "//types:types_proto",
         "//common:common_proto",
+        "//types:types_proto",
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -55,3 +55,4 @@ cc_grpc_library(
     grpc_only = True,
     deps = [":healthz_cc_proto"],
 )
+

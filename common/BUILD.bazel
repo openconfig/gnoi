@@ -41,5 +41,11 @@ go_proto_library(
     name = "common_go_proto",
     importpath = "github.com/openconfig/gnoi/common",
     proto = ":common_proto",
-    deps = ["//types:types_go_proto"],
+    deps = ["//types"],
+)
+
+go_library(
+    name = "common",
+    embed = [":common_go_proto"],
+    importpath = "github.com/openconfig/gnoi/common",
 )
