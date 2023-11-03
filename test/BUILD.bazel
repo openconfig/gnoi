@@ -12,10 +12,10 @@ go_test(
     srcs = ["simple_test.go"],
     embed = [":test"],
     deps = [
-        "//bgp:bgp_go_proto",
-        "//common:common_go_proto",
-        "//system:system_go_proto",
-        "//types:types_go_proto",
+        "//bgp",
+        "//common",
+        "//system",
+        "//types",
         "@com_github_golang_protobuf//proto:go_default_library",
     ],
 )

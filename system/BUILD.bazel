@@ -53,7 +53,13 @@ go_proto_library(
     importpath = "github.com/openconfig/gnoi/system",
     protos = [":system_proto"],
     deps = [
-        "//common:common_go_proto",
-        "//types:types_go_proto",
+        "//common",
+        "//types",
     ],
+)
+
+go_library(
+    name = "system",
+    embed = [":system_go_proto"],
+    importpath = "github.com/openconfig/gnoi/system",
 )

@@ -21,7 +21,14 @@ go_proto_library(
     proto = ":linkqual_proto",
     visibility = ["//visibility:public"],
     deps = [
-        "//types:types_go_proto",
+        "//types",
         "@go_googleapis//google/rpc:status_go_proto",
     ],
+)
+
+go_library(
+    name = "linkqual",
+    embed = [":linkqual_go_proto"],
+    importpath = "github.com/openconfig/gnoi/linkqual",
+    visibility = ["//visibility:public"],
 )
