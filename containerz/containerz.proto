@@ -15,7 +15,13 @@
 //
 
 // This file defines the gNOI APIs used to perform container operations on a
-// network device. This specification is still under design and subject to
+// network device. In addition to the container operations specified in this
+// file, any implementation of the containerz service is expected to clean or
+// remove images and containers that are either no longer used or that have been
+// orphaned either by upgrading containers or by containers that have been
+// stopped not removed.
+//
+// This specification is still under design and subject to
 // change.
 syntax = "proto3";
 
