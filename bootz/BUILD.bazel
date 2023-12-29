@@ -23,7 +23,7 @@ package(
 )
 
 proto_library(
-    name = "bootz_proto",
+    name = "gnoi_bootz_proto",
     srcs = ["bootz.proto"],
     deps = [
         "//types:types_proto",
@@ -32,22 +32,22 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "bootz_cc_proto",
-    deps = [":bootz_proto"],
+    name = "gnoi_bootz_cc_proto",
+    deps = [":gnoi_bootz_proto"],
 )
 
 cc_grpc_library(
     name = "bootz_cc_grpc_proto",
-    srcs = [":bootz_proto"],
+    srcs = [":gnoi_bootz_proto"],
     grpc_only = True,
-    deps = [":bootz_cc_proto"],
+    deps = [":gnoi_bootz_cc_proto"],
 )
 
 go_proto_library(
-    name = "bootz_go_proto",
+    name = "gnoi_bootz_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/openconfig/gnoi/bootz",
-    proto = ":bootz_proto",
+    proto = ":gnoi_bootz_proto",
     deps = [
         "//types",
         "@com_github_openconfig_bootz//bootz:bootz_go_proto",
@@ -55,7 +55,7 @@ go_proto_library(
 )
 
 go_library(
-    name = "bootz",
-    embed = [":bootz_go_proto"],
+    name = "gnoi_bootz",
+    embed = [":gnoi_bootz_go_proto"],
     importpath = "github.com/openconfig/gnoi/bootz",
 )
