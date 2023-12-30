@@ -27,7 +27,7 @@ proto_library(
     srcs = ["bootz.proto"],
     deps = [
         "//types:types_proto",
-        "@com_github_openconfig_bootz//bootz:bootz_proto",
+        "@com_github_openconfig_bootz//proto:bootz_proto",
     ],
 )
 
@@ -50,7 +50,7 @@ go_proto_library(
     proto = ":gnoi_bootz_proto",
     deps = [
         "//types",
-        "@com_github_openconfig_bootz//bootz:bootz_go_proto",
+        "@com_github_openconfig_bootz//proto/bootz:bootz_go_proto",
     ],
 )
 
