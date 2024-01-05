@@ -19,12 +19,12 @@ syntax = "proto3";
 package gnoi_bootz;
 
 import "github.com/openconfig/bootz/proto/bootz.proto";
-import "types/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/bootz";
 
 // The current semantic version of the gNOI Bootz service.
-option (types.gnoi_version) = "0.1.0";
+option (gnoi.types.gnoi_version) = "0.1.0";
 
 // gNOI Bootz service is hosted on the device. It currently provides an API to
 // update the existing boot config, after the device has finished the Bootz
