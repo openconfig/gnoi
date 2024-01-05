@@ -38,7 +38,7 @@ func NewBootzClient(cc grpc.ClientConnInterface) BootzClient {
 
 func (c *bootzClient) GetBootConfig(ctx context.Context, in *GetBootConfigRequest, opts ...grpc.CallOption) (*GetBootConfigResponse, error) {
 	out := new(GetBootConfigResponse)
-	err := c.cc.Invoke(ctx, "/gnoi_bootz.Bootz/GetBootConfig", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/gnoi.bootz.Bootz/GetBootConfig", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *bootzClient) GetBootConfig(ctx context.Context, in *GetBootConfigReques
 
 func (c *bootzClient) SetBootConfig(ctx context.Context, in *SetBootConfigRequest, opts ...grpc.CallOption) (*SetBootConfigResponse, error) {
 	out := new(SetBootConfigResponse)
-	err := c.cc.Invoke(ctx, "/gnoi_bootz.Bootz/SetBootConfig", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/gnoi.bootz.Bootz/SetBootConfig", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func _Bootz_GetBootConfig_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/gnoi_bootz.Bootz/GetBootConfig",
+		FullMethod: "/gnoi.bootz.Bootz/GetBootConfig",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BootzServer).GetBootConfig(ctx, req.(*GetBootConfigRequest))
@@ -116,7 +116,7 @@ func _Bootz_SetBootConfig_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/gnoi_bootz.Bootz/SetBootConfig",
+		FullMethod: "/gnoi.bootz.Bootz/SetBootConfig",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BootzServer).SetBootConfig(ctx, req.(*SetBootConfigRequest))
@@ -128,7 +128,7 @@ func _Bootz_SetBootConfig_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Bootz_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi_bootz.Bootz",
+	ServiceName: "gnoi.bootz.Bootz",
 	HandlerType: (*BootzServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
