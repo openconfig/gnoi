@@ -23,39 +23,39 @@ package(
 )
 
 proto_library(
-    name = "gnoi_bootz_proto",
+    name = "bootz_proto",
     srcs = ["bootz.proto"],
     deps = [
-        "//github.com/openconfig/bootz/proto:proto_proto",
-        "//github.com/openconfig/gnoi/types:types_proto",
+        "@com_github_openconfig_bootz//proto:bootz_proto",
+        "//types:types_proto",
     ],
 )
 
 cc_proto_library(
-    name = "gnoi_bootz_cc_proto",
-    deps = [":gnoi_bootz_proto"],
+    name = "bootz_cc_proto",
+    deps = [":bootz_proto"],
 )
 
 cc_grpc_library(
     name = "bootz_cc_grpc_proto",
-    srcs = [":gnoi_bootz_proto"],
+    srcs = [":bootz_proto"],
     grpc_only = True,
-    deps = [":gnoi_bootz_cc_proto"],
+    deps = [":bootz_cc_proto"],
 )
 
 go_proto_library(
-    name = "gnoi_bootz_go_proto",
+    name = "bootz_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/openconfig/gnoi/bootz",
-    proto = ":gnoi_bootz_proto",
+    proto = ":bootz_proto",
     deps = [
-        "//github.com/openconfig/bootz/proto:bootz_proto",
-        "//github.com/openconfig/gnoi/types:types_proto",
+        "@com_github_openconfig_bootz//proto:bootz_go_proto",
+        "//types",
     ],
 )
 
 go_library(
-    name = "gnoi_bootz",
-    embed = [":gnoi_bootz_go_proto"],
+    name = "bootz",
+    embed = [":bootz_go_proto"],
     importpath = "github.com/openconfig/gnoi/bootz",
 )
