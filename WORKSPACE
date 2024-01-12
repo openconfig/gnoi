@@ -3,9 +3,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 ### Bazel rules for many languages to compile PROTO into gRPC libraries
 http_archive(
     name = "rules_proto_grpc",
-    sha256 = "f87d885ebfd6a1bdf02b4c4ba5bf6fb333f90d54561e4d520a8413c8d1fb7beb",
-    strip_prefix = "rules_proto_grpc-4.5.0",
-    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/4.5.0.tar.gz"],
+    sha256 = "c0d718f4d892c524025504e67a5bfe83360b3a982e654bc71fed7514eb8ac8ad",
+    strip_prefix = "rules_proto_grpc-4.6.0",
+    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/4.6.0.tar.gz"],
 )
 
 load(
@@ -41,6 +41,14 @@ bazel_gazelle()
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_repository(
+    name = "com_github_openconfig_bootz",
+    importpath = "github.com/openconfig/bootz",
+    sum = "h1:pCBi4GXcT+XM2Vud8kh0Q6uyw6oUxN1CFvrxnW+I/as=",
+    version = "v0.1.1",
+)
+
+
+go_repository(
     name = "com_github_openconfig_gnmi",
     build_directives = [
         "gazelle:proto_import_prefix github.com/openconfig/gnmi",
@@ -49,6 +57,13 @@ go_repository(
     importpath = "github.com/openconfig/gnmi",
     sum = "h1:tv9HygDMXnoGyWuLmNCodMV2+PK6+uT/ndAxDVzsUUQ=",
     version = "v0.0.0-20220617175856-41246b1b3507",
+)
+
+go_repository(
+    name = "com_github_openconfig_gnsi",
+    importpath = "github.com/openconfig/gnsi",
+    sum = "h1:oHdSFP1CpP+mfv6IOKWefHpbW3Fy9ZOSHgPgpCb8EDU=",
+    version = "v1.2.4",
 )
 
 go_repository(
