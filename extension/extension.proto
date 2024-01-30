@@ -164,8 +164,11 @@ message InstallRequest{
 
 message TransferRequest{
   oneof request {
-    string extension_name = 1; // name of the extension (including the file extension)
-    bytes contents = 2; // raw byte contents to be streamed into the extension file.
-    types.HashType hash = 3; // hash of the file.
+    // name of the extension  (including the file extension)
+    string extension_name = 1;
+    // raw byte contents to be streamed into the extension file.
+    bytes contents = 2;
+    // hash of the file.
+    types.HashType hash = 3;
   }
 }
