@@ -82,11 +82,13 @@ service Extension{
       returns (UninstallExtensionResponse);
 }
 
-message FinalizeExtensionsRequest{}
+message FinalizeExtensionsRequest{
+}
+message FinalizeExtensionsResponse{
+}
 
-message FinalizeExtensionsResponse{}
-
-message SigVerificationResponse{}
+message SigVerificationResponse{
+}
 
 message SigVerificationRequest{
   enum TrustSource {
@@ -120,7 +122,8 @@ message UninstallExtensionRequest{
   // if set to true, then ignore conflicts and dependencies when uninstalling.
   bool force = 2;
 }
-message UninstallExtensionResponse{}
+message UninstallExtensionResponse{
+}
 
 message InstallExtensionResponse{
   enum Operation{
