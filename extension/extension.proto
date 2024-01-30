@@ -9,6 +9,9 @@ option go_package = "github.com/openconfig/gnoi/extension";
 option (types.gnoi_version) = "0.1.0";
 
 // Extension is a service for managing extensions on the system.
+// An extension is a collection of files (e.g. RPMs, squashfs)
+// which are installed to modify the behaviour of the services on the
+// system.
 // Only one RPC (SetSignatureVerification, FinalizeExtensions,
 // InstallExtension, UninstallExtension)
 // may be in progress at any given time
