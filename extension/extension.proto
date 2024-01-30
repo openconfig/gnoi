@@ -9,19 +9,24 @@ option go_package = "github.com/openconfig/gnoi/extension";
 option (types.gnoi_version) = "0.1.0";
 
 // Extension is a service for managing extensions on the system.
-// Only one RPC (SetSignatureVerification, FinalizeExtensions, InstallExtension, UninstallExtension)
+// Only one RPC (SetSignatureVerification, FinalizeExtensions,
+// InstallExtension, UninstallExtension)
 // may be in progress at any given time
 service Extension{
 
-  // SetSignatureVerification sets the methods for which the system should verify
-  // incoming extensions
-  rpc SetSignatureVerification(SigVerificationRequest) returns (SigVerificationResponse);
+  // SetSignatureVerification sets the methods for which the
+  // system should verify incoming extensions
+  rpc SetSignatureVerification(SigVerificationRequest)
+      returns (SigVerificationResponse);
 
-  // FinalizeExtensions reloads any services on the system for which extensions have been installed
-  // but which have not yet been reloaded with those extensions.
-  // Please note that this may kill the connection if the service hosting the gRPC server reloads
-  // so the server is not guaranteed to return a response here.
-  rpc FinalizeExtensions(FinalizeExtensionsRequest) returns (FinalizeExtensionsResponse);
+  // FinalizeExtensions reloads any services on the system for
+  // which extensions have been installed but which have not yet been
+  // reloaded with those extensions.
+  // Please note that this may kill the connection if the service
+  // hosting the gRPC server reloads so the server is not guaranteed
+  // to return a response here.
+  rpc FinalizeExtensions(FinalizeExtensionsRequest)
+      returns (FinalizeExtensionsResponse);
 
   // InstallExtension installs a new extension on the system.
   // The new extension may be transferred as part of the RPC.
@@ -31,24 +36,29 @@ service Extension{
   // client ______________________________________ server
   // TransferRequest (with extension_name set) -->
   // TransferRequest (with contents set)       -->
-  // .. repeated TransferRequest with contents are sent until the file is transferred ..
+  // .. repeated TransferRequest with contents are sent
+  //  until the file is transferred ..
   // TransferRequest (with hash set)           -->
   // .. server verifies hash matches expected ..
-  //                                           <-- InstallExtensionResponse (with acknowledgement = TRANSFER_COMPLETE)
+  //                                           <-- InstallExtensionResponse
+  //                             (with acknowledgement = TRANSFER_COMPLETE)
   // STREAM END
   //
   // 2. To transfer and install a new extension:
   // client ______________________________________ server
   // TransferRequest (with extension_name set) -->
   // TransferRequest (with contents set)       -->
-  // .. repeated TransferRequest with contents are sent until the file is transferred ..
+  // .. repeated TransferRequest with contents are sent
+  // until the file is transferred ..
   // TransferRequest (with hash set)           -->
   // .. server verifies hash matches expected ..
-  //                                           <-- InstallExtensionResponse (with acknowledgement = TRANSFER_COMPLETE)
+  //                                           <-- InstallExtensionResponse
+  //                             (with acknowledgement = TRANSFER_COMPLETE)
   // InstallRequest (with extension_name set)  -->
   // (note, other fields may be set )
   // .. server installs extension according to fields.
-  //                                           <-- InstallExtensionResponse (with acknowledgement = INSTALL_COMPLETE)
+  //                                           <-- InstallExtensionResponse
+  //                              (with acknowledgement = INSTALL_COMPLETE)
   // STREAM END
   //
   // 3. To install a pre-existing extension:
@@ -56,23 +66,28 @@ service Extension{
   // InstallRequest (with extension_name set)
   // (note, other fields may be set )          -->
   // .. server installs extension according to fields.
-  //                                           <-- InstallExtensionResponse (with acknowledgement = INSTALL_COMPLETE)
+  //                                           <-- InstallExtensionResponse
+  //                              (with acknowledgement = INSTALL_COMPLETE)
   // STREAM END
-  // Note that all installations will install the extension, but that extension will not be applied
-  // until the affected services are reloaded.
-  // To reload services after installing extensions, issue a FinalizeExtensions RPC after finishing
-  // the InstallExtension RPC.
-  rpc InstallExtension(stream InstallExtensionRequest) returns (InstallExtensionResponse);
+  // Note that all installations will install the extension, but that
+  // extension will not be applied until the affected services are reloaded.
+  // To reload services after installing extensions, issue a
+  // FinalizeExtensions RPC after finishing the InstallExtension RPC.
+  rpc InstallExtension(stream InstallExtensionRequest)
+      returns (InstallExtensionResponse);
 
   // UninstallExtension uninstalls an extension.
   // It returns an error if the requested extension is not installed.
-  rpc UninstallExtension(UninstallExtensionRequest) returns (UninstallExtensionResponse);
+  rpc UninstallExtension(UninstallExtensionRequest)
+      returns (UninstallExtensionResponse);
 }
 
 message FinalizeExtensionsRequest{}
+
 message FinalizeExtensionsResponse{}
 
 message SigVerificationResponse{}
+
 message SigVerificationRequest{
   enum TrustSource {
     // UNSPECIFIED should be treated as an error.
