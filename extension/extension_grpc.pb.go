@@ -29,13 +29,15 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExtensionClient interface {
-	// SetSignatureVerification sets the methods for which the system should verify
-	// incoming extensions
+	// SetSignatureVerification sets the methods for which the
+	// system should verify incoming extensions
 	SetSignatureVerification(ctx context.Context, in *SigVerificationRequest, opts ...grpc.CallOption) (*SigVerificationResponse, error)
-	// FinalizeExtensions reloads any services on the system for which extensions have been installed
-	// but which have not yet been reloaded with those extensions.
-	// Please note that this may kill the connection if the service hosting the gRPC server reloads
-	// so the server is not guaranteed to return a response here.
+	// FinalizeExtensions reloads any services on the system for
+	// which extensions have been installed but which have not yet been
+	// reloaded with those extensions.
+	// Please note that this may kill the connection if the service
+	// hosting the gRPC server reloads so the server is not guaranteed
+	// to return a response here.
 	FinalizeExtensions(ctx context.Context, in *FinalizeExtensionsRequest, opts ...grpc.CallOption) (*FinalizeExtensionsResponse, error)
 	// InstallExtension installs a new extension on the system.
 	// The new extension may be transferred as part of the RPC.
@@ -45,11 +47,15 @@ type ExtensionClient interface {
 	// client ______________________________________ server
 	// TransferRequest (with extension_name set) -->
 	// TransferRequest (with contents set)       -->
-	// .. repeated TransferRequest with contents are sent until the file is transferred ..
+	// .. repeated TransferRequest with contents are sent
+	//
+	//	until the file is transferred ..
+	//
 	// TransferRequest (with hash set)           -->
 	// .. server verifies hash matches expected ..
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = TRANSFER_COMPLETE)
+	//	              <-- InstallExtensionResponse
+	//	(with acknowledgement = TRANSFER_COMPLETE)
 	//
 	// STREAM END
 	//
@@ -57,17 +63,20 @@ type ExtensionClient interface {
 	// client ______________________________________ server
 	// TransferRequest (with extension_name set) -->
 	// TransferRequest (with contents set)       -->
-	// .. repeated TransferRequest with contents are sent until the file is transferred ..
+	// .. repeated TransferRequest with contents are sent
+	// until the file is transferred ..
 	// TransferRequest (with hash set)           -->
 	// .. server verifies hash matches expected ..
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = TRANSFER_COMPLETE)
+	//	              <-- InstallExtensionResponse
+	//	(with acknowledgement = TRANSFER_COMPLETE)
 	//
 	// InstallRequest (with extension_name set)  -->
 	// (note, other fields may be set )
 	// .. server installs extension according to fields.
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = INSTALL_COMPLETE)
+	//	             <-- InstallExtensionResponse
+	//	(with acknowledgement = INSTALL_COMPLETE)
 	//
 	// STREAM END
 	//
@@ -77,13 +86,14 @@ type ExtensionClient interface {
 	// (note, other fields may be set )          -->
 	// .. server installs extension according to fields.
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = INSTALL_COMPLETE)
+	//	             <-- InstallExtensionResponse
+	//	(with acknowledgement = INSTALL_COMPLETE)
 	//
 	// STREAM END
-	// Note that all installations will install the extension, but that extension will not be applied
-	// until the affected services are reloaded.
-	// To reload services after installing extensions, issue a FinalizeExtensions RPC after finishing
-	// the InstallExtension RPC.
+	// Note that all installations will install the extension, but that
+	// extension will not be applied until the affected services are reloaded.
+	// To reload services after installing extensions, issue a
+	// FinalizeExtensions RPC after finishing the InstallExtension RPC.
 	InstallExtension(ctx context.Context, opts ...grpc.CallOption) (Extension_InstallExtensionClient, error)
 	// UninstallExtension uninstalls an extension.
 	// It returns an error if the requested extension is not installed.
@@ -163,13 +173,15 @@ func (c *extensionClient) UninstallExtension(ctx context.Context, in *UninstallE
 // All implementations must embed UnimplementedExtensionServer
 // for forward compatibility
 type ExtensionServer interface {
-	// SetSignatureVerification sets the methods for which the system should verify
-	// incoming extensions
+	// SetSignatureVerification sets the methods for which the
+	// system should verify incoming extensions
 	SetSignatureVerification(context.Context, *SigVerificationRequest) (*SigVerificationResponse, error)
-	// FinalizeExtensions reloads any services on the system for which extensions have been installed
-	// but which have not yet been reloaded with those extensions.
-	// Please note that this may kill the connection if the service hosting the gRPC server reloads
-	// so the server is not guaranteed to return a response here.
+	// FinalizeExtensions reloads any services on the system for
+	// which extensions have been installed but which have not yet been
+	// reloaded with those extensions.
+	// Please note that this may kill the connection if the service
+	// hosting the gRPC server reloads so the server is not guaranteed
+	// to return a response here.
 	FinalizeExtensions(context.Context, *FinalizeExtensionsRequest) (*FinalizeExtensionsResponse, error)
 	// InstallExtension installs a new extension on the system.
 	// The new extension may be transferred as part of the RPC.
@@ -179,11 +191,15 @@ type ExtensionServer interface {
 	// client ______________________________________ server
 	// TransferRequest (with extension_name set) -->
 	// TransferRequest (with contents set)       -->
-	// .. repeated TransferRequest with contents are sent until the file is transferred ..
+	// .. repeated TransferRequest with contents are sent
+	//
+	//	until the file is transferred ..
+	//
 	// TransferRequest (with hash set)           -->
 	// .. server verifies hash matches expected ..
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = TRANSFER_COMPLETE)
+	//	              <-- InstallExtensionResponse
+	//	(with acknowledgement = TRANSFER_COMPLETE)
 	//
 	// STREAM END
 	//
@@ -191,17 +207,20 @@ type ExtensionServer interface {
 	// client ______________________________________ server
 	// TransferRequest (with extension_name set) -->
 	// TransferRequest (with contents set)       -->
-	// .. repeated TransferRequest with contents are sent until the file is transferred ..
+	// .. repeated TransferRequest with contents are sent
+	// until the file is transferred ..
 	// TransferRequest (with hash set)           -->
 	// .. server verifies hash matches expected ..
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = TRANSFER_COMPLETE)
+	//	              <-- InstallExtensionResponse
+	//	(with acknowledgement = TRANSFER_COMPLETE)
 	//
 	// InstallRequest (with extension_name set)  -->
 	// (note, other fields may be set )
 	// .. server installs extension according to fields.
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = INSTALL_COMPLETE)
+	//	             <-- InstallExtensionResponse
+	//	(with acknowledgement = INSTALL_COMPLETE)
 	//
 	// STREAM END
 	//
@@ -211,13 +230,14 @@ type ExtensionServer interface {
 	// (note, other fields may be set )          -->
 	// .. server installs extension according to fields.
 	//
-	//	<-- InstallExtensionResponse (with acknowledgement = INSTALL_COMPLETE)
+	//	             <-- InstallExtensionResponse
+	//	(with acknowledgement = INSTALL_COMPLETE)
 	//
 	// STREAM END
-	// Note that all installations will install the extension, but that extension will not be applied
-	// until the affected services are reloaded.
-	// To reload services after installing extensions, issue a FinalizeExtensions RPC after finishing
-	// the InstallExtension RPC.
+	// Note that all installations will install the extension, but that
+	// extension will not be applied until the affected services are reloaded.
+	// To reload services after installing extensions, issue a
+	// FinalizeExtensions RPC after finishing the InstallExtension RPC.
 	InstallExtension(Extension_InstallExtensionServer) error
 	// UninstallExtension uninstalls an extension.
 	// It returns an error if the requested extension is not installed.
