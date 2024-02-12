@@ -41,7 +41,8 @@ service BootConfig {
 // Card, and the boot config is synced automatically between primary and
 // secondary Controller Cards. Therefore, we don't need to specify the
 // Controller Card ID.
-message GetBootConfigRequest {}
+message GetBootConfigRequest {
+}
 
 message GetBootConfigResponse {
   .bootz.proto.BootConfig boot_config = 1;
@@ -51,4 +52,5 @@ message SetBootConfigRequest {
   .bootz.proto.BootConfig boot_config = 1;
 }
 
-message SetBootConfigResponse {}
+message SetBootConfigResponse {
+}

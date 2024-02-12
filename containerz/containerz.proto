@@ -28,6 +28,7 @@ syntax = "proto3";
 package gnoi.containerz;
 
 import "common/common.proto";
+import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "types/types.proto";
 
@@ -44,26 +45,39 @@ service Containerz {
 
   // Remove deletes containers that match the spec defined in the request. If
   // the specified container does not exist, this operation is a no-op.
-  rpc Remove(RemoveRequest) returns (RemoveResponse) {}
+  rpc RemoveContainer(RemoveContainerRequest)
+    returns (RemoveContainerResponse) {}
 
   // List returns all containers that match the spec defined in the request.
-  rpc List(ListRequest) returns (stream ListResponse) {}
+  rpc ListContainer(ListContainerRequest)
+    returns (stream ListContainerResponse) {}
 
   // Start starts a container. If the image does not exist on the target,
   // Start returns an error. A started container is identified by an instance
   // name, which  can optionally be supplied by the caller otherwise the target
   // should provide one. If the instance name already exists, the target should
   // return an error.
-  rpc Start(StartRequest) returns (StartResponse) {}
+  rpc StartContainer(StartContainerRequest) returns (StartContainerResponse) {}
 
   // Stop stops a container. If the container does not exist or is not running
   // this operation returns an error. This operation can, optionally, force
   // (i.e. kill) a container.
-  rpc Stop(StopRequest) returns (StopResponse) {}
+  rpc StopContainer(StopContainerRequest) returns (StopContainerResponse) {}
 
   // Log streams the logs of a running container. If the container if no longer
   // running this operation streams the latest logs and returns.
   rpc Log(LogRequest) returns (stream LogResponse) {}
+
+  // Creates a volume. If the volume already exists, this operation returns an
+  // error. A volume is expected to be backed by persistent datastore and is
+  // expected exist across device reboots along with the data it contained.
+  rpc CreateVolume(CreateVolumeRequest) returns (CreateVolumeResponse) {}
+
+  // Removes a volume. If the volume does not exist, this operation is a noop.
+  rpc RemoveVolume(RemoveVolumeRequest) returns (RemoveVolumeResponse) {}
+
+  // ListVolume returns all volumes that match the spec defined in the filter.
+  rpc ListVolume(ListVolumeRequest) returns (stream ListVolumeResponse) {}
 }
 
 message DeployRequest {
@@ -135,7 +149,7 @@ message ImageTransferSuccess {
   uint64 image_size = 3;
 }
 
-message RemoveRequest {
+message RemoveContainerRequest {
   // The container image name to be removed.
   string name = 1;
 
@@ -147,7 +161,7 @@ message RemoveRequest {
   bool force = 3;
 }
 
-message RemoveResponse {
+message RemoveContainerResponse {
   enum Code {
     // An unspecified error. Must use the detail value to describe the issue.
     UNSPECIFIED = 0;
@@ -166,7 +180,7 @@ message RemoveResponse {
   string detail = 2;
 }
 
-message ListRequest {
+message ListContainerRequest {
   // List all containers, by default only running ones are returned.
   bool all = 1;
 
@@ -183,7 +197,7 @@ message ListRequest {
   Filter filter = 3;
 }
 
-message ListResponse {
+message ListContainerResponse {
   string id = 1;
   string name = 2;
   string image_name = 3;
@@ -208,13 +222,25 @@ message ListResponse {
   Status status = 4;
 }
 
-message StartRequest {
+// A volume can be passed to a container such that it can persist data.
+message Volume {
+  string name = 1;
+
+  // The mount_point is location with the container where the volume should be
+  // attached within the container.
+  string mount_point = 2;
+
+  // If read_only is set, the volume is mounted in readonly mode.
+  bool read_only = 3;
+}
+
+message StartContainerRequest {
   // The name and tag of the container to start.
   string image_name = 1;
   string tag = 2;
   string cmd = 3;
 
-  // Optional. The name to give the running continer. If none is specified,
+  // Optional. The name to give the running container. If none is specified,
   // the target should assign one.
   string instance_name = 4;
   message Port {
@@ -228,10 +254,13 @@ message StartRequest {
   // Environment to set in the container.
   map<string, string> environment = 6;
 
+  // List of volumes that should be attached to the container.
+  repeated Volume volumes = 7;
+
   // Other container properties will be added as it becomes necessary.
 }
 
-message StartResponse {
+message StartContainerResponse {
   oneof response {
     StartOK start_ok = 1;
     StartError start_error = 2;
@@ -259,7 +288,7 @@ message StartError {
   string details = 2;
 }
 
-message StopRequest {
+message StopContainerRequest {
   string instance_name = 1;
 
   // If force is set, the target should attempt to forcibly kill the container.
@@ -270,7 +299,7 @@ message StopRequest {
   bool restart = 3;
 }
 
-message StopResponse {
+message StopContainerResponse {
   enum Code {
     // An unspecified error. The details field should provide more information.
     UNSPECIFIED = 0;
@@ -298,4 +327,95 @@ message LogRequest {
 
 message LogResponse {
   string msg = 1;
+}
+
+// Driver enum defines which volume driver should be used when creating the
+// volume
+enum Driver {
+  DS_UNSPECIFIED = 0;
+  DS_LOCAL = 1;
+}
+
+message LocalDriverOptions {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_NONE = 1;
+  }
+
+  // Mount type to use. If this is not specified it default to `none`.
+  Type type = 1;
+
+  // List of mount options as specified by `options` in
+  // http://man7.org/linux/man-pages/man8/mount.8.html.
+  repeated string options = 2;
+
+  string mountpoint = 3;
+}
+
+message CreateVolumeRequest {
+  // name of the volume. If present, this system must create the volume with
+  // this name otherwise it must allocate a name.
+  string name = 1;
+
+  // The volume driver. If not specified, this defaults to the the standard
+  // linux mount operation (http://man7.org/linux/man-pages/man8/mount.8.html)
+  // and associated options.
+  Driver driver = 2;
+
+  // Options for the driver. The actual option keys and values are driver
+  // specific.
+  oneof options {
+    LocalDriverOptions local_mount_options = 3;
+  }
+
+  // Labels to apply to the volume. Labels are metadata for the the volume.
+  map<string, string> labels = 4;
+}
+
+message CreateVolumeResponse {
+  // The name of the created volume.
+  string name = 1;
+}
+
+message RemoveVolumeRequest {
+  // The volume to remove.
+  string name = 1;
+}
+
+message RemoveVolumeResponse {
+}
+
+message ListVolumeRequest {
+  // List all volumes.
+  bool all = 1;
+
+  // Only return limit number of volumes.
+  int32 limit = 2;
+
+  // A filter is a mapping from a key to a list of values.
+  // TODO(alshabib) document possible keys
+  message Filter {
+    string key = 1;
+    repeated string value = 2;
+  }
+
+  Filter filter = 3;
+}
+
+message ListVolumeResponse {
+  string name = 1;
+
+  // The timestamp when the volume was created.
+  google.protobuf.Timestamp created = 2;
+
+  // The volume driver
+  string driver = 3;
+
+  // Options for the driver. The actual option keys and values are driver
+  // specific.
+  map<string, string> options = 4;
+
+  // Volume labels.
+  map<string, string> labels = 5;
+
 }
