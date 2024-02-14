@@ -22,7 +22,6 @@ import "github.com/openconfig/bootz/proto/bootz.proto";
 import "github.com/openconfig/gnoi/types/types.proto";
 import "github.com/openconfig/gnsi/authz/authz.proto";
 import "github.com/openconfig/gnsi/certz/certz.proto";
-import "github.com/openconfig/gnsi/credentialz/credentialz.proto";
 import "github.com/openconfig/gnsi/pathz/pathz.proto";
 
 option go_package = "github.com/openconfig/gnoi/bootconfig";
