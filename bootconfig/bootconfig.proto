@@ -44,11 +44,11 @@ service BootConfig {
 message GetBootConfigRequest {}
 
 message GetBootConfigResponse {
-  .bootz.proto.BootConfig boot_config = 1;
+  bootz.proto.BootConfig boot_config = 1;
 }
 
 message SetBootConfigRequest {
-  .bootz.proto.BootConfig boot_config = 1;
+  bootz.proto.BootConfig boot_config = 1;
 }
 
 message SetBootConfigResponse {}

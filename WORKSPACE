@@ -42,11 +42,25 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 go_repository(
     name = "com_github_openconfig_bootz",
+    build_directives = [
+        "gazelle:proto_import_prefix github.com/openconfig/bootz",
+    ],
+    build_file_generation = "on",
     importpath = "github.com/openconfig/bootz",
     sum = "h1:pCBi4GXcT+XM2Vud8kh0Q6uyw6oUxN1CFvrxnW+I/as=",
     version = "v0.1.1",
 )
 
+go_repository(
+    name = "com_github_openconfig_gnoi",
+    build_directives = [
+        "gazelle:proto_import_prefix github.com/openconfig/gnoi",
+    ],
+    build_file_generation = "on",
+    importpath = "github.com/openconfig/gnoi",
+    sum = "h1:ieThHVx5rRwAt6lqKOKzoA3pcr5FE5Xs40GJ7wNqshs=",
+    version = "v0.3.0",
+)
 
 go_repository(
     name = "com_github_openconfig_gnmi",
