@@ -77,7 +77,7 @@ service Extension{
   // To reload services after installing extensions, issue a
   // FinalizeExtensions RPC after finishing the InstallExtension RPC.
   rpc InstallExtension(stream InstallExtensionRequest)
-      returns (InstallExtensionResponse);
+      returns (stream InstallExtensionResponse);
 
   // UninstallExtension uninstalls an extension.
   // It returns an error if the requested extension is not installed.
