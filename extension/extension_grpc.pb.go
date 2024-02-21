@@ -137,7 +137,7 @@ func (c *extensionClient) InstallExtension(ctx context.Context, opts ...grpc.Cal
 
 type Extension_InstallExtensionClient interface {
 	Send(*InstallExtensionRequest) error
-	CloseAndRecv() (*InstallExtensionResponse, error)
+	Recv() (*InstallExtensionResponse, error)
 	grpc.ClientStream
 }
 
@@ -149,10 +149,7 @@ func (x *extensionInstallExtensionClient) Send(m *InstallExtensionRequest) error
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *extensionInstallExtensionClient) CloseAndRecv() (*InstallExtensionResponse, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
+func (x *extensionInstallExtensionClient) Recv() (*InstallExtensionResponse, error) {
 	m := new(InstallExtensionResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -315,7 +312,7 @@ func _Extension_InstallExtension_Handler(srv interface{}, stream grpc.ServerStre
 }
 
 type Extension_InstallExtensionServer interface {
-	SendAndClose(*InstallExtensionResponse) error
+	Send(*InstallExtensionResponse) error
 	Recv() (*InstallExtensionRequest, error)
 	grpc.ServerStream
 }
@@ -324,7 +321,7 @@ type extensionInstallExtensionServer struct {
 	grpc.ServerStream
 }
 
-func (x *extensionInstallExtensionServer) SendAndClose(m *InstallExtensionResponse) error {
+func (x *extensionInstallExtensionServer) Send(m *InstallExtensionResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -378,6 +375,7 @@ var Extension_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "InstallExtension",
 			Handler:       _Extension_InstallExtension_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},
