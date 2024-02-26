@@ -19,12 +19,12 @@ syntax = "proto3";
 package gnoi.bootconfig;
 
 import "github.com/openconfig/bootz/proto/bootz.proto";
-import "github.com/openconfig/gnoi/types/types.proto";
+import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/bootconfig";
 
 // The current semantic version of the gNOI BootConfig service.
-option (gnoi.types.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.1.0";
 
 // gNOI BootConfig service provides an API to update the boot configuration
 // namespace as in the Bootz protocol (https://github.com/openconfig/bootz).

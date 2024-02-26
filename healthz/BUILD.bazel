@@ -56,3 +56,21 @@ cc_grpc_library(
     deps = [":healthz_cc_proto"],
 )
 
+go_library(
+    name = "healthz",
+    srcs = [
+        "healthz.pb.go",
+        "healthz_grpc.pb.go",
+    ],
+    importpath = "github.com/openconfig/gnoi/healthz",
+    deps = [
+        "//types",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+        "@org_golang_google_protobuf//types/known/anypb",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)

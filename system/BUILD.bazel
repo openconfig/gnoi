@@ -51,6 +51,7 @@ go_proto_library(
     name = "system_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/openconfig/gnoi/system",
+    proto = ":system_proto",
     protos = [":system_proto"],
     deps = [
         "//common",

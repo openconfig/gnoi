@@ -47,12 +47,11 @@ go_repository(
     version = "v0.1.1",
 )
 
-
 go_repository(
     name = "com_github_openconfig_gnmi",
     build_directives = [
         "gazelle:proto_import_prefix github.com/openconfig/gnmi",
-    ],    
+    ],
     build_file_generation = "on",
     importpath = "github.com/openconfig/gnmi",
     sum = "h1:tv9HygDMXnoGyWuLmNCodMV2+PK6+uT/ndAxDVzsUUQ=",
@@ -62,8 +61,8 @@ go_repository(
 go_repository(
     name = "com_github_openconfig_gnsi",
     importpath = "github.com/openconfig/gnsi",
-    sum = "h1:oHdSFP1CpP+mfv6IOKWefHpbW3Fy9ZOSHgPgpCb8EDU=",
-    version = "v1.2.4",
+    sum = "h1:Y/fBMQOn5xqdo9xuT7AK2YHSRejx/ws4sDOMBCHQG6w=",
+    version = "v1.2.3",
 )
 
 go_repository(
@@ -76,8 +75,8 @@ go_repository(
 go_repository(
     name = "com_github_openconfig_goyang",
     importpath = "github.com/openconfig/goyang",
-    sum = "h1:Z95LskKYk6nBYOxHtmJCu3YEKlr3pJLWG1tYAaNh3yU=",
-    version = "v0.2.9",
+    sum = "h1:5MyIz4bN4vpH6aHDN339bkWXAjTkhg1ZKMhR4aIi5Rk=",
+    version = "v0.0.0-20200115183954-d0a48929f0ea",
 )
 
 go_repository(
@@ -86,9 +85,14 @@ go_repository(
         "gazelle:proto_import_prefix github.com/openconfig/ygot",
     ],
     importpath = "github.com/openconfig/ygot",
-    sum = "h1:EKaeFhx1WwTZGsYeqipyh1mfF8y+z2StaXZtwVnXklk=",
-    version = "v0.13.1",
+    sum = "h1:kJJFPBrczC6TDnz/HMlFTJEdW2CuyUftV13XveIukg0=",
+    version = "v0.6.0",
 )
+
+load("//:gnoi_deps.bzl", "go_dependencies")
+
+# gazelle:repository_macro gnoi_deps.bzl%go_dependencies
+go_dependencies()
 
 gazelle_dependencies()
 
@@ -111,7 +115,7 @@ http_archive(
     build_file_content = """exports_files(glob(["release/models/**/*.yang"]), visibility = ["//visibility:public"])""",
     sha256 = "f6b2b6c0ffe0b66881287bcd43241a57583f353cc5cc41cba973601c32232f45",
     strip_prefix = "public-bf737a5567ec248456cb528efcd63cab15e8fc69",
-    urls = [ 
+    urls = [
         "https://github.com/openconfig/public/archive/bf737a5567ec248456cb528efcd63cab15e8fc69.zip",
     ],
 )
@@ -122,7 +126,7 @@ http_archive(
     build_file_content = """exports_files(glob(["standard/**/*.yang"]), visibility = ["//visibility:public"])""",
     sha256 = "55913058f64a1ec7fe9e6e70d7128f08e66b20c859803b1fb02dbaf7eef2c64d",
     strip_prefix = "yang-2fa291d6bdb4b281d4e1b3dfa3254ffa7257d800",
-    urls = [ 
+    urls = [
         "https://github.com/YangModels/yang/archive/2fa291d6bdb4b281d4e1b3dfa3254ffa7257d800.zip",
     ],
 )
