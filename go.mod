@@ -12,7 +12,7 @@ require (
 
 require (
 	github.com/openconfig/gnmi v0.0.0-20220617175856-41246b1b3507 // indirect
-	github.com/openconfig/gnsi v1.2.3 // indirect
+	github.com/openconfig/gnsi v1.2.5 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
