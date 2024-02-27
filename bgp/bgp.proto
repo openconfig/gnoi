@@ -13,12 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 syntax = "proto3";
 
 package gnoi.bgp;
 
-import "types/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/bgp";
 

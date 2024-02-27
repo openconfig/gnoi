@@ -3,5 +3,5 @@ gNOI defines a set of gRPC-based microservices for executing operational command
 
 # Rebuild *.pb.go files
 ```
-./compile_proto.sh
+./regenerate-files.sh
 ````

@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package gnoi.layer2;
 
-import "types/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/layer2";
 
