@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package gnoi.factory_reset;
 
-import "types/types.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/factory_reset";
 

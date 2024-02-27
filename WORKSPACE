@@ -1,3 +1,5 @@
+workspace(name = "com_github_openconfig_gnoi")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 ### Bazel rules for many languages to compile PROTO into gRPC libraries
@@ -6,6 +8,20 @@ http_archive(
     sha256 = "c0d718f4d892c524025504e67a5bfe83360b3a982e654bc71fed7514eb8ac8ad",
     strip_prefix = "rules_proto_grpc-4.6.0",
     urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/4.6.0.tar.gz"],
+)
+
+http_archive(
+    name = "com_google_googleapis",
+    sha256 = "9fc03150d86501d7da35eefa989d5553bdd77a95cfe4373cdafe8eee92f6bfb1",
+    strip_prefix = "googleapis-870a5ed7e141b4faf70e2a0858854e9b5bb18612",
+    urls = ["https://github.com/googleapis/googleapis/archive/870a5ed7e141b4faf70e2a0858854e9b5bb18612.tar.gz"],
+)
+
+load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
+switched_rules_by_language(
+    name = "com_google_googleapis_imports",
+    cc = True,
+    go = True,
 )
 
 load(
@@ -38,63 +54,19 @@ go_register_toolchains(go_version = "1.20")
 # gazelle:repo bazel_gazelle
 bazel_gazelle()
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
-go_repository(
-    name = "com_github_openconfig_bootz",
-    importpath = "github.com/openconfig/bootz",
-    sum = "h1:pCBi4GXcT+XM2Vud8kh0Q6uyw6oUxN1CFvrxnW+I/as=",
-    version = "v0.1.1",
-)
+load("//:gnoi_deps.bzl", "gnoi_deps")
 
-
-go_repository(
-    name = "com_github_openconfig_gnmi",
-    build_directives = [
-        "gazelle:proto_import_prefix github.com/openconfig/gnmi",
-    ],    
-    build_file_generation = "on",
-    importpath = "github.com/openconfig/gnmi",
-    sum = "h1:tv9HygDMXnoGyWuLmNCodMV2+PK6+uT/ndAxDVzsUUQ=",
-    version = "v0.0.0-20220617175856-41246b1b3507",
-)
-
-go_repository(
-    name = "com_github_openconfig_gnsi",
-    importpath = "github.com/openconfig/gnsi",
-    sum = "h1:oHdSFP1CpP+mfv6IOKWefHpbW3Fy9ZOSHgPgpCb8EDU=",
-    version = "v1.2.4",
-)
-
-go_repository(
-    name = "com_github_kylelemons_godebug",
-    importpath = "github.com/kylelemons/godebug",
-    sum = "h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=",
-    version = "v1.1.0",
-)
-
-go_repository(
-    name = "com_github_openconfig_goyang",
-    importpath = "github.com/openconfig/goyang",
-    sum = "h1:Z95LskKYk6nBYOxHtmJCu3YEKlr3pJLWG1tYAaNh3yU=",
-    version = "v0.2.9",
-)
-
-go_repository(
-    name = "com_github_openconfig_ygot",
-    build_directives = [
-        "gazelle:proto_import_prefix github.com/openconfig/ygot",
-    ],
-    importpath = "github.com/openconfig/ygot",
-    sum = "h1:EKaeFhx1WwTZGsYeqipyh1mfF8y+z2StaXZtwVnXklk=",
-    version = "v0.13.1",
-)
-
-gazelle_dependencies()
+gnoi_deps()
 
 load("@rules_proto_grpc//go:repositories.bzl", rules_proto_grpc_go_repos = "go_repos")
 
 rules_proto_grpc_go_repos()
+
+# Load gazelle_dependencies last, so that the newer version of org_golang_google_grpc is used.
+# see https://github.com/rules-proto-grpc/rules_proto_grpc/issues/160
+gazelle_dependencies()
 
 ### C++
 load("@rules_proto_grpc//cpp:repositories.bzl", rules_proto_grpc_cpp_repos = "cpp_repos")
@@ -104,6 +76,7 @@ rules_proto_grpc_cpp_repos()
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
+
 
 # open-config YANG files
 http_archive(

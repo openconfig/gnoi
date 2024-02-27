@@ -1,5 +1,7 @@
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 #Copyright 2021 Google LLC
 #
@@ -15,8 +17,6 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
-load("@rules_proto_grpc//go:defs.bzl", "go_grpc_library", "go_proto_library")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -44,6 +44,12 @@ go_proto_library(
     ],
 )
 
+go_library(
+    name = "healthz",
+    embed = [":healthz_go_proto"],
+    importpath = "github.com/openconfig/gnoi/healthz",
+)
+
 cc_proto_library(
     name = "healthz_cc_proto",
     deps = [":healthz_proto"],
@@ -55,4 +61,3 @@ cc_grpc_library(
     grpc_only = True,
     deps = [":healthz_cc_proto"],
 )
-
