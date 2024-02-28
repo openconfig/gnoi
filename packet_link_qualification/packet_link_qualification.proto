@@ -1,14 +1,13 @@
 // A generic network operational interface gRPC service to perform packet based
 // link qualification operations on a network device.
-
 syntax = "proto3";
 
 package gnoi.packet_link_qualification;
 
+import "github.com/openconfig/gnoi/types/types.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
-import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/linkqual";
 

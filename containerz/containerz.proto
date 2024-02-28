@@ -27,10 +27,10 @@ syntax = "proto3";
 
 package gnoi.containerz;
 
-import "common/common.proto";
+import "github.com/openconfig/gnoi/common/common.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
-import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
 option (types.gnoi_version) = "0.1.2";
@@ -194,7 +194,7 @@ message ListContainerRequest {
     repeated string value = 2;
   }
 
-  Filter filter = 3;
+  repeated Filter filter = 3;
 }
 
 message ListContainerResponse {
@@ -380,18 +380,15 @@ message CreateVolumeResponse {
 message RemoveVolumeRequest {
   // The volume to remove.
   string name = 1;
+
+  // force the volume removal.
+  bool force = 2;
 }
 
 message RemoveVolumeResponse {
 }
 
 message ListVolumeRequest {
-  // List all volumes.
-  bool all = 1;
-
-  // Only return limit number of volumes.
-  int32 limit = 2;
-
   // A filter is a mapping from a key to a list of values.
   // TODO(alshabib) document possible keys
   message Filter {
@@ -399,7 +396,7 @@ message ListVolumeRequest {
     repeated string value = 2;
   }
 
-  Filter filter = 3;
+  repeated Filter filter = 1;
 }
 
 message ListVolumeResponse {

@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 syntax = "proto3";
 
 package gnoi.bootconfig;
@@ -45,11 +44,11 @@ message GetBootConfigRequest {
 }
 
 message GetBootConfigResponse {
-  .bootz.proto.BootConfig boot_config = 1;
+  bootz.BootConfig boot_config = 1;
 }
 
 message SetBootConfigRequest {
-  .bootz.proto.BootConfig boot_config = 1;
+  bootz.BootConfig boot_config = 1;
 }
 
 message SetBootConfigResponse {
