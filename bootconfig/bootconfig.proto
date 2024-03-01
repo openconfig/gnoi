@@ -51,11 +51,11 @@ message GetBootConfigResponse {
 }
 
 message SetBootConfigRequest {
-  .bootz.proto.BootConfig boot_config = 1;  
-  .bootz.proto.Credentials credentials = 2;
-  .gnsi.pathz.v1.UploadRequest pathz = 3;
-  .gnsi.authz.v1.UploadRequest authz = 4;
-  .gnsi.certz.v1.UploadRequest certificates = 5;
+  bootz.proto.BootConfig boot_config = 1;  
+  bootz.proto.Credentials credentials = 2;
+  gnsi.pathz.v1.UploadRequest pathz = 3;
+  gnsi.authz.v1.UploadRequest authz = 4;
+  gnsi.certz.v1.UploadRequest certificates = 5;
 }
 
 message SetBootConfigResponse {}
