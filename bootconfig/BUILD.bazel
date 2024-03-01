@@ -1,6 +1,7 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 #Copyright 2021 Google LLC
@@ -51,7 +52,7 @@ go_proto_library(
     name = "bootconfig_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/openconfig/gnoi/bootconfig",
-    proto = ":bootconfig_proto",
+    protos = [":bootconfig_proto"],
     deps = [
         "//types",
         "@com_github_openconfig_bootz//proto:bootz_go_proto",

@@ -18,8 +18,8 @@ syntax = "proto3";
 
 package gnoi.file;
 
-import "common/common.proto";
-import "types/types.proto";
+import "github.com/openconfig/gnoi/common/common.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/file";
 

@@ -27,9 +27,9 @@ syntax = "proto3";
 
 package gnoi.containerz;
 
-import "common/common.proto";
+import "github.com/openconfig/gnoi/common/common.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 import "google/rpc/status.proto";
-import "types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
 option (types.gnoi_version) = "0.1.2";
