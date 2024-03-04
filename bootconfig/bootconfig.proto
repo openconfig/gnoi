@@ -19,6 +19,9 @@ package gnoi.bootconfig;
 
 import "github.com/openconfig/bootz/proto/bootz.proto";
 import "github.com/openconfig/gnoi/types/types.proto";
+import "github.com/openconfig/gnsi/authz/authz.proto";
+import "github.com/openconfig/gnsi/certz/certz.proto";
+import "github.com/openconfig/gnsi/pathz/pathz.proto";
 
 option go_package = "github.com/openconfig/gnoi/bootconfig";
 
@@ -48,7 +51,11 @@ message GetBootConfigResponse {
 }
 
 message SetBootConfigRequest {
-  bootz.BootConfig boot_config = 1;
+  bootz.BootConfig boot_config = 1;  
+  bootz.Credentials credentials = 2;
+  gnsi.pathz.v1.UploadRequest pathz = 3;
+  gnsi.authz.v1.UploadRequest authz = 4;
+  gnsi.certz.v1.UploadRequest certificates = 5;
 }
 
 message SetBootConfigResponse {
