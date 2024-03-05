@@ -39,7 +39,7 @@ copy_generated "healthz"
 bazel build //layer2:all
 copy_generated "layer2"
 bazel build //mpls:all
-copy_generated "mpls"
+copy_generated "mpls"   
 bazel build //os:all
 copy_generated "os"
 bazel build //otdr:all
