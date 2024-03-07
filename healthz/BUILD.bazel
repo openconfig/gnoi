@@ -40,7 +40,7 @@ go_proto_library(
     importpath = "github.com/openconfig/gnoi/healthz",
     protos = [":healthz_proto"],
     deps = [
-        "//types:types_go_proto",
+        "//types",
     ],
 )
 
