@@ -17,7 +17,7 @@ proto_library(
 go_proto_library(
     name = "linkqual_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-    importpath = "github.com/openconfig/gnoi/linkqual",
+    importpath = "github.com/openconfig/gnoi/packet_link_qualification",
     proto = ":linkqual_proto",
     visibility = ["//visibility:public"],
     deps = [
@@ -30,5 +30,12 @@ go_library(
     name = "linkqual",
     embed = [":linkqual_go_proto"],
     importpath = "github.com/openconfig/gnoi/linkqual",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "packet_link_qualification",
+    embed = [":linkqual_go_proto"],
+    importpath = "github.com/openconfig/gnoi/packet_link_qualification",
     visibility = ["//visibility:public"],
 )

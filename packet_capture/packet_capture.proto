@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package gnoi.pcap;
 
-option go_package = "github.com/openconfig/gnoi/pcap";
+option go_package = "github.com/openconfig/gnoi/packet_capture;pcap";
 
 // The PacketCapture service exported by targets.
 service PacketCapture {
