@@ -52,7 +52,7 @@ go_proto_library(
     name = "bootconfig_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/openconfig/gnoi/bootconfig",
-    protos = [":bootconfig_proto"],
+    proto = ":bootconfig_proto",
     deps = [
         "//types",
         "@com_github_openconfig_bootz//proto:bootz_go_proto",

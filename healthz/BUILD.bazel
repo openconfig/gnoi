@@ -38,7 +38,7 @@ go_proto_library(
     name = "healthz_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/openconfig/gnoi/healthz",
-    protos = [":healthz_proto"],
+    proto = ":healthz_proto",
     deps = [
         "//types",
     ],
