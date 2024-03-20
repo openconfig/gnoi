@@ -9,7 +9,8 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
-option go_package = "github.com/openconfig/gnoi/linkqual";
+option go_package = 
+  "github.com/openconfig/gnoi/packet_link_qualification;linkqual";
 
 option (types.gnoi_version) = "1.1.0";
 
