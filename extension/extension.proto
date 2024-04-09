@@ -17,11 +17,6 @@ option (types.gnoi_version) = "0.1.0";
 // may be in progress at any given time
 service Extension{
 
-  // SetSignatureVerification sets the methods for which the
-  // system should verify incoming extensions
-  rpc SetSignatureVerification(SigVerificationRequest)
-      returns (SigVerificationResponse);
-
   // FinalizeExtensions reloads any services on the system for
   // which extensions have been installed but which have not yet been
   // reloaded with those extensions.
@@ -90,33 +85,6 @@ message FinalizeExtensionsRequest{
 message FinalizeExtensionsResponse{
 }
 
-message SigVerificationResponse{
-}
-
-message SigVerificationRequest{
-  enum TrustSource {
-    // UNSPECIFIED should be treated as an error.
-    UNSPECIFIED = 0;
-    // ANY = disable signature verification. Allows any extension
-    // (even one with missing/invalid signature) to be installed
-    ANY = 1;
-    // MANUFACTURER = trust only extensions which have been signed
-    // by the device manufacturer to be installed.
-    MANUFACTURER = 2;
-    // SSL_PROFILE = trust extensions which are valid according to
-    // the SSL profile specified by the ssl_profile_id field.
-    // creating and populating SSL profiles is out of the scope of this
-    // service and should be done through some other means (e.g. gNSI Certz).
-    SSL_PROFILE = 3;
-  }
-  TrustSource source =  1;
-
-  // Optional ssl_profile_id field, which should be populated only
-  // if the source of trust is an SSL profile.
-  // The server should ignore this field if source is not SSL_PROFILE
-  optional string ssl_profile_id = 2;
-}
-
 message UninstallExtensionRequest{
   // name of the extension to be uninstalled
   string name = 1;
@@ -152,10 +120,6 @@ message InstallRequest{
   // for an extension which is already present on the system
   string extension_name = 1;
 
-  // if this is true, then skip signature verification
-  // for this particular extension (i.e. allow missing or invalid signatures)
-  bool ignore_signature_verification = 2;
-
   // if this is true, then the system will also
   // ensure that this extension is loaded on boot/reboot
   bool load_after_boot = 3;
@@ -163,6 +127,25 @@ message InstallRequest{
   // if this is true, then the system will ignore
   // any errors which could arise from missing dependencies
   bool ignore_dependency_checks = 4;
+
+  enum TrustSource {
+    // UNSPECIFIED should be treated as an error.
+    UNSPECIFIED = 0;
+    // ANY = disable signature verification. Allows any extension
+    // (even one with missing/invalid signature) to be installed
+    ANY = 1;
+    // MANUFACTURER = trust only extensions which have been signed
+    // by the device manufacturer to be installed.
+    MANUFACTURER = 2;
+  }
+  oneof signature_verification {
+    TrustSource source = 5;
+    // trust extensions which are valid according to
+    // the SSL profile specified by the ssl_profile_id field.
+    // Creating and populating SSL profiles is out of the scope of this
+    // service and should be done through some other means (e.g. gNSI Certz).
+    string ssl_profile_id = 6;
+  }
 }
 
 message TransferRequest{
