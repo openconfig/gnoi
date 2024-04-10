@@ -12,15 +12,6 @@ An extension may be installed to:
 
 ### Extension installation workflow
 
-#### Setup: Configuring verification
-To validate the integrity of an extension, a network operator can configure
-the system to perform signature verification on any extensions.  
-The system can be configured so that it can only accept extensions which are
-cryptographically signed by the switch vendor, or which are signed by some
-trusted certificates.   
-This signature verification guarantees that the extension is unaltered
-after being signed, and that it originates from some trusted source.
-
 #### 1. Extension Transfer
 Optionally transfer the extension file to the system, or select an
 extension which had been previously transferred but which was not installed.
@@ -28,9 +19,14 @@ extension which had been previously transferred but which was not installed.
 #### 2. Extension Installation
 Install the extension.
 Optionally:
-- ignore the global configuration which specifies signature verification.   
-  In this case, we dont want to wipe out the global configuration, but
-  rather just make an exception for this particular extension.
+- set the signature verification option.
+  This signature verification guarantees that the extension is unaltered
+  after being signed, and that it originates from some trusted source.   
+  Either:
+  - ignore signature verification for this extension
+  - accept extension signatures which are cryptographically signed by the switch vendor
+  - accept extension signatures which are signed by some trusted certificates (specified on-device).
+  
 - mark the extension as an extension which should be applied on boot.   
   When the system reboots, it should apply the extension from boot.
 - ignore any dependency issues.    
