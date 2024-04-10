@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Extension_ShowExtensions_FullMethodName     = "/gnoi.extension.Extension/ShowExtensions"
 	Extension_FinalizeExtensions_FullMethodName = "/gnoi.extension.Extension/FinalizeExtensions"
 	Extension_InstallExtension_FullMethodName   = "/gnoi.extension.Extension/InstallExtension"
 	Extension_UninstallExtension_FullMethodName = "/gnoi.extension.Extension/UninstallExtension"
@@ -28,6 +29,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExtensionClient interface {
+	// Shows the current state of the extensions on the system.
+	ShowExtensions(ctx context.Context, in *ShowExtensionsRequest, opts ...grpc.CallOption) (*ShowExtensionsResponse, error)
 	// FinalizeExtensions reloads any services on the system for
 	// which extensions have been installed but which have not yet been
 	// reloaded with those extensions.
@@ -104,6 +107,15 @@ func NewExtensionClient(cc grpc.ClientConnInterface) ExtensionClient {
 	return &extensionClient{cc}
 }
 
+func (c *extensionClient) ShowExtensions(ctx context.Context, in *ShowExtensionsRequest, opts ...grpc.CallOption) (*ShowExtensionsResponse, error) {
+	out := new(ShowExtensionsResponse)
+	err := c.cc.Invoke(ctx, Extension_ShowExtensions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *extensionClient) FinalizeExtensions(ctx context.Context, in *FinalizeExtensionsRequest, opts ...grpc.CallOption) (*FinalizeExtensionsResponse, error) {
 	out := new(FinalizeExtensionsResponse)
 	err := c.cc.Invoke(ctx, Extension_FinalizeExtensions_FullMethodName, in, out, opts...)
@@ -157,6 +169,8 @@ func (c *extensionClient) UninstallExtension(ctx context.Context, in *UninstallE
 // All implementations must embed UnimplementedExtensionServer
 // for forward compatibility
 type ExtensionServer interface {
+	// Shows the current state of the extensions on the system.
+	ShowExtensions(context.Context, *ShowExtensionsRequest) (*ShowExtensionsResponse, error)
 	// FinalizeExtensions reloads any services on the system for
 	// which extensions have been installed but which have not yet been
 	// reloaded with those extensions.
@@ -230,6 +244,9 @@ type ExtensionServer interface {
 type UnimplementedExtensionServer struct {
 }
 
+func (UnimplementedExtensionServer) ShowExtensions(context.Context, *ShowExtensionsRequest) (*ShowExtensionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowExtensions not implemented")
+}
 func (UnimplementedExtensionServer) FinalizeExtensions(context.Context, *FinalizeExtensionsRequest) (*FinalizeExtensionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FinalizeExtensions not implemented")
 }
@@ -250,6 +267,24 @@ type UnsafeExtensionServer interface {
 
 func RegisterExtensionServer(s grpc.ServiceRegistrar, srv ExtensionServer) {
 	s.RegisterService(&Extension_ServiceDesc, srv)
+}
+
+func _Extension_ShowExtensions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowExtensionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExtensionServer).ShowExtensions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Extension_ShowExtensions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExtensionServer).ShowExtensions(ctx, req.(*ShowExtensionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Extension_FinalizeExtensions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -321,6 +356,10 @@ var Extension_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "gnoi.extension.Extension",
 	HandlerType: (*ExtensionServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ShowExtensions",
+			Handler:    _Extension_ShowExtensions_Handler,
+		},
 		{
 			MethodName: "FinalizeExtensions",
 			Handler:    _Extension_FinalizeExtensions_Handler,

@@ -17,6 +17,9 @@ option (types.gnoi_version) = "0.1.0";
 // may be in progress at any given time
 service Extension{
 
+  // Shows the current state of the extensions on the system.
+  rpc ShowExtensions(ShowExtensionsRequest)returns (ShowExtensionsResponse);
+
   // FinalizeExtensions reloads any services on the system for
   // which extensions have been installed but which have not yet been
   // reloaded with those extensions.
@@ -78,6 +81,62 @@ service Extension{
   // It returns an error if the requested extension is not installed.
   rpc UninstallExtension(UninstallExtensionRequest)
       returns (UninstallExtensionResponse);
+}
+
+message ShowExtensionsRequest{}
+message ShowExtensionsResponse{
+  enum InstallStatus {
+    // UNSPECIFIED should be treated as an error.
+    UNSPECIFIED = 0;
+    INSTALLED = 1;
+    NOT_INSTALLED = 2;
+
+    // This extension was force-installed - checks regarding
+    // signature or dependencies may have been ignored
+    FORCE_INSTALLED = 3;
+  }
+  // an extension may contain multiple packages
+  message Package {
+    string name = 1;
+    string version = 2;
+    string release = 3;
+  }
+  message Extension {
+    string name = 1;
+    string version = 2;
+    string release = 3;
+    string description = 4;
+    InstallStatus install_status = 6;
+
+    // install_at_boot is true if the extension is set to be
+    // installed on next system reload
+    bool install_at_boot = 7;
+
+    // bool indicating if this extension has a valid signature
+    bool signature_valid = 8;
+
+    // available is true if the extension file is still available on the system.
+    // the extension may be installed but no longer available if the extension file
+    // has been removed.
+    bool available = 9;
+
+    // any errors attached to this extension
+    string errors = 10;
+    repeated Package packages = 11;
+
+    // affected_services is a list of the services which can be affected by this
+    // extension. This is static information
+    repeated string affected_services = 12;
+
+    // services_to_restart is a list of the services which are pending a reload
+    // to be finalized.
+    // This list will be cleared after a ReloadExtended RPC executes.
+    repeated string services_to_restart = 13;
+  }
+  repeated Extension extensions = 1;
+
+  // extension_directory is a directory where extension files are contained.
+  string extension_directory = 2;
 }
 
 message FinalizeExtensionsRequest{
