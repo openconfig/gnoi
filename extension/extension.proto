@@ -18,7 +18,7 @@ option (types.gnoi_version) = "0.1.0";
 service Extension{
 
   // Shows the current state of the extensions on the system.
-  rpc ShowExtensions(ShowExtensionsRequest)returns (ShowExtensionsResponse);
+  rpc ListExtensions(ListExtensionsRequest)returns (ListExtensionsResponse);
 
   // FinalizeExtensions reloads any services on the system for
   // which extensions have been installed but which have not yet been
@@ -83,8 +83,8 @@ service Extension{
       returns (UninstallExtensionResponse);
 }
 
-message ShowExtensionsRequest{}
-message ShowExtensionsResponse{
+message ListExtensionsRequest{}
+message ListExtensionsResponse{
   enum InstallStatus {
     // UNSPECIFIED should be treated as an error.
     UNSPECIFIED = 0;

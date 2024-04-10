@@ -21,27 +21,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ShowExtensionsResponse_InstallStatus int32
+type ListExtensionsResponse_InstallStatus int32
 
 const (
 	// UNSPECIFIED should be treated as an error.
-	ShowExtensionsResponse_UNSPECIFIED   ShowExtensionsResponse_InstallStatus = 0
-	ShowExtensionsResponse_INSTALLED     ShowExtensionsResponse_InstallStatus = 1
-	ShowExtensionsResponse_NOT_INSTALLED ShowExtensionsResponse_InstallStatus = 2
+	ListExtensionsResponse_UNSPECIFIED   ListExtensionsResponse_InstallStatus = 0
+	ListExtensionsResponse_INSTALLED     ListExtensionsResponse_InstallStatus = 1
+	ListExtensionsResponse_NOT_INSTALLED ListExtensionsResponse_InstallStatus = 2
 	// This extension was force-installed - checks regarding
 	// signature or dependencies may have been ignored
-	ShowExtensionsResponse_FORCE_INSTALLED ShowExtensionsResponse_InstallStatus = 3
+	ListExtensionsResponse_FORCE_INSTALLED ListExtensionsResponse_InstallStatus = 3
 )
 
-// Enum value maps for ShowExtensionsResponse_InstallStatus.
+// Enum value maps for ListExtensionsResponse_InstallStatus.
 var (
-	ShowExtensionsResponse_InstallStatus_name = map[int32]string{
+	ListExtensionsResponse_InstallStatus_name = map[int32]string{
 		0: "UNSPECIFIED",
 		1: "INSTALLED",
 		2: "NOT_INSTALLED",
 		3: "FORCE_INSTALLED",
 	}
-	ShowExtensionsResponse_InstallStatus_value = map[string]int32{
+	ListExtensionsResponse_InstallStatus_value = map[string]int32{
 		"UNSPECIFIED":     0,
 		"INSTALLED":       1,
 		"NOT_INSTALLED":   2,
@@ -49,30 +49,30 @@ var (
 	}
 )
 
-func (x ShowExtensionsResponse_InstallStatus) Enum() *ShowExtensionsResponse_InstallStatus {
-	p := new(ShowExtensionsResponse_InstallStatus)
+func (x ListExtensionsResponse_InstallStatus) Enum() *ListExtensionsResponse_InstallStatus {
+	p := new(ListExtensionsResponse_InstallStatus)
 	*p = x
 	return p
 }
 
-func (x ShowExtensionsResponse_InstallStatus) String() string {
+func (x ListExtensionsResponse_InstallStatus) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (ShowExtensionsResponse_InstallStatus) Descriptor() protoreflect.EnumDescriptor {
+func (ListExtensionsResponse_InstallStatus) Descriptor() protoreflect.EnumDescriptor {
 	return file_extension_extension_proto_enumTypes[0].Descriptor()
 }
 
-func (ShowExtensionsResponse_InstallStatus) Type() protoreflect.EnumType {
+func (ListExtensionsResponse_InstallStatus) Type() protoreflect.EnumType {
 	return &file_extension_extension_proto_enumTypes[0]
 }
 
-func (x ShowExtensionsResponse_InstallStatus) Number() protoreflect.EnumNumber {
+func (x ListExtensionsResponse_InstallStatus) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use ShowExtensionsResponse_InstallStatus.Descriptor instead.
-func (ShowExtensionsResponse_InstallStatus) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use ListExtensionsResponse_InstallStatus.Descriptor instead.
+func (ListExtensionsResponse_InstallStatus) EnumDescriptor() ([]byte, []int) {
 	return file_extension_extension_proto_rawDescGZIP(), []int{1, 0}
 }
 
@@ -179,14 +179,14 @@ func (InstallRequest_TrustSource) EnumDescriptor() ([]byte, []int) {
 	return file_extension_extension_proto_rawDescGZIP(), []int{8, 0}
 }
 
-type ShowExtensionsRequest struct {
+type ListExtensionsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *ShowExtensionsRequest) Reset() {
-	*x = ShowExtensionsRequest{}
+func (x *ListExtensionsRequest) Reset() {
+	*x = ListExtensionsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_extension_extension_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -194,13 +194,13 @@ func (x *ShowExtensionsRequest) Reset() {
 	}
 }
 
-func (x *ShowExtensionsRequest) String() string {
+func (x *ListExtensionsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ShowExtensionsRequest) ProtoMessage() {}
+func (*ListExtensionsRequest) ProtoMessage() {}
 
-func (x *ShowExtensionsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListExtensionsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_extension_extension_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -212,23 +212,23 @@ func (x *ShowExtensionsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ShowExtensionsRequest.ProtoReflect.Descriptor instead.
-func (*ShowExtensionsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListExtensionsRequest.ProtoReflect.Descriptor instead.
+func (*ListExtensionsRequest) Descriptor() ([]byte, []int) {
 	return file_extension_extension_proto_rawDescGZIP(), []int{0}
 }
 
-type ShowExtensionsResponse struct {
+type ListExtensionsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Extensions []*ShowExtensionsResponse_Extension `protobuf:"bytes,1,rep,name=extensions,proto3" json:"extensions,omitempty"`
+	Extensions []*ListExtensionsResponse_Extension `protobuf:"bytes,1,rep,name=extensions,proto3" json:"extensions,omitempty"`
 	// extension_directory is a directory where extension files are contained.
 	ExtensionDirectory string `protobuf:"bytes,2,opt,name=extension_directory,json=extensionDirectory,proto3" json:"extension_directory,omitempty"`
 }
 
-func (x *ShowExtensionsResponse) Reset() {
-	*x = ShowExtensionsResponse{}
+func (x *ListExtensionsResponse) Reset() {
+	*x = ListExtensionsResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_extension_extension_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -236,13 +236,13 @@ func (x *ShowExtensionsResponse) Reset() {
 	}
 }
 
-func (x *ShowExtensionsResponse) String() string {
+func (x *ListExtensionsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ShowExtensionsResponse) ProtoMessage() {}
+func (*ListExtensionsResponse) ProtoMessage() {}
 
-func (x *ShowExtensionsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListExtensionsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_extension_extension_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -254,19 +254,19 @@ func (x *ShowExtensionsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ShowExtensionsResponse.ProtoReflect.Descriptor instead.
-func (*ShowExtensionsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListExtensionsResponse.ProtoReflect.Descriptor instead.
+func (*ListExtensionsResponse) Descriptor() ([]byte, []int) {
 	return file_extension_extension_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ShowExtensionsResponse) GetExtensions() []*ShowExtensionsResponse_Extension {
+func (x *ListExtensionsResponse) GetExtensions() []*ListExtensionsResponse_Extension {
 	if x != nil {
 		return x.Extensions
 	}
 	return nil
 }
 
-func (x *ShowExtensionsResponse) GetExtensionDirectory() string {
+func (x *ListExtensionsResponse) GetExtensionDirectory() string {
 	if x != nil {
 		return x.ExtensionDirectory
 	}
@@ -790,7 +790,7 @@ func (*TransferRequest_Contents) isTransferRequest_Request() {}
 func (*TransferRequest_Hash) isTransferRequest_Request() {}
 
 // an extension may contain multiple packages
-type ShowExtensionsResponse_Package struct {
+type ListExtensionsResponse_Package struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -800,8 +800,8 @@ type ShowExtensionsResponse_Package struct {
 	Release string `protobuf:"bytes,3,opt,name=release,proto3" json:"release,omitempty"`
 }
 
-func (x *ShowExtensionsResponse_Package) Reset() {
-	*x = ShowExtensionsResponse_Package{}
+func (x *ListExtensionsResponse_Package) Reset() {
+	*x = ListExtensionsResponse_Package{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_extension_extension_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -809,13 +809,13 @@ func (x *ShowExtensionsResponse_Package) Reset() {
 	}
 }
 
-func (x *ShowExtensionsResponse_Package) String() string {
+func (x *ListExtensionsResponse_Package) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ShowExtensionsResponse_Package) ProtoMessage() {}
+func (*ListExtensionsResponse_Package) ProtoMessage() {}
 
-func (x *ShowExtensionsResponse_Package) ProtoReflect() protoreflect.Message {
+func (x *ListExtensionsResponse_Package) ProtoReflect() protoreflect.Message {
 	mi := &file_extension_extension_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -827,33 +827,33 @@ func (x *ShowExtensionsResponse_Package) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ShowExtensionsResponse_Package.ProtoReflect.Descriptor instead.
-func (*ShowExtensionsResponse_Package) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListExtensionsResponse_Package.ProtoReflect.Descriptor instead.
+func (*ListExtensionsResponse_Package) Descriptor() ([]byte, []int) {
 	return file_extension_extension_proto_rawDescGZIP(), []int{1, 0}
 }
 
-func (x *ShowExtensionsResponse_Package) GetName() string {
+func (x *ListExtensionsResponse_Package) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Package) GetVersion() string {
+func (x *ListExtensionsResponse_Package) GetVersion() string {
 	if x != nil {
 		return x.Version
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Package) GetRelease() string {
+func (x *ListExtensionsResponse_Package) GetRelease() string {
 	if x != nil {
 		return x.Release
 	}
 	return ""
 }
 
-type ShowExtensionsResponse_Extension struct {
+type ListExtensionsResponse_Extension struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -862,7 +862,7 @@ type ShowExtensionsResponse_Extension struct {
 	Version       string                               `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	Release       string                               `protobuf:"bytes,3,opt,name=release,proto3" json:"release,omitempty"`
 	Description   string                               `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	InstallStatus ShowExtensionsResponse_InstallStatus `protobuf:"varint,6,opt,name=install_status,json=installStatus,proto3,enum=gnoi.extension.ShowExtensionsResponse_InstallStatus" json:"install_status,omitempty"`
+	InstallStatus ListExtensionsResponse_InstallStatus `protobuf:"varint,6,opt,name=install_status,json=installStatus,proto3,enum=gnoi.extension.ListExtensionsResponse_InstallStatus" json:"install_status,omitempty"`
 	// install_at_boot is true if the extension is set to be
 	// installed on next system reload
 	InstallAtBoot bool `protobuf:"varint,7,opt,name=install_at_boot,json=installAtBoot,proto3" json:"install_at_boot,omitempty"`
@@ -874,7 +874,7 @@ type ShowExtensionsResponse_Extension struct {
 	Available bool `protobuf:"varint,9,opt,name=available,proto3" json:"available,omitempty"`
 	// any errors attached to this extension
 	Errors   string                            `protobuf:"bytes,10,opt,name=errors,proto3" json:"errors,omitempty"`
-	Packages []*ShowExtensionsResponse_Package `protobuf:"bytes,11,rep,name=packages,proto3" json:"packages,omitempty"`
+	Packages []*ListExtensionsResponse_Package `protobuf:"bytes,11,rep,name=packages,proto3" json:"packages,omitempty"`
 	// affected_services is a list of the services which can be affected by this
 	// extension. This is static information
 	AffectedServices []string `protobuf:"bytes,12,rep,name=affected_services,json=affectedServices,proto3" json:"affected_services,omitempty"`
@@ -884,8 +884,8 @@ type ShowExtensionsResponse_Extension struct {
 	ServicesToRestart []string `protobuf:"bytes,13,rep,name=services_to_restart,json=servicesToRestart,proto3" json:"services_to_restart,omitempty"`
 }
 
-func (x *ShowExtensionsResponse_Extension) Reset() {
-	*x = ShowExtensionsResponse_Extension{}
+func (x *ListExtensionsResponse_Extension) Reset() {
+	*x = ListExtensionsResponse_Extension{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_extension_extension_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -893,13 +893,13 @@ func (x *ShowExtensionsResponse_Extension) Reset() {
 	}
 }
 
-func (x *ShowExtensionsResponse_Extension) String() string {
+func (x *ListExtensionsResponse_Extension) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ShowExtensionsResponse_Extension) ProtoMessage() {}
+func (*ListExtensionsResponse_Extension) ProtoMessage() {}
 
-func (x *ShowExtensionsResponse_Extension) ProtoReflect() protoreflect.Message {
+func (x *ListExtensionsResponse_Extension) ProtoReflect() protoreflect.Message {
 	mi := &file_extension_extension_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -911,89 +911,89 @@ func (x *ShowExtensionsResponse_Extension) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ShowExtensionsResponse_Extension.ProtoReflect.Descriptor instead.
-func (*ShowExtensionsResponse_Extension) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListExtensionsResponse_Extension.ProtoReflect.Descriptor instead.
+func (*ListExtensionsResponse_Extension) Descriptor() ([]byte, []int) {
 	return file_extension_extension_proto_rawDescGZIP(), []int{1, 1}
 }
 
-func (x *ShowExtensionsResponse_Extension) GetName() string {
+func (x *ListExtensionsResponse_Extension) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Extension) GetVersion() string {
+func (x *ListExtensionsResponse_Extension) GetVersion() string {
 	if x != nil {
 		return x.Version
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Extension) GetRelease() string {
+func (x *ListExtensionsResponse_Extension) GetRelease() string {
 	if x != nil {
 		return x.Release
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Extension) GetDescription() string {
+func (x *ListExtensionsResponse_Extension) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Extension) GetInstallStatus() ShowExtensionsResponse_InstallStatus {
+func (x *ListExtensionsResponse_Extension) GetInstallStatus() ListExtensionsResponse_InstallStatus {
 	if x != nil {
 		return x.InstallStatus
 	}
-	return ShowExtensionsResponse_UNSPECIFIED
+	return ListExtensionsResponse_UNSPECIFIED
 }
 
-func (x *ShowExtensionsResponse_Extension) GetInstallAtBoot() bool {
+func (x *ListExtensionsResponse_Extension) GetInstallAtBoot() bool {
 	if x != nil {
 		return x.InstallAtBoot
 	}
 	return false
 }
 
-func (x *ShowExtensionsResponse_Extension) GetSignatureValid() bool {
+func (x *ListExtensionsResponse_Extension) GetSignatureValid() bool {
 	if x != nil {
 		return x.SignatureValid
 	}
 	return false
 }
 
-func (x *ShowExtensionsResponse_Extension) GetAvailable() bool {
+func (x *ListExtensionsResponse_Extension) GetAvailable() bool {
 	if x != nil {
 		return x.Available
 	}
 	return false
 }
 
-func (x *ShowExtensionsResponse_Extension) GetErrors() string {
+func (x *ListExtensionsResponse_Extension) GetErrors() string {
 	if x != nil {
 		return x.Errors
 	}
 	return ""
 }
 
-func (x *ShowExtensionsResponse_Extension) GetPackages() []*ShowExtensionsResponse_Package {
+func (x *ListExtensionsResponse_Extension) GetPackages() []*ListExtensionsResponse_Package {
 	if x != nil {
 		return x.Packages
 	}
 	return nil
 }
 
-func (x *ShowExtensionsResponse_Extension) GetAffectedServices() []string {
+func (x *ListExtensionsResponse_Extension) GetAffectedServices() []string {
 	if x != nil {
 		return x.AffectedServices
 	}
 	return nil
 }
 
-func (x *ShowExtensionsResponse_Extension) GetServicesToRestart() []string {
+func (x *ListExtensionsResponse_Extension) GetServicesToRestart() []string {
 	if x != nil {
 		return x.ServicesToRestart
 	}
@@ -1007,12 +1007,12 @@ var file_extension_extension_proto_rawDesc = []byte{
 	0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0e, 0x67, 0x6e, 0x6f,
 	0x69, 0x2e, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x1a, 0x11, 0x74, 0x79, 0x70,
 	0x65, 0x73, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x17,
-	0x0a, 0x15, 0x53, 0x68, 0x6f, 0x77, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0xcc, 0x06, 0x0a, 0x16, 0x53, 0x68, 0x6f, 0x77,
+	0x0a, 0x15, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0xcc, 0x06, 0x0a, 0x16, 0x4c, 0x69, 0x73, 0x74,
 	0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x12, 0x50, 0x0a, 0x0a, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73,
 	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x30, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x65, 0x78,
-	0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x45, 0x78, 0x74, 0x65,
+	0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x74, 0x65,
 	0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x45,
 	0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73,
 	0x69, 0x6f, 0x6e, 0x73, 0x12, 0x2f, 0x0a, 0x13, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f,
@@ -1033,7 +1033,7 @@ var file_extension_extension_proto_rawDesc = []byte{
 	0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e,
 	0x12, 0x5b, 0x0a, 0x0e, 0x69, 0x6e, 0x73, 0x74, 0x61, 0x6c, 0x6c, 0x5f, 0x73, 0x74, 0x61, 0x74,
 	0x75, 0x73, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x34, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e,
-	0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x45, 0x78,
+	0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78,
 	0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
 	0x2e, 0x49, 0x6e, 0x73, 0x74, 0x61, 0x6c, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x0d,
 	0x69, 0x6e, 0x73, 0x74, 0x61, 0x6c, 0x6c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x26, 0x0a,
@@ -1047,7 +1047,7 @@ var file_extension_extension_proto_rawDesc = []byte{
 	0x65, 0x72, 0x72, 0x6f, 0x72, 0x73, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x72,
 	0x72, 0x6f, 0x72, 0x73, 0x12, 0x4a, 0x0a, 0x08, 0x70, 0x61, 0x63, 0x6b, 0x61, 0x67, 0x65, 0x73,
 	0x18, 0x0b, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x65, 0x78,
-	0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x45, 0x78, 0x74, 0x65,
+	0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x74, 0x65,
 	0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x50,
 	0x61, 0x63, 0x6b, 0x61, 0x67, 0x65, 0x52, 0x08, 0x70, 0x61, 0x63, 0x6b, 0x61, 0x67, 0x65, 0x73,
 	0x12, 0x2b, 0x0a, 0x11, 0x61, 0x66, 0x66, 0x65, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x73, 0x65, 0x72,
@@ -1127,12 +1127,12 @@ var file_extension_extension_proto_rawDesc = []byte{
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x74, 0x79, 0x70, 0x65,
 	0x73, 0x2e, 0x48, 0x61, 0x73, 0x68, 0x54, 0x79, 0x70, 0x65, 0x48, 0x00, 0x52, 0x04, 0x68, 0x61,
 	0x73, 0x68, 0x42, 0x09, 0x0a, 0x07, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x32, 0xb1, 0x03,
-	0x0a, 0x09, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x5f, 0x0a, 0x0e, 0x53,
-	0x68, 0x6f, 0x77, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x25, 0x2e,
-	0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x53,
-	0x68, 0x6f, 0x77, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x71,
+	0x0a, 0x09, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x5f, 0x0a, 0x0e, 0x4c,
+	0x69, 0x73, 0x74, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x25, 0x2e,
+	0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x4c,
+	0x69, 0x73, 0x74, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x65, 0x78, 0x74, 0x65,
-	0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73,
+	0x6e, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73,
 	0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x6b, 0x0a, 0x12,
 	0x46, 0x69, 0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x45, 0x78, 0x74, 0x65, 0x6e, 0x73, 0x69, 0x6f,
 	0x6e, 0x73, 0x12, 0x29, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x65, 0x78, 0x74, 0x65, 0x6e, 0x73,
@@ -1175,11 +1175,11 @@ func file_extension_extension_proto_rawDescGZIP() []byte {
 var file_extension_extension_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_extension_extension_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_extension_extension_proto_goTypes = []interface{}{
-	(ShowExtensionsResponse_InstallStatus)(0), // 0: gnoi.extension.ShowExtensionsResponse.InstallStatus
+	(ListExtensionsResponse_InstallStatus)(0), // 0: gnoi.extension.ListExtensionsResponse.InstallStatus
 	(InstallExtensionResponse_Operation)(0),   // 1: gnoi.extension.InstallExtensionResponse.Operation
 	(InstallRequest_TrustSource)(0),           // 2: gnoi.extension.InstallRequest.TrustSource
-	(*ShowExtensionsRequest)(nil),             // 3: gnoi.extension.ShowExtensionsRequest
-	(*ShowExtensionsResponse)(nil),            // 4: gnoi.extension.ShowExtensionsResponse
+	(*ListExtensionsRequest)(nil),             // 3: gnoi.extension.ListExtensionsRequest
+	(*ListExtensionsResponse)(nil),            // 4: gnoi.extension.ListExtensionsResponse
 	(*FinalizeExtensionsRequest)(nil),         // 5: gnoi.extension.FinalizeExtensionsRequest
 	(*FinalizeExtensionsResponse)(nil),        // 6: gnoi.extension.FinalizeExtensionsResponse
 	(*UninstallExtensionRequest)(nil),         // 7: gnoi.extension.UninstallExtensionRequest
@@ -1188,24 +1188,24 @@ var file_extension_extension_proto_goTypes = []interface{}{
 	(*InstallExtensionRequest)(nil),           // 10: gnoi.extension.InstallExtensionRequest
 	(*InstallRequest)(nil),                    // 11: gnoi.extension.InstallRequest
 	(*TransferRequest)(nil),                   // 12: gnoi.extension.TransferRequest
-	(*ShowExtensionsResponse_Package)(nil),    // 13: gnoi.extension.ShowExtensionsResponse.Package
-	(*ShowExtensionsResponse_Extension)(nil),  // 14: gnoi.extension.ShowExtensionsResponse.Extension
+	(*ListExtensionsResponse_Package)(nil),    // 13: gnoi.extension.ListExtensionsResponse.Package
+	(*ListExtensionsResponse_Extension)(nil),  // 14: gnoi.extension.ListExtensionsResponse.Extension
 	(*types.HashType)(nil),                    // 15: gnoi.types.HashType
 }
 var file_extension_extension_proto_depIdxs = []int32{
-	14, // 0: gnoi.extension.ShowExtensionsResponse.extensions:type_name -> gnoi.extension.ShowExtensionsResponse.Extension
+	14, // 0: gnoi.extension.ListExtensionsResponse.extensions:type_name -> gnoi.extension.ListExtensionsResponse.Extension
 	1,  // 1: gnoi.extension.InstallExtensionResponse.acknowledgement:type_name -> gnoi.extension.InstallExtensionResponse.Operation
 	12, // 2: gnoi.extension.InstallExtensionRequest.transfer_request:type_name -> gnoi.extension.TransferRequest
 	11, // 3: gnoi.extension.InstallExtensionRequest.install_request:type_name -> gnoi.extension.InstallRequest
 	2,  // 4: gnoi.extension.InstallRequest.source:type_name -> gnoi.extension.InstallRequest.TrustSource
 	15, // 5: gnoi.extension.TransferRequest.hash:type_name -> gnoi.types.HashType
-	0,  // 6: gnoi.extension.ShowExtensionsResponse.Extension.install_status:type_name -> gnoi.extension.ShowExtensionsResponse.InstallStatus
-	13, // 7: gnoi.extension.ShowExtensionsResponse.Extension.packages:type_name -> gnoi.extension.ShowExtensionsResponse.Package
-	3,  // 8: gnoi.extension.Extension.ShowExtensions:input_type -> gnoi.extension.ShowExtensionsRequest
+	0,  // 6: gnoi.extension.ListExtensionsResponse.Extension.install_status:type_name -> gnoi.extension.ListExtensionsResponse.InstallStatus
+	13, // 7: gnoi.extension.ListExtensionsResponse.Extension.packages:type_name -> gnoi.extension.ListExtensionsResponse.Package
+	3,  // 8: gnoi.extension.Extension.ListExtensions:input_type -> gnoi.extension.ListExtensionsRequest
 	5,  // 9: gnoi.extension.Extension.FinalizeExtensions:input_type -> gnoi.extension.FinalizeExtensionsRequest
 	10, // 10: gnoi.extension.Extension.InstallExtension:input_type -> gnoi.extension.InstallExtensionRequest
 	7,  // 11: gnoi.extension.Extension.UninstallExtension:input_type -> gnoi.extension.UninstallExtensionRequest
-	4,  // 12: gnoi.extension.Extension.ShowExtensions:output_type -> gnoi.extension.ShowExtensionsResponse
+	4,  // 12: gnoi.extension.Extension.ListExtensions:output_type -> gnoi.extension.ListExtensionsResponse
 	6,  // 13: gnoi.extension.Extension.FinalizeExtensions:output_type -> gnoi.extension.FinalizeExtensionsResponse
 	9,  // 14: gnoi.extension.Extension.InstallExtension:output_type -> gnoi.extension.InstallExtensionResponse
 	8,  // 15: gnoi.extension.Extension.UninstallExtension:output_type -> gnoi.extension.UninstallExtensionResponse
@@ -1223,7 +1223,7 @@ func file_extension_extension_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_extension_extension_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ShowExtensionsRequest); i {
+			switch v := v.(*ListExtensionsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1235,7 +1235,7 @@ func file_extension_extension_proto_init() {
 			}
 		}
 		file_extension_extension_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ShowExtensionsResponse); i {
+			switch v := v.(*ListExtensionsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1343,7 +1343,7 @@ func file_extension_extension_proto_init() {
 			}
 		}
 		file_extension_extension_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ShowExtensionsResponse_Package); i {
+			switch v := v.(*ListExtensionsResponse_Package); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1355,7 +1355,7 @@ func file_extension_extension_proto_init() {
 			}
 		}
 		file_extension_extension_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ShowExtensionsResponse_Extension); i {
+			switch v := v.(*ListExtensionsResponse_Extension); i {
 			case 0:
 				return &v.state
 			case 1:
