@@ -83,7 +83,8 @@ service Extension{
       returns (UninstallExtensionResponse);
 }
 
-message ListExtensionsRequest{}
+message ListExtensionsRequest{
+}
 message ListExtensionsResponse{
   enum InstallStatus {
     // UNSPECIFIED should be treated as an error.
@@ -115,9 +116,10 @@ message ListExtensionsResponse{
     // bool indicating if this extension has a valid signature
     bool signature_valid = 8;
 
-    // available is true if the extension file is still available on the system.
-    // the extension may be installed but no longer available if the extension file
-    // has been removed.
+    // available is true if the extension file is still available
+    // on the system.
+    // the extension may be installed but no longer available
+    // if the extension file has been removed.
     bool available = 9;
 
     // any errors attached to this extension
