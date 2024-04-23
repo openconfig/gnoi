@@ -6,8 +6,8 @@ github.com/openconfig/bootz v0.3.0 h1:fJD+F24nCL/Luwz3gYnNzkAX1O1ZpiB30jnqvCUmy+
 github.com/openconfig/bootz v0.3.0/go.mod h1:avkWLDnz7W75rZGSTwzjVfBMAKspie2rhh6iqF9eipA=
 github.com/openconfig/gnmi v0.0.0-20220617175856-41246b1b3507 h1:tv9HygDMXnoGyWuLmNCodMV2+PK6+uT/ndAxDVzsUUQ=
 github.com/openconfig/gnmi v0.0.0-20220617175856-41246b1b3507/go.mod h1:ycJVRtLs20E2c1WD+9oacgxbrBFwQygd8/uaOuGMlfc=
-github.com/openconfig/gnsi v1.2.5 h1:P6MjCnLZuINIivGLbp4No1HarZt7456wuJRNbSQyGu0=
-github.com/openconfig/gnsi v1.2.5/go.mod h1:jzPF4rVWPHhIG0F3t910Hh2VqqTbSfv18shbgE4AXhw=
+github.com/openconfig/gnsi v1.4.3 h1:V6jxHwBGqu0xUvVNFIeY27kAZ/VOEuETehz6ugCgo+s=
+github.com/openconfig/gnsi v1.4.3/go.mod h1:reoAHkLLvlKS76qVjwMTQLGJW/pmf1qLPjh4cXXH/f0=
 golang.org/x/net v0.23.0 h1:7EYJ93RZ9vYSZAIb2x3lnuvqO5zneoD6IvWjuhfxjTs=
 golang.org/x/net v0.23.0/go.mod h1:JKghWKKOSdJwpW2GEx0Ja7fmaKnMsbu+MWVZTokSYmg=
 golang.org/x/sys v0.18.0 h1:DBdB3niSjOA/O0blCZBqDefyWNYveAYMNF1Wum0DYQ4=
