@@ -295,10 +295,12 @@ message ProbeResponse {
   // For individual responses
   int32 sequence = 3;
   Code code = 4;
-  State state = 5;   // only present if code is CODE_NO_ERROR
-                     // and request was remote
-  Active active = 6; // only present if code is CODE_NO_ERROR
-                     // and request was not remote
+  // state is only present if code is CODE_NO_ERROR
+  // and request was remote
+  State state = 5;
+  // active is only present if code is CODE_NO_ERROR
+  // and request was not remote
+  Active active = 6;
 
   // summary
   int32 sent = 7;       // Total packets sent.
