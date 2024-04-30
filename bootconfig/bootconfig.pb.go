@@ -7,15 +7,11 @@
 package bootconfig
 
 import (
-	context "context"
 	bootz "github.com/openconfig/bootz/proto/bootz"
 	_ "github.com/openconfig/gnoi/types"
 	authz "github.com/openconfig/gnsi/authz"
 	certz "github.com/openconfig/gnsi/certz"
 	pathz "github.com/openconfig/gnsi/pathz"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -412,120 +408,4 @@ func file_bootconfig_bootconfig_proto_init() {
 	file_bootconfig_bootconfig_proto_rawDesc = nil
 	file_bootconfig_bootconfig_proto_goTypes = nil
 	file_bootconfig_bootconfig_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// BootConfigClient is the client API for BootConfig service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type BootConfigClient interface {
-	GetBootConfig(ctx context.Context, in *GetBootConfigRequest, opts ...grpc.CallOption) (*GetBootConfigResponse, error)
-	SetBootConfig(ctx context.Context, in *SetBootConfigRequest, opts ...grpc.CallOption) (*SetBootConfigResponse, error)
-}
-
-type bootConfigClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewBootConfigClient(cc grpc.ClientConnInterface) BootConfigClient {
-	return &bootConfigClient{cc}
-}
-
-func (c *bootConfigClient) GetBootConfig(ctx context.Context, in *GetBootConfigRequest, opts ...grpc.CallOption) (*GetBootConfigResponse, error) {
-	out := new(GetBootConfigResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.bootconfig.BootConfig/GetBootConfig", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *bootConfigClient) SetBootConfig(ctx context.Context, in *SetBootConfigRequest, opts ...grpc.CallOption) (*SetBootConfigResponse, error) {
-	out := new(SetBootConfigResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.bootconfig.BootConfig/SetBootConfig", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// BootConfigServer is the server API for BootConfig service.
-type BootConfigServer interface {
-	GetBootConfig(context.Context, *GetBootConfigRequest) (*GetBootConfigResponse, error)
-	SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error)
-}
-
-// UnimplementedBootConfigServer can be embedded to have forward compatible implementations.
-type UnimplementedBootConfigServer struct {
-}
-
-func (*UnimplementedBootConfigServer) GetBootConfig(context.Context, *GetBootConfigRequest) (*GetBootConfigResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBootConfig not implemented")
-}
-func (*UnimplementedBootConfigServer) SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfig not implemented")
-}
-
-func RegisterBootConfigServer(s *grpc.Server, srv BootConfigServer) {
-	s.RegisterService(&_BootConfig_serviceDesc, srv)
-}
-
-func _BootConfig_GetBootConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBootConfigRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BootConfigServer).GetBootConfig(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.bootconfig.BootConfig/GetBootConfig",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootConfigServer).GetBootConfig(ctx, req.(*GetBootConfigRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _BootConfig_SetBootConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetBootConfigRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BootConfigServer).SetBootConfig(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.bootconfig.BootConfig/SetBootConfig",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootConfigServer).SetBootConfig(ctx, req.(*SetBootConfigRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _BootConfig_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi.bootconfig.BootConfig",
-	HandlerType: (*BootConfigServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetBootConfig",
-			Handler:    _BootConfig_GetBootConfig_Handler,
-		},
-		{
-			MethodName: "SetBootConfig",
-			Handler:    _BootConfig_SetBootConfig_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "bootconfig/bootconfig.proto",
 }

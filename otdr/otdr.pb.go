@@ -7,11 +7,7 @@
 package otdr
 
 import (
-	context "context"
 	types "github.com/openconfig/gnoi/types"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1112,111 +1108,4 @@ func file_otdr_otdr_proto_init() {
 	file_otdr_otdr_proto_rawDesc = nil
 	file_otdr_otdr_proto_goTypes = nil
 	file_otdr_otdr_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// OTDRClient is the client API for OTDR service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type OTDRClient interface {
-	Initiate(ctx context.Context, in *InitiateRequest, opts ...grpc.CallOption) (OTDR_InitiateClient, error)
-}
-
-type oTDRClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewOTDRClient(cc grpc.ClientConnInterface) OTDRClient {
-	return &oTDRClient{cc}
-}
-
-func (c *oTDRClient) Initiate(ctx context.Context, in *InitiateRequest, opts ...grpc.CallOption) (OTDR_InitiateClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_OTDR_serviceDesc.Streams[0], "/gnoi.optical.OTDR/Initiate", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &oTDRInitiateClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type OTDR_InitiateClient interface {
-	Recv() (*InitiateResponse, error)
-	grpc.ClientStream
-}
-
-type oTDRInitiateClient struct {
-	grpc.ClientStream
-}
-
-func (x *oTDRInitiateClient) Recv() (*InitiateResponse, error) {
-	m := new(InitiateResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-// OTDRServer is the server API for OTDR service.
-type OTDRServer interface {
-	Initiate(*InitiateRequest, OTDR_InitiateServer) error
-}
-
-// UnimplementedOTDRServer can be embedded to have forward compatible implementations.
-type UnimplementedOTDRServer struct {
-}
-
-func (*UnimplementedOTDRServer) Initiate(*InitiateRequest, OTDR_InitiateServer) error {
-	return status.Errorf(codes.Unimplemented, "method Initiate not implemented")
-}
-
-func RegisterOTDRServer(s *grpc.Server, srv OTDRServer) {
-	s.RegisterService(&_OTDR_serviceDesc, srv)
-}
-
-func _OTDR_Initiate_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(InitiateRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(OTDRServer).Initiate(m, &oTDRInitiateServer{stream})
-}
-
-type OTDR_InitiateServer interface {
-	Send(*InitiateResponse) error
-	grpc.ServerStream
-}
-
-type oTDRInitiateServer struct {
-	grpc.ServerStream
-}
-
-func (x *oTDRInitiateServer) Send(m *InitiateResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-var _OTDR_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi.optical.OTDR",
-	HandlerType: (*OTDRServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "Initiate",
-			Handler:       _OTDR_Initiate_Handler,
-			ServerStreams: true,
-		},
-	},
-	Metadata: "otdr/otdr.proto",
 }
