@@ -2,10 +2,10 @@ github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/openconfig/bootz v0.3.0 h1:fJD+F24nCL/Luwz3gYnNzkAX1O1ZpiB30jnqvCUmy+4=
-github.com/openconfig/bootz v0.3.0/go.mod h1:avkWLDnz7W75rZGSTwzjVfBMAKspie2rhh6iqF9eipA=
-github.com/openconfig/gnmi v0.0.0-20220617175856-41246b1b3507 h1:tv9HygDMXnoGyWuLmNCodMV2+PK6+uT/ndAxDVzsUUQ=
-github.com/openconfig/gnmi v0.0.0-20220617175856-41246b1b3507/go.mod h1:ycJVRtLs20E2c1WD+9oacgxbrBFwQygd8/uaOuGMlfc=
+github.com/openconfig/bootz v0.3.1 h1:Q0mThGmZiX/kht+crar6FtLVxqdjUS/deMnpcNX+F7c=
+github.com/openconfig/bootz v0.3.1/go.mod h1:IhVtV9zS/2i8rKXHkRW9eD2UV6zGeIXYtLcEzAeyc6A=
+github.com/openconfig/gnmi v0.10.0 h1:kQEZ/9ek3Vp2Y5IVuV2L/ba8/77TgjdXg505QXvYmg8=
+github.com/openconfig/gnmi v0.10.0/go.mod h1:Y9os75GmSkhHw2wX8sMsxfI7qRGAEcDh8NTa5a8vj6E=
 github.com/openconfig/gnsi v1.4.3 h1:V6jxHwBGqu0xUvVNFIeY27kAZ/VOEuETehz6ugCgo+s=
 github.com/openconfig/gnsi v1.4.3/go.mod h1:reoAHkLLvlKS76qVjwMTQLGJW/pmf1qLPjh4cXXH/f0=
 golang.org/x/net v0.23.0 h1:7EYJ93RZ9vYSZAIb2x3lnuvqO5zneoD6IvWjuhfxjTs=
