@@ -7,11 +7,7 @@
 package bgp
 
 import (
-	context "context"
 	_ "github.com/openconfig/gnoi/types"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -288,84 +284,4 @@ func file_bgp_bgp_proto_init() {
 	file_bgp_bgp_proto_rawDesc = nil
 	file_bgp_bgp_proto_goTypes = nil
 	file_bgp_bgp_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// BGPClient is the client API for BGP service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type BGPClient interface {
-	ClearBGPNeighbor(ctx context.Context, in *ClearBGPNeighborRequest, opts ...grpc.CallOption) (*ClearBGPNeighborResponse, error)
-}
-
-type bGPClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewBGPClient(cc grpc.ClientConnInterface) BGPClient {
-	return &bGPClient{cc}
-}
-
-func (c *bGPClient) ClearBGPNeighbor(ctx context.Context, in *ClearBGPNeighborRequest, opts ...grpc.CallOption) (*ClearBGPNeighborResponse, error) {
-	out := new(ClearBGPNeighborResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.bgp.BGP/ClearBGPNeighbor", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// BGPServer is the server API for BGP service.
-type BGPServer interface {
-	ClearBGPNeighbor(context.Context, *ClearBGPNeighborRequest) (*ClearBGPNeighborResponse, error)
-}
-
-// UnimplementedBGPServer can be embedded to have forward compatible implementations.
-type UnimplementedBGPServer struct {
-}
-
-func (*UnimplementedBGPServer) ClearBGPNeighbor(context.Context, *ClearBGPNeighborRequest) (*ClearBGPNeighborResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ClearBGPNeighbor not implemented")
-}
-
-func RegisterBGPServer(s *grpc.Server, srv BGPServer) {
-	s.RegisterService(&_BGP_serviceDesc, srv)
-}
-
-func _BGP_ClearBGPNeighbor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ClearBGPNeighborRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BGPServer).ClearBGPNeighbor(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.bgp.BGP/ClearBGPNeighbor",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BGPServer).ClearBGPNeighbor(ctx, req.(*ClearBGPNeighborRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _BGP_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi.bgp.BGP",
-	HandlerType: (*BGPServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "ClearBGPNeighbor",
-			Handler:    _BGP_ClearBGPNeighbor_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "bgp/bgp.proto",
 }

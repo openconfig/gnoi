@@ -7,11 +7,7 @@
 package debug
 
 import (
-	context "context"
 	_ "github.com/openconfig/gnoi/types"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
@@ -466,111 +462,4 @@ func file_debug_debug_proto_init() {
 	file_debug_debug_proto_rawDesc = nil
 	file_debug_debug_proto_goTypes = nil
 	file_debug_debug_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// DebugClient is the client API for Debug service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type DebugClient interface {
-	Debug(ctx context.Context, in *DebugRequest, opts ...grpc.CallOption) (Debug_DebugClient, error)
-}
-
-type debugClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewDebugClient(cc grpc.ClientConnInterface) DebugClient {
-	return &debugClient{cc}
-}
-
-func (c *debugClient) Debug(ctx context.Context, in *DebugRequest, opts ...grpc.CallOption) (Debug_DebugClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Debug_serviceDesc.Streams[0], "/gnoi.debug.Debug/Debug", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &debugDebugClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Debug_DebugClient interface {
-	Recv() (*DebugResponse, error)
-	grpc.ClientStream
-}
-
-type debugDebugClient struct {
-	grpc.ClientStream
-}
-
-func (x *debugDebugClient) Recv() (*DebugResponse, error) {
-	m := new(DebugResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-// DebugServer is the server API for Debug service.
-type DebugServer interface {
-	Debug(*DebugRequest, Debug_DebugServer) error
-}
-
-// UnimplementedDebugServer can be embedded to have forward compatible implementations.
-type UnimplementedDebugServer struct {
-}
-
-func (*UnimplementedDebugServer) Debug(*DebugRequest, Debug_DebugServer) error {
-	return status.Errorf(codes.Unimplemented, "method Debug not implemented")
-}
-
-func RegisterDebugServer(s *grpc.Server, srv DebugServer) {
-	s.RegisterService(&_Debug_serviceDesc, srv)
-}
-
-func _Debug_Debug_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DebugRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(DebugServer).Debug(m, &debugDebugServer{stream})
-}
-
-type Debug_DebugServer interface {
-	Send(*DebugResponse) error
-	grpc.ServerStream
-}
-
-type debugDebugServer struct {
-	grpc.ServerStream
-}
-
-func (x *debugDebugServer) Send(m *DebugResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-var _Debug_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi.debug.Debug",
-	HandlerType: (*DebugServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "Debug",
-			Handler:       _Debug_Debug_Handler,
-			ServerStreams: true,
-		},
-	},
-	Metadata: "debug/debug.proto",
 }
