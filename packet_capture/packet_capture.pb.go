@@ -7,10 +7,6 @@
 package pcap
 
 import (
-	context "context"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1064,9 +1060,10 @@ var file_packet_capture_packet_capture_proto_rawDesc = []byte{
 	0x69, 0x2e, 0x70, 0x63, 0x61, 0x70, 0x2e, 0x50, 0x63, 0x61, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x17, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x70, 0x63, 0x61, 0x70, 0x2e, 0x50,
 	0x63, 0x61, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x42,
-	0x21, 0x5a, 0x1f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70,
-	0x65, 0x6e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2f, 0x67, 0x6e, 0x6f, 0x69, 0x2f, 0x70, 0x63,
-	0x61, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x30, 0x5a, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70,
+	0x65, 0x6e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2f, 0x67, 0x6e, 0x6f, 0x69, 0x2f, 0x70, 0x61,
+	0x63, 0x6b, 0x65, 0x74, 0x5f, 0x63, 0x61, 0x70, 0x74, 0x75, 0x72, 0x65, 0x3b, 0x70, 0x63, 0x61,
+	0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1284,111 +1281,4 @@ func file_packet_capture_packet_capture_proto_init() {
 	file_packet_capture_packet_capture_proto_rawDesc = nil
 	file_packet_capture_packet_capture_proto_goTypes = nil
 	file_packet_capture_packet_capture_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// PacketCaptureClient is the client API for PacketCapture service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type PacketCaptureClient interface {
-	Pcap(ctx context.Context, in *PcapRequest, opts ...grpc.CallOption) (PacketCapture_PcapClient, error)
-}
-
-type packetCaptureClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewPacketCaptureClient(cc grpc.ClientConnInterface) PacketCaptureClient {
-	return &packetCaptureClient{cc}
-}
-
-func (c *packetCaptureClient) Pcap(ctx context.Context, in *PcapRequest, opts ...grpc.CallOption) (PacketCapture_PcapClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_PacketCapture_serviceDesc.Streams[0], "/gnoi.pcap.PacketCapture/Pcap", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &packetCapturePcapClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type PacketCapture_PcapClient interface {
-	Recv() (*PcapResponse, error)
-	grpc.ClientStream
-}
-
-type packetCapturePcapClient struct {
-	grpc.ClientStream
-}
-
-func (x *packetCapturePcapClient) Recv() (*PcapResponse, error) {
-	m := new(PcapResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-// PacketCaptureServer is the server API for PacketCapture service.
-type PacketCaptureServer interface {
-	Pcap(*PcapRequest, PacketCapture_PcapServer) error
-}
-
-// UnimplementedPacketCaptureServer can be embedded to have forward compatible implementations.
-type UnimplementedPacketCaptureServer struct {
-}
-
-func (*UnimplementedPacketCaptureServer) Pcap(*PcapRequest, PacketCapture_PcapServer) error {
-	return status.Errorf(codes.Unimplemented, "method Pcap not implemented")
-}
-
-func RegisterPacketCaptureServer(s *grpc.Server, srv PacketCaptureServer) {
-	s.RegisterService(&_PacketCapture_serviceDesc, srv)
-}
-
-func _PacketCapture_Pcap_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(PcapRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(PacketCaptureServer).Pcap(m, &packetCapturePcapServer{stream})
-}
-
-type PacketCapture_PcapServer interface {
-	Send(*PcapResponse) error
-	grpc.ServerStream
-}
-
-type packetCapturePcapServer struct {
-	grpc.ServerStream
-}
-
-func (x *packetCapturePcapServer) Send(m *PcapResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-var _PacketCapture_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi.pcap.PacketCapture",
-	HandlerType: (*PacketCaptureServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "Pcap",
-			Handler:       _PacketCapture_Pcap_Handler,
-			ServerStreams: true,
-		},
-	},
-	Metadata: "packet_capture/packet_capture.proto",
 }

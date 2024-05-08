@@ -7,12 +7,8 @@
 package linkqual
 
 import (
-	context "context"
 	_ "github.com/openconfig/gnoi/types"
 	status "google.golang.org/genproto/googleapis/rpc/status"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status1 "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -2259,10 +2255,12 @@ var file_packet_link_qualification_packet_link_qualification_proto_rawDesc = []b
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x67, 0x6e, 0x6f, 0x69, 0x2e, 0x70, 0x61, 0x63,
 	0x6b, 0x65, 0x74, 0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x66, 0x69,
 	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x42, 0x2d, 0xd2, 0x3e, 0x05, 0x31, 0x2e, 0x31, 0x2e, 0x30, 0x5a, 0x23, 0x67,
+	0x6e, 0x73, 0x65, 0x42, 0x47, 0xd2, 0x3e, 0x05, 0x31, 0x2e, 0x31, 0x2e, 0x30, 0x5a, 0x3d, 0x67,
 	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x70, 0x65, 0x6e, 0x63, 0x6f,
-	0x6e, 0x66, 0x69, 0x67, 0x2f, 0x67, 0x6e, 0x6f, 0x69, 0x2f, 0x6c, 0x69, 0x6e, 0x6b, 0x71, 0x75,
-	0x61, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x66, 0x69, 0x67, 0x2f, 0x67, 0x6e, 0x6f, 0x69, 0x2f, 0x70, 0x61, 0x63, 0x6b, 0x65, 0x74,
+	0x5f, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x3b, 0x6c, 0x69, 0x6e, 0x6b, 0x71, 0x75, 0x61, 0x6c, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2719,228 +2717,4 @@ func file_packet_link_qualification_packet_link_qualification_proto_init() {
 	file_packet_link_qualification_packet_link_qualification_proto_rawDesc = nil
 	file_packet_link_qualification_packet_link_qualification_proto_goTypes = nil
 	file_packet_link_qualification_packet_link_qualification_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// LinkQualificationClient is the client API for LinkQualification service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type LinkQualificationClient interface {
-	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	Capabilities(ctx context.Context, in *CapabilitiesRequest, opts ...grpc.CallOption) (*CapabilitiesResponse, error)
-	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
-	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
-}
-
-type linkQualificationClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewLinkQualificationClient(cc grpc.ClientConnInterface) LinkQualificationClient {
-	return &linkQualificationClient{cc}
-}
-
-func (c *linkQualificationClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
-	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.packet_link_qualification.LinkQualification/Create", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *linkQualificationClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.packet_link_qualification.LinkQualification/Get", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *linkQualificationClient) Capabilities(ctx context.Context, in *CapabilitiesRequest, opts ...grpc.CallOption) (*CapabilitiesResponse, error) {
-	out := new(CapabilitiesResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.packet_link_qualification.LinkQualification/Capabilities", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *linkQualificationClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
-	out := new(DeleteResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.packet_link_qualification.LinkQualification/Delete", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *linkQualificationClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
-	out := new(ListResponse)
-	err := c.cc.Invoke(ctx, "/gnoi.packet_link_qualification.LinkQualification/List", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// LinkQualificationServer is the server API for LinkQualification service.
-type LinkQualificationServer interface {
-	Create(context.Context, *CreateRequest) (*CreateResponse, error)
-	Get(context.Context, *GetRequest) (*GetResponse, error)
-	Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error)
-	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	List(context.Context, *ListRequest) (*ListResponse, error)
-}
-
-// UnimplementedLinkQualificationServer can be embedded to have forward compatible implementations.
-type UnimplementedLinkQualificationServer struct {
-}
-
-func (*UnimplementedLinkQualificationServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
-	return nil, status1.Errorf(codes.Unimplemented, "method Create not implemented")
-}
-func (*UnimplementedLinkQualificationServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
-	return nil, status1.Errorf(codes.Unimplemented, "method Get not implemented")
-}
-func (*UnimplementedLinkQualificationServer) Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error) {
-	return nil, status1.Errorf(codes.Unimplemented, "method Capabilities not implemented")
-}
-func (*UnimplementedLinkQualificationServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
-	return nil, status1.Errorf(codes.Unimplemented, "method Delete not implemented")
-}
-func (*UnimplementedLinkQualificationServer) List(context.Context, *ListRequest) (*ListResponse, error) {
-	return nil, status1.Errorf(codes.Unimplemented, "method List not implemented")
-}
-
-func RegisterLinkQualificationServer(s *grpc.Server, srv LinkQualificationServer) {
-	s.RegisterService(&_LinkQualification_serviceDesc, srv)
-}
-
-func _LinkQualification_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LinkQualificationServer).Create(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.packet_link_qualification.LinkQualification/Create",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkQualificationServer).Create(ctx, req.(*CreateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LinkQualification_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LinkQualificationServer).Get(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.packet_link_qualification.LinkQualification/Get",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkQualificationServer).Get(ctx, req.(*GetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LinkQualification_Capabilities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CapabilitiesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LinkQualificationServer).Capabilities(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.packet_link_qualification.LinkQualification/Capabilities",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkQualificationServer).Capabilities(ctx, req.(*CapabilitiesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LinkQualification_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LinkQualificationServer).Delete(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.packet_link_qualification.LinkQualification/Delete",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkQualificationServer).Delete(ctx, req.(*DeleteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LinkQualification_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LinkQualificationServer).List(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gnoi.packet_link_qualification.LinkQualification/List",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkQualificationServer).List(ctx, req.(*ListRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _LinkQualification_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "gnoi.packet_link_qualification.LinkQualification",
-	HandlerType: (*LinkQualificationServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Create",
-			Handler:    _LinkQualification_Create_Handler,
-		},
-		{
-			MethodName: "Get",
-			Handler:    _LinkQualification_Get_Handler,
-		},
-		{
-			MethodName: "Capabilities",
-			Handler:    _LinkQualification_Capabilities_Handler,
-		},
-		{
-			MethodName: "Delete",
-			Handler:    _LinkQualification_Delete_Handler,
-		},
-		{
-			MethodName: "List",
-			Handler:    _LinkQualification_List_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "packet_link_qualification/packet_link_qualification.proto",
 }
