@@ -174,6 +174,12 @@ is implemented as a server-side streaming RPC. The `Artifact` RPC ensures that
 a target sends these potentially large artifacts only when explicitly requested
 by the client.
 
+Each artifact that is returned in the `Artifact` RPC call should contain
+ArtifactResponses in the following order:
+- ArtifactHeader
+- one or more bytes/proto
+- ArtifactTrailer
+
 #### Healthz.Check()
 
 ```protobuf
