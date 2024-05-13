@@ -55,7 +55,8 @@ message SetBootConfigRequest {
   bootz.Credentials credentials = 2;
   gnsi.pathz.v1.UploadRequest pathz = 3;
   gnsi.authz.v1.UploadRequest authz = 4;
-  gnsi.certz.v1.UploadRequest certificates = 5;
+  gnsi.certz.v1.UploadRequest certificates = 5 [deprecated=true];
+  bootz.CertzProfiles certz = 6; 
 }
 
 message SetBootConfigResponse {

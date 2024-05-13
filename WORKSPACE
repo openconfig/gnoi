@@ -18,6 +18,7 @@ http_archive(
 )
 
 load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
+
 switched_rules_by_language(
     name = "com_google_googleapis_imports",
     cc = True,
@@ -55,9 +56,9 @@ go_register_toolchains(go_version = "1.20")
 bazel_gazelle()
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-
 load("//:gnoi_deps.bzl", "gnoi_deps")
 
+# gazelle:repository_macro gnoi_deps.bzl%gnoi_deps
 gnoi_deps()
 
 load("@rules_proto_grpc//go:repositories.bzl", rules_proto_grpc_go_repos = "go_repos")
@@ -77,14 +78,13 @@ load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
 
-
 # open-config YANG files
 http_archive(
     name = "github_openconfig_yang",
     build_file_content = """exports_files(glob(["release/models/**/*.yang"]), visibility = ["//visibility:public"])""",
     sha256 = "f6b2b6c0ffe0b66881287bcd43241a57583f353cc5cc41cba973601c32232f45",
     strip_prefix = "public-bf737a5567ec248456cb528efcd63cab15e8fc69",
-    urls = [ 
+    urls = [
         "https://github.com/openconfig/public/archive/bf737a5567ec248456cb528efcd63cab15e8fc69.zip",
     ],
 )
@@ -95,7 +95,7 @@ http_archive(
     build_file_content = """exports_files(glob(["standard/**/*.yang"]), visibility = ["//visibility:public"])""",
     sha256 = "55913058f64a1ec7fe9e6e70d7128f08e66b20c859803b1fb02dbaf7eef2c64d",
     strip_prefix = "yang-2fa291d6bdb4b281d4e1b3dfa3254ffa7257d800",
-    urls = [ 
+    urls = [
         "https://github.com/YangModels/yang/archive/2fa291d6bdb4b281d4e1b3dfa3254ffa7257d800.zip",
     ],
 )
