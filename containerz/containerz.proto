@@ -362,7 +362,7 @@ message StartContainerRequest {
     repeated string remove = 2;
   }
 
-  // Add or remove capabilities on this container. The list of valid
+  // Add or remove capabilities to this container. The list of valid
   // capabilities can be found in
   // https://man7.org/linux/man-pages/man7/capabilities.7.html.
   // This is default set of capabilities:
