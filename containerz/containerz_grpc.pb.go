@@ -23,10 +23,13 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ContainerzClient interface {
 	Deploy(ctx context.Context, opts ...grpc.CallOption) (Containerz_DeployClient, error)
+	ListImage(ctx context.Context, in *ListImageRequest, opts ...grpc.CallOption) (Containerz_ListImageClient, error)
+	RemoveImage(ctx context.Context, in *RemoveImageRequest, opts ...grpc.CallOption) (*RemoveImageResponse, error)
 	RemoveContainer(ctx context.Context, in *RemoveContainerRequest, opts ...grpc.CallOption) (*RemoveContainerResponse, error)
 	ListContainer(ctx context.Context, in *ListContainerRequest, opts ...grpc.CallOption) (Containerz_ListContainerClient, error)
 	StartContainer(ctx context.Context, in *StartContainerRequest, opts ...grpc.CallOption) (*StartContainerResponse, error)
 	StopContainer(ctx context.Context, in *StopContainerRequest, opts ...grpc.CallOption) (*StopContainerResponse, error)
+	UpdateContainer(ctx context.Context, in *UpdateContainerRequest, opts ...grpc.CallOption) (*UpdateContainerResponse, error)
 	Log(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (Containerz_LogClient, error)
 	CreateVolume(ctx context.Context, in *CreateVolumeRequest, opts ...grpc.CallOption) (*CreateVolumeResponse, error)
 	RemoveVolume(ctx context.Context, in *RemoveVolumeRequest, opts ...grpc.CallOption) (*RemoveVolumeResponse, error)
@@ -72,6 +75,47 @@ func (x *containerzDeployClient) Recv() (*DeployResponse, error) {
 	return m, nil
 }
 
+func (c *containerzClient) ListImage(ctx context.Context, in *ListImageRequest, opts ...grpc.CallOption) (Containerz_ListImageClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[1], "/gnoi.containerz.Containerz/ListImage", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &containerzListImageClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Containerz_ListImageClient interface {
+	Recv() (*ListImageResponse, error)
+	grpc.ClientStream
+}
+
+type containerzListImageClient struct {
+	grpc.ClientStream
+}
+
+func (x *containerzListImageClient) Recv() (*ListImageResponse, error) {
+	m := new(ListImageResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *containerzClient) RemoveImage(ctx context.Context, in *RemoveImageRequest, opts ...grpc.CallOption) (*RemoveImageResponse, error) {
+	out := new(RemoveImageResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/RemoveImage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *containerzClient) RemoveContainer(ctx context.Context, in *RemoveContainerRequest, opts ...grpc.CallOption) (*RemoveContainerResponse, error) {
 	out := new(RemoveContainerResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/RemoveContainer", in, out, opts...)
@@ -82,7 +126,7 @@ func (c *containerzClient) RemoveContainer(ctx context.Context, in *RemoveContai
 }
 
 func (c *containerzClient) ListContainer(ctx context.Context, in *ListContainerRequest, opts ...grpc.CallOption) (Containerz_ListContainerClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[1], "/gnoi.containerz.Containerz/ListContainer", opts...)
+	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[2], "/gnoi.containerz.Containerz/ListContainer", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,8 +175,17 @@ func (c *containerzClient) StopContainer(ctx context.Context, in *StopContainerR
 	return out, nil
 }
 
+func (c *containerzClient) UpdateContainer(ctx context.Context, in *UpdateContainerRequest, opts ...grpc.CallOption) (*UpdateContainerResponse, error) {
+	out := new(UpdateContainerResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/UpdateContainer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *containerzClient) Log(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (Containerz_LogClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[2], "/gnoi.containerz.Containerz/Log", opts...)
+	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[3], "/gnoi.containerz.Containerz/Log", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +235,7 @@ func (c *containerzClient) RemoveVolume(ctx context.Context, in *RemoveVolumeReq
 }
 
 func (c *containerzClient) ListVolume(ctx context.Context, in *ListVolumeRequest, opts ...grpc.CallOption) (Containerz_ListVolumeClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[3], "/gnoi.containerz.Containerz/ListVolume", opts...)
+	stream, err := c.cc.NewStream(ctx, &Containerz_ServiceDesc.Streams[4], "/gnoi.containerz.Containerz/ListVolume", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -218,10 +271,13 @@ func (x *containerzListVolumeClient) Recv() (*ListVolumeResponse, error) {
 // for forward compatibility
 type ContainerzServer interface {
 	Deploy(Containerz_DeployServer) error
+	ListImage(*ListImageRequest, Containerz_ListImageServer) error
+	RemoveImage(context.Context, *RemoveImageRequest) (*RemoveImageResponse, error)
 	RemoveContainer(context.Context, *RemoveContainerRequest) (*RemoveContainerResponse, error)
 	ListContainer(*ListContainerRequest, Containerz_ListContainerServer) error
 	StartContainer(context.Context, *StartContainerRequest) (*StartContainerResponse, error)
 	StopContainer(context.Context, *StopContainerRequest) (*StopContainerResponse, error)
+	UpdateContainer(context.Context, *UpdateContainerRequest) (*UpdateContainerResponse, error)
 	Log(*LogRequest, Containerz_LogServer) error
 	CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error)
 	RemoveVolume(context.Context, *RemoveVolumeRequest) (*RemoveVolumeResponse, error)
@@ -236,6 +292,12 @@ type UnimplementedContainerzServer struct {
 func (UnimplementedContainerzServer) Deploy(Containerz_DeployServer) error {
 	return status.Errorf(codes.Unimplemented, "method Deploy not implemented")
 }
+func (UnimplementedContainerzServer) ListImage(*ListImageRequest, Containerz_ListImageServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListImage not implemented")
+}
+func (UnimplementedContainerzServer) RemoveImage(context.Context, *RemoveImageRequest) (*RemoveImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveImage not implemented")
+}
 func (UnimplementedContainerzServer) RemoveContainer(context.Context, *RemoveContainerRequest) (*RemoveContainerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveContainer not implemented")
 }
@@ -247,6 +309,9 @@ func (UnimplementedContainerzServer) StartContainer(context.Context, *StartConta
 }
 func (UnimplementedContainerzServer) StopContainer(context.Context, *StopContainerRequest) (*StopContainerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StopContainer not implemented")
+}
+func (UnimplementedContainerzServer) UpdateContainer(context.Context, *UpdateContainerRequest) (*UpdateContainerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateContainer not implemented")
 }
 func (UnimplementedContainerzServer) Log(*LogRequest, Containerz_LogServer) error {
 	return status.Errorf(codes.Unimplemented, "method Log not implemented")
@@ -297,6 +362,45 @@ func (x *containerzDeployServer) Recv() (*DeployRequest, error) {
 		return nil, err
 	}
 	return m, nil
+}
+
+func _Containerz_ListImage_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListImageRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ContainerzServer).ListImage(m, &containerzListImageServer{stream})
+}
+
+type Containerz_ListImageServer interface {
+	Send(*ListImageResponse) error
+	grpc.ServerStream
+}
+
+type containerzListImageServer struct {
+	grpc.ServerStream
+}
+
+func (x *containerzListImageServer) Send(m *ListImageResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Containerz_RemoveImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveImageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContainerzServer).RemoveImage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.containerz.Containerz/RemoveImage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContainerzServer).RemoveImage(ctx, req.(*RemoveImageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Containerz_RemoveContainer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -370,6 +474,24 @@ func _Containerz_StopContainer_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ContainerzServer).StopContainer(ctx, req.(*StopContainerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Containerz_UpdateContainer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateContainerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContainerzServer).UpdateContainer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.containerz.Containerz/UpdateContainer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContainerzServer).UpdateContainer(ctx, req.(*UpdateContainerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -460,6 +582,10 @@ var Containerz_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ContainerzServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "RemoveImage",
+			Handler:    _Containerz_RemoveImage_Handler,
+		},
+		{
 			MethodName: "RemoveContainer",
 			Handler:    _Containerz_RemoveContainer_Handler,
 		},
@@ -470,6 +596,10 @@ var Containerz_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "StopContainer",
 			Handler:    _Containerz_StopContainer_Handler,
+		},
+		{
+			MethodName: "UpdateContainer",
+			Handler:    _Containerz_UpdateContainer_Handler,
 		},
 		{
 			MethodName: "CreateVolume",
@@ -486,6 +616,11 @@ var Containerz_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _Containerz_Deploy_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "ListImage",
+			Handler:       _Containerz_ListImage_Handler,
+			ServerStreams: true,
 		},
 		{
 			StreamName:    "ListContainer",
