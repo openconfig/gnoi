@@ -45,7 +45,7 @@ message StartRequest {
 }
 
 message ManagementConfig {
-  repeated string bootz_uris = 1;
+  repeated string boot_server_uris = 1;
   string device_ip = 2;
   string mask_length = 3;
   string gateway_ip = 4;
