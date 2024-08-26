@@ -12,7 +12,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+//
+// DEPRECATION NOTICE: This API will be removed as it has been replaced via
+// gNSI Certz service. This will be removed in the v1 release of the gNOI API.
+//
 // This file defines the gNOI API to be used for certificate installation and
 // rotation.
 syntax = "proto3";
