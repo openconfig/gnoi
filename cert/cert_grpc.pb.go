@@ -22,13 +22,21 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CertificateManagementClient interface {
+	// Deprecated: Do not use.
 	Rotate(ctx context.Context, opts ...grpc.CallOption) (CertificateManagement_RotateClient, error)
+	// Deprecated: Do not use.
 	Install(ctx context.Context, opts ...grpc.CallOption) (CertificateManagement_InstallClient, error)
+	// Deprecated: Do not use.
 	GenerateCSR(ctx context.Context, in *GenerateCSRRequest, opts ...grpc.CallOption) (*GenerateCSRResponse, error)
+	// Deprecated: Do not use.
 	LoadCertificate(ctx context.Context, in *LoadCertificateRequest, opts ...grpc.CallOption) (*LoadCertificateResponse, error)
+	// Deprecated: Do not use.
 	LoadCertificateAuthorityBundle(ctx context.Context, in *LoadCertificateAuthorityBundleRequest, opts ...grpc.CallOption) (*LoadCertificateAuthorityBundleResponse, error)
+	// Deprecated: Do not use.
 	GetCertificates(ctx context.Context, in *GetCertificatesRequest, opts ...grpc.CallOption) (*GetCertificatesResponse, error)
+	// Deprecated: Do not use.
 	RevokeCertificates(ctx context.Context, in *RevokeCertificatesRequest, opts ...grpc.CallOption) (*RevokeCertificatesResponse, error)
+	// Deprecated: Do not use.
 	CanGenerateCSR(ctx context.Context, in *CanGenerateCSRRequest, opts ...grpc.CallOption) (*CanGenerateCSRResponse, error)
 }
 
@@ -40,6 +48,7 @@ func NewCertificateManagementClient(cc grpc.ClientConnInterface) CertificateMana
 	return &certificateManagementClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) Rotate(ctx context.Context, opts ...grpc.CallOption) (CertificateManagement_RotateClient, error) {
 	stream, err := c.cc.NewStream(ctx, &CertificateManagement_ServiceDesc.Streams[0], "/gnoi.certificate.CertificateManagement/Rotate", opts...)
 	if err != nil {
@@ -71,6 +80,7 @@ func (x *certificateManagementRotateClient) Recv() (*RotateCertificateResponse, 
 	return m, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) Install(ctx context.Context, opts ...grpc.CallOption) (CertificateManagement_InstallClient, error) {
 	stream, err := c.cc.NewStream(ctx, &CertificateManagement_ServiceDesc.Streams[1], "/gnoi.certificate.CertificateManagement/Install", opts...)
 	if err != nil {
@@ -102,6 +112,7 @@ func (x *certificateManagementInstallClient) Recv() (*InstallCertificateResponse
 	return m, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) GenerateCSR(ctx context.Context, in *GenerateCSRRequest, opts ...grpc.CallOption) (*GenerateCSRResponse, error) {
 	out := new(GenerateCSRResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.certificate.CertificateManagement/GenerateCSR", in, out, opts...)
@@ -111,6 +122,7 @@ func (c *certificateManagementClient) GenerateCSR(ctx context.Context, in *Gener
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) LoadCertificate(ctx context.Context, in *LoadCertificateRequest, opts ...grpc.CallOption) (*LoadCertificateResponse, error) {
 	out := new(LoadCertificateResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.certificate.CertificateManagement/LoadCertificate", in, out, opts...)
@@ -120,6 +132,7 @@ func (c *certificateManagementClient) LoadCertificate(ctx context.Context, in *L
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) LoadCertificateAuthorityBundle(ctx context.Context, in *LoadCertificateAuthorityBundleRequest, opts ...grpc.CallOption) (*LoadCertificateAuthorityBundleResponse, error) {
 	out := new(LoadCertificateAuthorityBundleResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.certificate.CertificateManagement/LoadCertificateAuthorityBundle", in, out, opts...)
@@ -129,6 +142,7 @@ func (c *certificateManagementClient) LoadCertificateAuthorityBundle(ctx context
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) GetCertificates(ctx context.Context, in *GetCertificatesRequest, opts ...grpc.CallOption) (*GetCertificatesResponse, error) {
 	out := new(GetCertificatesResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.certificate.CertificateManagement/GetCertificates", in, out, opts...)
@@ -138,6 +152,7 @@ func (c *certificateManagementClient) GetCertificates(ctx context.Context, in *G
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) RevokeCertificates(ctx context.Context, in *RevokeCertificatesRequest, opts ...grpc.CallOption) (*RevokeCertificatesResponse, error) {
 	out := new(RevokeCertificatesResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.certificate.CertificateManagement/RevokeCertificates", in, out, opts...)
@@ -147,6 +162,7 @@ func (c *certificateManagementClient) RevokeCertificates(ctx context.Context, in
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *certificateManagementClient) CanGenerateCSR(ctx context.Context, in *CanGenerateCSRRequest, opts ...grpc.CallOption) (*CanGenerateCSRResponse, error) {
 	out := new(CanGenerateCSRResponse)
 	err := c.cc.Invoke(ctx, "/gnoi.certificate.CertificateManagement/CanGenerateCSR", in, out, opts...)
@@ -160,13 +176,21 @@ func (c *certificateManagementClient) CanGenerateCSR(ctx context.Context, in *Ca
 // All implementations must embed UnimplementedCertificateManagementServer
 // for forward compatibility
 type CertificateManagementServer interface {
+	// Deprecated: Do not use.
 	Rotate(CertificateManagement_RotateServer) error
+	// Deprecated: Do not use.
 	Install(CertificateManagement_InstallServer) error
+	// Deprecated: Do not use.
 	GenerateCSR(context.Context, *GenerateCSRRequest) (*GenerateCSRResponse, error)
+	// Deprecated: Do not use.
 	LoadCertificate(context.Context, *LoadCertificateRequest) (*LoadCertificateResponse, error)
+	// Deprecated: Do not use.
 	LoadCertificateAuthorityBundle(context.Context, *LoadCertificateAuthorityBundleRequest) (*LoadCertificateAuthorityBundleResponse, error)
+	// Deprecated: Do not use.
 	GetCertificates(context.Context, *GetCertificatesRequest) (*GetCertificatesResponse, error)
+	// Deprecated: Do not use.
 	RevokeCertificates(context.Context, *RevokeCertificatesRequest) (*RevokeCertificatesResponse, error)
+	// Deprecated: Do not use.
 	CanGenerateCSR(context.Context, *CanGenerateCSRRequest) (*CanGenerateCSRResponse, error)
 	mustEmbedUnimplementedCertificateManagementServer()
 }
