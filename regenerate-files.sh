@@ -20,6 +20,8 @@ bazel build //bgp:all
 copy_generated "bgp"
 bazel build //bootconfig:all
 copy_generated "bootconfig"
+bazel build //cert:all
+copy_generated "cert"
 bazel build //common:all
 copy_generated "common"
 bazel build //containerz:all
