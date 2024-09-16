@@ -12,7 +12,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+//
+// DEPRECATION NOTICE: This API will be removed as it has been replaced via
+// gNSI Certz service. This will be removed in the v1 release of the gNOI API.
+//
 // This file defines the gNOI API to be used for certificate installation and
 // rotation.
 syntax = "proto3";
@@ -90,7 +93,9 @@ service CertificateManagement {
   //   Step 6: Final commit.
   //     Client ---> FinalizeRequest ----> Target
   rpc Rotate(stream RotateCertificateRequest)
-    returns (stream RotateCertificateResponse);
+    returns (stream RotateCertificateResponse) {
+    option deprecated = true;
+  };
 
   // Install will put a new Certificate on the target by creating a new CSR
   // request and placing the new Certificate based on the CSR on the target.The
@@ -135,32 +140,48 @@ service CertificateManagement {
   //     Client <- LoadCertificateResponse() <--- Target
   //
   rpc Install(stream InstallCertificateRequest)
-    returns (stream InstallCertificateResponse);
+    returns (stream InstallCertificateResponse) {
+    option deprecated = true;
+  };
 
   // When credentials are generated on the device, generates a keypair and
   // returns the Certificate Signing Request (CSR). The CSR has the public key,
   // which when signed by the CA, becomes the Certificate.
-  rpc GenerateCSR(GenerateCSRRequest) returns (GenerateCSRResponse);
+  rpc GenerateCSR(GenerateCSRRequest) returns (GenerateCSRResponse) {
+    option deprecated = true;
+  };
 
   // Loads a certificate signed by a Certificate Authority (CA).
-  rpc LoadCertificate(LoadCertificateRequest) returns (LoadCertificateResponse);
+  rpc LoadCertificate(LoadCertificateRequest)
+    returns (LoadCertificateResponse) {
+    option deprecated = true;
+  };
 
   // Loads a bundle of CA certificates.
   rpc LoadCertificateAuthorityBundle(LoadCertificateAuthorityBundleRequest)
-      returns (LoadCertificateAuthorityBundleResponse);
+    returns (LoadCertificateAuthorityBundleResponse) {
+    option deprecated = true;
+  };
 
   // An RPC to get the certificates on the target.
-  rpc GetCertificates(GetCertificatesRequest) returns (GetCertificatesResponse);
+  rpc GetCertificates(GetCertificatesRequest)
+    returns (GetCertificatesResponse) {
+    option deprecated = true;
+  };
 
   // An RPC to revoke specific certificates.
   // If a certificate is not present on the target, the request should silently
   // succeed. Revoking a certificate should render the existing certificate
   // unusable by any endpoints.
   rpc RevokeCertificates(RevokeCertificatesRequest)
-      returns (RevokeCertificatesResponse);
+    returns (RevokeCertificatesResponse) {
+    option deprecated = true;
+  };
 
   // An RPC to ask a target if it can generate a Certificate.
-  rpc CanGenerateCSR(CanGenerateCSRRequest) returns (CanGenerateCSRResponse);
+  rpc CanGenerateCSR(CanGenerateCSRRequest) returns (CanGenerateCSRResponse) {
+    option deprecated = true;
+  };
 }
 
 // Request messages to rotate existing certificates on the target.
