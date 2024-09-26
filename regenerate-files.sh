@@ -30,6 +30,8 @@ bazel build //debug:all
 copy_generated "debug"
 bazel build //diag:all
 copy_generated "diag"
+bazel build //dry_run:all
+copy_generated "dry_run"
 bazel build //factory_reset:all
 copy_generated "factory_reset"
 bazel build //file:all
