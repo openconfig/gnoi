@@ -18,10 +18,10 @@ syntax = "proto3";
 
 package gnoi.dry_run;
 
-import "third_party/openconfig/gnmi/proto/gnmi/gnmi.proto";
-import "third_party/openconfig/gnoi/types/types.proto";
+import "github.com/openconfig/gnmi/proto/gnmi/gnmi.proto";
+import "github.com/openconfig/gnoi/types/types.proto";
 
-option go_package = "google3/third_party/openconfig/gnoi/config";
+option go_package = "github.com/openconfig/gnoi/dry_run";
 option (types.gnoi_version) = "0.1.0";
 
 service DryRun {
