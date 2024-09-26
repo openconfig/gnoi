@@ -1,0 +1,76 @@
+//
+// Copyright 2019 Google LLC. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+syntax = "proto3";
+
+package gnoi.dry_run;
+
+import "third_party/openconfig/gnmi/proto/gnmi/gnmi.proto";
+import "third_party/openconfig/gnoi/types/types.proto";
+
+option go_package = "google3/third_party/openconfig/gnoi/config";
+option (types.gnoi_version) = "0.1.0";
+
+service DryRun {
+  // Compare performs a comparison of the two configurations.
+  // One of the configurations will be provided as a gNMI SetRequest.
+  // This will be compared against a configuration that is already on
+  // the device. The device will return differences found between the
+  // two configurations. The response must describe every difference
+  // between the two configurations regardless of the datastore in which
+  // they reside. If no differences are found, this indicates that sending
+  // the gNMI SetRequest would result in no changes to the device.
+  // Most importantly, this RPC must NEVER result in configuration changes
+  // on the device.
+  rpc Compare(CompareRequest) returns (stream CompareResponse) {}
+}
+
+message CompareRequest {
+  // The configuration that is to be compared against a configuration
+  // already on the device.
+  gnmi.SetRequest in = 1;
+}
+
+message CompareResponse {
+  // The differences found between the two configurations.
+  repeated Diff diffs = 1;
+}
+
+message Diff {
+  // The path to the configuration that is different. This path may be an
+  // OpenConfig path or a vendor native path. Alternatively, the path may
+  // be empty if the difference cannot be mapped to a specific path. In this
+  // case, the message field must contain enough details to discern what
+  // is different. Another alternative if the diff is not reasonably able
+  // to be represented on a granular level is to generically provide the diff
+  // as bytes. For example, a path with origin CLI would use the diff field to
+  // return any added, removed or modified content.
+
+  oneof path {
+    gnmi.Path added = 1;
+    gnmi.Path removed = 2;
+    gnmi.Path modified = 3;
+    bytes diff = 4;
+  }
+
+  // A human readable message describing the difference in more detail
+  // if useful. Generally, this will be most useful when the path is empty
+  // or for a modified path.
+  // Examples:
+  //   Empty Path: "'config foo bar' was changed to 'config foo baz'"
+  //   Modified Path: "Value changed from bar to baz"
+  string msg = 100;
+}
