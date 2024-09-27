@@ -40,7 +40,7 @@ message ClearBGPNeighborRequest {
     SOFT = 0;         // Send route-refresh and reapply policy.
     SOFTIN = 1;       // Re-apply inbound policy on stored Adj-RIB-In.
     HARD = 2;         // Teardown, restart TCP connection, Send Cease notification (code 6) with subcode 9 and flush all routes.
-    GRACEFUL = 4;     // Teardown, restart TCP connection, Send Cease notification (code 6) with subcode 4 and dont flush routes.
+    GRACEFUL = 4;     // Teardown, restart TCP connection, Send Cease notification (code 6) with subcode 4.
   }
   Mode mode = 3;       // Which mode to use for the clear operation.
 }
