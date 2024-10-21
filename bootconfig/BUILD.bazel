@@ -28,6 +28,7 @@ use_new_compilers()
 proto_library(
     name = "bootconfig_proto",
     srcs = ["bootconfig.proto"],
+    import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "//types:types_proto",
         "@com_github_openconfig_bootz//proto:bootz_proto",        

@@ -28,7 +28,11 @@ use_new_compilers()
 proto_library(
     name = "os_proto",
     srcs = ["os.proto"],
-    deps = ["//types:types_proto"],
+    import_prefix = "github.com/openconfig/gnoi",
+    deps = [
+        "//types:types_proto",
+        "//bootconfig:bootconfig_proto",
+    ],
 )
 
 cc_proto_library(
@@ -51,7 +55,10 @@ go_proto_library(
     ],
     importpath = "github.com/openconfig/gnoi/os",
     proto = ":os_proto",
-    deps = ["//types"],
+    deps = [
+        "//types",
+        "//bootconfig",
+    ],
 )
 
 go_library(
