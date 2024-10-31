@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.10
-// source: bootconfig/bootconfig.proto
+// source: github.com/openconfig/gnoi/bootconfig/bootconfig.proto
 
 package bootconfig
 
@@ -137,5 +137,5 @@ var BootConfig_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "bootconfig/bootconfig.proto",
+	Metadata: "github.com/openconfig/gnoi/bootconfig/bootconfig.proto",
 }

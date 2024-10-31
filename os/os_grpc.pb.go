@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.10
-// source: os/os.proto
+// source: github.com/openconfig/gnoi/os/os.proto
 
 package os
 
@@ -206,5 +206,5 @@ var OS_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "os/os.proto",
+	Metadata: "github.com/openconfig/gnoi/os/os.proto",
 }
