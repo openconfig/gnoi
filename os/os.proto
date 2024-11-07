@@ -146,10 +146,9 @@ service OS {
 
   // Verify checks the running OS version. During reboot, gRPC client returns
   // the gRPC status code UNAVAILABLE while the Target is unreachable or still
-  // performing install operation on the primary control card, which should be
-  // retried by the client until successful. After the Target becomes
-  // available, it should report all ready or error states normally through
-  // VerifyResponse.
+  // performing install operation, which should be retried by the client until
+  // successful. After the Target becomes available, it should report all ready
+  // or error states normally through VerifyResponse.
   //
   // On a dual Supervisor system, if the Standby Supervisor is rebooting, it
   // should be reported in the VerifyResponse via verify_standby as
