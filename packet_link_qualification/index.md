@@ -74,7 +74,9 @@ See [proto](packet_link_qualification.proto) for rpc and message definitions.
 ### Capabilities
 
 Capabilities returns the endpoint types the device is able to support for link
-qualifications.
+qualifications.  Each capability reported may also set a list of supported
+interfaces for the capability in question.  If not set, it is assumed that all
+interfaces are supported for the capability advertised.
 
 ### Create
 
@@ -196,6 +198,8 @@ message PacketInjectorCapabilities {
   min_teardown_duration: "30s"
   min_sample_interval: "60s"
   loopback_modes: PACKET_INJECTOR_LOOPBACK_MODE_PMD
+  supported_interfaces: "TenGigabitEthernet0/0/0"
+  supported_interfaces: "TenGigabitEthernet1/0/0"
 }
 ```
 
@@ -205,6 +209,7 @@ message PacketInjectorCapabilities {
 message PmdLoopbackCapabilities {
   min_setup_duration: "10s"
   min_teardown_duration: "10s"
+  supported_interfaces: "eth0"
 }
 ```
 
@@ -275,6 +280,11 @@ message PmdLoopbackCapabilities {
       min_setup_duration: "2s"
       min_teardown_duration: "2s"
       min_sample_interval: "1s"
+      supported_interfaces: "et-0/0/0"
+      supported_interfaces: "et-0/0/1"
+      supported_interfaces: "et-0/0/2"
+      supported_interfaces: "et-0/0/3"
+      supported_interfaces: "et-1/0/0"
     }
     ```
 
@@ -284,6 +294,7 @@ message PmdLoopbackCapabilities {
   message PmdLoopbackCapabilities {
     min_setup_duration: "10s"
     min_teardown_duration: "10s"
+    supported_interfaces: "et-11/1/1"
   }
   ```
 
