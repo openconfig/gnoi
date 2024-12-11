@@ -140,7 +140,9 @@ message ImageTransfer {
   // container image.
   string tag = 2;
 
-  // Optional. Indicates the size (in bytes) of the container image.
+  // Indicates the size (in bytes) of the container image.
+  // Required to allow the server should validate that there
+  // is enough space to receive the incoming image.
   uint64 image_size = 3;
 
   // Optional. Instructs the target to fetch the image from a remote location.
