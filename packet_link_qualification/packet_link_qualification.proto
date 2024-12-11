@@ -57,6 +57,8 @@ message CreateRequest {
 // NOT_FOUND: interface_name could not be found on the service.
 // INVALID_ARGUMENT: if any of the configuration is not supported.
 // ALREADY_EXISTS: if the qualification id is already in use.
+// FAILED_PRECONDITION: if a request cannot be handled due to capability
+// mismatch
 message CreateResponse {
   map<string, google.rpc.Status> status = 2;
 }
