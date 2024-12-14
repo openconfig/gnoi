@@ -54,12 +54,10 @@ service Containerz {
   rpc RemoveImage(RemoveImageRequest)
     returns (RemoveImageResponse) {}
 
-  // RemoveContainer deletes images that match the spec defined in the
-  // request. If the image is associated to a running container then an error
-  // is returned. If the specified container image does not exist, this
-  // operation is a no-op.
-  //
-  // Deprecated - use RemoveImage instead.
+  // RemoveContainer deletes the container that matches the instance
+  // name. If the specified container does not exist, this
+  // operation is a no-op. The container should not be removed if it is
+  // running unless force is specified in the request.
   rpc RemoveContainer(RemoveContainerRequest)
     returns (RemoveContainerResponse) {}
 
@@ -225,11 +223,10 @@ message RemoveImageResponse {
 }
 
 message RemoveContainerRequest {
-  // The container image name to be removed.
+  // The container name to be removed.
   string name = 1;
 
-  // The container tag to be removed.
-  string tag = 2;
+  reserved 2;
 
   // If force is set, the target should attempt to forcibly remove the
   // container.
@@ -314,6 +311,14 @@ message ListContainerResponse {
   }
 
   Status status = 4;
+
+  // Metadata associated to this container. This is limited to metadata
+  // about the running container and should in no way change the bahaviour
+  // or the RPC.
+  map<string, string> labels = 5;
+
+  // The computed hash of the image as returned by the container runtime.
+  types.HashType hash = 6;
 }
 
 // A volume can be passed to a container such that it can persist data.
@@ -411,6 +416,7 @@ message StartContainerRequest {
   // not specified then the container will be run as the docker user and group.
   RunAs run_as = 11;
 
+  map<string, string> labels = 12;
   // Other container properties will be added as it becomes necessary.
 }
 
