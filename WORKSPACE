@@ -19,11 +19,10 @@ bazel_features_deps()
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-load("//:gnoi_go_deps.bzl", "gnoi_go_deps", "gnoi_go_deps_custom")
+load("//:gnoi_go_deps.bzl", "gnoi_go_deps")
 
 # gazelle:repository_macro gnoi_go_deps.bzl%gnoi_go_deps
 gnoi_go_deps()
-gnoi_go_deps_custom()
 
 go_rules_dependencies()
 

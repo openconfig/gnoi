@@ -396,19 +396,3 @@ def gnoi_go_deps():
         sum = "h1:CCriYyAfq1Br1aIYettdHZTy8mBTIPo7We18TuO/bak=",
         version = "v0.0.0-20210826202110-33d05740a352",
     )
-
-def gnoi_go_deps_custom():
-    if not native.existing_rule("com_github_openconfig_bootz"):
-        go_repository(
-            name = "com_github_openconfig_bootz",
-            importpath = "github.com/openconfig/bootz",
-            sum = "h1:Q0mThGmZiX/kht+crar6FtLVxqdjUS/deMnpcNX+F7c=",
-            version = "v0.3.1",
-        )
-    if not native.existing_rule("com_github_openconfig_gnsi"):
-        go_repository(
-            name = "com_github_openconfig_gnsi",
-            importpath = "github.com/openconfig/gnsi",
-            sum = "h1:PfQa9Gy0lH1sHqA2L3Gj2fEh2zPMbWxMmIRQv2Nk1T8=",
-            version = "v1.6.0",
-        )
