@@ -1,8 +1,8 @@
-load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
-load("//:common.bzl", "use_new_compilers")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
 # Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,19 +22,18 @@ package(
     licenses = ["notice"],
 )
 
-use_new_compilers()
-
 proto_library(
     name = "pcap_proto",
     srcs = ["packet_capture.proto"],
+    import_prefix = "github.com/openconfig/gnoi",
     visibility = ["//visibility:public"],
 )
 
 go_proto_library(
     name = "pcap_go_proto",
     compilers = [
-        "go_protoc_gen_go",
-        "go_protoc_gen_go_grpc",
+        "@io_bazel_rules_go//proto:go_grpc_v2",
+        "@io_bazel_rules_go//proto:go_proto",
     ],
     importpath = "github.com/openconfig/gnoi/packet_capture",
     proto = ":pcap_proto",
