@@ -417,6 +417,32 @@ message StartContainerRequest {
   RunAs run_as = 11;
 
   map<string, string> labels = 12;
+  
+  // Limits defines restrictions or limits upon this container.
+  message Limits {
+    // max_cpu specifies the maximum amount of cpu this container can use.
+    // For example a value of 0.5 means this container can use a maximum of
+    // half a cpu. CPU in this context refers to an OS-visible CPU (which 
+    // may map to a hyperthread on an Intel processor with hyperthreading,
+    // or a CPU core.  This setting does not imply that the container is
+    // pinned to a cpu but rather only the maximum amount of cpu it can use.
+    double max_cpu = 1;
+
+    // soft_mem defines a soft memory limit. If the system is not memory
+    // constrained this limit has no effect. If it is memory constrained
+    // this container may be oom killed if it exceed this limit. This value
+    // is effectively a soft memory limit. This limit should be smaller than
+    //  max_mem otherwise it will have no effect.
+    int64 soft_mem_bytes =2;
+
+    // hard_mem is a hard limit. If the container exceed this number the 
+    // container runtime can take aggressive action such as terminate (oom kill)
+    // the container.
+    int64 hard_mem_bytes = 3;
+  }
+
+  Limits limits = 13;
+  
   // Other container properties will be added as it becomes necessary.
 }
 
