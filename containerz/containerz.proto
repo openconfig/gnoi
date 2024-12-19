@@ -39,9 +39,10 @@ service Containerz {
   // Deploy sets a container image on the target. The container is sent as
   // a sequential stream of messages containing up to 4MB of data (max default
   // gRPC message size). Upon reception of a valid container, the target must
-  // load it into its registry. Whether the registry is local or remote is
-  // target and deployment specific. A valid container is one that has passed
-  // its checksum.
+  // load it into its registry, unless the file is a plugin. If the file is a 
+  // plugin, the target must save the file until StartPlugin is called. Whether
+  // the registry is local or remote is target and deployment specific. A valid
+  // container is one that has passed its checksum. 
   rpc Deploy(stream DeployRequest) returns (stream DeployResponse) {}
 
   // ListImage returns all images that the spec defined in the request.
@@ -118,6 +119,23 @@ service Containerz {
 
   // ListVolume returns all volumes that match the spec defined in the filter.
   rpc ListVolume(ListVolumeRequest) returns (stream ListVolumeResponse) {}
+
+  // StartPlugin starts the specified plugin identified by the name field
+  // of the request. It should be started using the instance_name of the
+  // request. If the plugin file named `name` does not exist, this
+  // should return an error.
+  rpc StartPlugin(StartPluginRequest) returns (StartPluginResponse) {}
+
+  // StopPlugin stops a plugin. If the plugin does not exist this
+  // operation is a no-op.
+  rpc StopPlugin(StopPluginRequest) returns (StopPluginResponse) {}
+  
+  // ListPlugins lists the plugins as specified by the request.
+  rpc ListPlugins(ListPluginsRequest) returns (ListPluginsResponse) {}
+
+  // RemovePlugin deletes the plugin from the system. If the plugin
+  // does not exist this operation is a no-op.
+  rpc RemovePlugin(RemovePluginRequest) returns (RemovePluginResponse) {}
 }
 
 message DeployRequest {
@@ -129,8 +147,8 @@ message DeployRequest {
 }
 
 message ImageTransfer {
-  // The image name. This is the name the container image must have after the
-  // is completed.
+  // The image or plugin name. This is the name the container image or plugin 
+  // tarball  must have after the upload is completed.  
   string name = 1;
 
   // The tag is a version identifier for this container image. After the
@@ -144,6 +162,9 @@ message ImageTransfer {
   // Optional. Instructs the target to fetch the image from a remote location.
   // The above name and tag must be applied to the container once downloaded.
   common.RemoteDownload remote_download = 4;
+
+  // Indicates that the file to be transferred is a plugin.
+  bool is_plugin = 5;
 }
 
 // ImageTransferEnd indicates to the target that the client is finished sending
@@ -659,4 +680,60 @@ message ListVolumeResponse {
   // Volume labels.
   map<string, string> labels = 5;
 
+}
+
+message StartPluginRequest {
+
+  // The name of the plugin as specified during the deploy request. 
+  string name = 1;
+
+  // The name of the plugin once it is started.
+  string instance_name = 2;
+
+  // The config for the plugin. This must be a json configuration for
+  // the plugin.
+  string config = 3;
+}
+
+message StartPluginResponse {
+  string instance_name = 1;
+}
+
+message StopPluginRequest {
+  string instance_name = 1;
+}
+
+message StopPluginResponse {
+}
+
+// ListPluginsRequest returns all the plugins running on the target.
+// If the instance_name is provided, only the plugin matching that
+// instance_name should be returned.
+message ListPluginsRequest {
+  string instance_name = 1;
+}
+
+message Plugin {
+  // The id of the plugin as reported by the container runtime.
+  string id = 1;
+
+  // The instance_name of the plugin.
+  string instance_name = 2;
+
+  // The hash of the plugin.
+  types.HashType hash = 3;
+
+  // The configuration the plugin was started for.
+  string config = 4;
+}
+
+message ListPluginsResponse {
+  repeated Plugin plugins = 1;
+}
+
+message RemovePluginRequest {
+  string instance_name = 1;
+}
+
+message RemovePluginResponse {
 }
