@@ -14,6 +14,8 @@ of devices.
 
 The CLI should be bundled with the router and exist in the default path.
 The CLI must be named `oc_cli` it must have the following heirarchy for calling specific services.
+This CLI must not use RPC's to services to interact with services as the use of the service would be
+for emergency recovery of the device.
 
 ```
 oc_cli
