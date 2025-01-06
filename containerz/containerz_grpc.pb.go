@@ -34,6 +34,10 @@ type ContainerzClient interface {
 	CreateVolume(ctx context.Context, in *CreateVolumeRequest, opts ...grpc.CallOption) (*CreateVolumeResponse, error)
 	RemoveVolume(ctx context.Context, in *RemoveVolumeRequest, opts ...grpc.CallOption) (*RemoveVolumeResponse, error)
 	ListVolume(ctx context.Context, in *ListVolumeRequest, opts ...grpc.CallOption) (Containerz_ListVolumeClient, error)
+	StartPlugin(ctx context.Context, in *StartPluginRequest, opts ...grpc.CallOption) (*StartPluginResponse, error)
+	StopPlugin(ctx context.Context, in *StopPluginRequest, opts ...grpc.CallOption) (*StopPluginResponse, error)
+	ListPlugins(ctx context.Context, in *ListPluginsRequest, opts ...grpc.CallOption) (*ListPluginsResponse, error)
+	RemovePlugin(ctx context.Context, in *RemovePluginRequest, opts ...grpc.CallOption) (*RemovePluginResponse, error)
 }
 
 type containerzClient struct {
@@ -266,6 +270,42 @@ func (x *containerzListVolumeClient) Recv() (*ListVolumeResponse, error) {
 	return m, nil
 }
 
+func (c *containerzClient) StartPlugin(ctx context.Context, in *StartPluginRequest, opts ...grpc.CallOption) (*StartPluginResponse, error) {
+	out := new(StartPluginResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/StartPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *containerzClient) StopPlugin(ctx context.Context, in *StopPluginRequest, opts ...grpc.CallOption) (*StopPluginResponse, error) {
+	out := new(StopPluginResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/StopPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *containerzClient) ListPlugins(ctx context.Context, in *ListPluginsRequest, opts ...grpc.CallOption) (*ListPluginsResponse, error) {
+	out := new(ListPluginsResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/ListPlugins", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *containerzClient) RemovePlugin(ctx context.Context, in *RemovePluginRequest, opts ...grpc.CallOption) (*RemovePluginResponse, error) {
+	out := new(RemovePluginResponse)
+	err := c.cc.Invoke(ctx, "/gnoi.containerz.Containerz/RemovePlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContainerzServer is the server API for Containerz service.
 // All implementations must embed UnimplementedContainerzServer
 // for forward compatibility
@@ -282,6 +322,10 @@ type ContainerzServer interface {
 	CreateVolume(context.Context, *CreateVolumeRequest) (*CreateVolumeResponse, error)
 	RemoveVolume(context.Context, *RemoveVolumeRequest) (*RemoveVolumeResponse, error)
 	ListVolume(*ListVolumeRequest, Containerz_ListVolumeServer) error
+	StartPlugin(context.Context, *StartPluginRequest) (*StartPluginResponse, error)
+	StopPlugin(context.Context, *StopPluginRequest) (*StopPluginResponse, error)
+	ListPlugins(context.Context, *ListPluginsRequest) (*ListPluginsResponse, error)
+	RemovePlugin(context.Context, *RemovePluginRequest) (*RemovePluginResponse, error)
 	mustEmbedUnimplementedContainerzServer()
 }
 
@@ -324,6 +368,18 @@ func (UnimplementedContainerzServer) RemoveVolume(context.Context, *RemoveVolume
 }
 func (UnimplementedContainerzServer) ListVolume(*ListVolumeRequest, Containerz_ListVolumeServer) error {
 	return status.Errorf(codes.Unimplemented, "method ListVolume not implemented")
+}
+func (UnimplementedContainerzServer) StartPlugin(context.Context, *StartPluginRequest) (*StartPluginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartPlugin not implemented")
+}
+func (UnimplementedContainerzServer) StopPlugin(context.Context, *StopPluginRequest) (*StopPluginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopPlugin not implemented")
+}
+func (UnimplementedContainerzServer) ListPlugins(context.Context, *ListPluginsRequest) (*ListPluginsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPlugins not implemented")
+}
+func (UnimplementedContainerzServer) RemovePlugin(context.Context, *RemovePluginRequest) (*RemovePluginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemovePlugin not implemented")
 }
 func (UnimplementedContainerzServer) mustEmbedUnimplementedContainerzServer() {}
 
@@ -574,6 +630,78 @@ func (x *containerzListVolumeServer) Send(m *ListVolumeResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Containerz_StartPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContainerzServer).StartPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.containerz.Containerz/StartPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContainerzServer).StartPlugin(ctx, req.(*StartPluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Containerz_StopPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContainerzServer).StopPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.containerz.Containerz/StopPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContainerzServer).StopPlugin(ctx, req.(*StopPluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Containerz_ListPlugins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPluginsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContainerzServer).ListPlugins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.containerz.Containerz/ListPlugins",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContainerzServer).ListPlugins(ctx, req.(*ListPluginsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Containerz_RemovePlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemovePluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContainerzServer).RemovePlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gnoi.containerz.Containerz/RemovePlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContainerzServer).RemovePlugin(ctx, req.(*RemovePluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Containerz_ServiceDesc is the grpc.ServiceDesc for Containerz service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -608,6 +736,22 @@ var Containerz_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveVolume",
 			Handler:    _Containerz_RemoveVolume_Handler,
+		},
+		{
+			MethodName: "StartPlugin",
+			Handler:    _Containerz_StartPlugin_Handler,
+		},
+		{
+			MethodName: "StopPlugin",
+			Handler:    _Containerz_StopPlugin_Handler,
+		},
+		{
+			MethodName: "ListPlugins",
+			Handler:    _Containerz_ListPlugins_Handler,
+		},
+		{
+			MethodName: "RemovePlugin",
+			Handler:    _Containerz_RemovePlugin_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
