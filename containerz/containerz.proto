@@ -131,7 +131,7 @@ service Containerz {
   rpc StopPlugin(StopPluginRequest) returns (StopPluginResponse) {}
   
   // ListPlugins lists the plugins as specified by the request.
-  rpc ListPlugins(ListPluginsRequest) returns (ListPluginsResponse) {}
+  rpc ListPlugins(ListPluginsRequest) returns (stream ListPluginsResponse) {}
 
   // RemovePlugin deletes the plugin from the system. If the plugin
   // does not exist this operation is a no-op.
