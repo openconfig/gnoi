@@ -619,6 +619,14 @@ message LocalDriverOptions {
   string mountpoint = 3;
 }
 
+// CustomOptions are an opaque set of volume options that are passed to the
+// volume plugin identified by the driver. The container runtime is not 
+// expected to interpret this information.
+message CustomOptions {
+  // options are a key-value collections of options for the custom driver.
+  map<string, string> options = 1;
+}
+
 message CreateVolumeRequest {
   // name of the volume. If present, this system must create the volume with
   // this name otherwise it must allocate a name.
@@ -629,14 +637,15 @@ message CreateVolumeRequest {
   // and associated options.
   Driver driver = 2;
 
+  // Labels to apply to the volume. Labels are metadata for the the volume.
+  map<string, string> labels = 4;
+
   // Options for the driver. The actual option keys and values are driver
   // specific.
   oneof options {
     LocalDriverOptions local_mount_options = 3;
+    CustomOptions custom_options = 5;
   }
-
-  // Labels to apply to the volume. Labels are metadata for the the volume.
-  map<string, string> labels = 4;
 }
 
 message CreateVolumeResponse {
