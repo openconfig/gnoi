@@ -600,7 +600,12 @@ message LogResponse {
 // volume
 enum Driver {
   DS_UNSPECIFIED = 0;
+
+  // Refers to the standard mount(8) built-in volume driver.
   DS_LOCAL = 1;
+
+  // Refers to a custom volume driver that should be loaded via Plugin RPCs.
+  DS_CUSTOM = 2;
 }
 
 message LocalDriverOptions {
