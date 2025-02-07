@@ -40,6 +40,11 @@ service System {
   // and must provide summary statistics.
   rpc Ping(PingRequest) returns (stream PingResponse) {}
 
+  // Probe executes the RFC8335 PROBE command on the target and
+  // streams back the results.  Some targets may not stream any results
+  // until all results are in.
+  rpc Probe(ProbeRequest) returns (stream ProbeResponse) {}
+
   // Traceroute executes the traceroute command on the target and streams back
   // the results.  Some targets may not stream any results until all
   // results are in.  If a hop count is not explicitly provided,
@@ -225,6 +230,86 @@ message PingResponse {
   int32 bytes = 11;         // Bytes received.
   int32 sequence = 12;      // Sequence number of received packet.
   int32 ttl = 13;           // Remaining time to live value.
+}
+
+// A ProbeRequest describes the probe operation to perform.  The
+// destination field and exactly one of the probe_target fields
+// are required.  Any field not specified is set to a reasonable server
+// specified value.  Not all fields are supported by all vendors.
+message ProbeRequest {
+  string destination = 1;   // Proxy address to probe. required.
+  string source = 2;        // Source address to probe from.
+  oneof probe_target {
+    // exactly one of the next 4 items must be present.
+    int32 ifindex = 3;        // ifIndex to probe, if present.
+    string ifname = 4;        // ifName to probe, if present.
+    string ifaddr = 5;        // ifAddr to probe, if present.
+    string remote = 6;        // remote address to probe, if present.
+  }
+  int32 count = 7;          // Number of requests to make, default 3.
+  int64 interval = 8;       // Nanoseconds between requests.
+  int64 wait = 9;           // Nanoseconds to wait for a response.
+
+  string network_instance = 10; // Network instance to probe the proxy node in.
+}
+
+// A ProbeResponse represents either the response to a single probe packet
+// (the code field is non-zero) or the summary statistics (sent is non-zero).
+//
+// For a single probe packet, time is the round trip time, in nanoseconds.  For
+// summary statistics, it is the time spent by the ping operation.  The time is
+// not always present in summary statistics.
+//
+// In the summary, each map is keyed by the enum values referred to by that map.
+// The codes map is keyed by the Code enum, the states map is keyed by the State
+// enum, and the actives map is keyed by the Active enum.
+message ProbeResponse {
+  enum Code {
+    CODE_UNKNOWN = 0;
+    CODE_NO_ERROR = 1;
+    CODE_MALFORMED_QUERY = 2;
+    CODE_NO_SUCH_INTERFACE = 3;
+    CODE_NO_SUCH_TABLE_ENTRY = 4;
+    CODE_MULTIPLE_INTERFACES = 5;
+  }
+  enum State {
+    STATE_UNKNOWN = 0;
+    STATE_INCOMPLETE = 1;
+    STATE_REACHABLE = 2;
+    STATE_STALE = 3;
+    STATE_DELAY = 4;
+    STATE_PROBE = 5;
+    STATE_FAILED = 6;
+  }
+  enum Active {
+    ACTIVE_UNKNOWN = 0;
+    ACTIVE_INACTIVE = 1;
+    ACTIVE_NOV4_NOV6 = 2;
+    ACTIVE_V4 = 3;
+    ACTIVE_V6 = 4;
+    ACTIVE_V4_V6 = 5;
+  }
+  string source = 1;
+  int64 time = 2;
+
+  // For individual responses
+  int32 sequence = 3;
+  Code code = 4;
+  // state is only present if code is CODE_NO_ERROR
+  // and request was remote
+  State state = 5;
+  // active is only present if code is CODE_NO_ERROR
+  // and request was not remote
+  Active active = 6;
+
+  // summary
+  int32 sent = 7;       // Total packets sent.
+  int32 errors = 8;     // Count of errors received when sending packets.
+  int32 received = 9;   // Total packets received.
+  // histograms in summary
+  map <uint32,uint32> codes = 10;     // Keys are values of Code enum
+  map <uint32,uint32> states = 11;    // Keys are values of State enum
+  map <uint32,uint32> actives = 12;   // Keys are values of Active enum
 }
 
 // A TracerouteRequest describes the traceroute operation to perform.  Only the
