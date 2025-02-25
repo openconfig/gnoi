@@ -70,8 +70,11 @@ service Containerz {
   // Start starts a container. If the image does not exist on the target,
   // Start returns an error. A started container is identified by an instance
   // name, which  can optionally be supplied by the caller otherwise the target
-  // should provide one. If the instance name already exists, the target should
-  // return an error.
+  // should provide one. When the instance name already exists, the target should
+  // return an error if the container is running or if it is stopped but the
+  // request has more fields than just the instance name. If the container is
+  // stopped and the request contains only the instance name then Start should
+  // start the container
   rpc StartContainer(StartContainerRequest) returns (StartContainerResponse) {}
 
   // Stop stops a container. If the container does not exist or is not running
