@@ -356,6 +356,20 @@ message Volume {
   bool read_only = 3;
 }
 
+// A device to be added to the container.
+message Device {
+  // The path on the host to map into the container.
+  string path_on_host = 1;
+
+  // The path in the container to map the host path to.
+  string path_in_container = 2;
+
+  // The permissions to apply to the device.
+  // The format is the same as the cgroup permissions format.
+  // Example: "rwm" (read, write, and mknod)
+  string permissions = 3;
+}
+
 message StartContainerRequest {
   // The name and tag of the container to start.
   string image_name = 1;
@@ -466,6 +480,9 @@ message StartContainerRequest {
 
   Limits limits = 13;
   
+  // Devices to be added to the container.
+  repeated Device devices = 14;
+
   // Other container properties will be added as it becomes necessary.
 }
 
