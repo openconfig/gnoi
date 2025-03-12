@@ -358,16 +358,27 @@ message Volume {
 
 // A device to be added to the container.
 message Device {
-  // The path on the host to map into the container.
-  string path_on_host = 1;
+  // Device path on the host.
+  string src_path = 1;
 
-  // The path in the container to map the host path to.
-  string path_in_container = 2;
+  // The path in the container to map the device to.
+  string dst_path = 2;
 
   // The permissions to apply to the device.
-  // The format is the same as the cgroup permissions format.
-  // Example: "rwm" (read, write, and mknod)
-  string permissions = 3;
+  enum Permission {
+    UNSPECIFIED = 0;
+
+    // Permission to read from the device.
+    READ = 1;
+
+    // Permission to write to the device.
+    WRITE = 2;
+
+    // Permission to create device files using mknod command.
+    MKNOD = 3;
+  }
+
+  repeated Permission permissions =  3;
 }
 
 message StartContainerRequest {
