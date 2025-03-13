@@ -359,6 +359,31 @@ message Volume {
   bool read_only = 3;
 }
 
+// A device to be added to the container.
+message Device {
+  // Device path on the host.
+  string src_path = 1;
+
+  // The path in the container to map the device to.
+  string dst_path = 2;
+
+  // The permissions to apply to the device.
+  enum Permission {
+    UNSPECIFIED = 0;
+
+    // Permission to read from the device.
+    READ = 1;
+
+    // Permission to write to the device.
+    WRITE = 2;
+
+    // Permission to create device files using mknod command.
+    MKNOD = 3;
+  }
+
+  repeated Permission permissions =  3;
+}
+
 message StartContainerRequest {
   // The name and tag of the container to start.
   string image_name = 1;
@@ -469,6 +494,9 @@ message StartContainerRequest {
 
   Limits limits = 13;
   
+  // Devices to be added to the container.
+  repeated Device devices = 14;
+
   // Other container properties will be added as it becomes necessary.
 }
 
