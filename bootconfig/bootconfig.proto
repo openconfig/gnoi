@@ -50,6 +50,10 @@ message GetBootConfigResponse {
   bootz.BootConfig boot_config = 1;
 }
 
+// The presence of a message should define the operation requested.
+// If a message is present the contents of that data should be replaced with
+// the contents of the message (i.e. an empty submessage should replace the
+// current bootconfig datastore). An unset submessage is considered a NOOP.
 message SetBootConfigRequest {
   bootz.BootConfig boot_config = 1;  
   bootz.Credentials credentials = 2;
