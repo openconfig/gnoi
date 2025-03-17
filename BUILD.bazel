@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 # Supporting infrastructure for implementing and testing PINS.
-load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_test")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -22,7 +22,32 @@ package(
 
 exports_files(["LICENSE"])
 
+# gazelle:go_grpc_compilers @io_bazel_rules_go//proto:go_grpc_v2, @io_bazel_rules_go//proto:go_proto
+# gazelle:proto_import_prefix github.com/openconfig/gnoi
 # gazelle:prefix github.com/openconfig/gnoi
+# gazelle:resolve proto go google/rpc/status.proto @org_golang_google_genproto_googleapis_rpc//status
+# gazelle:resolve proto google/rpc/status.proto @com_google_googleapis//google/rpc:status_proto
+# gazelle:resolve proto go github.com/openconfig/bootz/proto/bootz.proto @openconfig_bootz//proto:bootz_go_proto
+# gazelle:resolve proto github.com/openconfig/bootz/proto/bootz.proto @openconfig_bootz//proto:bootz_proto
+# gazelle:resolve proto go github.com/openconfig/gnsi/authz/authz.proto @openconfig_gnsi//authz:authz_go_proto
+# gazelle:resolve proto github.com/openconfig/gnsi/authz/authz.proto @openconfig_gnsi//authz:authz_proto
+# gazelle:resolve proto go github.com/openconfig/gnsi/certz/certz.proto @openconfig_gnsi//certz:certz_go_proto
+# gazelle:resolve proto github.com/openconfig/gnsi/certz/certz.proto @openconfig_gnsi//certz:certz_proto
+# gazelle:resolve proto go github.com/openconfig/gnsi/pathz/pathz.proto @openconfig_gnsi//pathz:pathz_go_proto
+# gazelle:resolve proto github.com/openconfig/gnsi/pathz/pathz.proto @openconfig_gnsi//pathz:pathz_proto
 gazelle(name = "gazelle")
 
-# gazelle:exclude **.pb.go
+gazelle(
+    name = "gazelle_update_repos",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=gnoi_go_deps.bzl%gnoi_go_deps",
+        "-prune",
+    ],
+    command = "update-repos",
+)
+
+gazelle_test(
+    name = "gazelle_test",
+    workspace = "//:BUILD.bazel",
+)
