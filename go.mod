@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/golang/protobuf v1.5.4
 	github.com/openconfig/bootz v0.3.1
-	github.com/openconfig/gnsi v1.7.0
+	github.com/openconfig/gnsi v1.8.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250106144421-5f5ef82da422
 	google.golang.org/grpc v1.69.4
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1

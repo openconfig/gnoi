@@ -70,8 +70,11 @@ service Containerz {
   // Start starts a container. If the image does not exist on the target,
   // Start returns an error. A started container is identified by an instance
   // name, which  can optionally be supplied by the caller otherwise the target
-  // should provide one. If the instance name already exists, the target should
-  // return an error.
+  // should provide one. When the instance name already exists, the target 
+  // should return an error if the container is running or if it is stopped but 
+  // the request has more fields than just the instance name. If the container 
+  // is stopped and the request contains only the instance name then Start 
+  // should start the container
   rpc StartContainer(StartContainerRequest) returns (StartContainerResponse) {}
 
   // Stop stops a container. If the container does not exist or is not running
@@ -356,6 +359,31 @@ message Volume {
   bool read_only = 3;
 }
 
+// A device to be added to the container.
+message Device {
+  // Device path on the host.
+  string src_path = 1;
+
+  // The path in the container to map the device to.
+  string dst_path = 2;
+
+  // The permissions to apply to the device.
+  enum Permission {
+    UNSPECIFIED = 0;
+
+    // Permission to read from the device.
+    READ = 1;
+
+    // Permission to write to the device.
+    WRITE = 2;
+
+    // Permission to create device files using mknod command.
+    MKNOD = 3;
+  }
+
+  repeated Permission permissions =  3;
+}
+
 message StartContainerRequest {
   // The name and tag of the container to start.
   string image_name = 1;
@@ -466,6 +494,9 @@ message StartContainerRequest {
 
   Limits limits = 13;
   
+  // Devices to be added to the container.
+  repeated Device devices = 14;
+
   // Other container properties will be added as it becomes necessary.
 }
 
@@ -600,7 +631,12 @@ message LogResponse {
 // volume
 enum Driver {
   DS_UNSPECIFIED = 0;
+
+  // Refers to the standard mount(8) built-in volume driver.
   DS_LOCAL = 1;
+
+  // Refers to a custom volume driver that should be loaded via Plugin RPCs.
+  DS_CUSTOM = 2;
 }
 
 message LocalDriverOptions {
@@ -619,6 +655,14 @@ message LocalDriverOptions {
   string mountpoint = 3;
 }
 
+// CustomOptions are an opaque set of volume options that are passed to the
+// volume plugin identified by the driver. The container runtime is not 
+// expected to interpret this information.
+message CustomOptions {
+  // options are a key-value collections of options for the custom driver.
+  map<string, string> options = 1;
+}
+
 message CreateVolumeRequest {
   // name of the volume. If present, this system must create the volume with
   // this name otherwise it must allocate a name.
@@ -629,14 +673,15 @@ message CreateVolumeRequest {
   // and associated options.
   Driver driver = 2;
 
+  // Labels to apply to the volume. Labels are metadata for the the volume.
+  map<string, string> labels = 4;
+
   // Options for the driver. The actual option keys and values are driver
   // specific.
   oneof options {
     LocalDriverOptions local_mount_options = 3;
+    CustomOptions custom_options = 5;
   }
-
-  // Labels to apply to the volume. Labels are metadata for the the volume.
-  map<string, string> labels = 4;
 }
 
 message CreateVolumeResponse {
