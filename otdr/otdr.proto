@@ -85,8 +85,8 @@ message OTDRConfiguration {
   // The sampling resolution in meters.
   float sampling_resolution_m = 6;
 
-  // Whether autonegotiation is enabled for the OTDR trace.
-  bool autonegotiation = 7;
+  // The flag to depict if auto negotiation is required or not.
+  bool auto_negotiation = 7;
 }
 
 // Type definition for different profiles of fiber types. These match what is
