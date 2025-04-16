@@ -1,8 +1,7 @@
 module github.com/openconfig/gnoi
 
 go 1.22
-
-toolchain go1.22.4
+toolchain go1.24.1
 
 require (
 	github.com/golang/protobuf v1.5.4
@@ -15,7 +14,7 @@ require (
 
 require (
 	github.com/openconfig/gnmi v0.10.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 )
