@@ -75,3 +75,20 @@ message DebugStatus {
   // A list of messages that carry the error details.
   repeated google.protobuf.Any details = 3;
 }
+
+// Policy defines a set of commands a list of users are allowed to execute
+// on the device.
+// There can only be a single policy defined for the service.
+message Policy {
+  repeated Term terms = 1;
+}
+
+// Term defines a term in the policy for allowing access to commands by users.
+message Term {
+  // Users are the allowed spiffe id's allowed to use the particular debug
+  // requests.
+  repeated string users = 1;
+  // The only fields in the request that are matched is mode / command 
+  // role_account.
+  repeated DebugRequest requests = 2;
+}
