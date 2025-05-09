@@ -12,7 +12,7 @@ import "google/rpc/status.proto";
 option go_package = 
   "github.com/openconfig/gnoi/packet_link_qualification;linkqual";
 
-option (types.gnoi_version) = "1.1.0";
+option (types.gnoi_version) = "1.2.0";
 
 service LinkQualification {
   // Create will dispatch a create operation for each interface and return.
@@ -57,6 +57,8 @@ message CreateRequest {
 // NOT_FOUND: interface_name could not be found on the service.
 // INVALID_ARGUMENT: if any of the configuration is not supported.
 // ALREADY_EXISTS: if the qualification id is already in use.
+// FAILED_PRECONDITION: if a request cannot be handled due to capability
+// mismatch
 message CreateResponse {
   map<string, google.rpc.Status> status = 2;
 }
@@ -305,6 +307,9 @@ message PacketGeneratorCapabilities {
   // The minimum interval between samples for statistics relating to the
   // qualification.
   google.protobuf.Duration min_sample_interval = 7;
+  // List of interfaces that support this capability.  If this field is not
+  // populated then it is assumed that all interfaces are supported.
+  repeated string supported_interfaces = 8;
 }
 
 enum PacketInjectorLoopbackMode {
@@ -326,6 +331,9 @@ message PacketInjectorCapabilities {
   // Loopback modes that are supported by the device when using the packet
   // injector mode.
   repeated PacketInjectorLoopbackMode loopback_modes = 8;
+  // List of interfaces that support this capability.  If this field is not
+  // populated then it is assumed that all interfaces are supported.
+  repeated string supported_interfaces = 9;
 }
 
 // If the service does not support any of the defined
@@ -341,6 +349,9 @@ message GeneratorCapabilities {
 message PmdLoopbackCapabilities {
   google.protobuf.Duration min_setup_duration = 1;
   google.protobuf.Duration min_teardown_duration = 2;
+  // List of interfaces that support this capability.  If this field is not
+  // populated then it is assumed that all interfaces are supported.
+  repeated string supported_interfaces = 3;
 }
 
 enum HeaderMatchField {
@@ -357,6 +368,9 @@ message AsicLoopbackCapabilities {
   // following a qualification.
   google.protobuf.Duration min_teardown_duration = 2;
   repeated HeaderMatchField fields = 3;
+  // List of interfaces that support this capability.  If this field is not
+  // populated then it is assumed that all interfaces are supported.
+  repeated string supported_interfaces = 4;
 }
 
 // If the service does not support any of the defined
