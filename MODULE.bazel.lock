@@ -107,6 +107,8 @@
     "https://bcr.bazel.build/modules/opencensus-cpp/0.0.0-20230502-50eb5de/source.json": "f50efc07822f5425bd1d3e40e977484f9c0142463052717d40ec85cd6744243e",
     "https://bcr.bazel.build/modules/opencensus-proto/0.4.1/MODULE.bazel": "4a2e8b4d0b544002502474d611a5a183aa282251e14f6a01afe841c0c1b10372",
     "https://bcr.bazel.build/modules/opencensus-proto/0.4.1/source.json": "a7d956700a85b833c43fc61455c0e111ab75bab40768ed17a206ee18a2bbe38f",
+    "https://bcr.bazel.build/modules/openconfig_gnmi/0.14.1/MODULE.bazel": "1965a4108e585c2e9f54350e690ede6d985a3abdf0907a536c89a49dda6a8bbd",
+    "https://bcr.bazel.build/modules/openconfig_gnmi/0.14.1/source.json": "a1a91e1fed377ab98c984b04e798ea1845ecd4ccd2c76d4fc17cafd5d33b4ff4",
     "https://bcr.bazel.build/modules/opentelemetry-cpp/1.14.2/MODULE.bazel": "089a5613c2a159c7dfde098dabfc61e966889c7d6a81a98422a84c51535ed17d",
     "https://bcr.bazel.build/modules/opentelemetry-cpp/1.16.0/MODULE.bazel": "b7379a140f538cea3f749179a2d481ed81942cc6f7b05a6113723eb34ac3b3e7",
     "https://bcr.bazel.build/modules/opentelemetry-cpp/1.16.0/source.json": "da0cf667713b1e48d7f8912b100b4e0a8284c8a95717af5eb8c830d699e61cf5",

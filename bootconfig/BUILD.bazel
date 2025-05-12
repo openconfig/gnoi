@@ -58,10 +58,10 @@ go_proto_library(
     proto = ":bootconfig_proto",
     deps = [
         "//types",
-        "@openconfig_bootz//proto:bootz_go_proto",
-        "@openconfig_gnsi//authz:authz_go_proto",
-        "@openconfig_gnsi//certz:certz_go_proto",
-        "@openconfig_gnsi//pathz:pathz_go_proto",
+        "@openconfig_bootz//proto:bootz",
+        "@openconfig_gnsi//authz",
+        "@openconfig_gnsi//certz",
+        "@openconfig_gnsi//pathz",
     ],
 )
 

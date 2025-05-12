@@ -27,13 +27,13 @@ exports_files(["LICENSE"])
 # gazelle:prefix github.com/openconfig/gnoi
 # gazelle:resolve proto go google/rpc/status.proto @org_golang_google_genproto_googleapis_rpc//status
 # gazelle:resolve proto google/rpc/status.proto @com_google_googleapis//google/rpc:status_proto
-# gazelle:resolve proto go github.com/openconfig/bootz/proto/bootz.proto @openconfig_bootz//proto:bootz_go_proto
+# gazelle:resolve proto go github.com/openconfig/bootz/proto/bootz.proto @openconfig_bootz//proto:bootz
 # gazelle:resolve proto github.com/openconfig/bootz/proto/bootz.proto @openconfig_bootz//proto:bootz_proto
-# gazelle:resolve proto go github.com/openconfig/gnsi/authz/authz.proto @openconfig_gnsi//authz:authz_go_proto
+# gazelle:resolve proto go github.com/openconfig/gnsi/authz/authz.proto @openconfig_gnsi//authz:authz
 # gazelle:resolve proto github.com/openconfig/gnsi/authz/authz.proto @openconfig_gnsi//authz:authz_proto
-# gazelle:resolve proto go github.com/openconfig/gnsi/certz/certz.proto @openconfig_gnsi//certz:certz_go_proto
+# gazelle:resolve proto go github.com/openconfig/gnsi/certz/certz.proto @openconfig_gnsi//certz:certz
 # gazelle:resolve proto github.com/openconfig/gnsi/certz/certz.proto @openconfig_gnsi//certz:certz_proto
-# gazelle:resolve proto go github.com/openconfig/gnsi/pathz/pathz.proto @openconfig_gnsi//pathz:pathz_go_proto
+# gazelle:resolve proto go github.com/openconfig/gnsi/pathz/pathz.proto @openconfig_gnsi//pathz:pathz
 # gazelle:resolve proto github.com/openconfig/gnsi/pathz/pathz.proto @openconfig_gnsi//pathz:pathz_proto
 gazelle(name = "gazelle")
 
