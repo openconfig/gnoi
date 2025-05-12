@@ -26,7 +26,7 @@ gnoi_go_deps()
 
 go_rules_dependencies()
 
-go_register_toolchains(version = "1.23.4")
+go_register_toolchains(version = "1.24.1")
 
 gazelle_dependencies()
 

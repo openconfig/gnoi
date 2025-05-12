@@ -85,21 +85,21 @@ def gnoi_deps():
     if not native.existing_rule("openconfig_bootz"):
         http_archive(
             name = "openconfig_bootz",
-            sha256 = "45b2e66654cad3564358d66c46aa06234848d194c124ab6ce7308d89eaf4789c",
-            strip_prefix = "bootz-145e9a838f6ae8ab3210848a0043e78fceda29a3",
-            url = "https://github.com/bstoll/bootz/archive/145e9a838f6ae8ab3210848a0043e78fceda29a3.zip",
+            sha256 = "e47b53b9eebee49b69df735d9b65ec9da00bca5c766910ec2b4abc62c0006915",
+            strip_prefix = "bootz-dac82dd3345fe8c0d2759fbe63341448a58e7a7d",
+            url = "https://github.com/bstoll/bootz/archive/dac82dd3345fe8c0d2759fbe63341448a58e7a7d.zip",
         )
     if not native.existing_rule("openconfig_gnmi"):
         http_archive(
             name = "openconfig_gnmi",
-            sha256 = "5930b29b7f0b5aeec4502d5b2b1b82bb97c218b2752422cfe9a0462e39aa8370",
-            strip_prefix = "gnmi-66ccc5027ea9b69376978a6eeb079ba5907249b7",
-            url = "https://github.com/bstoll/gnmi/archive/66ccc5027ea9b69376978a6eeb079ba5907249b7.zip",
+            sha256 = "813f8a52dfa06dd1b9a2c775b26c42d36a05595dfa6fb0a85dbaead46b5c43a3",
+            strip_prefix = "gnmi-0.14.1",
+            url = "https://github.com/openconfig/gnmi/archive/refs/tags/v0.14.1.tar.gz",
         )
     if not native.existing_rule("openconfig_gnsi"):
         http_archive(
             name = "openconfig_gnsi",
-            sha256 = "9752a0fdbbc98ef7cbeb40a89074ad035b127f8f939204427a407a3569e5157e",
-            strip_prefix = "gnsi-57ecb02511c1541195a212b571ddde05bc635a0a",
-            url = "https://github.com/bstoll/gnsi/archive/57ecb02511c1541195a212b571ddde05bc635a0a.zip",
+            sha256 = "df4c69885b14bb5c69a90dc4f9c0cfb78a6638a6404a79d70553d14fe350404a",
+            strip_prefix = "gnsi-1.9.0",
+            url = "https://github.com/openconfig/gnsi/archive/refs/tags/v1.9.0.tar.gz",
         )
