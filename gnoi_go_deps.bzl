@@ -195,8 +195,8 @@ def gnoi_go_deps():
     go_repository(
         name = "com_github_openconfig_bootz",
         importpath = "github.com/openconfig/bootz",
-        sum = "h1:Q0mThGmZiX/kht+crar6FtLVxqdjUS/deMnpcNX+F7c=",
-        version = "v0.3.1",
+        sum = "h1:hUFHFPJe7fLALlTommhzAlE54QCwA00Hcm7oSU43VRs=",
+        version = "v0.5.0",
     )
     go_repository(
         name = "com_github_openconfig_gnmi",
@@ -259,6 +259,12 @@ def gnoi_go_deps():
         version = "v0.0.0-20180920164130-b9218ef580f5",
     )
     go_repository(
+        name = "com_github_rogpeppe_go_internal",
+        importpath = "github.com/rogpeppe/go-internal",
+        sum = "h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=",
+        version = "v1.10.0",
+    )
+    go_repository(
         name = "com_github_sirupsen_logrus",
         importpath = "github.com/sirupsen/logrus",
         sum = "h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=",
@@ -267,8 +273,8 @@ def gnoi_go_deps():
     go_repository(
         name = "com_github_spf13_afero",
         importpath = "github.com/spf13/afero",
-        sum = "h1:stMpOSZFs//0Lv29HduCmli3GUfpFoF3Y1Q/aXj/wVM=",
-        version = "v1.9.5",
+        sum = "h1:EaGW2JJh15aKOejeuJ+wpFSHnbd7GE6Wvp3TsNhb6LY=",
+        version = "v1.10.0",
     )
     go_repository(
         name = "com_github_spf13_cast",
@@ -295,6 +301,12 @@ def gnoi_go_deps():
         version = "v1.16.0",
     )
     go_repository(
+        name = "com_github_stretchr_testify",
+        importpath = "github.com/stretchr/testify",
+        sum = "h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=",
+        version = "v1.9.0",
+    )
+    go_repository(
         name = "com_github_subosito_gotenv",
         importpath = "github.com/subosito/gotenv",
         sum = "h1:X1TuBLAMDFbaTAChgCBLu3DU3UPyELpnF2jjJ2cz/S8=",
@@ -317,6 +329,12 @@ def gnoi_go_deps():
         importpath = "cel.dev/expr",
         sum = "h1:RwRhoH17VhAu9U5CMvMhH1PDVgf0tuz9FT+24AfMLfU=",
         version = "v0.16.2",
+    )
+    go_repository(
+        name = "in_gopkg_check_v1",
+        importpath = "gopkg.in/check.v1",
+        sum = "h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=",
+        version = "v1.0.0-20201130134442-10cb98267c6c",
     )
     go_repository(
         name = "in_gopkg_ini_v1",
@@ -466,8 +484,8 @@ def gnoi_go_deps():
     go_repository(
         name = "org_golang_x_xerrors",
         importpath = "golang.org/x/xerrors",
-        sum = "h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=",
-        version = "v0.0.0-20191204190536-9bdfabe68543",
+        sum = "h1:+cNy6SZtPcJQH3LJVLOSmiC7MMxXNOb3PU/VUEz+EhU=",
+        version = "v0.0.0-20231012003039-104605ab7028",
     )
     go_repository(
         name = "org_mozilla_go_pkcs7",
