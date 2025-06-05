@@ -85,8 +85,12 @@ message OTDRConfiguration {
   // The sampling resolution in meters.
   float sampling_resolution_m = 6;
 
-  // The flag to depict if auto negotiation is required or not.
-  bool auto_negotiation = 7;
+  // Disable auto negotiation expects the following behavior:
+  // - When set to True, the device will not attempt any negotiation with the far end device to prevent OTDR usage on the same fiber.
+  // - When set to False and the far end is reachable, communication will occur with both devices to prevent OTDR usage on the same fiber.
+  // - When set to False and the far end is NOT reachable (i.e. fiber cut), the device will not attempt any negotiation with the far end device to prevent OTDR usage on the same fiber.
+  // - By default, value is False
+  bool disable_auto_negotiation = 7;
 }
 
 // Type definition for different profiles of fiber types. These match what is
