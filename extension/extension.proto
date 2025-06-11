@@ -15,7 +15,7 @@ option (types.gnoi_version) = "0.1.0";
 // Only one RPC (SetSignatureVerification, FinalizeExtensions,
 // InstallExtension, UninstallExtension)
 // may be in progress at any given time
-service Extension{
+service Extension {
 
   // Shows the current state of the extensions on the system.
   rpc ListExtensions(ListExtensionsRequest)returns (ListExtensionsResponse);
