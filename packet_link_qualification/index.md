@@ -25,9 +25,9 @@ network wide link quality.
 Upon calling Create, the interfaces on the device will be put into a forwarding
 mode which must not contain other traffic, control or data. This means the generator
 must only originate test traffic.  The reflector must send all traffic which
-is received from the generator and not originate any of its own traffic. This may
-cause the generator or reflector endpoint to become unreachable.  The service
-implementation must gracefully handle this state.
+is received from the port connected to the generator and not originate any of its
+own traffic. This may cause the generator or reflector endpoint to become
+unreachable.  The service implementation must gracefully handle this state.
 
 **Devices must return to pre-link qualification state after the link qualification has completed or errored**
 
