@@ -40,14 +40,54 @@ message ClearBGPNeighborRequest {
     SOFT = 0;         // Send route-refresh and reapply policy.
     SOFTIN = 1;       // Re-apply inbound policy on stored Adj-RIB-In.
     HARD = 2;         // Teardown and restart TCP connection.
-    // If the "N" bit for Graceful-Restart" is set, then encapsulate the original 
-    // Notification message in the data portion of the Subcode 9 message per 
-    // rfc8538#section-3.1 and Flush routes associated with this neighbor.
-    // Otherwise, send BGP Cease notification (code 6) with subcode 4 then 
-    // teardown and restart the TCP connection.
+    // When handling a request to perform a HARD_reset on a BGP session, the
+    // implementation's behavior is determined by the capabilities negotiated with
+    // the peer. The following actions are required for each scenario:
+    
+    // - If the BGP session does not support Graceful Restart (GR):
+    //     - The implementation must send a BGP Cease NOTIFICATION (code 6) to the
+    //       peer. The value of any subcode sent is considered irrelevant.
+    //     - It must reset the TCP session.
+    //     - It must flush all routes learned over this session.
+    
+    // - If the BGP session supports GR but does not support RFC 8538:
+    //     - The implementation must send a BGP Cease NOTIFICATION (code 6) to the
+    //       peer. The value of any subcode sent is considered irrelevant.
+    //     - It must reset the TCP session.
+    //     - It must flush all routes learned over this session.
+    
+    // - If the BGP session supports both GR and RFC 8538:
+    //     - The implementation must send a BGP Cease NOTIFICATION (code 6) with the
+    //       specific subcode for "Hard Reset" (value 9).
+    //     - It must reset the TCP session.
+    //     - It must flush all routes learned over this session.
+
     HARD_RESET = 3;
-    // Send BGP Cease notification (code 6) with subcode 4 then 
-    // teardown and restart the TCP connection.
+    // When handling a request to perform a GRACEFUL_RESET on a BGP session, the
+    // implementation's behavior is determined by the capabilities negotiated with
+    // the peer. A GRACEFUL_RESET is intended to trigger a graceful session
+    // teardown, allowing the forwarding plane to be preserved while the BGP
+    // control plane restarts. The following actions are required for each scenario:
+    
+    // - If the BGP session does not support Graceful Restart (GR):
+    //   - The implementation must return an error, as a graceful reset cannot be
+    //   performed.
+    
+    // - If the BGP session supports GR but does not support RFC 8538:
+    //   - The implementation must not send a BGP NOTIFICATION message.
+    //   - It must reset the TCP session.
+    //   - It must retain all routes learned over this session for a period derived
+    //   from the relevant timers (e.g., restart-time, LLGR, and/or ExRR), depending
+    //   on the device configuration and negotiated capabilities.
+    
+    // - If the BGP session supports both GR and RFC 8538:
+    //   - The implementation must send a BGP Cease NOTIFICATION (code 6) with the
+    //   subcode "Other Configuration Change" (value 6).
+    //   - It must reset the TCP session.
+    //   - It must retain all routes learned over this session for a period derived
+    //   from the relevant timers (e.g., restart-time, LLGR, and/or ExRR), depending
+    //   on the device configuration and negotiated capabilities.
+
     GRACEFUL_RESET = 4;     
   }
   Mode mode = 3;       // Which mode to use for the clear operation.
