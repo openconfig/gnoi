@@ -31,6 +31,11 @@ service BGP {
 
 }
 
+// ClearBGPNeighbor clears a BGP session. On success, this RPC returns an 
+// empty ClearBGPNeighborResponse. In case of a failure to meet a 
+// precondition (e.g., requesting a graceful reset on a session where 
+// Graceful Restart is not enabled), the server MUST return a gRPC error 
+// with the relevant status code.
 message ClearBGPNeighborRequest {
   string address = 1;  // IPv4 or IPv6 BGP neighbor address to clear.
   // Routing instance containing the neighbor. Defaults to the global routing
@@ -70,8 +75,8 @@ message ClearBGPNeighborRequest {
     // control plane restarts. The following actions are required for each scenario:
     
     // - If the BGP session does not support Graceful Restart (GR):
-    //  - The implementation must return an error, as a graceful reset cannot be
-    //   performed.
+    //  - The implementation MUST return a gRPC error with the status code
+    //    `FAILED_PRECONDITION`, as a graceful reset cannot be performed.
     
     // - If the BGP session supports GR but does not support RFC 8538:
     //   - The implementation must not send a BGP NOTIFICATION message.
