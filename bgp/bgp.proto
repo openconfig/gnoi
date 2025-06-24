@@ -45,22 +45,22 @@ message ClearBGPNeighborRequest {
     // the peer. The following actions are required for each scenario:
     
     // - If the BGP session does not support Graceful Restart (GR):
-    //     - The implementation must send a BGP Cease NOTIFICATION (code 6) to the
-    //       peer. The value of any subcode sent is considered irrelevant.
-    //     - It must reset the TCP session.
-    //     - It must flush all routes learned over this session.
+    //  - The implementation must send a BGP Cease NOTIFICATION (code 6) to the
+    //    peer. The value of any subcode sent is considered irrelevant.
+    //  - It must reset the TCP session.
+    //  - It must flush all routes learned over this session.
     
     // - If the BGP session supports GR but does not support RFC 8538:
-    //     - The implementation must send a BGP Cease NOTIFICATION (code 6) to the
+    //  - The implementation must send a BGP Cease NOTIFICATION (code 6) to the
     //       peer. The value of any subcode sent is considered irrelevant.
-    //     - It must reset the TCP session.
-    //     - It must flush all routes learned over this session.
+    //  - It must reset the TCP session.
+    //  - It must flush all routes learned over this session.
     
     // - If the BGP session supports both GR and RFC 8538:
-    //     - The implementation must send a BGP Cease NOTIFICATION (code 6) with the
-    //       specific subcode for "Hard Reset" (value 9).
-    //     - It must reset the TCP session.
-    //     - It must flush all routes learned over this session.
+    //  - The implementation must send a BGP Cease NOTIFICATION (code 6) with the
+    //    specific subcode for "Hard Reset" (value 9).
+    //  - It must reset the TCP session.
+    //  - It must flush all routes learned over this session.
 
     HARD_RESET = 3;
     // When handling a request to perform a GRACEFUL_RESET on a BGP session, the
@@ -70,7 +70,7 @@ message ClearBGPNeighborRequest {
     // control plane restarts. The following actions are required for each scenario:
     
     // - If the BGP session does not support Graceful Restart (GR):
-    //   - The implementation must return an error, as a graceful reset cannot be
+    //  - The implementation must return an error, as a graceful reset cannot be
     //   performed.
     
     // - If the BGP session supports GR but does not support RFC 8538:
