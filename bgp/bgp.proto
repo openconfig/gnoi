@@ -44,7 +44,11 @@ message ClearBGPNeighborRequest {
   enum Mode {
     SOFT = 0;         // Send route-refresh and reapply policy.
     SOFTIN = 1;       // Re-apply inbound policy on stored Adj-RIB-In.
-    HARD = 2;         // Teardown and restart TCP connection.
+    // The HARD Mode is intended to teardown and restart the BGP session
+    // TCP connection. This field does not define what the behavior is regarding
+    // BGP graceful restart. The HARD_RESET and GRACEFUL_RESET fields 
+    // should be used instead of HARD.
+    HARD = 2;      [deprecated=true];
     // When handling a request to perform a HARD_reset on a BGP session, the
     // implementation's behavior is determined by the capabilities negotiated with
     // the peer. The following actions are required for each scenario:
