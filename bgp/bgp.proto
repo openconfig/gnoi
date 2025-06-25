@@ -74,7 +74,7 @@ message ClearBGPNeighborRequest {
     // teardown, allowing the forwarding plane to be preserved while the BGP
     // control plane restarts. The following actions are required for each scenario:
     // - If the BGP session does not support Graceful Restart (GR):
-    //  - The implementation MUST return a gRPC error with the status code
+    //   - The implementation MUST return a gRPC error with the status code
     //    `FAILED_PRECONDITION`, as a graceful reset cannot be performed.
     // - If the BGP session supports GR but does not support RFC 8538:
     //   - The implementation must not send a BGP NOTIFICATION message.
