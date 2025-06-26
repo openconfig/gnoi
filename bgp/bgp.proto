@@ -48,7 +48,7 @@ message ClearBGPNeighborRequest {
     // TCP connection. This field does not define what the behavior is regarding
     // BGP graceful restart. The HARD_RESET and GRACEFUL_RESET fields
     // should be used instead of HARD.
-    HARD = 2;      [deprecated=true];
+    HARD = 2 [deprecated=true];
     // When handling a request to perform a HARD_RESET on a BGP session, the
     // implementation's behavior is determined by the capabilities negotiated
     // with the peer. The following actions are required for each scenario:
