@@ -17,7 +17,9 @@ syntax = "proto3";
 
 package gnoi.os;
 
+import "github.com/openconfig/gnoi/bootconfig/bootconfig.proto";
 import "github.com/openconfig/gnoi/types/types.proto";
+
 
 option go_package = "github.com/openconfig/gnoi/os";
 
@@ -65,7 +67,7 @@ service OS {
   // Scenario 1 - When the Target already has the OS package:
   //
   //         Client :--------------|--------------> Target
-  //              TransferRequest -->
+  //              TransferRequest --> 
   //                              <-- [Validated|InstallError]
   //
   //
@@ -331,6 +333,14 @@ message ActivateRequest {
   // the activated OS version is required. This action CAN be executing
   // the gNOI.system.Reboot() RPC.
   bool no_reboot = 3;
+
+  // Bootconfig provides the next boot configuration to load after OS upgrade.
+  // The device will take all artifacts provided and replace them just as if
+  // a gnoi.BootConfig.Set was performed on the device.
+  // The main use case is to facilitate the new OS to utilized a new
+  // configuration syntax which was not supported in previous versions.
+  gnoi.bootconfig.SetBootConfigRequest boot_config = 4;
+
 }
 
 // The ActivateResponse is sent from the Target to the Client in response to the
