@@ -140,3 +140,8 @@ adding a file onto a system and either "activating" it or not.
   files under a single directory (the system shouldn't search its entire
   filesystem for extension files)
 
+For generic filesystems operations network operators should use the gnoi.File RPCs,
+and for more specialised workflows (e.g. an OS installation workflow, or an extension management workflow)
+separate services like gNOI OS and gNOI Extension can be used, so that each service can capture the nuances
+of each particular use case. This helps overloading SetPackageRequest/SetPackageResponse
+with a lot of extra fields to accommodate the nuances of all use cases.
