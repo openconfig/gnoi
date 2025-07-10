@@ -57,9 +57,9 @@ message GetBootConfigResponse {
 message SetBootConfigRequest {
   // The BootConfig message specified in `boot_config` MUST NOT set the
   // dynamic_oc_config and dynamic_vendor_config fields. These fields
-  // are ONLY valid during bootstrapping of a network device, after the
-  // initial bootstrap, the dynamic configuration is updated through the
-  // gNMI `Set` RPC. If either dynamic_oc_config or dynamic_vendor_config
+  // are ONLY valid during the bootz triggered bootstrapping of a network device.
+  // After the bootz bootstrap, the dynamic configuration is updated through
+  // the gNMI `Set` RPC. If either dynamic_oc_config or dynamic_vendor_config
   // is specified the `SetBootConfig` RPC MUST return an error, specifying
   // `InvalidArgument` as the error code.
   bootz.BootConfig boot_config = 1;  
