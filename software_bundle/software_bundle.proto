@@ -132,7 +132,7 @@ message ListSoftwareBundlesResponse{
 
     // services_to_restart is a list of the services which are pending a reload
     // to be finalized.
-    // This list will be cleared after a ReloadExtended RPC executes.
+    // This list will be cleared after a FinalizeSoftwareBundles RPC executes.
     repeated string services_to_restart = 13;
   }
   repeated SoftwareBundle software_bundles = 1;
