@@ -541,7 +541,7 @@ func (*InstallSoftwareBundleRequest_InstallRequest) isInstallSoftwareBundleReque
 type InstallRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	SoftwareBundleName string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
-	LoadAfterBoot      bool                   `protobuf:"varint,3,opt,name=load_after_boot,json=loadAfterBoot,proto3" json:"load_after_boot,omitempty"`
+	Persistent         bool                   `protobuf:"varint,3,opt,name=persistent,proto3" json:"persistent,omitempty"`
 	Force              bool                   `protobuf:"varint,4,opt,name=force,proto3" json:"force,omitempty"`
 	// Types that are valid to be assigned to SignatureVerification:
 	//
@@ -589,9 +589,9 @@ func (x *InstallRequest) GetSoftwareBundleName() string {
 	return ""
 }
 
-func (x *InstallRequest) GetLoadAfterBoot() bool {
+func (x *InstallRequest) GetPersistent() bool {
 	if x != nil {
-		return x.LoadAfterBoot
+		return x.Persistent
 	}
 	return false
 }
@@ -809,7 +809,7 @@ type ListSoftwareBundlesResponse_SoftwareBundle struct {
 	Release           string                                    `protobuf:"bytes,3,opt,name=release,proto3" json:"release,omitempty"`
 	Description       string                                    `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	InstallStatus     ListSoftwareBundlesResponse_InstallStatus `protobuf:"varint,6,opt,name=install_status,json=installStatus,proto3,enum=gnoi.software_bundle.ListSoftwareBundlesResponse_InstallStatus" json:"install_status,omitempty"`
-	InstallAtBoot     bool                                      `protobuf:"varint,7,opt,name=install_at_boot,json=installAtBoot,proto3" json:"install_at_boot,omitempty"`
+	Persistent        bool                                      `protobuf:"varint,7,opt,name=persistent,proto3" json:"persistent,omitempty"`
 	SignatureValid    bool                                      `protobuf:"varint,8,opt,name=signature_valid,json=signatureValid,proto3" json:"signature_valid,omitempty"`
 	Available         bool                                      `protobuf:"varint,9,opt,name=available,proto3" json:"available,omitempty"`
 	Errors            string                                    `protobuf:"bytes,10,opt,name=errors,proto3" json:"errors,omitempty"`
@@ -885,9 +885,9 @@ func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetInstallStatus() ListSoft
 	return ListSoftwareBundlesResponse_UNSPECIFIED
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetInstallAtBoot() bool {
+func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetPersistent() bool {
 	if x != nil {
-		return x.InstallAtBoot
+		return x.Persistent
 	}
 	return false
 }
@@ -939,20 +939,22 @@ var File_github_com_openconfig_gnoi_software_bundle_software_bundle_proto protor
 const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDesc = "" +
 	"\n" +
 	"@github.com/openconfig/gnoi/software_bundle/software_bundle.proto\x12\x14gnoi.software_bundle\x1a,github.com/openconfig/gnoi/types/types.proto\"\x1c\n" +
-	"\x1aListSoftwareBundlesRequest\"\xd6\x06\n" +
+	"\x1aListSoftwareBundlesRequest\"\xce\x06\n" +
 	"\x1bListSoftwareBundlesResponse\x12k\n" +
 	"\x10software_bundles\x18\x01 \x03(\v2@.gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundleR\x0fsoftwareBundles\x1aQ\n" +
 	"\aPackage\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x18\n" +
-	"\arelease\x18\x03 \x01(\tR\arelease\x1a\x9d\x04\n" +
+	"\arelease\x18\x03 \x01(\tR\arelease\x1a\x95\x04\n" +
 	"\x0eSoftwareBundle\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x18\n" +
 	"\arelease\x18\x03 \x01(\tR\arelease\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12f\n" +
-	"\x0einstall_status\x18\x06 \x01(\x0e2?.gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatusR\rinstallStatus\x12&\n" +
-	"\x0finstall_at_boot\x18\a \x01(\bR\rinstallAtBoot\x12'\n" +
+	"\x0einstall_status\x18\x06 \x01(\x0e2?.gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatusR\rinstallStatus\x12\x1e\n" +
+	"\n" +
+	"persistent\x18\a \x01(\bR\n" +
+	"persistent\x12'\n" +
 	"\x0fsignature_valid\x18\b \x01(\bR\x0esignatureValid\x12\x1c\n" +
 	"\tavailable\x18\t \x01(\bR\tavailable\x12\x16\n" +
 	"\x06errors\x18\n" +
@@ -980,10 +982,12 @@ const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawD
 	"\x1cInstallSoftwareBundleRequest\x12R\n" +
 	"\x10transfer_request\x18\x01 \x01(\v2%.gnoi.software_bundle.TransferRequestH\x00R\x0ftransferRequest\x12O\n" +
 	"\x0finstall_request\x18\x02 \x01(\v2$.gnoi.software_bundle.InstallRequestH\x00R\x0einstallRequestB\t\n" +
-	"\arequest\"\xcc\x02\n" +
+	"\arequest\"\xc4\x02\n" +
 	"\x0eInstallRequest\x120\n" +
-	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12&\n" +
-	"\x0fload_after_boot\x18\x03 \x01(\bR\rloadAfterBoot\x12\x14\n" +
+	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12\x1e\n" +
+	"\n" +
+	"persistent\x18\x03 \x01(\bR\n" +
+	"persistent\x12\x14\n" +
 	"\x05force\x18\x04 \x01(\bR\x05force\x12J\n" +
 	"\x06source\x18\x05 \x01(\x0e20.gnoi.software_bundle.InstallRequest.TrustSourceH\x00R\x06source\x12&\n" +
 	"\x0essl_profile_id\x18\x06 \x01(\tH\x00R\fsslProfileId\"<\n" +

@@ -111,9 +111,12 @@ message ListSoftwareBundlesResponse{
     string description = 4;
     InstallStatus install_status = 6;
 
-    // install_at_boot is true if the software bundle is set to be
-    // installed on next system reload
-    bool install_at_boot = 7;
+    // If persistent is true, then the system will ensure
+    // that this software bundle is applied on startup
+    // if system reboots (e.g. via the System.Reboot RPC).
+    // If persistent is false then the system will not
+    // re-apply this software bundle after startup.
+    bool persistent = 7;
 
     // bool indicating if this software bundle has a valid signature
     bool signature_valid = 8;
@@ -182,9 +185,12 @@ message InstallRequest{
   // for an software bundle which is already present on the system
   string software_bundle_name = 1;
 
-  // if this is true, then the system will also
-  // ensure that this software bundle is loaded on boot/reboot
-  bool load_after_boot = 3;
+  // If persistent is true, then the system will ensure
+  // that this software bundle is applied on startup
+  // if system reboots (e.g. via the System.Reboot RPC).
+  // If persistent is false then the system will not
+  // re-apply this software bundle after startup.
+  bool persistent = 3;
 
   // if this is true, then the system will force installation of the
   // software bundle. This can cause checks
