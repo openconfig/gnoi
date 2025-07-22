@@ -24,8 +24,8 @@ package(
 )
 
 proto_library(
-    name = "extension_proto",
-    srcs = ["extension.proto"],
+    name = "software_bundle_proto",
+    srcs = ["software_bundle.proto"],
     import_prefix = "github.com/openconfig/gnoi",
     deps = [
         "//types:types_proto",
@@ -33,30 +33,30 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "extension_cc_proto",
-    deps = [":extension_proto"],
+    name = "software_bundle_cc_proto",
+    deps = [":software_bundle_proto"],
 )
 
 cc_grpc_library(
-    name = "extension_cc_grpc_proto",
-    srcs = [":extension_proto"],
+    name = "software_bundle_cc_grpc_proto",
+    srcs = [":software_bundle_proto"],
     grpc_only = True,
-    deps = [":extension_cc_proto"],
+    deps = [":software_bundle_cc_proto"],
 )
 
 go_proto_library(
-    name = "extension_go_proto",
+    name = "software_bundle_go_proto",
     compilers = [
         "@io_bazel_rules_go//proto:go_grpc_v2",
         "@io_bazel_rules_go//proto:go_proto",
     ],
-    importpath = "github.com/openconfig/gnoi/extension",
-    proto = ":extension_proto",
+    importpath = "github.com/openconfig/gnoi/software_bundle",
+    proto = ":software_bundle_proto",
     deps = ["//types"],
 )
 
 go_library(
-    name = "extension",
-    embed = [":extension_go_proto"],
-    importpath = "github.com/openconfig/gnoi/extension",
+    name = "software_bundle",
+    embed = [":software_bundle_go_proto"],
+    importpath = "github.com/openconfig/gnoi/software_bundle",
 )

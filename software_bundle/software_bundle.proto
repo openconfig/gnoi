@@ -1,0 +1,221 @@
+syntax = "proto3";
+
+package gnoi.software_bundle;
+
+import "github.com/openconfig/gnoi/types/types.proto";
+
+option go_package = "github.com/openconfig/gnoi/software_bundle";
+
+option (types.gnoi_version) = "0.1.0";
+
+// SoftwareBundle is a service for managing software bundles on the system.
+// A "software bundle" is a collection of files (e.g. RPMs, squashfs)
+// which are installed to modify the behaviour of the services on the
+// system.
+// Only one RPC (SetSignatureVerification, FinalizeSoftwareBundles,
+// InstallSoftwareBundle, UninstallSoftwareBundle)
+// may be in progress at any given time
+service SoftwareBundle {
+
+  // Shows the current state of the software bundles on the system.
+  rpc ListSoftwareBundles(ListSoftwareBundlesRequest)returns (ListSoftwareBundlesResponse);
+
+  // FinalizeSoftwareBundles reloads any services on the system for
+  // which software bundles have been installed but which have not yet been
+  // reloaded with those software bundles.
+  // Please note that this may kill the connection if the service
+  // hosting the gRPC server reloads so the server is not guaranteed
+  // to return a response here.
+  rpc FinalizeSoftwareBundles(FinalizeSoftwareBundlesRequest)
+      returns (FinalizeSoftwareBundlesResponse);
+
+  // InstallSoftwareBundle installs a new software bundle on the system.
+  // The new software bundle may be transferred as part of the RPC.
+  //
+  // Expected workflows are:
+  // 1. To transfer a new software bundle:
+  // client ______________________________________ server
+  // TransferRequest (with software_bundle_name set) -->
+  // TransferRequest (with contents set)       -->
+  // .. repeated TransferRequest with contents are sent
+  //  until the file is transferred ..
+  // TransferRequest (with hash set)           -->
+  // .. server verifies hash matches expected ..
+  //                                           <-- InstallSoftwareBundleResponse
+  //                             (with acknowledgement = TRANSFER_COMPLETE)
+  // STREAM END
+  //
+  // 2. To transfer and install a new software bundle:
+  // client ______________________________________ server
+  // TransferRequest (with software_bundle_name set) -->
+  // TransferRequest (with contents set)       -->
+  // .. repeated TransferRequest with contents are sent
+  // until the file is transferred ..
+  // TransferRequest (with hash set)           -->
+  // .. server verifies hash matches expected ..
+  //                                           <-- InstallSoftwareBundleResponse
+  //                             (with acknowledgement = TRANSFER_COMPLETE)
+  // InstallRequest (with software_bundle_name set)  -->
+  // (note, other fields may be set )
+  // .. server installs software bundle according to fields.
+  //                                           <-- InstallSoftwareBundleResponse
+  //                              (with acknowledgement = INSTALL_COMPLETE)
+  // STREAM END
+  //
+  // 3. To install a pre-existing software bundle:
+  // client ______________________________________ server
+  // InstallRequest (with software_bundle_name set)
+  // (note, other fields may be set )          -->
+  // .. server installs software bundle according to fields.
+  //                                           <-- InstallSoftwareBundleResponse
+  //                              (with acknowledgement = INSTALL_COMPLETE)
+  // STREAM END
+  // Note that all installations will install the software bundle, but that
+  // software bundle will not be applied until the affected services are reloaded.
+  // To reload services after installing software bundles, issue a
+  // FinalizeSoftwareBundles RPC after finishing the InstallSoftwareBundle RPC.
+  rpc InstallSoftwareBundle(stream InstallSoftwareBundleRequest)
+      returns (stream InstallSoftwareBundleResponse);
+
+  // UninstallSoftwareBundle uninstalls an software bundle.
+  // It returns an error if the requested software bundle is not installed.
+  rpc UninstallSoftwareBundle(UninstallSoftwareBundleRequest)
+      returns (UninstallSoftwareBundleResponse);
+}
+
+message ListSoftwareBundlesRequest{
+}
+message ListSoftwareBundlesResponse{
+  enum InstallStatus {
+    // UNSPECIFIED should be treated as an error.
+    UNSPECIFIED = 0;
+    INSTALLED = 1;
+    NOT_INSTALLED = 2;
+
+    // This software bundle was force-installed - checks regarding
+    // signature or dependencies may have been ignored
+    FORCE_INSTALLED = 3;
+  }
+  // an software bundle may contain multiple packages
+  message Package {
+    string name = 1;
+    string version = 2;
+    string release = 3;
+  }
+  message SoftwareBundle {
+    string name = 1;
+    string version = 2;
+    string release = 3;
+    string description = 4;
+    InstallStatus install_status = 6;
+
+    // install_at_boot is true if the software bundle is set to be
+    // installed on next system reload
+    bool install_at_boot = 7;
+
+    // bool indicating if this software bundle has a valid signature
+    bool signature_valid = 8;
+
+    // available is true if the software bundle file is still available
+    // on the system.
+    // the software bundle may be installed but no longer available
+    // if the software bundle file has been removed.
+    bool available = 9;
+
+    // any errors attached to this software bundle
+    string errors = 10;
+    repeated Package packages = 11;
+
+    // affected_services is a list of the services which can be affected by this
+    // software bundle. This is static information
+    repeated string affected_services = 12;
+
+    // services_to_restart is a list of the services which are pending a reload
+    // to be finalized.
+    // This list will be cleared after a ReloadExtended RPC executes.
+    repeated string services_to_restart = 13;
+  }
+  repeated SoftwareBundle software_bundles = 1;
+
+  // software_bundle_directory is a directory where software bundle files are contained.
+  string software_bundle_directory = 2;
+}
+
+message FinalizeSoftwareBundlesRequest{
+}
+message FinalizeSoftwareBundlesResponse{
+}
+
+message UninstallSoftwareBundleRequest{
+  // name of the software bundle to be uninstalled
+  string name = 1;
+
+  // a boolean indicating whether we should force uninstalling this software bundle.
+  // if set to true, then ignore conflicts and dependencies when uninstalling.
+  bool force = 2;
+}
+message UninstallSoftwareBundleResponse{
+}
+
+message InstallSoftwareBundleResponse{
+  enum Operation{
+    UNSPECIFIED = 0;
+    TRANSFER_COMPLETE = 1;
+    INSTALL_COMPLETE = 2;
+  }
+  Operation acknowledgement = 3;
+}
+
+message InstallSoftwareBundleRequest{
+  oneof request{
+    TransferRequest transfer_request = 1;
+    InstallRequest install_request = 2;
+  }
+}
+
+// InstallRequest is a request for installing an software bundle onto a system.
+// The software bundle is applied to the running configuration.
+message InstallRequest{
+  // software_bundle_name is the name of the software bundle to install.
+  // This is required because InstallSoftwareBundle can be called
+  // for an software bundle which is already present on the system
+  string software_bundle_name = 1;
+
+  // if this is true, then the system will also
+  // ensure that this software bundle is loaded on boot/reboot
+  bool load_after_boot = 3;
+
+  // if this is true, then the system will ignore
+  // any errors which could arise from missing dependencies
+  bool ignore_dependency_checks = 4;
+
+  enum TrustSource {
+    // UNSPECIFIED should be treated as an error.
+    UNSPECIFIED = 0;
+    // ANY = disable signature verification. Allows any software bundle
+    // (even one with missing/invalid signature) to be installed
+    ANY = 1;
+    // MANUFACTURER = trust only software bundles which have been signed
+    // by the device manufacturer to be installed.
+    MANUFACTURER = 2;
+  }
+  oneof signature_verification {
+    TrustSource source = 5;
+    // trust software bundles which are valid according to
+    // the SSL profile specified by the ssl_profile_id field.
+    // Creating and populating SSL profiles is out of the scope of this
+    // service and should be done through some other means (e.g. gNSI Certz).
+    string ssl_profile_id = 6;
+  }
+}
+
+message TransferRequest{
+  oneof request {
+    // name of the software bundle (including the file extension)
+    string software_bundle_name = 1;
+    // raw byte contents to be streamed into the software bundle file.
+    bytes contents = 2;
+    // hash of the file.
+    types.HashType hash = 3;
+  }
+}

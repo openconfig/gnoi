@@ -30,8 +30,6 @@ bazel build //debug:all
 copy_generated "debug"
 bazel build //diag:all
 copy_generated "diag"
-bazel build //extension:all
-copy_generated "extension"
 bazel build //factory_reset:all
 copy_generated "factory_reset"
 bazel build //file:all
@@ -41,7 +39,7 @@ copy_generated "healthz"
 bazel build //layer2:all
 copy_generated "layer2"
 bazel build //mpls:all
-copy_generated "mpls"   
+copy_generated "mpls"
 bazel build //os:all
 copy_generated "os"
 bazel build //otdr:all
@@ -50,6 +48,8 @@ bazel build //packet_capture:all
 copy_generated "packet_capture" "pcap"
 bazel build //packet_link_qualification:all
 copy_generated "packet_link_qualification" "linkqual"
+bazel build //software_bundle:all
+copy_generated "software_bundle"
 bazel build //system:all
 copy_generated "system"
 bazel build //types:all

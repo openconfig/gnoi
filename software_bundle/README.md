@@ -1,51 +1,51 @@
-### Extension management
+### Software bundle management
 
-#### What is an extension?
-An extension is a single file (e.g. RPM, squashfs, zip) which can be installed
+#### What is a software bundle?
+A software bundle is a single file (e.g. RPM, squashfs, zip) which can be installed
 on the system to extends the functionality of the system in some way.   
-An extension may be installed to:
+A software bundle may be installed to:
 - fix some bug/CVE on the system, by updating the programs affected by that
   bug/CVE
 - add a new feature to the system
 - add/update some software utility (e.g. perl, ncurses)
 - update some dependency (e.g. updating some python site-package)
 
-### Extension installation workflow
+### Software bundle installation workflow
 
-#### 1. Extension Transfer
-Optionally transfer the extension file to the system, or select an
-extension which had been previously transferred but which was not installed.
+#### 1. Software bundle Transfer
+Optionally transfer the software bundle file to the system, or select a
+software bundle which had been previously transferred but which was not installed.
 
-#### 2. Extension Installation
-Install the extension.
+#### 2. Software bundle Installation
+Install the software bundle.
 Optionally:
 - set the signature verification option.
-  This signature verification guarantees that the extension is unaltered
+  This signature verification guarantees that the software bundle is unaltered
   after being signed, and that it originates from some trusted source.   
   Either:
-  - ignore signature verification for this extension
-  - accept extension signatures which are cryptographically signed by the switch vendor
-  - accept extension signatures which are signed by some trusted certificates (specified on-device).
+  - ignore signature verification for this software bundle
+  - accept software bundle signatures which are cryptographically signed by the switch vendor
+  - accept software bundle signatures which are signed by some trusted certificates (specified on-device).
   
-- mark the extension as an extension which should be applied on boot.   
-  When the system reboots, it should apply the extension from boot.
+- mark the software bundle as a software bundle which should be applied on boot.   
+  When the system reboots, it should apply the software bundle from boot.
 - ignore any dependency issues.    
-  (e.g. a later extension may be installed which would provide the correct
+  (e.g. a later software bundle may be installed which would provide the correct
   dependencies)
 
 Programs which are running will not be affected by the newly installed
-extension, and will need to be reloaded before any changes take effect.    
-E.g. if an extension contains a bug fix for OpenConfig, then this bug fix
+software bundle, and will need to be reloaded before any changes take effect.    
+E.g. if a software bundle contains a bug fix for OpenConfig, then this bug fix
 will not be applied until OpenConfig is reloaded
 
-(optionally) multiple extensions can be installed in sequence, to minimise
+(optionally) multiple software bundles can be installed in sequence, to minimise
 the amount of times we have to reload affected programs
 
 #### 3. Service reload
 
-Once any required extensions are installed, the system needs to reload any
-currently-running programs which would be affected by those extensions.
-When those programs reload, they will reload with the extensions applied.
+Once any required software bundles are installed, the system needs to reload any
+currently-running programs which would be affected by those software bundles.
+When those programs reload, they will reload with the software bundles applied.
 
 ### Comparison to existing SetPackage RPC
 
@@ -112,21 +112,21 @@ rejected based on SetPackage being too generic to capture the workflow:
 https://github.com/openconfig/gnoi/pull/19#issuecomment-479083625
 
 The generic nature of SetPackage therefore means it could be seen as
-potentially being used to handle extensions.
-However, the same case that was made for gNOI OS can be made here for Extensions -
-extension management is complex enough to deserve its own service and RPCs.
+potentially being used to handle software bundles.
+However, the same case that was made for gNOI OS can be made here for Software bundles -
+software bundle management is complex enough to deserve its own service and RPCs.
 
-A workflow for installing an extension is more complex than
+A workflow for installing a software bundle is more complex than
 adding a file onto a system and either "activating" it or not.
 - The system should be configured to do signature verification.      
   SetPackage has no concept of this.
-- The installation may be performed with an extension which is currently
+- The installation may be performed with a software bundle which is currently
   present on the system.        
   SetPackage only offers the option to transfer and
   then either immediately activate, or leave the package on the system.
   If the package is left on the system then SetPackage does not offer
   any capability to ever interact with that package again.
-- The network operator may need/want to install multiple extensions
+- The network operator may need/want to install multiple software bundles
   before reloading all affected programs at once.   
   SetPackage doesn't have any mechanism for handling the reload/activation
   step separately.
@@ -136,12 +136,12 @@ adding a file onto a system and either "activating" it or not.
   due to activation.
 - SetPackage allows for packages to be transferred to arbitrary locations
   on the filesystem, while this should be abstracted away from the client
-  when installing extensions to allow for the system to group all extension
+  when installing software bundles to allow for the system to group all software bundle
   files under a single directory (the system shouldn't search its entire
-  filesystem for extension files)
+  filesystem for software bundle files)
 
 For generic filesystems operations network operators should use the gnoi.File RPCs,
-and for more specialised workflows (e.g. an OS installation workflow, or an extension management workflow)
-separate services like gNOI OS and gNOI Extension can be used, so that each service can capture the nuances
+and for more specialised workflows (e.g. an OS installation workflow, or a software bundle management workflow)
+separate services like gNOI OS and gNOI SoftwareBundle can be used, so that each service can capture the nuances
 of each particular use case. This helps overloading SetPackageRequest/SetPackageResponse
 with a lot of extra fields to accommodate the nuances of all use cases.
