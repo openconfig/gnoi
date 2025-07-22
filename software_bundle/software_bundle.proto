@@ -105,7 +105,8 @@ message ListSoftwareBundlesResponse{
     string release = 3;
   }
   message SoftwareBundle {
-    string name = 1;
+    // name of the software bundle
+    string software_bundle_name = 1;
     string version = 2;
     string release = 3;
     string description = 4;
@@ -150,7 +151,7 @@ message FinalizeSoftwareBundlesResponse{
 
 message UninstallSoftwareBundleRequest{
   // name of the software bundle to be uninstalled
-  string name = 1;
+  string software_bundle_name = 1;
 
   // a boolean indicating whether we should force uninstalling
   // this software bundle.
@@ -219,7 +220,7 @@ message InstallRequest{
 
 message TransferRequest{
   oneof request {
-    // name of the software bundle (including the file extension)
+    // name of the software bundle
     string software_bundle_name = 1;
     // raw byte contents to be streamed into the software bundle file.
     bytes contents = 2;
