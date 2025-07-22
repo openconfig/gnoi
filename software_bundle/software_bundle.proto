@@ -107,39 +107,42 @@ message ListSoftwareBundlesResponse{
   message SoftwareBundle {
     // name of the software bundle
     string software_bundle_name = 1;
+    // arbitrarily-formatted version string for the software bundle.
+    // This version would be extracted from the software bundle itself,
+    // as a way for vendors to identify extensions.
+    // (since the software_bundle_name is provided by the client).
     string version = 2;
-    string release = 3;
-    string description = 4;
-    InstallStatus install_status = 6;
+    string description = 3;
+    InstallStatus install_status = 4;
 
     // If persistent is true, then the system will ensure
     // that this software bundle is applied on startup
     // if system reboots (e.g. via the System.Reboot RPC).
     // If persistent is false then the system will not
     // re-apply this software bundle after startup.
-    bool persistent = 7;
+    bool persistent = 5;
 
     // bool indicating if this software bundle has a valid signature
-    bool signature_valid = 8;
+    bool signature_valid = 6;
 
     // available is true if the software bundle file is still available
     // on the system.
     // the software bundle may be installed but no longer available
     // if the software bundle file has been removed.
-    bool available = 9;
+    bool available = 7;
 
     // any errors attached to this software bundle
-    string errors = 10;
-    repeated Package packages = 11;
+    string errors = 8;
+    repeated Package packages = 9;
 
     // affected_services is a list of the services which can be affected by this
     // software bundle. This is static information
-    repeated string affected_services = 12;
+    repeated string affected_services = 10;
 
     // services_to_restart is a list of the services which are pending a reload
     // to be finalized.
     // This list will be cleared after a FinalizeSoftwareBundles RPC executes.
-    repeated string services_to_restart = 13;
+    repeated string services_to_restart = 11;
   }
   repeated SoftwareBundle software_bundles = 1;
 }

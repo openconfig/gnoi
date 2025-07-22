@@ -325,11 +325,11 @@ func (*FinalizeSoftwareBundlesResponse) Descriptor() ([]byte, []int) {
 }
 
 type UninstallSoftwareBundleRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Force         bool                   `protobuf:"varint,2,opt,name=force,proto3" json:"force,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareBundleName string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
+	Force              bool                   `protobuf:"varint,2,opt,name=force,proto3" json:"force,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *UninstallSoftwareBundleRequest) Reset() {
@@ -362,9 +362,9 @@ func (*UninstallSoftwareBundleRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UninstallSoftwareBundleRequest) GetName() string {
+func (x *UninstallSoftwareBundleRequest) GetSoftwareBundleName() string {
 	if x != nil {
-		return x.Name
+		return x.SoftwareBundleName
 	}
 	return ""
 }
@@ -803,21 +803,20 @@ func (x *ListSoftwareBundlesResponse_Package) GetRelease() string {
 }
 
 type ListSoftwareBundlesResponse_SoftwareBundle struct {
-	state             protoimpl.MessageState                    `protogen:"open.v1"`
-	Name              string                                    `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Version           string                                    `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
-	Release           string                                    `protobuf:"bytes,3,opt,name=release,proto3" json:"release,omitempty"`
-	Description       string                                    `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	InstallStatus     ListSoftwareBundlesResponse_InstallStatus `protobuf:"varint,6,opt,name=install_status,json=installStatus,proto3,enum=gnoi.software_bundle.ListSoftwareBundlesResponse_InstallStatus" json:"install_status,omitempty"`
-	Persistent        bool                                      `protobuf:"varint,7,opt,name=persistent,proto3" json:"persistent,omitempty"`
-	SignatureValid    bool                                      `protobuf:"varint,8,opt,name=signature_valid,json=signatureValid,proto3" json:"signature_valid,omitempty"`
-	Available         bool                                      `protobuf:"varint,9,opt,name=available,proto3" json:"available,omitempty"`
-	Errors            string                                    `protobuf:"bytes,10,opt,name=errors,proto3" json:"errors,omitempty"`
-	Packages          []*ListSoftwareBundlesResponse_Package    `protobuf:"bytes,11,rep,name=packages,proto3" json:"packages,omitempty"`
-	AffectedServices  []string                                  `protobuf:"bytes,12,rep,name=affected_services,json=affectedServices,proto3" json:"affected_services,omitempty"`
-	ServicesToRestart []string                                  `protobuf:"bytes,13,rep,name=services_to_restart,json=servicesToRestart,proto3" json:"services_to_restart,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state              protoimpl.MessageState                    `protogen:"open.v1"`
+	SoftwareBundleName string                                    `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
+	Version            string                                    `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	Description        string                                    `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	InstallStatus      ListSoftwareBundlesResponse_InstallStatus `protobuf:"varint,4,opt,name=install_status,json=installStatus,proto3,enum=gnoi.software_bundle.ListSoftwareBundlesResponse_InstallStatus" json:"install_status,omitempty"`
+	Persistent         bool                                      `protobuf:"varint,5,opt,name=persistent,proto3" json:"persistent,omitempty"`
+	SignatureValid     bool                                      `protobuf:"varint,6,opt,name=signature_valid,json=signatureValid,proto3" json:"signature_valid,omitempty"`
+	Available          bool                                      `protobuf:"varint,7,opt,name=available,proto3" json:"available,omitempty"`
+	Errors             string                                    `protobuf:"bytes,8,opt,name=errors,proto3" json:"errors,omitempty"`
+	Packages           []*ListSoftwareBundlesResponse_Package    `protobuf:"bytes,9,rep,name=packages,proto3" json:"packages,omitempty"`
+	AffectedServices   []string                                  `protobuf:"bytes,10,rep,name=affected_services,json=affectedServices,proto3" json:"affected_services,omitempty"`
+	ServicesToRestart  []string                                  `protobuf:"bytes,11,rep,name=services_to_restart,json=servicesToRestart,proto3" json:"services_to_restart,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListSoftwareBundlesResponse_SoftwareBundle) Reset() {
@@ -850,9 +849,9 @@ func (*ListSoftwareBundlesResponse_SoftwareBundle) Descriptor() ([]byte, []int) 
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{1, 1}
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetName() string {
+func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetSoftwareBundleName() string {
 	if x != nil {
-		return x.Name
+		return x.SoftwareBundleName
 	}
 	return ""
 }
@@ -860,13 +859,6 @@ func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetName() string {
 func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetVersion() string {
 	if x != nil {
 		return x.Version
-	}
-	return ""
-}
-
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetRelease() string {
-	if x != nil {
-		return x.Release
 	}
 	return ""
 }
@@ -939,38 +931,37 @@ var File_github_com_openconfig_gnoi_software_bundle_software_bundle_proto protor
 const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDesc = "" +
 	"\n" +
 	"@github.com/openconfig/gnoi/software_bundle/software_bundle.proto\x12\x14gnoi.software_bundle\x1a,github.com/openconfig/gnoi/types/types.proto\"\x1c\n" +
-	"\x1aListSoftwareBundlesRequest\"\xce\x06\n" +
+	"\x1aListSoftwareBundlesRequest\"\xd2\x06\n" +
 	"\x1bListSoftwareBundlesResponse\x12k\n" +
 	"\x10software_bundles\x18\x01 \x03(\v2@.gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundleR\x0fsoftwareBundles\x1aQ\n" +
 	"\aPackage\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x18\n" +
-	"\arelease\x18\x03 \x01(\tR\arelease\x1a\x95\x04\n" +
-	"\x0eSoftwareBundle\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
-	"\aversion\x18\x02 \x01(\tR\aversion\x12\x18\n" +
-	"\arelease\x18\x03 \x01(\tR\arelease\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x12f\n" +
-	"\x0einstall_status\x18\x06 \x01(\x0e2?.gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatusR\rinstallStatus\x12\x1e\n" +
+	"\arelease\x18\x03 \x01(\tR\arelease\x1a\x99\x04\n" +
+	"\x0eSoftwareBundle\x120\n" +
+	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12\x18\n" +
+	"\aversion\x18\x02 \x01(\tR\aversion\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12f\n" +
+	"\x0einstall_status\x18\x04 \x01(\x0e2?.gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatusR\rinstallStatus\x12\x1e\n" +
 	"\n" +
-	"persistent\x18\a \x01(\bR\n" +
+	"persistent\x18\x05 \x01(\bR\n" +
 	"persistent\x12'\n" +
-	"\x0fsignature_valid\x18\b \x01(\bR\x0esignatureValid\x12\x1c\n" +
-	"\tavailable\x18\t \x01(\bR\tavailable\x12\x16\n" +
-	"\x06errors\x18\n" +
-	" \x01(\tR\x06errors\x12U\n" +
-	"\bpackages\x18\v \x03(\v29.gnoi.software_bundle.ListSoftwareBundlesResponse.PackageR\bpackages\x12+\n" +
-	"\x11affected_services\x18\f \x03(\tR\x10affectedServices\x12.\n" +
-	"\x13services_to_restart\x18\r \x03(\tR\x11servicesToRestart\"W\n" +
+	"\x0fsignature_valid\x18\x06 \x01(\bR\x0esignatureValid\x12\x1c\n" +
+	"\tavailable\x18\a \x01(\bR\tavailable\x12\x16\n" +
+	"\x06errors\x18\b \x01(\tR\x06errors\x12U\n" +
+	"\bpackages\x18\t \x03(\v29.gnoi.software_bundle.ListSoftwareBundlesResponse.PackageR\bpackages\x12+\n" +
+	"\x11affected_services\x18\n" +
+	" \x03(\tR\x10affectedServices\x12.\n" +
+	"\x13services_to_restart\x18\v \x03(\tR\x11servicesToRestart\"W\n" +
 	"\rInstallStatus\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\r\n" +
 	"\tINSTALLED\x10\x01\x12\x11\n" +
 	"\rNOT_INSTALLED\x10\x02\x12\x13\n" +
 	"\x0fFORCE_INSTALLED\x10\x03\" \n" +
 	"\x1eFinalizeSoftwareBundlesRequest\"!\n" +
-	"\x1fFinalizeSoftwareBundlesResponse\"J\n" +
-	"\x1eUninstallSoftwareBundleRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
+	"\x1fFinalizeSoftwareBundlesResponse\"h\n" +
+	"\x1eUninstallSoftwareBundleRequest\x120\n" +
+	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12\x14\n" +
 	"\x05force\x18\x02 \x01(\bR\x05force\"!\n" +
 	"\x1fUninstallSoftwareBundleResponse\"\xd3\x01\n" +
 	"\x1dInstallSoftwareBundleResponse\x12g\n" +
