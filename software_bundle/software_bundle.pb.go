@@ -547,10 +547,10 @@ func (*InstallSoftwareBundleRequest_TransferRequest) isInstallSoftwareBundleRequ
 func (*InstallSoftwareBundleRequest_InstallRequest) isInstallSoftwareBundleRequest_Request() {}
 
 type InstallRequest struct {
-	state                  protoimpl.MessageState `protogen:"open.v1"`
-	SoftwareBundleName     string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
-	LoadAfterBoot          bool                   `protobuf:"varint,3,opt,name=load_after_boot,json=loadAfterBoot,proto3" json:"load_after_boot,omitempty"`
-	IgnoreDependencyChecks bool                   `protobuf:"varint,4,opt,name=ignore_dependency_checks,json=ignoreDependencyChecks,proto3" json:"ignore_dependency_checks,omitempty"`
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareBundleName string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
+	LoadAfterBoot      bool                   `protobuf:"varint,3,opt,name=load_after_boot,json=loadAfterBoot,proto3" json:"load_after_boot,omitempty"`
+	Force              bool                   `protobuf:"varint,4,opt,name=force,proto3" json:"force,omitempty"`
 	// Types that are valid to be assigned to SignatureVerification:
 	//
 	//	*InstallRequest_Source
@@ -604,9 +604,9 @@ func (x *InstallRequest) GetLoadAfterBoot() bool {
 	return false
 }
 
-func (x *InstallRequest) GetIgnoreDependencyChecks() bool {
+func (x *InstallRequest) GetForce() bool {
 	if x != nil {
-		return x.IgnoreDependencyChecks
+		return x.Force
 	}
 	return false
 }
@@ -989,11 +989,11 @@ const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawD
 	"\x1cInstallSoftwareBundleRequest\x12R\n" +
 	"\x10transfer_request\x18\x01 \x01(\v2%.gnoi.software_bundle.TransferRequestH\x00R\x0ftransferRequest\x12O\n" +
 	"\x0finstall_request\x18\x02 \x01(\v2$.gnoi.software_bundle.InstallRequestH\x00R\x0einstallRequestB\t\n" +
-	"\arequest\"\xed\x02\n" +
+	"\arequest\"\xc9\x02\n" +
 	"\x0eInstallRequest\x120\n" +
 	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12&\n" +
-	"\x0fload_after_boot\x18\x03 \x01(\bR\rloadAfterBoot\x128\n" +
-	"\x18ignore_dependency_checks\x18\x04 \x01(\bR\x16ignoreDependencyChecks\x12J\n" +
+	"\x0fload_after_boot\x18\x03 \x01(\bR\rloadAfterBoot\x12\x14\n" +
+	"\x05force\x18\x04 \x01(\bR\x05force\x12J\n" +
 	"\x06source\x18\x05 \x01(\x0e20.gnoi.software_bundle.InstallRequest.TrustSourceH\x00R\x06source\x12&\n" +
 	"\x0essl_profile_id\x18\x06 \x01(\tH\x00R\fsslProfileId\"9\n" +
 	"\vTrustSource\x12\x0f\n" +

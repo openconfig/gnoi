@@ -185,9 +185,10 @@ message InstallRequest{
   // ensure that this software bundle is loaded on boot/reboot
   bool load_after_boot = 3;
 
-  // if this is true, then the system will ignore
-  // any errors which could arise from missing dependencies
-  bool ignore_dependency_checks = 4;
+  // if this is true, then the system will force installation of the
+  // software bundle. This can cause checks (e.g. regarding missing dependencies)
+  // to be ignored.
+  bool force = 4;
 
   enum TrustSource {
     // UNSPECIFIED should be treated as an error.
