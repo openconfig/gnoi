@@ -193,9 +193,9 @@ message InstallRequest{
   enum TrustSource {
     // UNSPECIFIED should be treated as an error.
     UNSPECIFIED = 0;
-    // ANY = disable signature verification. Allows any software bundle
+    // IGNORE = ignore signature verification. Allows any software bundle
     // (even one with missing/invalid signature) to be installed
-    ANY = 1;
+    IGNORE = 1;
     // MANUFACTURER = trust only software bundles which have been signed
     // by the device manufacturer to be installed.
     MANUFACTURER = 2;

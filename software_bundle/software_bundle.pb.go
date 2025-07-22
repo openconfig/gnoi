@@ -127,7 +127,7 @@ type InstallRequest_TrustSource int32
 
 const (
 	InstallRequest_UNSPECIFIED  InstallRequest_TrustSource = 0
-	InstallRequest_ANY          InstallRequest_TrustSource = 1
+	InstallRequest_IGNORE       InstallRequest_TrustSource = 1
 	InstallRequest_MANUFACTURER InstallRequest_TrustSource = 2
 )
 
@@ -135,12 +135,12 @@ const (
 var (
 	InstallRequest_TrustSource_name = map[int32]string{
 		0: "UNSPECIFIED",
-		1: "ANY",
+		1: "IGNORE",
 		2: "MANUFACTURER",
 	}
 	InstallRequest_TrustSource_value = map[string]int32{
 		"UNSPECIFIED":  0,
-		"ANY":          1,
+		"IGNORE":       1,
 		"MANUFACTURER": 2,
 	}
 )
@@ -989,16 +989,17 @@ const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawD
 	"\x1cInstallSoftwareBundleRequest\x12R\n" +
 	"\x10transfer_request\x18\x01 \x01(\v2%.gnoi.software_bundle.TransferRequestH\x00R\x0ftransferRequest\x12O\n" +
 	"\x0finstall_request\x18\x02 \x01(\v2$.gnoi.software_bundle.InstallRequestH\x00R\x0einstallRequestB\t\n" +
-	"\arequest\"\xc9\x02\n" +
+	"\arequest\"\xcc\x02\n" +
 	"\x0eInstallRequest\x120\n" +
 	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12&\n" +
 	"\x0fload_after_boot\x18\x03 \x01(\bR\rloadAfterBoot\x12\x14\n" +
 	"\x05force\x18\x04 \x01(\bR\x05force\x12J\n" +
 	"\x06source\x18\x05 \x01(\x0e20.gnoi.software_bundle.InstallRequest.TrustSourceH\x00R\x06source\x12&\n" +
-	"\x0essl_profile_id\x18\x06 \x01(\tH\x00R\fsslProfileId\"9\n" +
+	"\x0essl_profile_id\x18\x06 \x01(\tH\x00R\fsslProfileId\"<\n" +
 	"\vTrustSource\x12\x0f\n" +
-	"\vUNSPECIFIED\x10\x00\x12\a\n" +
-	"\x03ANY\x10\x01\x12\x10\n" +
+	"\vUNSPECIFIED\x10\x00\x12\n" +
+	"\n" +
+	"\x06IGNORE\x10\x01\x12\x10\n" +
 	"\fMANUFACTURER\x10\x02B\x18\n" +
 	"\x16signature_verification\"\x9a\x01\n" +
 	"\x0fTransferRequest\x122\n" +
