@@ -138,10 +138,6 @@ message ListSoftwareBundlesResponse{
     repeated string services_to_restart = 13;
   }
   repeated SoftwareBundle software_bundles = 1;
-
-  // software_bundle_directory is a directory where
-  // software bundle files are contained.
-  string software_bundle_directory = 2;
 }
 
 message FinalizeSoftwareBundlesRequest{

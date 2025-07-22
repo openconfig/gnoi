@@ -209,11 +209,10 @@ func (*ListSoftwareBundlesRequest) Descriptor() ([]byte, []int) {
 }
 
 type ListSoftwareBundlesResponse struct {
-	state                   protoimpl.MessageState                        `protogen:"open.v1"`
-	SoftwareBundles         []*ListSoftwareBundlesResponse_SoftwareBundle `protobuf:"bytes,1,rep,name=software_bundles,json=softwareBundles,proto3" json:"software_bundles,omitempty"`
-	SoftwareBundleDirectory string                                        `protobuf:"bytes,2,opt,name=software_bundle_directory,json=softwareBundleDirectory,proto3" json:"software_bundle_directory,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	state           protoimpl.MessageState                        `protogen:"open.v1"`
+	SoftwareBundles []*ListSoftwareBundlesResponse_SoftwareBundle `protobuf:"bytes,1,rep,name=software_bundles,json=softwareBundles,proto3" json:"software_bundles,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ListSoftwareBundlesResponse) Reset() {
@@ -251,13 +250,6 @@ func (x *ListSoftwareBundlesResponse) GetSoftwareBundles() []*ListSoftwareBundle
 		return x.SoftwareBundles
 	}
 	return nil
-}
-
-func (x *ListSoftwareBundlesResponse) GetSoftwareBundleDirectory() string {
-	if x != nil {
-		return x.SoftwareBundleDirectory
-	}
-	return ""
 }
 
 type FinalizeSoftwareBundlesRequest struct {
@@ -947,10 +939,9 @@ var File_github_com_openconfig_gnoi_software_bundle_software_bundle_proto protor
 const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDesc = "" +
 	"\n" +
 	"@github.com/openconfig/gnoi/software_bundle/software_bundle.proto\x12\x14gnoi.software_bundle\x1a,github.com/openconfig/gnoi/types/types.proto\"\x1c\n" +
-	"\x1aListSoftwareBundlesRequest\"\x92\a\n" +
+	"\x1aListSoftwareBundlesRequest\"\xd6\x06\n" +
 	"\x1bListSoftwareBundlesResponse\x12k\n" +
-	"\x10software_bundles\x18\x01 \x03(\v2@.gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundleR\x0fsoftwareBundles\x12:\n" +
-	"\x19software_bundle_directory\x18\x02 \x01(\tR\x17softwareBundleDirectory\x1aQ\n" +
+	"\x10software_bundles\x18\x01 \x03(\v2@.gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundleR\x0fsoftwareBundles\x1aQ\n" +
 	"\aPackage\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x18\n" +
