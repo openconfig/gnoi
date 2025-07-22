@@ -18,7 +18,8 @@ option (types.gnoi_version) = "0.1.0";
 service SoftwareBundle {
 
   // Shows the current state of the software bundles on the system.
-  rpc ListSoftwareBundles(ListSoftwareBundlesRequest)returns (ListSoftwareBundlesResponse);
+  rpc ListSoftwareBundles(ListSoftwareBundlesRequest)
+      returns (ListSoftwareBundlesResponse);
 
   // FinalizeSoftwareBundles reloads any services on the system for
   // which software bundles have been installed but which have not yet been
@@ -71,7 +72,8 @@ service SoftwareBundle {
   //                              (with acknowledgement = INSTALL_COMPLETE)
   // STREAM END
   // Note that all installations will install the software bundle, but that
-  // software bundle will not be applied until the affected services are reloaded.
+  // software bundle will not be applied until the affected services
+  // are reloaded.
   // To reload services after installing software bundles, issue a
   // FinalizeSoftwareBundles RPC after finishing the InstallSoftwareBundle RPC.
   rpc InstallSoftwareBundle(stream InstallSoftwareBundleRequest)
@@ -137,7 +139,8 @@ message ListSoftwareBundlesResponse{
   }
   repeated SoftwareBundle software_bundles = 1;
 
-  // software_bundle_directory is a directory where software bundle files are contained.
+  // software_bundle_directory is a directory where
+  // software bundle files are contained.
   string software_bundle_directory = 2;
 }
 
@@ -150,8 +153,10 @@ message UninstallSoftwareBundleRequest{
   // name of the software bundle to be uninstalled
   string name = 1;
 
-  // a boolean indicating whether we should force uninstalling this software bundle.
-  // if set to true, then ignore conflicts and dependencies when uninstalling.
+  // a boolean indicating whether we should force uninstalling
+  // this software bundle.
+  // if set to true, then ignore conflicts and dependencies
+  // when uninstalling.
   bool force = 2;
 }
 message UninstallSoftwareBundleResponse{
@@ -186,8 +191,8 @@ message InstallRequest{
   bool load_after_boot = 3;
 
   // if this is true, then the system will force installation of the
-  // software bundle. This can cause checks (e.g. regarding missing dependencies)
-  // to be ignored.
+  // software bundle. This can cause checks
+  // (e.g. regarding missing dependencies) to be ignored.
   bool force = 4;
 
   enum TrustSource {
