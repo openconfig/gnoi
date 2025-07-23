@@ -41,11 +41,11 @@ will not be applied until OpenConfig is reloaded
 (optionally) multiple software bundles can be installed in sequence, to minimise
 the amount of times we have to reload affected programs
 
-#### 3. Service reload
+#### 3. Process reload
 
-Once any required software bundles are installed, the system needs to reload any
-currently-running programs which would be affected by those software bundles.
-When those programs reload, they will reload with the software bundles applied.
+Once any required software bundles are installed, the system needs to restart any
+currently-running processes which would be affected by those software bundles.
+When those processes reload, they will reload with the software bundles applied.
 
 ### Comparison to existing SetPackage RPC
 

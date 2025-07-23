@@ -135,14 +135,16 @@ message ListSoftwareBundlesResponse{
     string errors = 8;
     repeated Package packages = 9;
 
-    // affected_services is a list of the services which can be affected by this
-    // software bundle. This is static information
-    repeated string affected_services = 10;
+    // affected_processes is a list of the processes which can be affected by this
+    // software bundle. This is static information and may be incomplete (e.g. in
+    // in the case of dynamically linked libraries).
+    repeated string affected_processes = 10;
 
-    // services_to_restart is a list of the services which are pending a reload
-    // to be finalized.
-    // This list will be cleared after a FinalizeSoftwareBundles RPC executes.
-    repeated string services_to_restart = 11;
+    // processes_pending_restart is a list of the processes which are waiting
+    // be restarted to apply the software bundle.
+    // This list will be cleared after a FinalizeSoftwareBundles RPC executes
+    // and restarts the affected processes.
+    repeated string processes_pending_restart = 11;
   }
   repeated SoftwareBundle software_bundles = 1;
 }
