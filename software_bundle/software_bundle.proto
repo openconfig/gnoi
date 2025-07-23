@@ -135,9 +135,10 @@ message ListSoftwareBundlesResponse{
     string errors = 8;
     repeated Package packages = 9;
 
-    // affected_processes is a list of the processes which can be affected by this
-    // software bundle. This is static information and may be incomplete (e.g. in
-    // in the case of dynamically linked libraries).
+    // affected_processes is a list of the processes which can be affected
+    // by this software bundle.
+    // This list may be incomplete if the system cannot determine all of the
+    // processes that could be affected.
     repeated string affected_processes = 10;
 
     // processes_pending_restart is a list of the processes which are waiting
