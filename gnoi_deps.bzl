@@ -70,9 +70,9 @@ def gnoi_deps():
     if not native.existing_rule("io_bazel_rules_go"):
         http_archive(
             name = "io_bazel_rules_go",
-            sha256 = "9d72f7b8904128afb98d46bbef82ad7223ec9ff3718d419afb355fddd9f9484a",
+            sha256 = "94643c4ce02f3b62f3be7d13d527a5c780a568073b7562606e78399929005f98",
             urls = [
-                "https://github.com/bazelbuild/rules_go/releases/download/v0.55.1/rules_go-v0.55.1.zip",
+                "https://github.com/bazelbuild/rules_go/releases/download/v0.56.0/rules_go-v0.56.0.zip",
             ],
         )
     if not native.existing_rule("rules_proto"):
