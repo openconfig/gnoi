@@ -108,7 +108,9 @@ message TransferToDeviceStartRequest {
 // it MUST immediately reply with an TransferError->type->PARSE_FAIL. If the
 // integrity check of the package fails it MUST immediately reply with an
 // TransferError->type->INTEGRITY_FAIL.
-message TransferEnd {}
+message TransferEnd {
+
+}
 
 // The TransferToOpticRequest is used by the Client to transfer the package ONLY
 // to a inactive bank of the optic.
@@ -163,7 +165,9 @@ message TransferResponse {
 // The TransferReady message tells the Client that the Target is ready to accept
 // the package transfer. At this stage the Target MUST have cleared enough space
 // to accept the incoming package if the package size was specified.
-message TransferReady {}
+message TransferReady {
+
+}
 
 // The TransferProgress message is sent by the target asynchronously during a
 // file transfer. The Target SHOULD not respond to each input block received
@@ -177,7 +181,9 @@ message TransferProgress {
 // The Validated message asserts that the Target was able to parse the package
 // and perform integrity checks to its contents.
 // This message is sent at the conclusion of a successful RPC.
-message Validated {}
+message Validated {
+
+}
 
 // The TransferError message MUST be sent by the Target to the Client whenever
 // an issue occurs. The Target MUST immediately close the RPC without a
@@ -283,7 +289,9 @@ message InstallSingleResponse {
 // The InstallReady message tells the Client that the Target is ready to accept
 // the package install. At this stage the Target MUST have cleared enough space
 // to accept the incoming package if the package size was specified.
-message InstallReady {}
+message InstallReady {
+
+}
 
 // The InstallProgress message signals the Client about the progress of the
 // optic install process.
@@ -295,7 +303,9 @@ message InstallProgress {
 // InstallOK is sent when the package is successfully installed on the optic.
 // If the optic is already running the requested version in InstallRequest,
 // then it replies with InstallOK.
-message InstallOK {}
+message InstallOK {
+
+}
 
 // The InstallError message MUST be sent by the Target to the Client whenever an
 // issue occurs. The Target MUST immediately close the RPC without a gRPC error.
@@ -417,4 +427,6 @@ message DeleteRequest {
   string package_name = 1;
 }
 
-message DeleteResponse {}
+message DeleteResponse {
+
+}
