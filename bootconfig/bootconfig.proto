@@ -55,6 +55,13 @@ message GetBootConfigResponse {
 // the contents of the message (i.e. an empty submessage should replace the
 // current bootconfig datastore). An unset submessage is considered a NOOP.
 message SetBootConfigRequest {
+  // The BootConfig message specified in `boot_config` MUST NOT set the
+  // dynamic_oc_config and dynamic_vendor_config fields. These fields
+  // are ONLY valid during the bootz triggered bootstrapping of a network device.
+  // After the bootz bootstrap, the dynamic configuration is updated through
+  // the gNMI `Set` RPC. If either dynamic_oc_config or dynamic_vendor_config
+  // is specified the `SetBootConfig` RPC MUST return an error, specifying
+  // `InvalidArgument` as the error code.
   bootz.BootConfig boot_config = 1;  
   bootz.Credentials credentials = 2;
   gnsi.pathz.v1.UploadRequest pathz = 3;
