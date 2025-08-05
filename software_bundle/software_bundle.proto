@@ -12,7 +12,7 @@ option (types.gnoi_version) = "0.1.0";
 // A "software bundle" is a collection of files (e.g. RPMs, squashfs)
 // which are installed to modify the behaviour of the services on the
 // system.
-// Only one RPC (SetSignatureVerification, FinalizeSoftwareBundles,
+// Only one RPC (ListSoftwareBundles, FinalizeSoftwareBundles,
 // InstallSoftwareBundle, UninstallSoftwareBundle)
 // may be in progress at any given time
 service SoftwareBundle {
