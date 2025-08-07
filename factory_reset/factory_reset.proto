@@ -36,6 +36,20 @@ message StartRequest {
   bool zero_fill = 2;
   // Instructs the Target to retain certificates
   bool retain_certs = 3;
+
+  enum DeleteImages {
+      // do not delete any images.
+      UNSPECIFIED = 0;
+      // delete only images which the target deems sensitive
+      SENSITIVE_IMAGES = 1;
+      // delete all images on the target (including sensitive images)
+      ALL_IMAGES = 2;
+  }
+  // Instructs the target to cleanup images before proceeding with the
+  // factory reset.
+  // If sensitive images exist and delete_images is UNSPECIFIED, then
+  // the target will return an INVALID_ARGUMENT error
+  DeleteImages delete_images = 4;
 }
 
 message ResetSuccess {
