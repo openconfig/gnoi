@@ -170,8 +170,9 @@ message PacketInjectorConfiguration {
   // if unspecified, the default value is 1500 bytes.
   uint32 packet_size = 2;
 
-  // If true, the Layer 2 MTU of the underlying interface should be set to the
-  // packet size for the duration of the test.
+  // If true, the gnoi service must ensure the L2 MTU of the interface is set
+  // to a value greater than or equal to packet_size for the duration of the
+  // test.
   bool set_mtu = 3;
 
   // Loopback mode for this qualification.
@@ -194,9 +195,9 @@ message PmdLoopbackConfiguration {
 }
 
 message AsicLoopbackConfiguration {
-  // The L2 MTU of the interface must be set to the packet_size for the
-  // duration of the test.
-  uint32 packet_size = 2;
+  // The gnoi service must ensure the L2 MTU of the interface is set to a
+  // value greater than or equal to packet_size for the duration of the test.
+  uint32 packet_size = 1;
 }
 // GetRequest returns the status for the provided ids.
 message GetRequest {
