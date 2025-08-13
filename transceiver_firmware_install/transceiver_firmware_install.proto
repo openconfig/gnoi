@@ -15,47 +15,48 @@
 
 syntax = "proto3";
 
-package gnoi.optic_firmware_install;
+package gnoi.transceiver_firmware_install;
 
 import "github.com/openconfig/gnoi/types/types.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/openconfig/gnoi/optic_firmware_install";
+option go_package = "github.com/openconfig/gnoi/transceiver_firmware_install";
 
 option (types.gnoi_version) = "0.1.0";
 
-// The service provides an interface for installation of firmware on optics
-// in a Target. The Client progresses through RPCs in the following order:
+// The service provides an interface for installation of firmware on
+// transceivers in a Target.
+// The Client progresses through RPCs in the following order:
 //   1) Transfer - Provide the Target with the package which can be used for
-//      multiple optics.
-//   2) Install - Copy the package to the requested optics and make it the
-//      active package.
-//   3) Verify - Verify that the package is installed on the optic(s). This is
-//      redundant to the Install RPC responding with InstallOK, but is useful
-//      for the Client if the RPC is interrupted while in progress or if the
-//      Client is interested polling for the progress of the install.
+//      multiple transceivers.
+//   2) Install - Copy the package to the requested transceivers and make it
+//      the active package.
+//   3) Verify - Verify that the package is installed on the transceiver(s).
+//      This is redundant to the Install RPC responding with InstallOK, but
+//      is useful for the Client if the RPC is interrupted while in progress
+//      or if the Client is interested polling for the progress of the install.
 //
-service OpticFirmwareInstall {
+service TransceiverFirmwareInstall {
   // Transfer performs a package transfer from either:
   //   1) External to Target.
-  //   2) Target to inactive bank of an Optic.
+  //   2) Target to inactive bank of an Transceiver.
   rpc Transfer(stream TransferRequest) returns (stream TransferResponse);
 
-  // Install initiates the install process on an optic(s).
+  // Install initiates the install process on a transceiver(s).
   // The install requires that the package was previously transferred to the
   // Target using the Transfer RPC.
-  // If the optic is already using the desired version or the install is already
-  // in progress for the identical version, do not re-install the package unless
-  // force_install is set to true. Otherwise, report success so this RPC is
-  // idempotent.
+  // If the transceiver is already using the desired version or the install is
+  // already in progress for the identical version, do not re-install the
+  // package unless force_install is set to true. Otherwise, report success so
+  // this RPC is idempotent.
   // If the RPC is terminated after the RPC is initiated, the install must
   // continue in the background.
   rpc Install(InstallRequest) returns (stream InstallResponse);
 
-  // Verify checks the firmware related details for an optic(s).
+  // Verify checks the firmware related details for a transceiver(s).
   // During reboot, gRPC client returns the gRPC status code UNAVAILABLE while
-  // the optic is unreachable, which should be retried by the client until
+  // the transceiver is unreachable, which should be retried by the client until
   // successful.
   rpc Verify(VerifyRequest) returns (VerifyResponse);
 
@@ -68,13 +69,14 @@ service OpticFirmwareInstall {
 message TransferRequest {
   oneof request {
     TransferToDeviceRequest transfer_to_device = 1;
-    TransferToOpticRequest transfer_to_optic = 2;
+    TransferToTransceiverRequest transfer_to_transceiver = 2;
   }
 }
 
 // The TransferToDeviceRequest is used by the Client to transfer the package to
 // the Target. The Target MUST store the package in a generic location that can
-// later be utilized to repeatedly transfer the package to multiple optics.
+// later be utilized to repeatedly transfer the package to multiple
+// transceivers.
 message TransferToDeviceRequest {
   oneof request {
     TransferToDeviceStartRequest transfer_start_request = 1;
@@ -112,15 +114,15 @@ message TransferEnd {
 
 }
 
-// The TransferToOpticRequest is used by the Client to transfer the package ONLY
-// to a inactive bank of the optic.
+// The TransferToTransceiverRequest is used by the Client to transfer the
+// package ONLY to an inactive bank of the transceiver.
 // This would make the package available for the Install RPC, but the package
 // MUST NOT be made active as a result of this transfer.
-message TransferToOpticRequest {
+message TransferToTransceiverRequest {
   // Absolute path to the /components/component list member in the OpenConfig
-  // model corresponding to the optic to perform the install on.
-  // (e.g., /components/component[name=optic-1/2])
-  types.Path optic = 1;
+  // model corresponding to the transceiver to perform the install on.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
 
   // The package name is a unique identifier for a firmware package. Typically,
   // the file name of the package (e.g., "aaa.x.y.z.tgz").
@@ -128,21 +130,22 @@ message TransferToOpticRequest {
 
   // Optionally specify the package size in bytes.
   // If 1) the value is different than 0
-  // and 2) the required space in the optic is larger than the available space
-  // and 3) the optic is unable to release space for the incoming package,
+  // and 2) the required space in the transceiver is larger than the available
+  //        space
+  // and 3) the transceiver is unable to release space for the incoming package,
   // then the Target must reply with TransferError->Type->TOO_LARGE.
-  // If the optic does not support advertising its available space, then the
-  // Target must return TransferError->Type->INVALID_ARGUMENT.
+  // If the transceiver does not support advertising its available space, then
+  // the Target must return TransferError->Type->INVALID_ARGUMENT.
   uint64 package_size_bytes = 3;
 
-  // The bank identifier of the optic to install the firmware on.
-  // If the optic only contains a single bank, then the Target must reply with
-  // TransferError->Type->INCOMPATIBLE.
-  // If the optic only contains an active and standby bank, then this field
-  // may be considered optional as the transfer must be made to the standby
-  // bank.
+  // The bank identifier of the transceiver to install the firmware on.
+  // If the transceiver only contains a single bank, then the Target must reply
+  // with TransferError->Type->INCOMPATIBLE.
+  // If the transceiver only contains an active and standby bank, then this
+  // field may be considered optional as the transfer must be made to the
+  //standby bank.
   // This is a 0-based index intended to standardize the mapping of different
-  // vendor specific identifers. Mapping examples of optics that support
+  // vendor specific identifers. Mapping examples of transceivers that support
   // two banks include:
   // - Active|Standby --> 0|1
   // - A|B --> 0|1
@@ -223,17 +226,17 @@ message InstallRequest {
 
 message InstallSingleRequest {
   // Absolute path to the /components/component list member in the OpenConfig
-  // model corresponding to the optic to perform the install on.
-  // (e.g., /components/component[name=optic-1/2])
-  types.Path optic = 1;
+  // model corresponding to the transceiver to perform the install on.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
 
   oneof install_from {
     InstallFromDeviceRequest install_from_device = 2;
-    InstallFromOpticBankRequest install_from_optic_bank = 3;
+    InstallFromTransceiverBankRequest install_from_transceiver_bank = 3;
   }
 
-  // If true, the Target MUST install the package even if the optic is already
-  // running the same package.
+  // If true, the Target MUST install the package even if the transceiver is
+  // already running the same package.
   bool force_install = 4;
 }
 
@@ -244,22 +247,23 @@ message InstallFromDeviceRequest {
 
   // Optionally specify the package size in bytes.
   // If 1) the value is different than 0
-  // and 2) the required space in the optic is larger than the available space
-  // and 3) the optic is unable to release space for the incoming package,
+  // and 2) the required space in the transceiver is larger than the available
+  //        space
+  // and 3) the transceiver is unable to release space for the incoming package,
   // then the Target must reply with TransferError->Type->TOO_LARGE.
   uint64 package_size_bytes = 2;
 }
 
-message InstallFromOpticBankRequest {
-  // The bank identifier of the optic to install the firmware from.
+message InstallFromTransceiverBankRequest {
+  // The bank identifier of the transceiver to install the firmware from.
   // This would be used if the firmware package is already pre-loaded on the
-  // optic in an inactive bank.
-  // If the optic only contains a single bank, then the Target must reply with
-  // InstallError->Type->INCOMPATIBLE.
+  // transceiver in an inactive bank.
+  // If the transceiver only contains a single bank, then the Target must reply
+  // with InstallError->Type->INCOMPATIBLE.
   // If the specified bank is empty, then the Target must reply with
   // InstallError->Type->EMPTY_FIRMWARE_BANK.
   // This is a 0-based index intended to standardize the mapping of different
-  // vendor specific identifers. Mapping examples of optics that support
+  // vendor specific identifers. Mapping examples of transceivers that support
   // two banks include:
   // - Active|Standby --> 0|1
   // - A|B --> 0|1
@@ -273,9 +277,9 @@ message InstallResponse {
 
 message InstallSingleResponse {
   // Absolute path to the /components/component list member in the OpenConfig
-  // model corresponding to the optic to perform the install on.
-  // (e.g., /components/component[name=optic-1/2])
-  types.Path optic = 1;
+  // model corresponding to the transceiver to perform the install on.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
 
   oneof response {
     InstallReady install_ready = 2;
@@ -294,21 +298,23 @@ message InstallReady {
 }
 
 // The InstallProgress message signals the Client about the progress of the
-// optic install process.
+// transceiver install process.
 message InstallProgress {
   // The percentage complete of the install process.
   uint32 percentage_installed = 1;
 }
 
-// InstallOK is sent when the package is successfully installed on the optic.
-// If the optic is already running the requested version in InstallRequest,
-// then it replies with InstallOK.
+// InstallOK is sent when the package is successfully installed on the
+// transceiver.
+// If the transceiver is already running the requested version in
+// InstallRequest, then it replies with InstallOK.
 message InstallOK {
 
 }
 
-// The InstallError message MUST be sent by the Target to the Client whenever an
-// issue occurs. The Target MUST immediately close the RPC without a gRPC error.
+// The InstallError message MUST be sent by the Target to the Client whenever
+// an issue occurs. The Target MUST immediately close the RPC without a
+// gRPC error.
 message InstallError {
   enum Type {
     // An unspecified error. Must use the detail value to describe the issue.
@@ -316,12 +322,12 @@ message InstallError {
     // There is no package with the version requested for activation. This is
     // also used for an empty version string.
     NON_EXISTENT_VERSION = 1;
-    // The newly transferred package is not compatible with the optic.
+    // The newly transferred package is not compatible with the transceiver.
     // The detail field MUST contain the detailed error message.
     INCOMPATIBLE = 2;
     // The package being transferred is larger than the available size the
-    // client provisioned. This error may be returned if the optic does not
-    // have enough space for the new package and the existing packages.
+    // client provisioned. This error may be returned if the transceiver does
+    // not have enough space for the new package and the existing packages.
     TOO_LARGE = 3;
     // Used whenever the system is unable to parse the newly transferred
     // package, like reading the version or the integrity checksums.
@@ -348,9 +354,9 @@ message VerifyRequest {
 
 message VerifySingleRequest {
   // Absolute path to the /components/component list member in the OpenConfig
-  // model corresponding to the optic to verify.
-  // (e.g., /components/component[name=optic-1/2])
-  types.Path optic = 1;
+  // model corresponding to the transceiver to verify.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
 }
 
 message VerifyResponse {
@@ -359,9 +365,9 @@ message VerifyResponse {
 
 message VerifySingleResponse {
   // Absolute path to the /components/component list member in the OpenConfig
-  // model corresponding to the optic to verify.
-  // (e.g., /components/component[name=optic-1/2])
-  types.Path optic = 1;
+  // model corresponding to the transceiver to verify.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
 
   // The version currently running.
   string running_version = 2;
@@ -369,7 +375,7 @@ message VerifySingleResponse {
   // The version that is being attempted to be installed.
   string new_version = 3;
 
-  // The firmware package that is contained within each bank on the optic.
+  // The firmware package that is contained within each bank on the transceiver.
   repeated FirmwareBank bank = 4;
 
   // True if the new_version would result in a traffic disruption.
@@ -401,7 +407,7 @@ message VerifySingleResponse {
 }
 
 message FirmwareBank {
-  // The bank identifier of the optic (e.g., "A" or "B").
+  // The bank identifier of the transceiver (e.g., "A" or "B").
   string bank = 1;
 
   // The version of the firmware package in the bank.
@@ -411,13 +417,13 @@ message FirmwareBank {
 enum InstallStatus {
   // An unknown status.
   INSTALL_STATUS_UNKNOWN = 0;
-  // The package is being transferred to the optic.
+  // The package is being transferred to the transceiver.
   INSTALL_STATUS_TRANSFER_IN_PROGRESS = 1;
-  // The package is being installed on the optic.
+  // The package is being installed on the transceiver.
   INSTALL_STATUS_INSTALL_IN_PROGRESS = 2;
-  // The installation was successfully completed on the optic.
+  // The installation was successfully completed on the transceiver.
   INSTALL_STATUS_COMPLETED = 3;
-  // The installation failed on the optic.
+  // The installation failed on the transceiver.
   INSTALL_STATUS_FAILED = 4;
 }
 
