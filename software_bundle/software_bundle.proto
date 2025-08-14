@@ -98,12 +98,6 @@ message ListSoftwareBundlesResponse{
     // signature or dependencies may have been ignored
     FORCE_INSTALLED = 3;
   }
-  // an software bundle may contain multiple packages
-  message Package {
-    string name = 1;
-    string version = 2;
-    string release = 3;
-  }
   message SoftwareBundle {
     // name of the software bundle
     string software_bundle_name = 1;
@@ -133,19 +127,18 @@ message ListSoftwareBundlesResponse{
 
     // any errors attached to this software bundle
     string errors = 8;
-    repeated Package packages = 9;
 
     // affected_processes is a list of the processes which can be affected
     // by this software bundle.
     // This list may be incomplete if the system cannot determine all of the
     // processes that could be affected.
-    repeated string affected_processes = 10;
+    repeated string affected_processes = 9;
 
     // processes_pending_restart is a list of the processes which are waiting
     // be restarted to apply the software bundle.
     // This list will be cleared after a FinalizeSoftwareBundles RPC executes
     // and restarts the affected processes.
-    repeated string processes_pending_restart = 11;
+    repeated string processes_pending_restart = 10;
   }
   repeated SoftwareBundle software_bundles = 1;
 }
