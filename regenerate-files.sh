@@ -50,6 +50,8 @@ bazel build //packet_link_qualification:all
 copy_generated "packet_link_qualification" "linkqual"
 bazel build //system:all
 copy_generated "system"
+bazel build //transceiver_firmware_install:all
+copy_generated "transceiver_firmware_install"
 bazel build //types:all
 copy_generated "types"
 bazel build //wavelength_router:all
