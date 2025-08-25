@@ -51,7 +51,9 @@ service TransceiverFirmwareInstall {
   // package unless force_install is set to true. Otherwise, report success so
   // this RPC is idempotent.
   // If the RPC is terminated after the RPC is initiated, the install must
-  // continue in the background.
+  // continue in the background for ongoing installs. For example, if there
+  // is a network communication issue which disrupts the RPC, the in-progress
+  // installations would continue their progress.
   rpc Install(InstallRequest) returns (stream InstallResponse);
 
   // Verify checks the firmware related details for a transceiver(s).
@@ -313,8 +315,10 @@ message InstallOK {
 }
 
 // The InstallError message MUST be sent by the Target to the Client whenever
-// an issue occurs. The Target MUST immediately close the RPC without a
-// gRPC error.
+// an issue occurs. If there are other in progress installs from the same RPC,
+// then no further messages for this transceiver install would be sent.
+// However, if there are not other in progress installs from the same RPC then 
+// the Target MUST immediately close the RPC without a gRPC error.
 message InstallError {
   enum Type {
     // An unspecified error. Must use the detail value to describe the issue.
