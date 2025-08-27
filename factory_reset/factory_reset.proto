@@ -26,7 +26,25 @@ service FactoryReset {
   // code INVALID_ARGUMENT must be returned with the details value set to a
   // properly populated ResetError message.
   rpc Start(StartRequest) returns (StartResponse);
+
+  // The Decommission RPC allows the Client to instruct the Target to
+  // decommission the Target and reboot.
+  // The Target should not boot back to the OS.
+  // The decommissioning process is vendor-defined, but may involves removal
+  // of OS images, persistent storage, licenses, and is more comprehensive
+  // than the Start RPC, with no options to retain anything.
+  // To facilitate a response being returned to the caller, the reboot
+  // component of this RPC is asynchronous and will run after the RPC
+  // has returned a DecommissionResponse.
+  rpc Decommission(DecommissionRequest) returns (DecommissionResponse);
 }
+
+message DecommissionRequest{
+  // Time (in nanoseconds) that the Target should allow before issuing the reboot.
+  // If unset, the Target will assume a default of 15000000000 (15 seconds)
+  uint64 rebootDelay = 1;
+}
+message DecommissionResponse{}
 
 message StartRequest {
   // Instructs the Target to rollback the OS to the same version as it shipped
