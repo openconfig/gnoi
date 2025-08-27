@@ -24,7 +24,7 @@ const (
 
 type DecommissionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RebootDelay   uint64                 `protobuf:"varint,1,opt,name=rebootDelay,proto3" json:"rebootDelay,omitempty"`
+	RebootDelay   uint64                 `protobuf:"varint,1,opt,name=reboot_delay,json=rebootDelay,proto3" json:"reboot_delay,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -352,9 +352,9 @@ var File_github_com_openconfig_gnoi_factory_reset_factory_reset_proto protorefle
 
 const file_github_com_openconfig_gnoi_factory_reset_factory_reset_proto_rawDesc = "" +
 	"\n" +
-	"<github.com/openconfig/gnoi/factory_reset/factory_reset.proto\x12\x12gnoi.factory_reset\x1a,github.com/openconfig/gnoi/types/types.proto\"7\n" +
-	"\x13DecommissionRequest\x12 \n" +
-	"\vrebootDelay\x18\x01 \x01(\x04R\vrebootDelay\"\x16\n" +
+	"<github.com/openconfig/gnoi/factory_reset/factory_reset.proto\x12\x12gnoi.factory_reset\x1a,github.com/openconfig/gnoi/types/types.proto\"8\n" +
+	"\x13DecommissionRequest\x12!\n" +
+	"\freboot_delay\x18\x01 \x01(\x04R\vrebootDelay\"\x16\n" +
 	"\x14DecommissionResponse\"m\n" +
 	"\fStartRequest\x12\x1d\n" +
 	"\n" +

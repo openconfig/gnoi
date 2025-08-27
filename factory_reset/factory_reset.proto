@@ -40,11 +40,14 @@ service FactoryReset {
 }
 
 message DecommissionRequest{
-  // Time (in nanoseconds) that the Target should allow before issuing the reboot.
+  // Time (in nanoseconds) that the Target should
+  // wait before issuing the reboot to complete the decommission.
   // If unset, the Target will assume a default of 15000000000 (15 seconds)
-  uint64 rebootDelay = 1;
+  uint64 reboot_delay = 1;
 }
-message DecommissionResponse{}
+
+message DecommissionResponse{
+}
 
 message StartRequest {
   // Instructs the Target to rollback the OS to the same version as it shipped
