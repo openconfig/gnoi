@@ -1,0 +1,442 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package gnoi.transceiver_firmware_install;
+
+import "github.com/openconfig/gnoi/types/types.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/openconfig/gnoi/transceiver_firmware_install";
+
+option (types.gnoi_version) = "0.1.0";
+
+// The service provides an interface for installation of firmware on
+// transceivers in a Target.
+// The Client progresses through RPCs in the following order:
+//   1) Transfer - Provide the Target with the package which can be used for
+//      multiple transceivers.
+//   2) Install - Copy the package to the requested transceivers and make it
+//      the active package.
+//   3) Verify - Verify that the package is installed on the transceiver(s).
+//      This is redundant to the Install RPC responding with InstallOK, but
+//      is useful for the Client if the RPC is interrupted while in progress
+//      or if the Client is interested polling for the progress of the install.
+//
+service TransceiverFirmwareInstall {
+  // Transfer performs a package transfer from either:
+  //   1) External to Target.
+  //   2) Target to inactive bank of an Transceiver.
+  rpc Transfer(stream TransferRequest) returns (stream TransferResponse);
+
+  // Install initiates the install process on a transceiver(s).
+  // The install requires that the package was previously transferred to the
+  // Target using the Transfer RPC.
+  // If the transceiver is already using the desired version or the install is
+  // already in progress for the identical version, do not re-install the
+  // package unless force_install is set to true. Otherwise, report success so
+  // this RPC is idempotent.
+  // If the RPC is terminated after the RPC is initiated, the install must
+  // continue in the background for ongoing installs. For example, if there
+  // is a network communication issue which disrupts the RPC, the in-progress
+  // installations would continue their progress.
+  rpc Install(InstallRequest) returns (stream InstallResponse);
+
+  // Verify checks the firmware related details for a transceiver(s).
+  // During reboot, gRPC client returns the gRPC status code UNAVAILABLE while
+  // the transceiver is unreachable, which should be retried by the client until
+  // successful.
+  rpc Verify(VerifyRequest) returns (VerifyResponse);
+
+  // Delete removes the package from the Target's storage.
+  // Deletion for a package should not be allowed if the package was bundled
+  // with the OS image or if a transfer is currently in progress.
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message TransferRequest {
+  oneof request {
+    TransferToDeviceRequest transfer_to_device = 1;
+    TransferToTransceiverRequest transfer_to_transceiver = 2;
+  }
+}
+
+// The TransferToDeviceRequest is used by the Client to transfer the package to
+// the Target. The Target MUST store the package in a generic location that can
+// later be utilized to repeatedly transfer the package to multiple
+// transceivers.
+message TransferToDeviceRequest {
+  oneof request {
+    TransferToDeviceStartRequest transfer_start_request = 1;
+    bytes transfer_content = 2;
+    TransferEnd transfer_end = 3;
+  }
+}
+
+message TransferToDeviceStartRequest {
+  // The package name is a unique identifier for a firmware package. Typically,
+  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  string package_name = 1;
+
+  // Optionally specify the package size in bytes.
+  // If 1) the value is different than 0
+  // and 2) the required space in the Target is larger than the available space
+  // and 3) the Target is unable to release space for the incoming package,
+  // then the Target must reply with TransferError->Type->TOO_LARGE.
+  uint64 package_size_bytes = 2;
+
+  // Optionally specify the hash of the package which the Target can use to
+  // verify the integrity of the package. The Target must reply with
+  // TransferError->Type->INTEGRITY_FAIL if the hash does not
+  // match the hash of the package that the Target has stored.
+  types.HashType hash = 3;
+}
+
+// The TransferEnd message is sent whenever the Client finishes transferring
+// the package to the Target. At this point the Target MUST perform a general
+// health check to the package. If the Target fails to parse the package
+// it MUST immediately reply with an TransferError->type->PARSE_FAIL. If the
+// integrity check of the package fails it MUST immediately reply with an
+// TransferError->type->INTEGRITY_FAIL.
+message TransferEnd {
+
+}
+
+// The TransferToTransceiverRequest is used by the Client to transfer the
+// package ONLY to an inactive bank of the transceiver.
+// This would make the package available for the Install RPC, but the package
+// MUST NOT be made active as a result of this transfer.
+message TransferToTransceiverRequest {
+  // Absolute path to the /components/component list member in the OpenConfig
+  // model corresponding to the transceiver to perform the install on.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
+
+  // The package name is a unique identifier for a firmware package. Typically,
+  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  string package_name = 2;
+
+  // Optionally specify the package size in bytes.
+  // If 1) the value is different than 0
+  // and 2) the required space in the transceiver is larger than the available
+  //        space
+  // and 3) the transceiver is unable to release space for the incoming package,
+  // then the Target must reply with TransferError->Type->TOO_LARGE.
+  // If the transceiver does not support advertising its available space, then
+  // the Target must return TransferError->Type->INVALID_ARGUMENT.
+  uint64 package_size_bytes = 3;
+
+  // The bank identifier of the transceiver to install the firmware on.
+  // If the transceiver only contains a single bank, then the Target must reply
+  // with TransferError->Type->INCOMPATIBLE.
+  // If the transceiver only contains an active and standby bank, then this
+  // field may be considered optional as the transfer must be made to the
+  //standby bank.
+  // This is a 0-based index intended to standardize the mapping of different
+  // vendor specific identifers. Mapping examples of transceivers that support
+  // two banks include:
+  // - Active|Standby --> 0|1
+  // - A|B --> 0|1
+  // - 1|2 --> 0|1
+  uint32 firmware_bank = 4;
+}
+
+// The TransferResponse is used by the Target to inform the Client about the
+// state of the Transfer RPC. At any stage of the process the Target can reply
+// with an Error message which MUST terminate the stream.
+message TransferResponse {
+  oneof response {
+    TransferReady transfer_ready = 1;
+    TransferProgress transfer_progress = 2;
+    Validated validated = 3;
+    TransferError transfer_error = 4;
+  }
+}
+
+// The TransferReady message tells the Client that the Target is ready to accept
+// the package transfer. At this stage the Target MUST have cleared enough space
+// to accept the incoming package if the package size was specified.
+message TransferReady {
+
+}
+
+// The TransferProgress message is sent by the target asynchronously during a
+// file transfer. The Target SHOULD not respond to each input block received
+// from the client, but rather determine reasonable intervals at which to send
+// the message (e.g., 5MB).
+message TransferProgress {
+  // The number of bytes transferred.
+  uint64 bytes_received = 1;
+}
+
+// The Validated message asserts that the Target was able to parse the package
+// and perform integrity checks to its contents.
+// This message is sent at the conclusion of a successful RPC.
+message Validated {
+
+}
+
+// The TransferError message MUST be sent by the Target to the Client whenever
+// an issue occurs. The Target MUST immediately close the RPC without a
+// gRPC error.
+message TransferError {
+  enum Type {
+    // An unspecified error. Must use the detail value to describe the issue.
+    UNSPECIFIED = 0;
+    // The newly transferred package is not compatible with the Target platform.
+    // The detail field MUST contain the detailed error message.
+    INCOMPATIBLE = 1;
+    // The package being transferred is larger than the available size the
+    // client provisioned. This error may be returned if the target does not
+    // have enough space for the new package and the existing packages.
+    TOO_LARGE = 2;
+    // Used whenever the system is unable to parse the newly transferred
+    // package, like reading the version or the integrity checksums.
+    PARSE_FAIL = 3;
+    // The transferred package fails integrity check.
+    INTEGRITY_FAIL = 4;
+    // Another Transfer RPC to this Target is already in progress with a
+    // different firmware version. However, if the in progress transfer is for
+    // the identical firmware version, then this error should not be returned
+    // and the Transfer RPC should return success.
+    TRANSFER_IN_PROGRESS = 5;
+    // The transfer request provided an invalid argument. When this error is
+    // returned, the Target must provide more details in the detail field.
+    INVALID_ARGUMENT = 6;
+  }
+  Type type = 1;
+  string detail = 2;
+}
+
+message InstallRequest {
+  repeated InstallSingleRequest install_requests = 1;
+}
+
+message InstallSingleRequest {
+  // Absolute path to the /components/component list member in the OpenConfig
+  // model corresponding to the transceiver to perform the install on.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
+
+  oneof install_from {
+    InstallFromDeviceRequest install_from_device = 2;
+    InstallFromTransceiverBankRequest install_from_transceiver_bank = 3;
+  }
+
+  // If true, the Target MUST install the package even if the transceiver is
+  // already running the same package.
+  bool force_install = 4;
+}
+
+message InstallFromDeviceRequest {
+  // The package name is a unique identifier for a firmware package. Typically,
+  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  string package_name = 1;
+
+  // Optionally specify the package size in bytes.
+  // If 1) the value is different than 0
+  // and 2) the required space in the transceiver is larger than the available
+  //        space
+  // and 3) the transceiver is unable to release space for the incoming package,
+  // then the Target must reply with TransferError->Type->TOO_LARGE.
+  uint64 package_size_bytes = 2;
+}
+
+message InstallFromTransceiverBankRequest {
+  // The bank identifier of the transceiver to install the firmware from.
+  // This would be used if the firmware package is already pre-loaded on the
+  // transceiver in an inactive bank.
+  // If the transceiver only contains a single bank, then the Target must reply
+  // with InstallError->Type->INCOMPATIBLE.
+  // If the specified bank is empty, then the Target must reply with
+  // InstallError->Type->EMPTY_FIRMWARE_BANK.
+  // This is a 0-based index intended to standardize the mapping of different
+  // vendor specific identifers. Mapping examples of transceivers that support
+  // two banks include:
+  // - Active|Standby --> 0|1
+  // - A|B --> 0|1
+  // - 1|2 --> 0|1
+  uint32 firmware_bank = 4;
+}
+
+message InstallResponse {
+  repeated InstallSingleResponse install_responses = 1;
+}
+
+message InstallSingleResponse {
+  // Absolute path to the /components/component list member in the OpenConfig
+  // model corresponding to the transceiver to perform the install on.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
+
+  oneof response {
+    InstallReady install_ready = 2;
+    TransferProgress transfer_progress = 3;
+    InstallProgress install_progress = 4;
+    InstallOK install_ok = 5;
+    InstallError install_error = 6;
+  }
+}
+
+// The InstallReady message tells the Client that the Target is ready to accept
+// the package install. At this stage the Target MUST have cleared enough space
+// to accept the incoming package if the package size was specified.
+message InstallReady {
+
+}
+
+// The InstallProgress message signals the Client about the progress of the
+// transceiver install process.
+message InstallProgress {
+  // The percentage complete of the install process.
+  uint32 percentage_installed = 1;
+}
+
+// InstallOK is sent when the package is successfully installed on the
+// transceiver.
+// If the transceiver is already running the requested version in
+// InstallRequest, then it replies with InstallOK.
+message InstallOK {
+
+}
+
+// The InstallError message MUST be sent by the Target to the Client whenever
+// an issue occurs. If there are other in progress installs from the same RPC,
+// then no further messages for this transceiver install would be sent.
+// However, if there are not other in progress installs from the same RPC then 
+// the Target MUST immediately close the RPC without a gRPC error.
+message InstallError {
+  enum Type {
+    // An unspecified error. Must use the detail value to describe the issue.
+    UNSPECIFIED = 0;
+    // There is no package with the version requested for activation. This is
+    // also used for an empty version string.
+    NON_EXISTENT_VERSION = 1;
+    // The newly transferred package is not compatible with the transceiver.
+    // The detail field MUST contain the detailed error message.
+    INCOMPATIBLE = 2;
+    // The package being transferred is larger than the available size the
+    // client provisioned. This error may be returned if the transceiver does
+    // not have enough space for the new package and the existing packages.
+    TOO_LARGE = 3;
+    // Used whenever the system is unable to parse the newly transferred
+    // package, like reading the version or the integrity checksums.
+    PARSE_FAIL = 4;
+    // The transferred package fails integrity check.
+    INTEGRITY_FAIL = 5;
+    // Another Install RPC to this Target is already in progress with a
+    // different firmware version. However, if the in progress install is for
+    // the identical firmware version, then this error should not be returned
+    // and the Install RPC should return success.
+    INSTALL_IN_PROGRESS = 6;
+    // A switchover happened during the Install RPC.
+    UNEXPECTED_SWITCHOVER = 7;
+    // Used when a specified bank is empty and does not contain a package.
+    EMPTY_FIRMWARE_BANK = 8;
+  }
+  Type type = 1;
+  string detail = 2;
+}
+
+message VerifyRequest {
+  repeated VerifySingleRequest verify_requests = 1;
+}
+
+message VerifySingleRequest {
+  // Absolute path to the /components/component list member in the OpenConfig
+  // model corresponding to the transceiver to verify.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
+}
+
+message VerifyResponse {
+  repeated VerifySingleResponse verify_responses = 1;
+}
+
+message VerifySingleResponse {
+  // Absolute path to the /components/component list member in the OpenConfig
+  // model corresponding to the transceiver to verify.
+  // (e.g., /components/component[name=transceiver-1/2])
+  types.Path transceiver = 1;
+
+  // The version currently running.
+  string running_version = 2;
+
+  // The version that is being attempted to be installed.
+  string new_version = 3;
+
+  // The firmware package that is contained within each bank on the transceiver.
+  repeated FirmwareBank bank = 4;
+
+  // True if the new_version would result in a traffic disruption.
+  bool new_version_service_impacting = 5;
+
+  // The current state of the latest install process.
+  InstallStatus install_status = 6;
+
+  // The current in-progress step of the install.
+  string step = 7;
+
+  // The percentage complete of the current in-progress step.
+  uint32 step_percent_complete = 8;
+
+  // The percentage complete of the latest install process.
+  uint32 total_percent_complete = 9;
+
+  // The time when the latest install was initiated.
+  google.protobuf.Timestamp start_time = 10;
+
+  // The time when the latest install was completed.
+  google.protobuf.Timestamp stop_time = 11;
+
+  // The time elapsed since the latest install was initiated.
+  google.protobuf.Duration duration = 12;
+
+  // The failure message if the latest install failed.
+  string failure_message = 13;
+}
+
+message FirmwareBank {
+  // The bank identifier of the transceiver (e.g., "A" or "B").
+  string bank = 1;
+
+  // The version of the firmware package in the bank.
+  string version = 2;
+}
+
+enum InstallStatus {
+  // An unknown status.
+  INSTALL_STATUS_UNKNOWN = 0;
+  // The package is being transferred to the transceiver.
+  INSTALL_STATUS_TRANSFER_IN_PROGRESS = 1;
+  // The package is being installed on the transceiver.
+  INSTALL_STATUS_INSTALL_IN_PROGRESS = 2;
+  // The installation was successfully completed on the transceiver.
+  INSTALL_STATUS_COMPLETED = 3;
+  // The installation failed on the transceiver.
+  INSTALL_STATUS_FAILED = 4;
+}
+
+message DeleteRequest {
+  // The package name is a unique identifier for a firmware package. Typically,
+  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  string package_name = 1;
+}
+
+message DeleteResponse {
+
+}
