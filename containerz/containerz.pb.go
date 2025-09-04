@@ -236,6 +236,58 @@ func (Device_Permission) EnumDescriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDescGZIP(), []int{16, 0}
 }
 
+type StartContainerRequest_Location int32
+
+const (
+	StartContainerRequest_L_UNKNOWN StartContainerRequest_Location = 0
+	StartContainerRequest_L_PRIMARY StartContainerRequest_Location = 1
+	StartContainerRequest_L_BACKUP  StartContainerRequest_Location = 2
+	StartContainerRequest_L_ALL     StartContainerRequest_Location = 3
+)
+
+// Enum value maps for StartContainerRequest_Location.
+var (
+	StartContainerRequest_Location_name = map[int32]string{
+		0: "L_UNKNOWN",
+		1: "L_PRIMARY",
+		2: "L_BACKUP",
+		3: "L_ALL",
+	}
+	StartContainerRequest_Location_value = map[string]int32{
+		"L_UNKNOWN": 0,
+		"L_PRIMARY": 1,
+		"L_BACKUP":  2,
+		"L_ALL":     3,
+	}
+)
+
+func (x StartContainerRequest_Location) Enum() *StartContainerRequest_Location {
+	p := new(StartContainerRequest_Location)
+	*p = x
+	return p
+}
+
+func (x StartContainerRequest_Location) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (StartContainerRequest_Location) Descriptor() protoreflect.EnumDescriptor {
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[4].Descriptor()
+}
+
+func (StartContainerRequest_Location) Type() protoreflect.EnumType {
+	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[4]
+}
+
+func (x StartContainerRequest_Location) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use StartContainerRequest_Location.Descriptor instead.
+func (StartContainerRequest_Location) EnumDescriptor() ([]byte, []int) {
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDescGZIP(), []int{17, 0}
+}
+
 type StartContainerRequest_Restart_Policy int32
 
 const (
@@ -272,11 +324,11 @@ func (x StartContainerRequest_Restart_Policy) String() string {
 }
 
 func (StartContainerRequest_Restart_Policy) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[4].Descriptor()
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[5].Descriptor()
 }
 
 func (StartContainerRequest_Restart_Policy) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[4]
+	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[5]
 }
 
 func (x StartContainerRequest_Restart_Policy) Number() protoreflect.EnumNumber {
@@ -324,11 +376,11 @@ func (x StartError_Code) String() string {
 }
 
 func (StartError_Code) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[5].Descriptor()
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[6].Descriptor()
 }
 
 func (StartError_Code) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[5]
+	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[6]
 }
 
 func (x StartError_Code) Number() protoreflect.EnumNumber {
@@ -376,11 +428,11 @@ func (x StopContainerResponse_Code) String() string {
 }
 
 func (StopContainerResponse_Code) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[6].Descriptor()
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[7].Descriptor()
 }
 
 func (StopContainerResponse_Code) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[6]
+	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[7]
 }
 
 func (x StopContainerResponse_Code) Number() protoreflect.EnumNumber {
@@ -434,11 +486,11 @@ func (x UpdateError_Code) String() string {
 }
 
 func (UpdateError_Code) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[7].Descriptor()
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[8].Descriptor()
 }
 
 func (UpdateError_Code) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[7]
+	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[8]
 }
 
 func (x UpdateError_Code) Number() protoreflect.EnumNumber {
@@ -480,11 +532,11 @@ func (x LocalDriverOptions_Type) String() string {
 }
 
 func (LocalDriverOptions_Type) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[8].Descriptor()
+	return file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[9].Descriptor()
 }
 
 func (LocalDriverOptions_Type) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[8]
+	return &file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes[9]
 }
 
 func (x LocalDriverOptions_Type) Number() protoreflect.EnumNumber {
@@ -1560,6 +1612,7 @@ type StartContainerRequest struct {
 	Labels        map[string]string                   `protobuf:"bytes,12,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Limits        *StartContainerRequest_Limits       `protobuf:"bytes,13,opt,name=limits,proto3" json:"limits,omitempty"`
 	Devices       []*Device                           `protobuf:"bytes,14,rep,name=devices,proto3" json:"devices,omitempty"`
+	Location      StartContainerRequest_Location      `protobuf:"varint,15,opt,name=location,proto3,enum=gnoi.containerz.StartContainerRequest_Location" json:"location,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1690,6 +1743,13 @@ func (x *StartContainerRequest) GetDevices() []*Device {
 		return x.Devices
 	}
 	return nil
+}
+
+func (x *StartContainerRequest) GetLocation() StartContainerRequest_Location {
+	if x != nil {
+		return x.Location
+	}
+	return StartContainerRequest_L_UNKNOWN
 }
 
 type StartContainerResponse struct {
@@ -3747,8 +3807,7 @@ const file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc = "" +
 	"\vUNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04READ\x10\x01\x12\t\n" +
 	"\x05WRITE\x10\x02\x12\t\n" +
-	"\x05MKNOD\x10\x03\"\xd8\n" +
-	"\n" +
+	"\x05MKNOD\x10\x03\"\xe8\v\n" +
 	"\x15StartContainerRequest\x12\x1d\n" +
 	"\n" +
 	"image_name\x18\x01 \x01(\tR\timageName\x12\x10\n" +
@@ -3765,7 +3824,8 @@ const file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc = "" +
 	"\x06run_as\x18\v \x01(\v2,.gnoi.containerz.StartContainerRequest.RunAsR\x05runAs\x12J\n" +
 	"\x06labels\x18\f \x03(\v22.gnoi.containerz.StartContainerRequest.LabelsEntryR\x06labels\x12E\n" +
 	"\x06limits\x18\r \x01(\v2-.gnoi.containerz.StartContainerRequest.LimitsR\x06limits\x121\n" +
-	"\adevices\x18\x0e \x03(\v2\x17.gnoi.containerz.DeviceR\adevices\x1a>\n" +
+	"\adevices\x18\x0e \x03(\v2\x17.gnoi.containerz.DeviceR\adevices\x12K\n" +
+	"\blocation\x18\x0f \x01(\x0e2/.gnoi.containerz.StartContainerRequest.LocationR\blocation\x1a>\n" +
 	"\x04Port\x12\x1a\n" +
 	"\binternal\x18\x01 \x01(\rR\binternal\x12\x1a\n" +
 	"\bexternal\x18\x02 \x01(\rR\bexternal\x1a>\n" +
@@ -3794,7 +3854,12 @@ const file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc = "" +
 	"\x06Limits\x12\x17\n" +
 	"\amax_cpu\x18\x01 \x01(\x01R\x06maxCpu\x12$\n" +
 	"\x0esoft_mem_bytes\x18\x02 \x01(\x03R\fsoftMemBytes\x12$\n" +
-	"\x0ehard_mem_bytes\x18\x03 \x01(\x03R\fhardMemBytes\"\x9b\x01\n" +
+	"\x0ehard_mem_bytes\x18\x03 \x01(\x03R\fhardMemBytes\"A\n" +
+	"\bLocation\x12\r\n" +
+	"\tL_UNKNOWN\x10\x00\x12\r\n" +
+	"\tL_PRIMARY\x10\x01\x12\f\n" +
+	"\bL_BACKUP\x10\x02\x12\t\n" +
+	"\x05L_ALL\x10\x03\"\x9b\x01\n" +
 	"\x16StartContainerResponse\x125\n" +
 	"\bstart_ok\x18\x01 \x01(\v2\x18.gnoi.containerz.StartOKH\x00R\astartOk\x12>\n" +
 	"\vstart_error\x18\x02 \x01(\v2\x1b.gnoi.containerz.StartErrorH\x00R\n" +
@@ -3962,166 +4027,168 @@ func file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDescGZIP() [
 	return file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDescData
 }
 
-var file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
+var file_github_com_openconfig_gnoi_containerz_containerz_proto_enumTypes = make([]protoimpl.EnumInfo, 10)
 var file_github_com_openconfig_gnoi_containerz_containerz_proto_msgTypes = make([]protoimpl.MessageInfo, 61)
 var file_github_com_openconfig_gnoi_containerz_containerz_proto_goTypes = []any{
 	(Driver)(0),                                // 0: gnoi.containerz.Driver
 	(RemoveImageResponse_Code)(0),              // 1: gnoi.containerz.RemoveImageResponse.Code
 	(ListContainerResponse_Status)(0),          // 2: gnoi.containerz.ListContainerResponse.Status
 	(Device_Permission)(0),                     // 3: gnoi.containerz.Device.Permission
-	(StartContainerRequest_Restart_Policy)(0),  // 4: gnoi.containerz.StartContainerRequest.Restart.Policy
-	(StartError_Code)(0),                       // 5: gnoi.containerz.StartError.Code
-	(StopContainerResponse_Code)(0),            // 6: gnoi.containerz.StopContainerResponse.Code
-	(UpdateError_Code)(0),                      // 7: gnoi.containerz.UpdateError.Code
-	(LocalDriverOptions_Type)(0),               // 8: gnoi.containerz.LocalDriverOptions.Type
-	(*DeployRequest)(nil),                      // 9: gnoi.containerz.DeployRequest
-	(*ImageTransfer)(nil),                      // 10: gnoi.containerz.ImageTransfer
-	(*ImageTransferEnd)(nil),                   // 11: gnoi.containerz.ImageTransferEnd
-	(*DeployResponse)(nil),                     // 12: gnoi.containerz.DeployResponse
-	(*ImageTransferReady)(nil),                 // 13: gnoi.containerz.ImageTransferReady
-	(*ImageTransferProgress)(nil),              // 14: gnoi.containerz.ImageTransferProgress
-	(*ImageTransferSuccess)(nil),               // 15: gnoi.containerz.ImageTransferSuccess
-	(*RemoveImageRequest)(nil),                 // 16: gnoi.containerz.RemoveImageRequest
-	(*RemoveImageResponse)(nil),                // 17: gnoi.containerz.RemoveImageResponse
-	(*RemoveContainerRequest)(nil),             // 18: gnoi.containerz.RemoveContainerRequest
-	(*RemoveContainerResponse)(nil),            // 19: gnoi.containerz.RemoveContainerResponse
-	(*ListImageRequest)(nil),                   // 20: gnoi.containerz.ListImageRequest
-	(*ListImageResponse)(nil),                  // 21: gnoi.containerz.ListImageResponse
-	(*ListContainerRequest)(nil),               // 22: gnoi.containerz.ListContainerRequest
-	(*ListContainerResponse)(nil),              // 23: gnoi.containerz.ListContainerResponse
-	(*Volume)(nil),                             // 24: gnoi.containerz.Volume
-	(*Device)(nil),                             // 25: gnoi.containerz.Device
-	(*StartContainerRequest)(nil),              // 26: gnoi.containerz.StartContainerRequest
-	(*StartContainerResponse)(nil),             // 27: gnoi.containerz.StartContainerResponse
-	(*StartOK)(nil),                            // 28: gnoi.containerz.StartOK
-	(*StartError)(nil),                         // 29: gnoi.containerz.StartError
-	(*StopContainerRequest)(nil),               // 30: gnoi.containerz.StopContainerRequest
-	(*StopContainerResponse)(nil),              // 31: gnoi.containerz.StopContainerResponse
-	(*UpdateContainerRequest)(nil),             // 32: gnoi.containerz.UpdateContainerRequest
-	(*UpdateContainerResponse)(nil),            // 33: gnoi.containerz.UpdateContainerResponse
-	(*UpdateOK)(nil),                           // 34: gnoi.containerz.UpdateOK
-	(*UpdateError)(nil),                        // 35: gnoi.containerz.UpdateError
-	(*LogRequest)(nil),                         // 36: gnoi.containerz.LogRequest
-	(*LogResponse)(nil),                        // 37: gnoi.containerz.LogResponse
-	(*LocalDriverOptions)(nil),                 // 38: gnoi.containerz.LocalDriverOptions
-	(*CustomOptions)(nil),                      // 39: gnoi.containerz.CustomOptions
-	(*CreateVolumeRequest)(nil),                // 40: gnoi.containerz.CreateVolumeRequest
-	(*CreateVolumeResponse)(nil),               // 41: gnoi.containerz.CreateVolumeResponse
-	(*RemoveVolumeRequest)(nil),                // 42: gnoi.containerz.RemoveVolumeRequest
-	(*RemoveVolumeResponse)(nil),               // 43: gnoi.containerz.RemoveVolumeResponse
-	(*ListVolumeRequest)(nil),                  // 44: gnoi.containerz.ListVolumeRequest
-	(*ListVolumeResponse)(nil),                 // 45: gnoi.containerz.ListVolumeResponse
-	(*StartPluginRequest)(nil),                 // 46: gnoi.containerz.StartPluginRequest
-	(*StartPluginResponse)(nil),                // 47: gnoi.containerz.StartPluginResponse
-	(*StopPluginRequest)(nil),                  // 48: gnoi.containerz.StopPluginRequest
-	(*StopPluginResponse)(nil),                 // 49: gnoi.containerz.StopPluginResponse
-	(*ListPluginsRequest)(nil),                 // 50: gnoi.containerz.ListPluginsRequest
-	(*Plugin)(nil),                             // 51: gnoi.containerz.Plugin
-	(*ListPluginsResponse)(nil),                // 52: gnoi.containerz.ListPluginsResponse
-	(*RemovePluginRequest)(nil),                // 53: gnoi.containerz.RemovePluginRequest
-	(*RemovePluginResponse)(nil),               // 54: gnoi.containerz.RemovePluginResponse
-	(*ListImageRequest_Filter)(nil),            // 55: gnoi.containerz.ListImageRequest.Filter
-	(*ListContainerRequest_Filter)(nil),        // 56: gnoi.containerz.ListContainerRequest.Filter
-	nil,                                        // 57: gnoi.containerz.ListContainerResponse.LabelsEntry
-	(*StartContainerRequest_Port)(nil),         // 58: gnoi.containerz.StartContainerRequest.Port
-	nil,                                        // 59: gnoi.containerz.StartContainerRequest.EnvironmentEntry
-	(*StartContainerRequest_Capabilities)(nil), // 60: gnoi.containerz.StartContainerRequest.Capabilities
-	(*StartContainerRequest_Restart)(nil),      // 61: gnoi.containerz.StartContainerRequest.Restart
-	(*StartContainerRequest_RunAs)(nil),        // 62: gnoi.containerz.StartContainerRequest.RunAs
-	nil,                                        // 63: gnoi.containerz.StartContainerRequest.LabelsEntry
-	(*StartContainerRequest_Limits)(nil),       // 64: gnoi.containerz.StartContainerRequest.Limits
-	nil,                                        // 65: gnoi.containerz.CustomOptions.OptionsEntry
-	nil,                                        // 66: gnoi.containerz.CreateVolumeRequest.LabelsEntry
-	(*ListVolumeRequest_Filter)(nil),           // 67: gnoi.containerz.ListVolumeRequest.Filter
-	nil,                                        // 68: gnoi.containerz.ListVolumeResponse.OptionsEntry
-	nil,                                        // 69: gnoi.containerz.ListVolumeResponse.LabelsEntry
-	(*common.RemoteDownload)(nil),              // 70: gnoi.common.RemoteDownload
-	(*status.Status)(nil),                      // 71: google.rpc.Status
-	(*types.HashType)(nil),                     // 72: gnoi.types.HashType
-	(*timestamppb.Timestamp)(nil),              // 73: google.protobuf.Timestamp
+	(StartContainerRequest_Location)(0),        // 4: gnoi.containerz.StartContainerRequest.Location
+	(StartContainerRequest_Restart_Policy)(0),  // 5: gnoi.containerz.StartContainerRequest.Restart.Policy
+	(StartError_Code)(0),                       // 6: gnoi.containerz.StartError.Code
+	(StopContainerResponse_Code)(0),            // 7: gnoi.containerz.StopContainerResponse.Code
+	(UpdateError_Code)(0),                      // 8: gnoi.containerz.UpdateError.Code
+	(LocalDriverOptions_Type)(0),               // 9: gnoi.containerz.LocalDriverOptions.Type
+	(*DeployRequest)(nil),                      // 10: gnoi.containerz.DeployRequest
+	(*ImageTransfer)(nil),                      // 11: gnoi.containerz.ImageTransfer
+	(*ImageTransferEnd)(nil),                   // 12: gnoi.containerz.ImageTransferEnd
+	(*DeployResponse)(nil),                     // 13: gnoi.containerz.DeployResponse
+	(*ImageTransferReady)(nil),                 // 14: gnoi.containerz.ImageTransferReady
+	(*ImageTransferProgress)(nil),              // 15: gnoi.containerz.ImageTransferProgress
+	(*ImageTransferSuccess)(nil),               // 16: gnoi.containerz.ImageTransferSuccess
+	(*RemoveImageRequest)(nil),                 // 17: gnoi.containerz.RemoveImageRequest
+	(*RemoveImageResponse)(nil),                // 18: gnoi.containerz.RemoveImageResponse
+	(*RemoveContainerRequest)(nil),             // 19: gnoi.containerz.RemoveContainerRequest
+	(*RemoveContainerResponse)(nil),            // 20: gnoi.containerz.RemoveContainerResponse
+	(*ListImageRequest)(nil),                   // 21: gnoi.containerz.ListImageRequest
+	(*ListImageResponse)(nil),                  // 22: gnoi.containerz.ListImageResponse
+	(*ListContainerRequest)(nil),               // 23: gnoi.containerz.ListContainerRequest
+	(*ListContainerResponse)(nil),              // 24: gnoi.containerz.ListContainerResponse
+	(*Volume)(nil),                             // 25: gnoi.containerz.Volume
+	(*Device)(nil),                             // 26: gnoi.containerz.Device
+	(*StartContainerRequest)(nil),              // 27: gnoi.containerz.StartContainerRequest
+	(*StartContainerResponse)(nil),             // 28: gnoi.containerz.StartContainerResponse
+	(*StartOK)(nil),                            // 29: gnoi.containerz.StartOK
+	(*StartError)(nil),                         // 30: gnoi.containerz.StartError
+	(*StopContainerRequest)(nil),               // 31: gnoi.containerz.StopContainerRequest
+	(*StopContainerResponse)(nil),              // 32: gnoi.containerz.StopContainerResponse
+	(*UpdateContainerRequest)(nil),             // 33: gnoi.containerz.UpdateContainerRequest
+	(*UpdateContainerResponse)(nil),            // 34: gnoi.containerz.UpdateContainerResponse
+	(*UpdateOK)(nil),                           // 35: gnoi.containerz.UpdateOK
+	(*UpdateError)(nil),                        // 36: gnoi.containerz.UpdateError
+	(*LogRequest)(nil),                         // 37: gnoi.containerz.LogRequest
+	(*LogResponse)(nil),                        // 38: gnoi.containerz.LogResponse
+	(*LocalDriverOptions)(nil),                 // 39: gnoi.containerz.LocalDriverOptions
+	(*CustomOptions)(nil),                      // 40: gnoi.containerz.CustomOptions
+	(*CreateVolumeRequest)(nil),                // 41: gnoi.containerz.CreateVolumeRequest
+	(*CreateVolumeResponse)(nil),               // 42: gnoi.containerz.CreateVolumeResponse
+	(*RemoveVolumeRequest)(nil),                // 43: gnoi.containerz.RemoveVolumeRequest
+	(*RemoveVolumeResponse)(nil),               // 44: gnoi.containerz.RemoveVolumeResponse
+	(*ListVolumeRequest)(nil),                  // 45: gnoi.containerz.ListVolumeRequest
+	(*ListVolumeResponse)(nil),                 // 46: gnoi.containerz.ListVolumeResponse
+	(*StartPluginRequest)(nil),                 // 47: gnoi.containerz.StartPluginRequest
+	(*StartPluginResponse)(nil),                // 48: gnoi.containerz.StartPluginResponse
+	(*StopPluginRequest)(nil),                  // 49: gnoi.containerz.StopPluginRequest
+	(*StopPluginResponse)(nil),                 // 50: gnoi.containerz.StopPluginResponse
+	(*ListPluginsRequest)(nil),                 // 51: gnoi.containerz.ListPluginsRequest
+	(*Plugin)(nil),                             // 52: gnoi.containerz.Plugin
+	(*ListPluginsResponse)(nil),                // 53: gnoi.containerz.ListPluginsResponse
+	(*RemovePluginRequest)(nil),                // 54: gnoi.containerz.RemovePluginRequest
+	(*RemovePluginResponse)(nil),               // 55: gnoi.containerz.RemovePluginResponse
+	(*ListImageRequest_Filter)(nil),            // 56: gnoi.containerz.ListImageRequest.Filter
+	(*ListContainerRequest_Filter)(nil),        // 57: gnoi.containerz.ListContainerRequest.Filter
+	nil,                                        // 58: gnoi.containerz.ListContainerResponse.LabelsEntry
+	(*StartContainerRequest_Port)(nil),         // 59: gnoi.containerz.StartContainerRequest.Port
+	nil,                                        // 60: gnoi.containerz.StartContainerRequest.EnvironmentEntry
+	(*StartContainerRequest_Capabilities)(nil), // 61: gnoi.containerz.StartContainerRequest.Capabilities
+	(*StartContainerRequest_Restart)(nil),      // 62: gnoi.containerz.StartContainerRequest.Restart
+	(*StartContainerRequest_RunAs)(nil),        // 63: gnoi.containerz.StartContainerRequest.RunAs
+	nil,                                        // 64: gnoi.containerz.StartContainerRequest.LabelsEntry
+	(*StartContainerRequest_Limits)(nil),       // 65: gnoi.containerz.StartContainerRequest.Limits
+	nil,                                        // 66: gnoi.containerz.CustomOptions.OptionsEntry
+	nil,                                        // 67: gnoi.containerz.CreateVolumeRequest.LabelsEntry
+	(*ListVolumeRequest_Filter)(nil),           // 68: gnoi.containerz.ListVolumeRequest.Filter
+	nil,                                        // 69: gnoi.containerz.ListVolumeResponse.OptionsEntry
+	nil,                                        // 70: gnoi.containerz.ListVolumeResponse.LabelsEntry
+	(*common.RemoteDownload)(nil),              // 71: gnoi.common.RemoteDownload
+	(*status.Status)(nil),                      // 72: google.rpc.Status
+	(*types.HashType)(nil),                     // 73: gnoi.types.HashType
+	(*timestamppb.Timestamp)(nil),              // 74: google.protobuf.Timestamp
 }
 var file_github_com_openconfig_gnoi_containerz_containerz_proto_depIdxs = []int32{
-	10, // 0: gnoi.containerz.DeployRequest.image_transfer:type_name -> gnoi.containerz.ImageTransfer
-	11, // 1: gnoi.containerz.DeployRequest.image_transfer_end:type_name -> gnoi.containerz.ImageTransferEnd
-	70, // 2: gnoi.containerz.ImageTransfer.remote_download:type_name -> gnoi.common.RemoteDownload
-	13, // 3: gnoi.containerz.DeployResponse.image_transfer_ready:type_name -> gnoi.containerz.ImageTransferReady
-	14, // 4: gnoi.containerz.DeployResponse.image_transfer_progress:type_name -> gnoi.containerz.ImageTransferProgress
-	15, // 5: gnoi.containerz.DeployResponse.image_transfer_success:type_name -> gnoi.containerz.ImageTransferSuccess
-	71, // 6: gnoi.containerz.DeployResponse.image_transfer_error:type_name -> google.rpc.Status
+	11, // 0: gnoi.containerz.DeployRequest.image_transfer:type_name -> gnoi.containerz.ImageTransfer
+	12, // 1: gnoi.containerz.DeployRequest.image_transfer_end:type_name -> gnoi.containerz.ImageTransferEnd
+	71, // 2: gnoi.containerz.ImageTransfer.remote_download:type_name -> gnoi.common.RemoteDownload
+	14, // 3: gnoi.containerz.DeployResponse.image_transfer_ready:type_name -> gnoi.containerz.ImageTransferReady
+	15, // 4: gnoi.containerz.DeployResponse.image_transfer_progress:type_name -> gnoi.containerz.ImageTransferProgress
+	16, // 5: gnoi.containerz.DeployResponse.image_transfer_success:type_name -> gnoi.containerz.ImageTransferSuccess
+	72, // 6: gnoi.containerz.DeployResponse.image_transfer_error:type_name -> google.rpc.Status
 	1,  // 7: gnoi.containerz.RemoveImageResponse.code:type_name -> gnoi.containerz.RemoveImageResponse.Code
-	55, // 8: gnoi.containerz.ListImageRequest.filter:type_name -> gnoi.containerz.ListImageRequest.Filter
-	56, // 9: gnoi.containerz.ListContainerRequest.filter:type_name -> gnoi.containerz.ListContainerRequest.Filter
+	56, // 8: gnoi.containerz.ListImageRequest.filter:type_name -> gnoi.containerz.ListImageRequest.Filter
+	57, // 9: gnoi.containerz.ListContainerRequest.filter:type_name -> gnoi.containerz.ListContainerRequest.Filter
 	2,  // 10: gnoi.containerz.ListContainerResponse.status:type_name -> gnoi.containerz.ListContainerResponse.Status
-	57, // 11: gnoi.containerz.ListContainerResponse.labels:type_name -> gnoi.containerz.ListContainerResponse.LabelsEntry
-	72, // 12: gnoi.containerz.ListContainerResponse.hash:type_name -> gnoi.types.HashType
+	58, // 11: gnoi.containerz.ListContainerResponse.labels:type_name -> gnoi.containerz.ListContainerResponse.LabelsEntry
+	73, // 12: gnoi.containerz.ListContainerResponse.hash:type_name -> gnoi.types.HashType
 	3,  // 13: gnoi.containerz.Device.permissions:type_name -> gnoi.containerz.Device.Permission
-	58, // 14: gnoi.containerz.StartContainerRequest.ports:type_name -> gnoi.containerz.StartContainerRequest.Port
-	59, // 15: gnoi.containerz.StartContainerRequest.environment:type_name -> gnoi.containerz.StartContainerRequest.EnvironmentEntry
-	24, // 16: gnoi.containerz.StartContainerRequest.volumes:type_name -> gnoi.containerz.Volume
-	60, // 17: gnoi.containerz.StartContainerRequest.cap:type_name -> gnoi.containerz.StartContainerRequest.Capabilities
-	61, // 18: gnoi.containerz.StartContainerRequest.restart:type_name -> gnoi.containerz.StartContainerRequest.Restart
-	62, // 19: gnoi.containerz.StartContainerRequest.run_as:type_name -> gnoi.containerz.StartContainerRequest.RunAs
-	63, // 20: gnoi.containerz.StartContainerRequest.labels:type_name -> gnoi.containerz.StartContainerRequest.LabelsEntry
-	64, // 21: gnoi.containerz.StartContainerRequest.limits:type_name -> gnoi.containerz.StartContainerRequest.Limits
-	25, // 22: gnoi.containerz.StartContainerRequest.devices:type_name -> gnoi.containerz.Device
-	28, // 23: gnoi.containerz.StartContainerResponse.start_ok:type_name -> gnoi.containerz.StartOK
-	29, // 24: gnoi.containerz.StartContainerResponse.start_error:type_name -> gnoi.containerz.StartError
-	5,  // 25: gnoi.containerz.StartError.error_code:type_name -> gnoi.containerz.StartError.Code
-	6,  // 26: gnoi.containerz.StopContainerResponse.code:type_name -> gnoi.containerz.StopContainerResponse.Code
-	26, // 27: gnoi.containerz.UpdateContainerRequest.params:type_name -> gnoi.containerz.StartContainerRequest
-	34, // 28: gnoi.containerz.UpdateContainerResponse.update_ok:type_name -> gnoi.containerz.UpdateOK
-	35, // 29: gnoi.containerz.UpdateContainerResponse.update_error:type_name -> gnoi.containerz.UpdateError
-	7,  // 30: gnoi.containerz.UpdateError.error_code:type_name -> gnoi.containerz.UpdateError.Code
-	8,  // 31: gnoi.containerz.LocalDriverOptions.type:type_name -> gnoi.containerz.LocalDriverOptions.Type
-	65, // 32: gnoi.containerz.CustomOptions.options:type_name -> gnoi.containerz.CustomOptions.OptionsEntry
-	0,  // 33: gnoi.containerz.CreateVolumeRequest.driver:type_name -> gnoi.containerz.Driver
-	66, // 34: gnoi.containerz.CreateVolumeRequest.labels:type_name -> gnoi.containerz.CreateVolumeRequest.LabelsEntry
-	38, // 35: gnoi.containerz.CreateVolumeRequest.local_mount_options:type_name -> gnoi.containerz.LocalDriverOptions
-	39, // 36: gnoi.containerz.CreateVolumeRequest.custom_options:type_name -> gnoi.containerz.CustomOptions
-	67, // 37: gnoi.containerz.ListVolumeRequest.filter:type_name -> gnoi.containerz.ListVolumeRequest.Filter
-	73, // 38: gnoi.containerz.ListVolumeResponse.created:type_name -> google.protobuf.Timestamp
-	68, // 39: gnoi.containerz.ListVolumeResponse.options:type_name -> gnoi.containerz.ListVolumeResponse.OptionsEntry
-	69, // 40: gnoi.containerz.ListVolumeResponse.labels:type_name -> gnoi.containerz.ListVolumeResponse.LabelsEntry
-	72, // 41: gnoi.containerz.Plugin.hash:type_name -> gnoi.types.HashType
-	51, // 42: gnoi.containerz.ListPluginsResponse.plugins:type_name -> gnoi.containerz.Plugin
-	4,  // 43: gnoi.containerz.StartContainerRequest.Restart.policy:type_name -> gnoi.containerz.StartContainerRequest.Restart.Policy
-	9,  // 44: gnoi.containerz.Containerz.Deploy:input_type -> gnoi.containerz.DeployRequest
-	20, // 45: gnoi.containerz.Containerz.ListImage:input_type -> gnoi.containerz.ListImageRequest
-	16, // 46: gnoi.containerz.Containerz.RemoveImage:input_type -> gnoi.containerz.RemoveImageRequest
-	18, // 47: gnoi.containerz.Containerz.RemoveContainer:input_type -> gnoi.containerz.RemoveContainerRequest
-	22, // 48: gnoi.containerz.Containerz.ListContainer:input_type -> gnoi.containerz.ListContainerRequest
-	26, // 49: gnoi.containerz.Containerz.StartContainer:input_type -> gnoi.containerz.StartContainerRequest
-	30, // 50: gnoi.containerz.Containerz.StopContainer:input_type -> gnoi.containerz.StopContainerRequest
-	32, // 51: gnoi.containerz.Containerz.UpdateContainer:input_type -> gnoi.containerz.UpdateContainerRequest
-	36, // 52: gnoi.containerz.Containerz.Log:input_type -> gnoi.containerz.LogRequest
-	40, // 53: gnoi.containerz.Containerz.CreateVolume:input_type -> gnoi.containerz.CreateVolumeRequest
-	42, // 54: gnoi.containerz.Containerz.RemoveVolume:input_type -> gnoi.containerz.RemoveVolumeRequest
-	44, // 55: gnoi.containerz.Containerz.ListVolume:input_type -> gnoi.containerz.ListVolumeRequest
-	46, // 56: gnoi.containerz.Containerz.StartPlugin:input_type -> gnoi.containerz.StartPluginRequest
-	48, // 57: gnoi.containerz.Containerz.StopPlugin:input_type -> gnoi.containerz.StopPluginRequest
-	50, // 58: gnoi.containerz.Containerz.ListPlugins:input_type -> gnoi.containerz.ListPluginsRequest
-	53, // 59: gnoi.containerz.Containerz.RemovePlugin:input_type -> gnoi.containerz.RemovePluginRequest
-	12, // 60: gnoi.containerz.Containerz.Deploy:output_type -> gnoi.containerz.DeployResponse
-	21, // 61: gnoi.containerz.Containerz.ListImage:output_type -> gnoi.containerz.ListImageResponse
-	17, // 62: gnoi.containerz.Containerz.RemoveImage:output_type -> gnoi.containerz.RemoveImageResponse
-	19, // 63: gnoi.containerz.Containerz.RemoveContainer:output_type -> gnoi.containerz.RemoveContainerResponse
-	23, // 64: gnoi.containerz.Containerz.ListContainer:output_type -> gnoi.containerz.ListContainerResponse
-	27, // 65: gnoi.containerz.Containerz.StartContainer:output_type -> gnoi.containerz.StartContainerResponse
-	31, // 66: gnoi.containerz.Containerz.StopContainer:output_type -> gnoi.containerz.StopContainerResponse
-	33, // 67: gnoi.containerz.Containerz.UpdateContainer:output_type -> gnoi.containerz.UpdateContainerResponse
-	37, // 68: gnoi.containerz.Containerz.Log:output_type -> gnoi.containerz.LogResponse
-	41, // 69: gnoi.containerz.Containerz.CreateVolume:output_type -> gnoi.containerz.CreateVolumeResponse
-	43, // 70: gnoi.containerz.Containerz.RemoveVolume:output_type -> gnoi.containerz.RemoveVolumeResponse
-	45, // 71: gnoi.containerz.Containerz.ListVolume:output_type -> gnoi.containerz.ListVolumeResponse
-	47, // 72: gnoi.containerz.Containerz.StartPlugin:output_type -> gnoi.containerz.StartPluginResponse
-	49, // 73: gnoi.containerz.Containerz.StopPlugin:output_type -> gnoi.containerz.StopPluginResponse
-	52, // 74: gnoi.containerz.Containerz.ListPlugins:output_type -> gnoi.containerz.ListPluginsResponse
-	54, // 75: gnoi.containerz.Containerz.RemovePlugin:output_type -> gnoi.containerz.RemovePluginResponse
-	60, // [60:76] is the sub-list for method output_type
-	44, // [44:60] is the sub-list for method input_type
-	44, // [44:44] is the sub-list for extension type_name
-	44, // [44:44] is the sub-list for extension extendee
-	0,  // [0:44] is the sub-list for field type_name
+	59, // 14: gnoi.containerz.StartContainerRequest.ports:type_name -> gnoi.containerz.StartContainerRequest.Port
+	60, // 15: gnoi.containerz.StartContainerRequest.environment:type_name -> gnoi.containerz.StartContainerRequest.EnvironmentEntry
+	25, // 16: gnoi.containerz.StartContainerRequest.volumes:type_name -> gnoi.containerz.Volume
+	61, // 17: gnoi.containerz.StartContainerRequest.cap:type_name -> gnoi.containerz.StartContainerRequest.Capabilities
+	62, // 18: gnoi.containerz.StartContainerRequest.restart:type_name -> gnoi.containerz.StartContainerRequest.Restart
+	63, // 19: gnoi.containerz.StartContainerRequest.run_as:type_name -> gnoi.containerz.StartContainerRequest.RunAs
+	64, // 20: gnoi.containerz.StartContainerRequest.labels:type_name -> gnoi.containerz.StartContainerRequest.LabelsEntry
+	65, // 21: gnoi.containerz.StartContainerRequest.limits:type_name -> gnoi.containerz.StartContainerRequest.Limits
+	26, // 22: gnoi.containerz.StartContainerRequest.devices:type_name -> gnoi.containerz.Device
+	4,  // 23: gnoi.containerz.StartContainerRequest.location:type_name -> gnoi.containerz.StartContainerRequest.Location
+	29, // 24: gnoi.containerz.StartContainerResponse.start_ok:type_name -> gnoi.containerz.StartOK
+	30, // 25: gnoi.containerz.StartContainerResponse.start_error:type_name -> gnoi.containerz.StartError
+	6,  // 26: gnoi.containerz.StartError.error_code:type_name -> gnoi.containerz.StartError.Code
+	7,  // 27: gnoi.containerz.StopContainerResponse.code:type_name -> gnoi.containerz.StopContainerResponse.Code
+	27, // 28: gnoi.containerz.UpdateContainerRequest.params:type_name -> gnoi.containerz.StartContainerRequest
+	35, // 29: gnoi.containerz.UpdateContainerResponse.update_ok:type_name -> gnoi.containerz.UpdateOK
+	36, // 30: gnoi.containerz.UpdateContainerResponse.update_error:type_name -> gnoi.containerz.UpdateError
+	8,  // 31: gnoi.containerz.UpdateError.error_code:type_name -> gnoi.containerz.UpdateError.Code
+	9,  // 32: gnoi.containerz.LocalDriverOptions.type:type_name -> gnoi.containerz.LocalDriverOptions.Type
+	66, // 33: gnoi.containerz.CustomOptions.options:type_name -> gnoi.containerz.CustomOptions.OptionsEntry
+	0,  // 34: gnoi.containerz.CreateVolumeRequest.driver:type_name -> gnoi.containerz.Driver
+	67, // 35: gnoi.containerz.CreateVolumeRequest.labels:type_name -> gnoi.containerz.CreateVolumeRequest.LabelsEntry
+	39, // 36: gnoi.containerz.CreateVolumeRequest.local_mount_options:type_name -> gnoi.containerz.LocalDriverOptions
+	40, // 37: gnoi.containerz.CreateVolumeRequest.custom_options:type_name -> gnoi.containerz.CustomOptions
+	68, // 38: gnoi.containerz.ListVolumeRequest.filter:type_name -> gnoi.containerz.ListVolumeRequest.Filter
+	74, // 39: gnoi.containerz.ListVolumeResponse.created:type_name -> google.protobuf.Timestamp
+	69, // 40: gnoi.containerz.ListVolumeResponse.options:type_name -> gnoi.containerz.ListVolumeResponse.OptionsEntry
+	70, // 41: gnoi.containerz.ListVolumeResponse.labels:type_name -> gnoi.containerz.ListVolumeResponse.LabelsEntry
+	73, // 42: gnoi.containerz.Plugin.hash:type_name -> gnoi.types.HashType
+	52, // 43: gnoi.containerz.ListPluginsResponse.plugins:type_name -> gnoi.containerz.Plugin
+	5,  // 44: gnoi.containerz.StartContainerRequest.Restart.policy:type_name -> gnoi.containerz.StartContainerRequest.Restart.Policy
+	10, // 45: gnoi.containerz.Containerz.Deploy:input_type -> gnoi.containerz.DeployRequest
+	21, // 46: gnoi.containerz.Containerz.ListImage:input_type -> gnoi.containerz.ListImageRequest
+	17, // 47: gnoi.containerz.Containerz.RemoveImage:input_type -> gnoi.containerz.RemoveImageRequest
+	19, // 48: gnoi.containerz.Containerz.RemoveContainer:input_type -> gnoi.containerz.RemoveContainerRequest
+	23, // 49: gnoi.containerz.Containerz.ListContainer:input_type -> gnoi.containerz.ListContainerRequest
+	27, // 50: gnoi.containerz.Containerz.StartContainer:input_type -> gnoi.containerz.StartContainerRequest
+	31, // 51: gnoi.containerz.Containerz.StopContainer:input_type -> gnoi.containerz.StopContainerRequest
+	33, // 52: gnoi.containerz.Containerz.UpdateContainer:input_type -> gnoi.containerz.UpdateContainerRequest
+	37, // 53: gnoi.containerz.Containerz.Log:input_type -> gnoi.containerz.LogRequest
+	41, // 54: gnoi.containerz.Containerz.CreateVolume:input_type -> gnoi.containerz.CreateVolumeRequest
+	43, // 55: gnoi.containerz.Containerz.RemoveVolume:input_type -> gnoi.containerz.RemoveVolumeRequest
+	45, // 56: gnoi.containerz.Containerz.ListVolume:input_type -> gnoi.containerz.ListVolumeRequest
+	47, // 57: gnoi.containerz.Containerz.StartPlugin:input_type -> gnoi.containerz.StartPluginRequest
+	49, // 58: gnoi.containerz.Containerz.StopPlugin:input_type -> gnoi.containerz.StopPluginRequest
+	51, // 59: gnoi.containerz.Containerz.ListPlugins:input_type -> gnoi.containerz.ListPluginsRequest
+	54, // 60: gnoi.containerz.Containerz.RemovePlugin:input_type -> gnoi.containerz.RemovePluginRequest
+	13, // 61: gnoi.containerz.Containerz.Deploy:output_type -> gnoi.containerz.DeployResponse
+	22, // 62: gnoi.containerz.Containerz.ListImage:output_type -> gnoi.containerz.ListImageResponse
+	18, // 63: gnoi.containerz.Containerz.RemoveImage:output_type -> gnoi.containerz.RemoveImageResponse
+	20, // 64: gnoi.containerz.Containerz.RemoveContainer:output_type -> gnoi.containerz.RemoveContainerResponse
+	24, // 65: gnoi.containerz.Containerz.ListContainer:output_type -> gnoi.containerz.ListContainerResponse
+	28, // 66: gnoi.containerz.Containerz.StartContainer:output_type -> gnoi.containerz.StartContainerResponse
+	32, // 67: gnoi.containerz.Containerz.StopContainer:output_type -> gnoi.containerz.StopContainerResponse
+	34, // 68: gnoi.containerz.Containerz.UpdateContainer:output_type -> gnoi.containerz.UpdateContainerResponse
+	38, // 69: gnoi.containerz.Containerz.Log:output_type -> gnoi.containerz.LogResponse
+	42, // 70: gnoi.containerz.Containerz.CreateVolume:output_type -> gnoi.containerz.CreateVolumeResponse
+	44, // 71: gnoi.containerz.Containerz.RemoveVolume:output_type -> gnoi.containerz.RemoveVolumeResponse
+	46, // 72: gnoi.containerz.Containerz.ListVolume:output_type -> gnoi.containerz.ListVolumeResponse
+	48, // 73: gnoi.containerz.Containerz.StartPlugin:output_type -> gnoi.containerz.StartPluginResponse
+	50, // 74: gnoi.containerz.Containerz.StopPlugin:output_type -> gnoi.containerz.StopPluginResponse
+	53, // 75: gnoi.containerz.Containerz.ListPlugins:output_type -> gnoi.containerz.ListPluginsResponse
+	55, // 76: gnoi.containerz.Containerz.RemovePlugin:output_type -> gnoi.containerz.RemovePluginResponse
+	61, // [61:77] is the sub-list for method output_type
+	45, // [45:61] is the sub-list for method input_type
+	45, // [45:45] is the sub-list for extension type_name
+	45, // [45:45] is the sub-list for extension extendee
+	0,  // [0:45] is the sub-list for field type_name
 }
 
 func init() { file_github_com_openconfig_gnoi_containerz_containerz_proto_init() }
@@ -4157,7 +4224,7 @@ func file_github_com_openconfig_gnoi_containerz_containerz_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc), len(file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc)),
-			NumEnums:      9,
+			NumEnums:      10,
 			NumMessages:   61,
 			NumExtensions: 0,
 			NumServices:   1,
