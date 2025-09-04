@@ -501,6 +501,25 @@ message StartContainerRequest {
   // Devices to be added to the container.
   repeated Device devices = 14;
 
+  // Location describes where a resources (image, container, volume) is located.
+  enum Location {
+    L_UNKNOWN = 0;
+
+    // Primary represents the primary supervisor card.
+    L_PRIMARY = 1;
+
+    // Backup represents the backup supervisor card.
+    L_BACKUP = 2;
+
+    // All represents the resource running on all supervisor cards.
+    L_ALL = 3;
+  }
+
+  // location defines where a container should run. If a container is started on the backup, it is expected that any
+  // resources (image, volume, etc) be replicated to the backup prior to actually starting the container. This parameter
+  // cannot be updated, but rather the container needs to be removed and re-started with a new location value.
+  Location location = 15;
+
   // Other container properties will be added as it becomes necessary.
 }
 
