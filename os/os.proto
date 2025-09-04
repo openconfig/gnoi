@@ -193,11 +193,10 @@ message TransferRequest {
   // if requested to install on standby only.
   bool standby_supervisor = 2;
 
-  // Optionally specify the package size in bytes of the OS package being
+  // Specify the package size in bytes of the OS package being
   // transferred.
-  // If 1) the value is different than 0
-  // and 2) the required space in the Target is larger than the available space
-  // and 3) the Target is unable to release space for the incoming OS package,
+  // If 1) the required space in the Target is larger than the available space
+  // and 2) the Target is unable to release space for the incoming OS package,
   // then the Target must reply with InstallError->Type->TOO_LARGE.
   uint64 package_size = 3;
 }
