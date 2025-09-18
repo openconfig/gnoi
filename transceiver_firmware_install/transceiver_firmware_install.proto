@@ -99,7 +99,7 @@ message TransferToDeviceRequest {
 
 message TransferToDeviceStartRequest {
   // The file name is a unique identifier for a firmware package. Typically,
-  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  // the file name of the package (e.g., "abcdef.01.02.0304_FwUpdate.tgz").
   string file_name = 1;
 
   // Optionally specify the package size in bytes.
@@ -137,7 +137,7 @@ message TransferToTransceiverRequest {
   types.Path transceiver = 1;
 
   // The file name name is a unique identifier for a firmware package. Typically,
-  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  // the file name of the package (e.g., "abcdef.01.02.0304_FwUpdate.tgz").
   string file_name = 2;
 
   // Optionally specify the package size in bytes.
@@ -254,7 +254,7 @@ message ActivateSingleRequest {
 
 message ActivateFromDeviceRequest {
   // The file name is a unique identifier for a firmware package. Typically,
-  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  // the file name of the package (e.g., "abcdef.01.02.0304_FwUpdate.tgz").
   string file_name = 1;
 
   // Optionally specify the package size in bytes.
@@ -443,7 +443,7 @@ enum ActivateStatus {
 
 message DeleteRequest {
   // The file name name is a unique identifier for a firmware package. Typically,
-  // the file name of the package (e.g., "aaa.x.y.z.tgz").
+  // the file name of the package (e.g., "abcdef.01.02.0304_FwUpdate.tgz").
   string file_name = 1;
 }
 
