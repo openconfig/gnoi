@@ -10,6 +10,22 @@ A software bundle may be installed to:
 - add/update some software utility (e.g. perl, ncurses)
 - update some dependency (e.g. updating some python site-package)
 
+#### Comparison with the gNOI OS package:
+The gNOI OS service is responsible for installing/activating/verifying new OS images.   
+By comparison, the software bundle does not constitute a whole new OS image - it is
+purely to extend the functionality provided by the *current* OS image.    
+This SoftwareBundle service was introduced as there are nuances regarding software bundle
+installation which cannot be captured by the OS service (e.g. signature verification,
+force-installation, having software bundles be non-persistent).
+
+Network operators may choose to use a software bundle instead of an OS image if they
+wish to apply a more targeted change to the system's behaviour. E.g they may be able to
+patch a bug or CVE without needing to qualify a new image for their device.
+Additionally, network operators may wish to add features which are not available in any OS image,
+and would always require a software bundle to install.   
+For example, the containerz binary may be packaged as a software bundle:
+https://github.com/openconfig/containerz/tree/4d2da9ba981e73031f49e0d27f5cc4a1755fc66f/packaging
+
 ### Software bundle installation workflow
 
 #### 1. Software bundle Transfer
