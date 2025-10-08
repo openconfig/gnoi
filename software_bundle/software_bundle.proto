@@ -33,44 +33,8 @@ service SoftwareBundle {
   // InstallSoftwareBundle installs a new software bundle on the system.
   // The new software bundle may be transferred as part of the RPC.
   //
-  // Expected workflows are:
-  // 1. To transfer a new software bundle:
-  // client ______________________________________ server
-  // TransferRequest (with software_bundle_name set) -->
-  // TransferRequest (with contents set)       -->
-  // .. repeated TransferRequest with contents are sent
-  //  until the file is transferred ..
-  // TransferRequest (with hash set)           -->
-  // .. server verifies hash matches expected ..
-  //                                           <-- InstallSoftwareBundleResponse
-  //                             (with acknowledgement = TRANSFER_COMPLETE)
-  // STREAM END
+  // Expected workflows are shown in mermaid sequence diagrams in README.md.
   //
-  // 2. To transfer and install a new software bundle:
-  // client ______________________________________ server
-  // TransferRequest (with software_bundle_name set) -->
-  // TransferRequest (with contents set)       -->
-  // .. repeated TransferRequest with contents are sent
-  // until the file is transferred ..
-  // TransferRequest (with hash set)           -->
-  // .. server verifies hash matches expected ..
-  //                                           <-- InstallSoftwareBundleResponse
-  //                             (with acknowledgement = TRANSFER_COMPLETE)
-  // InstallRequest (with software_bundle_name set)  -->
-  // (note, other fields may be set )
-  // .. server installs software bundle according to fields.
-  //                                           <-- InstallSoftwareBundleResponse
-  //                              (with acknowledgement = INSTALL_COMPLETE)
-  // STREAM END
-  //
-  // 3. To install a pre-existing software bundle:
-  // client ______________________________________ server
-  // InstallRequest (with software_bundle_name set)
-  // (note, other fields may be set )          -->
-  // .. server installs software bundle according to fields.
-  //                                           <-- InstallSoftwareBundleResponse
-  //                              (with acknowledgement = INSTALL_COMPLETE)
-  // STREAM END
   // Note that all installations will install the software bundle, but that
   // software bundle will not be applied until the affected services
   // are reloaded.

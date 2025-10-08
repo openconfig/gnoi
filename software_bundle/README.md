@@ -41,6 +41,50 @@ will not be applied until OpenConfig is reloaded
 (optionally) multiple software bundles can be installed in sequence, to minimise
 the amount of times we have to reload affected programs
 
+The following workflows for installation are expected:
+
+1. To transfer a new software bundle:
+```mermaid
+sequenceDiagram
+    participant client
+    participant server
+    client->>server: TransferRequest (with software_bundle_name set)
+    client->>server: TransferRequest (with contents set)
+    Note over client,server: repeated TransferRequest with contents are<br/>sent until the file is transferred
+    client->>server: TransferRequest (with hash set)
+    Note over server: server verifies hash matches expected
+    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = TRANSFER_COMPLETE)
+    Note over client,server: STREAM END
+```
+
+2. To transfer and install a new software bundle:
+```mermaid
+sequenceDiagram
+    participant client
+    participant server
+    client->>server: TransferRequest (with software_bundle_name set)
+    client->>server: TransferRequest (with contents set)
+    Note over client,server: repeated TransferRequest with contents are<br/>sent until the file is transferred
+    client->>server: TransferRequest (with hash set)
+    Note over server: server verifies hash matches expected
+    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = TRANSFER_COMPLETE)
+    client->>server: InstallRequest (with software_bundle_name set)<br/>(note, other fields may be set)
+    Note over server: server installs software<br/>bundle according to fields
+    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = INSTALL_COMPLETE)
+    Note over client,server: STREAM END
+```
+
+3. To install a pre-existing software bundle:
+```mermaid
+sequenceDiagram
+    participant client
+    participant server
+    client->>server: InstallRequest (with software_bundle_name set)<br/>(note, other fields may be set)
+    Note over server: server installs software<br/>bundle according to fields
+    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = INSTALL_COMPLETE)
+    Note over client,server: STREAM END
+```
+
 #### 3. Process reload
 
 Once any required software bundles are installed, the system needs to restart any
