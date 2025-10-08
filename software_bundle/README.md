@@ -47,6 +47,8 @@ Once any required software bundles are installed, the system needs to restart an
 currently-running processes which would be affected by those software bundles.
 When those processes reload, they will reload with the software bundles applied.
 
+This restart be done with the `FinalizeSoftwareBundles` RPC
+
 ### Comparison to existing SetPackage RPC
 
 Right now SetPackage is

@@ -10,7 +10,7 @@ option (types.gnoi_version) = "0.1.0";
 
 // SoftwareBundle is a service for managing software bundles on the system.
 // A "software bundle" is a collection of files (e.g. RPMs, squashfs)
-// which are installed to modify the behaviour of the services on the
+// which are installed to modify the behaviour of the processes on the
 // system.
 // Only one RPC (ListSoftwareBundles, FinalizeSoftwareBundles,
 // InstallSoftwareBundle, UninstallSoftwareBundle)
@@ -21,11 +21,11 @@ service SoftwareBundle {
   rpc ListSoftwareBundles(ListSoftwareBundlesRequest)
       returns (ListSoftwareBundlesResponse);
 
-  // FinalizeSoftwareBundles reloads any services on the system for
+  // FinalizeSoftwareBundles reloads any processes on the system for
   // which software bundles have been installed but which have not yet been
   // reloaded with those software bundles.
-  // Please note that this may kill the connection if the service
-  // hosting the gRPC server reloads so the server is not guaranteed
+  // Please note that this may kill the connection if the process
+  // hosting the gRPC server reloads, so the server is not guaranteed
   // to return a response here.
   rpc FinalizeSoftwareBundles(FinalizeSoftwareBundlesRequest)
       returns (FinalizeSoftwareBundlesResponse);
