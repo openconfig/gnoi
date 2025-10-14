@@ -15,8 +15,18 @@ The gNOI OS service is responsible for installing/activating/verifying new OS im
 By comparison, the software bundle does not constitute a whole new OS image - it is
 purely to extend the functionality provided by the *current* OS image.    
 This SoftwareBundle service was introduced as there are nuances regarding software bundle
-installation which cannot be captured by the OS service (e.g. signature verification,
-force-installation, having software bundles be non-persistent).
+installation which cannot be captured by the OS service.
+
+For example, an operator may want to transfer software bundles to a device ahead of a scheduled maintenance.
+The transfer/installation may take a significant amount of time so it is operationally useful to decouple
+the transfer/installation from the activation of the software bundle (i.e. the FinalizeSoftwareBundles RPC).     
+In addition, software installation may require signature verification,
+dependency checks and boot/system startup changes.
+
+The software bundle service allows for the transfer/installation and activation workflow to be
+spread over multiple RPCs (InstallSoftwareBundle and FinalizeSoftwareBundles), which gives an
+opportunity for a network operator to install multiple extensions in sequence,
+verifying that they all succeed before finalizing and reloading the relevant processes.
 
 Network operators may choose to use a software bundle instead of an OS image if they
 wish to apply a more targeted change to the system's behaviour. E.g they may be able to
