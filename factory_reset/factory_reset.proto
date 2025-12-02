@@ -28,6 +28,20 @@ service FactoryReset {
   rpc Start(StartRequest) returns (StartResponse);
 }
 
+message BootzConfiguration {
+  // The Bootz server address to connect to after a factory reset.
+  // The format is `bootz://<address>:<port>. Some IPv4 and IPv6 examples are shown below:
+  // * bootz://192.168.1.1:8080
+  // * bootz://[2001:4860:f802::f2]:15006 
+  string bootz_server_uri = 1;
+  // The IP address to assign to the management interface of the active control card.
+  string management_ip = 2;
+  // The subnet mask to apply to the management interface address.
+  string management_subnet_mask = 3;
+  // The default gateway to assign to the management interface.
+  string default_gateway = 4;
+}
+
 message StartRequest {
   // Instructs the Target to rollback the OS to the same version as it shipped
   // from factory.
@@ -36,6 +50,9 @@ message StartRequest {
   bool zero_fill = 2;
   // Instructs the Target to retain certificates
   bool retain_certs = 3;
+  // Bootz configuration options. If set, the device will not attempt to perform DHCP
+  // upon startup and instead start Bootz based on the provided configuration.
+  BootzConfiguration bootz_configuration = 4;
 }
 
 message ResetSuccess {
