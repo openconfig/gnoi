@@ -501,6 +501,41 @@ message StartContainerRequest {
   // Devices to be added to the container.
   repeated Device devices = 14;
 
+  // Location describes where a container should be located.
+  enum Location {
+    L_UNKNOWN = 0;
+
+    // Primary represents the primary supervisor card.
+    L_PRIMARY = 1;
+
+    // Backup represents the backup supervisor card.
+    L_BACKUP = 2;
+
+    // All represents the resource running on all supervisor cards.
+    L_ALL = 3;
+  }
+
+  // location defines where a container should run. If a container is started
+  // on the backup, it is expected that any resources (image, volume, etc)
+  // be replicated to the backup prior to actually starting the container.
+  // This parameter cannot be updated, but rather the container needs to be
+  // removed and re-started with a new location value.
+  //
+  // To further clarify the expected behaviour, we define to mode of operation:
+  //   - Single card mode: describes where only one supervisor card is
+  //       available.
+  //   - Dual card mode: describes when both the active and backup cards are
+  //       available.
+  //
+  //   - Device is in dual mode: Containers should be placed according to the
+  //       location parameter.
+  //   - Device is in single mode: All containers should be running on the
+  //       remaining card.
+  //
+  // Containers started with the location set to ALL should only have one
+  // instance if the device is in single mode.
+  Location location = 15;
+
   // Other container properties will be added as it becomes necessary.
 }
 
