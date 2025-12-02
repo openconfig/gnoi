@@ -33,7 +33,7 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
-option (types.gnoi_version) = "0.1.3";
+option (types.gnoi_version) = "0.2.0";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
@@ -61,7 +61,7 @@ service Containerz {
   // is returned. If the specified container image does not exist, this
   // operation is a no-op.
   //
-  // This RPC ill return the following error codes in case of error:
+  // This RPC will return the following error codes in case of error:
   //    - NotFound if the requested image does not exist on the target.
   //    - FailedPrecondition if the image is currently used by a running
   //        container.
@@ -74,7 +74,7 @@ service Containerz {
   // operation is a no-op. The container should not be removed if it is
   // running unless force is specified in the request.
   //
-  // This RPC ill return the following error codes in case of error:
+  // This RPC will return the following error codes in case of error:
   //    - NotFound if the requested container does not exist on the target.
   //    - FailedPrecondition if the container is currently running and force
   //        was not specified in the request.
@@ -503,6 +503,41 @@ message StartContainerRequest {
 
   // Devices to be added to the container.
   repeated Device devices = 14;
+
+  // Location describes where a container should be located.
+  enum Location {
+    L_UNKNOWN = 0;
+
+    // Primary represents the primary supervisor card.
+    L_PRIMARY = 1;
+
+    // Backup represents the backup supervisor card.
+    L_BACKUP = 2;
+
+    // All represents the resource running on all supervisor cards.
+    L_ALL = 3;
+  }
+
+  // location defines where a container should run. If a container is started
+  // on the backup, it is expected that any resources (image, volume, etc)
+  // be replicated to the backup prior to actually starting the container.
+  // This parameter cannot be updated, but rather the container needs to be
+  // removed and re-started with a new location value.
+  //
+  // To further clarify the expected behaviour, we define to mode of operation:
+  //   - Single card mode: describes where only one supervisor card is
+  //       available.
+  //   - Dual card mode: describes when both the active and backup cards are
+  //       available.
+  //
+  //   - Device is in dual mode: Containers should be placed according to the
+  //       location parameter.
+  //   - Device is in single mode: All containers should be running on the
+  //       remaining card.
+  //
+  // Containers started with the location set to ALL should only have one
+  // instance if the device is in single mode.
+  Location location = 15;
 
   // Other container properties will be added as it becomes necessary.
 }
