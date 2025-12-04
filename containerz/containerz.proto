@@ -33,7 +33,7 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
-option (types.gnoi_version) = "0.1.3";
+option (types.gnoi_version) = "0.2.0";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
@@ -60,6 +60,12 @@ service Containerz {
   // request. If the image is associated to a running container then an error
   // is returned. If the specified container image does not exist, this
   // operation is a no-op.
+  //
+  // This RPC will return the following error codes in case of error:
+  //    - NotFound if the requested image does not exist on the target.
+  //    - FailedPrecondition if the image is currently used by a running
+  //        container.
+  //    - Internal if container operations are are failing.
   rpc RemoveImage(RemoveImageRequest)
       returns (RemoveImageResponse) {}
 
@@ -67,10 +73,12 @@ service Containerz {
   // name. If the specified container does not exist, this
   // operation is a no-op. The container should not be removed if it is
   // running unless force is specified in the request.
-  // The request must return an error with status code NotFound if the container
-  // is not found. If the container is running and the request did not set the
-  // force field to true then the request must return an error with status code
-  // FailedPrecondition.
+  //
+  // This RPC will return the following error codes in case of error:
+  //    - NotFound if the requested container does not exist on the target.
+  //    - FailedPrecondition if the container is currently running and force
+  //        was not specified in the request.
+  //    - Internal if container operations are are failing.
   rpc RemoveContainer(RemoveContainerRequest)
       returns (RemoveContainerResponse) {}
 
@@ -99,6 +107,11 @@ service Containerz {
   // Stop stops a container. If the container does not exist or is not running
   // this operation returns an error. This operation can, optionally, force
   // (i.e. kill) a container.
+  //
+  // This RPC will return the following error codes in case of error:
+  //    - NotFound if the no such container exists on the system.
+  //    - Unavailable if the container is busy and cannot be stopped.
+  //    - Internal if internal container operations are failing.
   rpc StopContainer(StopContainerRequest) returns (StopContainerResponse) {}
 
   // UpdateContainer updates a running container to the image specified in the
@@ -124,6 +137,13 @@ service Containerz {
   // state (date written to memory or the filesystem) cannot be depended upon.
   // In particular, the contents of the filesystem are not guaranteed during a
   // rollback.
+  //
+  // This RPC will return the following error codes in case of error:
+  //    - NotFound if the no such container exists on the system.
+  //    - Unavailable if the container tries to expose an already used port.
+  //    - FailedPrecondition if the container is not running but was otherwise
+  //        found
+  //    - Internal if internal container operations are failing.
   rpc UpdateContainer(UpdateContainerRequest)
       returns (UpdateContainerResponse) {}
 
@@ -247,24 +267,7 @@ message RemoveImageRequest {
 }
 
 message RemoveImageResponse {
-  enum Code {
-    UNSPECIFIED = 0;
-
-    // An unknown error. Must use the detail value to describe the issue.
-    UNKNOWN = 1;
-
-    // Indicates the image was not found in the remote location.
-    NOT_FOUND = 2;
-
-    // Indicates that a container using this image is running.
-    RUNNING = 3;
-
-    // The container image was successfully removed.
-    SUCCESS = 4;
-  }
-
-  Code code = 1;
-  string detail = 2;
+  reserved 1, 2;
 }
 
 message RemoveContainerRequest {
@@ -552,21 +555,7 @@ message StartOK {
 }
 
 message StartError {
-  enum Code {
-    UNSPECIFIED = 0;
-
-    // An unknown error. The details field should provide more information.
-    UNKNOWN = 1;
-
-    // The container image was not found.
-    NOT_FOUND = 2;
-
-    // Exposed port is already used by another container.
-    PORT_USED = 3;
-  }
-
-  Code error_code = 1;
-  string details = 2;
+  reserved 1, 2;
 }
 
 message StopContainerRequest {
@@ -581,22 +570,7 @@ message StopContainerRequest {
 }
 
 message StopContainerResponse {
-  enum Code {
-    // An unspecified error. The details field should provide more information.
-    UNSPECIFIED = 0;
-
-    // Container is busy.
-    BUSY = 1;
-
-    // Instance was not found on the target.
-    NOT_FOUND = 2;
-
-    // The container was removed.
-    SUCCESS = 3;
-  }
-
-  Code code = 1;
-  string details = 2;
+  reserved 1,2;
 }
 
 message UpdateContainerRequest {
@@ -631,28 +605,7 @@ message UpdateOK {
 }
 
 message UpdateError {
-  enum Code {
-    // An unspecified error. The details field should provide more information.
-    UNSPECIFIED = 0;
-
-    // The container image was not found.
-    NOT_FOUND = 1;
-
-    // Exposed port is already used by another container.
-    PORT_USED = 2;
-
-    // The container was found but was not running.
-    NOT_RUNNING = 3;
-
-    // The update failed and the previous version was restored.
-    NOT_UPDATED = 4;
-
-    // The update operation or rollback failed.
-    FAILURE = 5;
-  }
-
-  Code error_code = 1;
-  string details = 2;
+  reserved 1,2;
 }
 
 message LogRequest {
