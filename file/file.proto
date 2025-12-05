@@ -27,9 +27,9 @@ option (types.gnoi_version) = "0.1.1";
 
 // Error handling for files must utilize gRPC error codes.  For a file path
 // (directory or file) that does not exist, the "NOT_FOUND" error must be
-// used.  For errors reading or writing a file, the most specific error condition
-// should be used.  Examples include but are not limited to "PERMISSION_DENIED",
-// "RESOURCE_EXHAUSTED or "ALREADY_EXISTS".
+// used.  For errors reading or writing a file, the most specific error
+// condition should be used.  Examples include but are not limited to
+// "PERMISSION_DENIED", "RESOURCE_EXHAUSTED or "ALREADY_EXISTS".
 service File {
   // Get reads and streams the contents of a file from the target.
   // The file is streamed by sequential messages, each containing up to
