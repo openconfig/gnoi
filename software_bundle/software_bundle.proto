@@ -12,25 +12,26 @@ option (types.gnoi_version) = "0.1.0";
 // A "software bundle" is a collection of files (e.g. RPMs, squashfs)
 // which are installed to modify the behaviour of the processes on the
 // system.
-// Only one RPC (ListSoftwareBundles, FinalizeSoftwareBundles,
-// InstallSoftwareBundle, UninstallSoftwareBundle)
+// Only one RPC (List, Activate, Install, Deactivate, Remove)
 // may be in progress at any given time
 service SoftwareBundle {
 
   // Shows the current state of the software bundles on the system.
-  rpc ListSoftwareBundles(ListSoftwareBundlesRequest)
-      returns (ListSoftwareBundlesResponse);
+  rpc List(ListRequest) returns (ListResponse);
 
-  // FinalizeSoftwareBundles reloads any processes on the system for
+  // Activate reloads any processes on the system for
   // which software bundles have been installed but which have not yet been
   // reloaded with those software bundles.
   // Please note that this may kill the connection if the process
   // hosting the gRPC server reloads, so the server is not guaranteed
   // to return a response here.
-  rpc FinalizeSoftwareBundles(FinalizeSoftwareBundlesRequest)
-      returns (FinalizeSoftwareBundlesResponse);
+  rpc Activate(ActivateRequest) returns (ActivateResponse);
 
-  // InstallSoftwareBundle installs a new software bundle on the system.
+  // Transfer transfers a new software bundle file and stores it
+  // on persistent storage on disk.
+  rpc Transfer(stream TransferRequest) returns (TransferResponse);
+
+  // Install installs a new software bundle on the system.
   // The new software bundle may be transferred as part of the RPC.
   //
   // Expected workflows are shown in mermaid sequence diagrams in README.md.
@@ -38,20 +39,24 @@ service SoftwareBundle {
   // Note that all installations will install the software bundle, but that
   // software bundle will not be applied until the affected services
   // are reloaded.
-  // To reload services after installing software bundles, issue a
-  // FinalizeSoftwareBundles RPC after finishing the InstallSoftwareBundle RPC.
-  rpc InstallSoftwareBundle(stream InstallSoftwareBundleRequest)
-      returns (stream InstallSoftwareBundleResponse);
+  // To reload services after installing software bundles, issue an
+  // Activate RPC after finishing the Install RPC.
+  rpc Install(stream InstallRequest) returns (InstallResponse);
 
-  // UninstallSoftwareBundle uninstalls an software bundle.
+  // Deactivate uninstalls an software bundle.
   // It returns an error if the requested software bundle is not installed.
-  rpc UninstallSoftwareBundle(UninstallSoftwareBundleRequest)
-      returns (UninstallSoftwareBundleResponse);
+  // The software bundle file will still remain on disk. To remove it, issue
+  // a Remove RPC.
+  rpc Deactivate(DeactivateRequest) returns (DeactivateResponse);
+
+  // Remove cleans up the software bundle from disk.
+  // It returns an error if the requested software bundle is not uninstalled.
+  rpc Remove(RemoveRequest) returns (RemoveResponse);
 }
 
-message ListSoftwareBundlesRequest{
+message ListRequest{
 }
-message ListSoftwareBundlesResponse{
+message ListResponse{
   enum InstallStatus {
     // UNSPECIFIED should be treated as an error.
     UNSPECIFIED = 0;
@@ -100,19 +105,20 @@ message ListSoftwareBundlesResponse{
 
     // processes_pending_restart is a list of the processes which are waiting
     // be restarted to apply the software bundle.
-    // This list will be cleared after a FinalizeSoftwareBundles RPC executes
+    // This list will be cleared after an Activate RPC executes
     // and restarts the affected processes.
     repeated string processes_pending_restart = 10;
   }
   repeated SoftwareBundle software_bundles = 1;
 }
 
-message FinalizeSoftwareBundlesRequest{
+message ActivateRequest{
+  string software_bundle_name = 1;
 }
-message FinalizeSoftwareBundlesResponse{
+message ActivateResponse{
 }
 
-message UninstallSoftwareBundleRequest{
+message DeactivateRequest{
   // name of the software bundle to be uninstalled
   string software_bundle_name = 1;
 
@@ -122,30 +128,25 @@ message UninstallSoftwareBundleRequest{
   // when uninstalling.
   bool force = 2;
 }
-message UninstallSoftwareBundleResponse{
+
+message DeactivateResponse{
 }
 
-message InstallSoftwareBundleResponse{
-  enum Operation{
-    UNSPECIFIED = 0;
-    TRANSFER_COMPLETE = 1;
-    INSTALL_COMPLETE = 2;
-  }
-  Operation acknowledgement = 3;
+message RemoveRequest{
+  // name of the software bundle to be removed
+  string software_bundle_name = 1;
+}
+message RemoveResponse{
 }
 
-message InstallSoftwareBundleRequest{
-  oneof request{
-    TransferRequest transfer_request = 1;
-    InstallRequest install_request = 2;
-  }
+message InstallResponse{
 }
 
 // InstallRequest is a request for installing an software bundle onto a system.
 // The software bundle is applied to the running configuration.
 message InstallRequest{
   // software_bundle_name is the name of the software bundle to install.
-  // This is required because InstallSoftwareBundle can be called
+  // This is required because Install can be called
   // for an software bundle which is already present on the system
   string software_bundle_name = 1;
 
@@ -184,10 +185,16 @@ message InstallRequest{
 message TransferRequest{
   oneof request {
     // name of the software bundle
+    // This should be unique.
+    // If a software bundle already exists with this name, the
+    // RPC should fail with an ALREADY_EXISTS error code.
     string software_bundle_name = 1;
     // raw byte contents to be streamed into the software bundle file.
     bytes contents = 2;
     // hash of the file.
     types.HashType hash = 3;
   }
+}
+
+message TransferResponse {
 }

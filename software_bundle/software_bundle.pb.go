@@ -22,24 +22,24 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ListSoftwareBundlesResponse_InstallStatus int32
+type ListResponse_InstallStatus int32
 
 const (
-	ListSoftwareBundlesResponse_UNSPECIFIED     ListSoftwareBundlesResponse_InstallStatus = 0
-	ListSoftwareBundlesResponse_INSTALLED       ListSoftwareBundlesResponse_InstallStatus = 1
-	ListSoftwareBundlesResponse_NOT_INSTALLED   ListSoftwareBundlesResponse_InstallStatus = 2
-	ListSoftwareBundlesResponse_FORCE_INSTALLED ListSoftwareBundlesResponse_InstallStatus = 3
+	ListResponse_UNSPECIFIED     ListResponse_InstallStatus = 0
+	ListResponse_INSTALLED       ListResponse_InstallStatus = 1
+	ListResponse_NOT_INSTALLED   ListResponse_InstallStatus = 2
+	ListResponse_FORCE_INSTALLED ListResponse_InstallStatus = 3
 )
 
-// Enum value maps for ListSoftwareBundlesResponse_InstallStatus.
+// Enum value maps for ListResponse_InstallStatus.
 var (
-	ListSoftwareBundlesResponse_InstallStatus_name = map[int32]string{
+	ListResponse_InstallStatus_name = map[int32]string{
 		0: "UNSPECIFIED",
 		1: "INSTALLED",
 		2: "NOT_INSTALLED",
 		3: "FORCE_INSTALLED",
 	}
-	ListSoftwareBundlesResponse_InstallStatus_value = map[string]int32{
+	ListResponse_InstallStatus_value = map[string]int32{
 		"UNSPECIFIED":     0,
 		"INSTALLED":       1,
 		"NOT_INSTALLED":   2,
@@ -47,80 +47,31 @@ var (
 	}
 )
 
-func (x ListSoftwareBundlesResponse_InstallStatus) Enum() *ListSoftwareBundlesResponse_InstallStatus {
-	p := new(ListSoftwareBundlesResponse_InstallStatus)
+func (x ListResponse_InstallStatus) Enum() *ListResponse_InstallStatus {
+	p := new(ListResponse_InstallStatus)
 	*p = x
 	return p
 }
 
-func (x ListSoftwareBundlesResponse_InstallStatus) String() string {
+func (x ListResponse_InstallStatus) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (ListSoftwareBundlesResponse_InstallStatus) Descriptor() protoreflect.EnumDescriptor {
+func (ListResponse_InstallStatus) Descriptor() protoreflect.EnumDescriptor {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[0].Descriptor()
 }
 
-func (ListSoftwareBundlesResponse_InstallStatus) Type() protoreflect.EnumType {
+func (ListResponse_InstallStatus) Type() protoreflect.EnumType {
 	return &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[0]
 }
 
-func (x ListSoftwareBundlesResponse_InstallStatus) Number() protoreflect.EnumNumber {
+func (x ListResponse_InstallStatus) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use ListSoftwareBundlesResponse_InstallStatus.Descriptor instead.
-func (ListSoftwareBundlesResponse_InstallStatus) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse_InstallStatus.Descriptor instead.
+func (ListResponse_InstallStatus) EnumDescriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{1, 0}
-}
-
-type InstallSoftwareBundleResponse_Operation int32
-
-const (
-	InstallSoftwareBundleResponse_UNSPECIFIED       InstallSoftwareBundleResponse_Operation = 0
-	InstallSoftwareBundleResponse_TRANSFER_COMPLETE InstallSoftwareBundleResponse_Operation = 1
-	InstallSoftwareBundleResponse_INSTALL_COMPLETE  InstallSoftwareBundleResponse_Operation = 2
-)
-
-// Enum value maps for InstallSoftwareBundleResponse_Operation.
-var (
-	InstallSoftwareBundleResponse_Operation_name = map[int32]string{
-		0: "UNSPECIFIED",
-		1: "TRANSFER_COMPLETE",
-		2: "INSTALL_COMPLETE",
-	}
-	InstallSoftwareBundleResponse_Operation_value = map[string]int32{
-		"UNSPECIFIED":       0,
-		"TRANSFER_COMPLETE": 1,
-		"INSTALL_COMPLETE":  2,
-	}
-)
-
-func (x InstallSoftwareBundleResponse_Operation) Enum() *InstallSoftwareBundleResponse_Operation {
-	p := new(InstallSoftwareBundleResponse_Operation)
-	*p = x
-	return p
-}
-
-func (x InstallSoftwareBundleResponse_Operation) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (InstallSoftwareBundleResponse_Operation) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[1].Descriptor()
-}
-
-func (InstallSoftwareBundleResponse_Operation) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[1]
-}
-
-func (x InstallSoftwareBundleResponse_Operation) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use InstallSoftwareBundleResponse_Operation.Descriptor instead.
-func (InstallSoftwareBundleResponse_Operation) EnumDescriptor() ([]byte, []int) {
-	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{6, 0}
 }
 
 type InstallRequest_TrustSource int32
@@ -156,11 +107,11 @@ func (x InstallRequest_TrustSource) String() string {
 }
 
 func (InstallRequest_TrustSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[2].Descriptor()
+	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[1].Descriptor()
 }
 
 func (InstallRequest_TrustSource) Type() protoreflect.EnumType {
-	return &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[2]
+	return &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes[1]
 }
 
 func (x InstallRequest_TrustSource) Number() protoreflect.EnumNumber {
@@ -169,29 +120,29 @@ func (x InstallRequest_TrustSource) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InstallRequest_TrustSource.Descriptor instead.
 func (InstallRequest_TrustSource) EnumDescriptor() ([]byte, []int) {
-	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{8, 0}
+	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{9, 0}
 }
 
-type ListSoftwareBundlesRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListSoftwareBundlesRequest) Reset() {
-	*x = ListSoftwareBundlesRequest{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSoftwareBundlesRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSoftwareBundlesRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListSoftwareBundlesRequest) ProtoReflect() protoreflect.Message {
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -203,32 +154,32 @@ func (x *ListSoftwareBundlesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSoftwareBundlesRequest.ProtoReflect.Descriptor instead.
-func (*ListSoftwareBundlesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{0}
 }
 
-type ListSoftwareBundlesResponse struct {
-	state           protoimpl.MessageState                        `protogen:"open.v1"`
-	SoftwareBundles []*ListSoftwareBundlesResponse_SoftwareBundle `protobuf:"bytes,1,rep,name=software_bundles,json=softwareBundles,proto3" json:"software_bundles,omitempty"`
+type ListResponse struct {
+	state           protoimpl.MessageState         `protogen:"open.v1"`
+	SoftwareBundles []*ListResponse_SoftwareBundle `protobuf:"bytes,1,rep,name=software_bundles,json=softwareBundles,proto3" json:"software_bundles,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *ListSoftwareBundlesResponse) Reset() {
-	*x = ListSoftwareBundlesResponse{}
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSoftwareBundlesResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSoftwareBundlesResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListSoftwareBundlesResponse) ProtoReflect() protoreflect.Message {
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -240,38 +191,39 @@ func (x *ListSoftwareBundlesResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSoftwareBundlesResponse.ProtoReflect.Descriptor instead.
-func (*ListSoftwareBundlesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ListSoftwareBundlesResponse) GetSoftwareBundles() []*ListSoftwareBundlesResponse_SoftwareBundle {
+func (x *ListResponse) GetSoftwareBundles() []*ListResponse_SoftwareBundle {
 	if x != nil {
 		return x.SoftwareBundles
 	}
 	return nil
 }
 
-type FinalizeSoftwareBundlesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type ActivateRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareBundleName string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
-func (x *FinalizeSoftwareBundlesRequest) Reset() {
-	*x = FinalizeSoftwareBundlesRequest{}
+func (x *ActivateRequest) Reset() {
+	*x = ActivateRequest{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FinalizeSoftwareBundlesRequest) String() string {
+func (x *ActivateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FinalizeSoftwareBundlesRequest) ProtoMessage() {}
+func (*ActivateRequest) ProtoMessage() {}
 
-func (x *FinalizeSoftwareBundlesRequest) ProtoReflect() protoreflect.Message {
+func (x *ActivateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -283,31 +235,38 @@ func (x *FinalizeSoftwareBundlesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FinalizeSoftwareBundlesRequest.ProtoReflect.Descriptor instead.
-func (*FinalizeSoftwareBundlesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ActivateRequest.ProtoReflect.Descriptor instead.
+func (*ActivateRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{2}
 }
 
-type FinalizeSoftwareBundlesResponse struct {
+func (x *ActivateRequest) GetSoftwareBundleName() string {
+	if x != nil {
+		return x.SoftwareBundleName
+	}
+	return ""
+}
+
+type ActivateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FinalizeSoftwareBundlesResponse) Reset() {
-	*x = FinalizeSoftwareBundlesResponse{}
+func (x *ActivateResponse) Reset() {
+	*x = ActivateResponse{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FinalizeSoftwareBundlesResponse) String() string {
+func (x *ActivateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FinalizeSoftwareBundlesResponse) ProtoMessage() {}
+func (*ActivateResponse) ProtoMessage() {}
 
-func (x *FinalizeSoftwareBundlesResponse) ProtoReflect() protoreflect.Message {
+func (x *ActivateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -319,12 +278,12 @@ func (x *FinalizeSoftwareBundlesResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FinalizeSoftwareBundlesResponse.ProtoReflect.Descriptor instead.
-func (*FinalizeSoftwareBundlesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ActivateResponse.ProtoReflect.Descriptor instead.
+func (*ActivateResponse) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{3}
 }
 
-type UninstallSoftwareBundleRequest struct {
+type DeactivateRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	SoftwareBundleName string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
 	Force              bool                   `protobuf:"varint,2,opt,name=force,proto3" json:"force,omitempty"`
@@ -332,20 +291,20 @@ type UninstallSoftwareBundleRequest struct {
 	sizeCache          protoimpl.SizeCache
 }
 
-func (x *UninstallSoftwareBundleRequest) Reset() {
-	*x = UninstallSoftwareBundleRequest{}
+func (x *DeactivateRequest) Reset() {
+	*x = DeactivateRequest{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UninstallSoftwareBundleRequest) String() string {
+func (x *DeactivateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UninstallSoftwareBundleRequest) ProtoMessage() {}
+func (*DeactivateRequest) ProtoMessage() {}
 
-func (x *UninstallSoftwareBundleRequest) ProtoReflect() protoreflect.Message {
+func (x *DeactivateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -357,45 +316,45 @@ func (x *UninstallSoftwareBundleRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UninstallSoftwareBundleRequest.ProtoReflect.Descriptor instead.
-func (*UninstallSoftwareBundleRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeactivateRequest.ProtoReflect.Descriptor instead.
+func (*DeactivateRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UninstallSoftwareBundleRequest) GetSoftwareBundleName() string {
+func (x *DeactivateRequest) GetSoftwareBundleName() string {
 	if x != nil {
 		return x.SoftwareBundleName
 	}
 	return ""
 }
 
-func (x *UninstallSoftwareBundleRequest) GetForce() bool {
+func (x *DeactivateRequest) GetForce() bool {
 	if x != nil {
 		return x.Force
 	}
 	return false
 }
 
-type UninstallSoftwareBundleResponse struct {
+type DeactivateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UninstallSoftwareBundleResponse) Reset() {
-	*x = UninstallSoftwareBundleResponse{}
+func (x *DeactivateResponse) Reset() {
+	*x = DeactivateResponse{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UninstallSoftwareBundleResponse) String() string {
+func (x *DeactivateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UninstallSoftwareBundleResponse) ProtoMessage() {}
+func (*DeactivateResponse) ProtoMessage() {}
 
-func (x *UninstallSoftwareBundleResponse) ProtoReflect() protoreflect.Message {
+func (x *DeactivateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -407,32 +366,32 @@ func (x *UninstallSoftwareBundleResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UninstallSoftwareBundleResponse.ProtoReflect.Descriptor instead.
-func (*UninstallSoftwareBundleResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeactivateResponse.ProtoReflect.Descriptor instead.
+func (*DeactivateResponse) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{5}
 }
 
-type InstallSoftwareBundleResponse struct {
-	state           protoimpl.MessageState                  `protogen:"open.v1"`
-	Acknowledgement InstallSoftwareBundleResponse_Operation `protobuf:"varint,3,opt,name=acknowledgement,proto3,enum=gnoi.software_bundle.InstallSoftwareBundleResponse_Operation" json:"acknowledgement,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+type RemoveRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareBundleName string                 `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
-func (x *InstallSoftwareBundleResponse) Reset() {
-	*x = InstallSoftwareBundleResponse{}
+func (x *RemoveRequest) Reset() {
+	*x = RemoveRequest{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *InstallSoftwareBundleResponse) String() string {
+func (x *RemoveRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InstallSoftwareBundleResponse) ProtoMessage() {}
+func (*RemoveRequest) ProtoMessage() {}
 
-func (x *InstallSoftwareBundleResponse) ProtoReflect() protoreflect.Message {
+func (x *RemoveRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -444,43 +403,38 @@ func (x *InstallSoftwareBundleResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use InstallSoftwareBundleResponse.ProtoReflect.Descriptor instead.
-func (*InstallSoftwareBundleResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RemoveRequest.ProtoReflect.Descriptor instead.
+func (*RemoveRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *InstallSoftwareBundleResponse) GetAcknowledgement() InstallSoftwareBundleResponse_Operation {
+func (x *RemoveRequest) GetSoftwareBundleName() string {
 	if x != nil {
-		return x.Acknowledgement
+		return x.SoftwareBundleName
 	}
-	return InstallSoftwareBundleResponse_UNSPECIFIED
+	return ""
 }
 
-type InstallSoftwareBundleRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Request:
-	//
-	//	*InstallSoftwareBundleRequest_TransferRequest
-	//	*InstallSoftwareBundleRequest_InstallRequest
-	Request       isInstallSoftwareBundleRequest_Request `protobuf_oneof:"request"`
+type RemoveResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *InstallSoftwareBundleRequest) Reset() {
-	*x = InstallSoftwareBundleRequest{}
+func (x *RemoveResponse) Reset() {
+	*x = RemoveResponse{}
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *InstallSoftwareBundleRequest) String() string {
+func (x *RemoveResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InstallSoftwareBundleRequest) ProtoMessage() {}
+func (*RemoveResponse) ProtoMessage() {}
 
-func (x *InstallSoftwareBundleRequest) ProtoReflect() protoreflect.Message {
+func (x *RemoveResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -492,51 +446,46 @@ func (x *InstallSoftwareBundleRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use InstallSoftwareBundleRequest.ProtoReflect.Descriptor instead.
-func (*InstallSoftwareBundleRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RemoveResponse.ProtoReflect.Descriptor instead.
+func (*RemoveResponse) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *InstallSoftwareBundleRequest) GetRequest() isInstallSoftwareBundleRequest_Request {
-	if x != nil {
-		return x.Request
-	}
-	return nil
+type InstallResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *InstallSoftwareBundleRequest) GetTransferRequest() *TransferRequest {
+func (x *InstallResponse) Reset() {
+	*x = InstallResponse{}
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InstallResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InstallResponse) ProtoMessage() {}
+
+func (x *InstallResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[8]
 	if x != nil {
-		if x, ok := x.Request.(*InstallSoftwareBundleRequest_TransferRequest); ok {
-			return x.TransferRequest
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
 		}
+		return ms
 	}
-	return nil
+	return mi.MessageOf(x)
 }
 
-func (x *InstallSoftwareBundleRequest) GetInstallRequest() *InstallRequest {
-	if x != nil {
-		if x, ok := x.Request.(*InstallSoftwareBundleRequest_InstallRequest); ok {
-			return x.InstallRequest
-		}
-	}
-	return nil
+// Deprecated: Use InstallResponse.ProtoReflect.Descriptor instead.
+func (*InstallResponse) Descriptor() ([]byte, []int) {
+	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{8}
 }
-
-type isInstallSoftwareBundleRequest_Request interface {
-	isInstallSoftwareBundleRequest_Request()
-}
-
-type InstallSoftwareBundleRequest_TransferRequest struct {
-	TransferRequest *TransferRequest `protobuf:"bytes,1,opt,name=transfer_request,json=transferRequest,proto3,oneof"`
-}
-
-type InstallSoftwareBundleRequest_InstallRequest struct {
-	InstallRequest *InstallRequest `protobuf:"bytes,2,opt,name=install_request,json=installRequest,proto3,oneof"`
-}
-
-func (*InstallSoftwareBundleRequest_TransferRequest) isInstallSoftwareBundleRequest_Request() {}
-
-func (*InstallSoftwareBundleRequest_InstallRequest) isInstallSoftwareBundleRequest_Request() {}
 
 type InstallRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
@@ -554,7 +503,7 @@ type InstallRequest struct {
 
 func (x *InstallRequest) Reset() {
 	*x = InstallRequest{}
-	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[8]
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -566,7 +515,7 @@ func (x *InstallRequest) String() string {
 func (*InstallRequest) ProtoMessage() {}
 
 func (x *InstallRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[8]
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -579,7 +528,7 @@ func (x *InstallRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InstallRequest.ProtoReflect.Descriptor instead.
 func (*InstallRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{8}
+	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *InstallRequest) GetSoftwareBundleName() string {
@@ -658,7 +607,7 @@ type TransferRequest struct {
 
 func (x *TransferRequest) Reset() {
 	*x = TransferRequest{}
-	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[9]
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -670,7 +619,7 @@ func (x *TransferRequest) String() string {
 func (*TransferRequest) ProtoMessage() {}
 
 func (x *TransferRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[9]
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -683,7 +632,7 @@ func (x *TransferRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferRequest.ProtoReflect.Descriptor instead.
 func (*TransferRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{9}
+	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *TransferRequest) GetRequest() isTransferRequest_Request {
@@ -742,37 +691,27 @@ func (*TransferRequest_Contents) isTransferRequest_Request() {}
 
 func (*TransferRequest_Hash) isTransferRequest_Request() {}
 
-type ListSoftwareBundlesResponse_SoftwareBundle struct {
-	state                   protoimpl.MessageState                    `protogen:"open.v1"`
-	SoftwareBundleName      string                                    `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
-	Version                 string                                    `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
-	Description             string                                    `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	InstallStatus           ListSoftwareBundlesResponse_InstallStatus `protobuf:"varint,4,opt,name=install_status,json=installStatus,proto3,enum=gnoi.software_bundle.ListSoftwareBundlesResponse_InstallStatus" json:"install_status,omitempty"`
-	Persistent              bool                                      `protobuf:"varint,5,opt,name=persistent,proto3" json:"persistent,omitempty"`
-	SignatureValid          bool                                      `protobuf:"varint,6,opt,name=signature_valid,json=signatureValid,proto3" json:"signature_valid,omitempty"`
-	Available               bool                                      `protobuf:"varint,7,opt,name=available,proto3" json:"available,omitempty"`
-	Errors                  string                                    `protobuf:"bytes,8,opt,name=errors,proto3" json:"errors,omitempty"`
-	AffectedProcesses       []string                                  `protobuf:"bytes,9,rep,name=affected_processes,json=affectedProcesses,proto3" json:"affected_processes,omitempty"`
-	ProcessesPendingRestart []string                                  `protobuf:"bytes,10,rep,name=processes_pending_restart,json=processesPendingRestart,proto3" json:"processes_pending_restart,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+type TransferResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) Reset() {
-	*x = ListSoftwareBundlesResponse_SoftwareBundle{}
-	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[10]
+func (x *TransferResponse) Reset() {
+	*x = TransferResponse{}
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) String() string {
+func (x *TransferResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListSoftwareBundlesResponse_SoftwareBundle) ProtoMessage() {}
+func (*TransferResponse) ProtoMessage() {}
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[10]
+func (x *TransferResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,75 +722,121 @@ func (x *ListSoftwareBundlesResponse_SoftwareBundle) ProtoReflect() protoreflect
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListSoftwareBundlesResponse_SoftwareBundle.ProtoReflect.Descriptor instead.
-func (*ListSoftwareBundlesResponse_SoftwareBundle) Descriptor() ([]byte, []int) {
+// Deprecated: Use TransferResponse.ProtoReflect.Descriptor instead.
+func (*TransferResponse) Descriptor() ([]byte, []int) {
+	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{11}
+}
+
+type ListResponse_SoftwareBundle struct {
+	state                   protoimpl.MessageState     `protogen:"open.v1"`
+	SoftwareBundleName      string                     `protobuf:"bytes,1,opt,name=software_bundle_name,json=softwareBundleName,proto3" json:"software_bundle_name,omitempty"`
+	Version                 string                     `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	Description             string                     `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	InstallStatus           ListResponse_InstallStatus `protobuf:"varint,4,opt,name=install_status,json=installStatus,proto3,enum=gnoi.software_bundle.ListResponse_InstallStatus" json:"install_status,omitempty"`
+	Persistent              bool                       `protobuf:"varint,5,opt,name=persistent,proto3" json:"persistent,omitempty"`
+	SignatureValid          bool                       `protobuf:"varint,6,opt,name=signature_valid,json=signatureValid,proto3" json:"signature_valid,omitempty"`
+	Available               bool                       `protobuf:"varint,7,opt,name=available,proto3" json:"available,omitempty"`
+	Errors                  string                     `protobuf:"bytes,8,opt,name=errors,proto3" json:"errors,omitempty"`
+	AffectedProcesses       []string                   `protobuf:"bytes,9,rep,name=affected_processes,json=affectedProcesses,proto3" json:"affected_processes,omitempty"`
+	ProcessesPendingRestart []string                   `protobuf:"bytes,10,rep,name=processes_pending_restart,json=processesPendingRestart,proto3" json:"processes_pending_restart,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *ListResponse_SoftwareBundle) Reset() {
+	*x = ListResponse_SoftwareBundle{}
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListResponse_SoftwareBundle) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListResponse_SoftwareBundle) ProtoMessage() {}
+
+func (x *ListResponse_SoftwareBundle) ProtoReflect() protoreflect.Message {
+	mi := &file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListResponse_SoftwareBundle.ProtoReflect.Descriptor instead.
+func (*ListResponse_SoftwareBundle) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescGZIP(), []int{1, 0}
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetSoftwareBundleName() string {
+func (x *ListResponse_SoftwareBundle) GetSoftwareBundleName() string {
 	if x != nil {
 		return x.SoftwareBundleName
 	}
 	return ""
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetVersion() string {
+func (x *ListResponse_SoftwareBundle) GetVersion() string {
 	if x != nil {
 		return x.Version
 	}
 	return ""
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetDescription() string {
+func (x *ListResponse_SoftwareBundle) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetInstallStatus() ListSoftwareBundlesResponse_InstallStatus {
+func (x *ListResponse_SoftwareBundle) GetInstallStatus() ListResponse_InstallStatus {
 	if x != nil {
 		return x.InstallStatus
 	}
-	return ListSoftwareBundlesResponse_UNSPECIFIED
+	return ListResponse_UNSPECIFIED
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetPersistent() bool {
+func (x *ListResponse_SoftwareBundle) GetPersistent() bool {
 	if x != nil {
 		return x.Persistent
 	}
 	return false
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetSignatureValid() bool {
+func (x *ListResponse_SoftwareBundle) GetSignatureValid() bool {
 	if x != nil {
 		return x.SignatureValid
 	}
 	return false
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetAvailable() bool {
+func (x *ListResponse_SoftwareBundle) GetAvailable() bool {
 	if x != nil {
 		return x.Available
 	}
 	return false
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetErrors() string {
+func (x *ListResponse_SoftwareBundle) GetErrors() string {
 	if x != nil {
 		return x.Errors
 	}
 	return ""
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetAffectedProcesses() []string {
+func (x *ListResponse_SoftwareBundle) GetAffectedProcesses() []string {
 	if x != nil {
 		return x.AffectedProcesses
 	}
 	return nil
 }
 
-func (x *ListSoftwareBundlesResponse_SoftwareBundle) GetProcessesPendingRestart() []string {
+func (x *ListResponse_SoftwareBundle) GetProcessesPendingRestart() []string {
 	if x != nil {
 		return x.ProcessesPendingRestart
 	}
@@ -862,15 +847,15 @@ var File_github_com_openconfig_gnoi_software_bundle_software_bundle_proto protor
 
 const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDesc = "" +
 	"\n" +
-	"@github.com/openconfig/gnoi/software_bundle/software_bundle.proto\x12\x14gnoi.software_bundle\x1a,github.com/openconfig/gnoi/types/types.proto\"\x1c\n" +
-	"\x1aListSoftwareBundlesRequest\"\xb6\x05\n" +
-	"\x1bListSoftwareBundlesResponse\x12k\n" +
-	"\x10software_bundles\x18\x01 \x03(\v2@.gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundleR\x0fsoftwareBundles\x1a\xd0\x03\n" +
+	"@github.com/openconfig/gnoi/software_bundle/software_bundle.proto\x12\x14gnoi.software_bundle\x1a,github.com/openconfig/gnoi/types/types.proto\"\r\n" +
+	"\vListRequest\"\x89\x05\n" +
+	"\fListResponse\x12\\\n" +
+	"\x10software_bundles\x18\x01 \x03(\v21.gnoi.software_bundle.ListResponse.SoftwareBundleR\x0fsoftwareBundles\x1a\xc1\x03\n" +
 	"\x0eSoftwareBundle\x120\n" +
 	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12f\n" +
-	"\x0einstall_status\x18\x04 \x01(\x0e2?.gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatusR\rinstallStatus\x12\x1e\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12W\n" +
+	"\x0einstall_status\x18\x04 \x01(\x0e20.gnoi.software_bundle.ListResponse.InstallStatusR\rinstallStatus\x12\x1e\n" +
 	"\n" +
 	"persistent\x18\x05 \x01(\bR\n" +
 	"persistent\x12'\n" +
@@ -884,23 +869,18 @@ const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawD
 	"\vUNSPECIFIED\x10\x00\x12\r\n" +
 	"\tINSTALLED\x10\x01\x12\x11\n" +
 	"\rNOT_INSTALLED\x10\x02\x12\x13\n" +
-	"\x0fFORCE_INSTALLED\x10\x03\" \n" +
-	"\x1eFinalizeSoftwareBundlesRequest\"!\n" +
-	"\x1fFinalizeSoftwareBundlesResponse\"h\n" +
-	"\x1eUninstallSoftwareBundleRequest\x120\n" +
+	"\x0fFORCE_INSTALLED\x10\x03\"C\n" +
+	"\x0fActivateRequest\x120\n" +
+	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\"\x12\n" +
+	"\x10ActivateResponse\"[\n" +
+	"\x11DeactivateRequest\x120\n" +
 	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12\x14\n" +
-	"\x05force\x18\x02 \x01(\bR\x05force\"!\n" +
-	"\x1fUninstallSoftwareBundleResponse\"\xd3\x01\n" +
-	"\x1dInstallSoftwareBundleResponse\x12g\n" +
-	"\x0facknowledgement\x18\x03 \x01(\x0e2=.gnoi.software_bundle.InstallSoftwareBundleResponse.OperationR\x0facknowledgement\"I\n" +
-	"\tOperation\x12\x0f\n" +
-	"\vUNSPECIFIED\x10\x00\x12\x15\n" +
-	"\x11TRANSFER_COMPLETE\x10\x01\x12\x14\n" +
-	"\x10INSTALL_COMPLETE\x10\x02\"\xce\x01\n" +
-	"\x1cInstallSoftwareBundleRequest\x12R\n" +
-	"\x10transfer_request\x18\x01 \x01(\v2%.gnoi.software_bundle.TransferRequestH\x00R\x0ftransferRequest\x12O\n" +
-	"\x0finstall_request\x18\x02 \x01(\v2$.gnoi.software_bundle.InstallRequestH\x00R\x0einstallRequestB\t\n" +
-	"\arequest\"\xc4\x02\n" +
+	"\x05force\x18\x02 \x01(\bR\x05force\"\x14\n" +
+	"\x12DeactivateResponse\"A\n" +
+	"\rRemoveRequest\x120\n" +
+	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\"\x10\n" +
+	"\x0eRemoveResponse\"\x11\n" +
+	"\x0fInstallResponse\"\xc4\x02\n" +
 	"\x0eInstallRequest\x120\n" +
 	"\x14software_bundle_name\x18\x01 \x01(\tR\x12softwareBundleName\x12\x1e\n" +
 	"\n" +
@@ -919,12 +899,16 @@ const file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawD
 	"\x14software_bundle_name\x18\x01 \x01(\tH\x00R\x12softwareBundleName\x12\x1c\n" +
 	"\bcontents\x18\x02 \x01(\fH\x00R\bcontents\x12*\n" +
 	"\x04hash\x18\x03 \x01(\v2\x14.gnoi.types.HashTypeH\x00R\x04hashB\t\n" +
-	"\arequest2\xa5\x04\n" +
-	"\x0eSoftwareBundle\x12z\n" +
-	"\x13ListSoftwareBundles\x120.gnoi.software_bundle.ListSoftwareBundlesRequest\x1a1.gnoi.software_bundle.ListSoftwareBundlesResponse\x12\x86\x01\n" +
-	"\x17FinalizeSoftwareBundles\x124.gnoi.software_bundle.FinalizeSoftwareBundlesRequest\x1a5.gnoi.software_bundle.FinalizeSoftwareBundlesResponse\x12\x84\x01\n" +
-	"\x15InstallSoftwareBundle\x122.gnoi.software_bundle.InstallSoftwareBundleRequest\x1a3.gnoi.software_bundle.InstallSoftwareBundleResponse(\x010\x01\x12\x86\x01\n" +
-	"\x17UninstallSoftwareBundle\x124.gnoi.software_bundle.UninstallSoftwareBundleRequest\x1a5.gnoi.software_bundle.UninstallSoftwareBundleResponseB4\xd2>\x050.1.0Z*github.com/openconfig/gnoi/software_bundleb\x06proto3"
+	"\arequest\"\x12\n" +
+	"\x10TransferResponse2\xa7\x04\n" +
+	"\x0eSoftwareBundle\x12M\n" +
+	"\x04List\x12!.gnoi.software_bundle.ListRequest\x1a\".gnoi.software_bundle.ListResponse\x12Y\n" +
+	"\bActivate\x12%.gnoi.software_bundle.ActivateRequest\x1a&.gnoi.software_bundle.ActivateResponse\x12[\n" +
+	"\bTransfer\x12%.gnoi.software_bundle.TransferRequest\x1a&.gnoi.software_bundle.TransferResponse(\x01\x12X\n" +
+	"\aInstall\x12$.gnoi.software_bundle.InstallRequest\x1a%.gnoi.software_bundle.InstallResponse(\x01\x12_\n" +
+	"\n" +
+	"Deactivate\x12'.gnoi.software_bundle.DeactivateRequest\x1a(.gnoi.software_bundle.DeactivateResponse\x12S\n" +
+	"\x06Remove\x12#.gnoi.software_bundle.RemoveRequest\x1a$.gnoi.software_bundle.RemoveResponseB4\xd2>\x050.1.0Z*github.com/openconfig/gnoi/software_bundleb\x06proto3"
 
 var (
 	file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescOnce sync.Once
@@ -938,46 +922,48 @@ func file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDe
 	return file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDescData
 }
 
-var file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_goTypes = []any{
-	(ListSoftwareBundlesResponse_InstallStatus)(0),     // 0: gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatus
-	(InstallSoftwareBundleResponse_Operation)(0),       // 1: gnoi.software_bundle.InstallSoftwareBundleResponse.Operation
-	(InstallRequest_TrustSource)(0),                    // 2: gnoi.software_bundle.InstallRequest.TrustSource
-	(*ListSoftwareBundlesRequest)(nil),                 // 3: gnoi.software_bundle.ListSoftwareBundlesRequest
-	(*ListSoftwareBundlesResponse)(nil),                // 4: gnoi.software_bundle.ListSoftwareBundlesResponse
-	(*FinalizeSoftwareBundlesRequest)(nil),             // 5: gnoi.software_bundle.FinalizeSoftwareBundlesRequest
-	(*FinalizeSoftwareBundlesResponse)(nil),            // 6: gnoi.software_bundle.FinalizeSoftwareBundlesResponse
-	(*UninstallSoftwareBundleRequest)(nil),             // 7: gnoi.software_bundle.UninstallSoftwareBundleRequest
-	(*UninstallSoftwareBundleResponse)(nil),            // 8: gnoi.software_bundle.UninstallSoftwareBundleResponse
-	(*InstallSoftwareBundleResponse)(nil),              // 9: gnoi.software_bundle.InstallSoftwareBundleResponse
-	(*InstallSoftwareBundleRequest)(nil),               // 10: gnoi.software_bundle.InstallSoftwareBundleRequest
-	(*InstallRequest)(nil),                             // 11: gnoi.software_bundle.InstallRequest
-	(*TransferRequest)(nil),                            // 12: gnoi.software_bundle.TransferRequest
-	(*ListSoftwareBundlesResponse_SoftwareBundle)(nil), // 13: gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundle
-	(*types.HashType)(nil),                             // 14: gnoi.types.HashType
+	(ListResponse_InstallStatus)(0),     // 0: gnoi.software_bundle.ListResponse.InstallStatus
+	(InstallRequest_TrustSource)(0),     // 1: gnoi.software_bundle.InstallRequest.TrustSource
+	(*ListRequest)(nil),                 // 2: gnoi.software_bundle.ListRequest
+	(*ListResponse)(nil),                // 3: gnoi.software_bundle.ListResponse
+	(*ActivateRequest)(nil),             // 4: gnoi.software_bundle.ActivateRequest
+	(*ActivateResponse)(nil),            // 5: gnoi.software_bundle.ActivateResponse
+	(*DeactivateRequest)(nil),           // 6: gnoi.software_bundle.DeactivateRequest
+	(*DeactivateResponse)(nil),          // 7: gnoi.software_bundle.DeactivateResponse
+	(*RemoveRequest)(nil),               // 8: gnoi.software_bundle.RemoveRequest
+	(*RemoveResponse)(nil),              // 9: gnoi.software_bundle.RemoveResponse
+	(*InstallResponse)(nil),             // 10: gnoi.software_bundle.InstallResponse
+	(*InstallRequest)(nil),              // 11: gnoi.software_bundle.InstallRequest
+	(*TransferRequest)(nil),             // 12: gnoi.software_bundle.TransferRequest
+	(*TransferResponse)(nil),            // 13: gnoi.software_bundle.TransferResponse
+	(*ListResponse_SoftwareBundle)(nil), // 14: gnoi.software_bundle.ListResponse.SoftwareBundle
+	(*types.HashType)(nil),              // 15: gnoi.types.HashType
 }
 var file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_depIdxs = []int32{
-	13, // 0: gnoi.software_bundle.ListSoftwareBundlesResponse.software_bundles:type_name -> gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundle
-	1,  // 1: gnoi.software_bundle.InstallSoftwareBundleResponse.acknowledgement:type_name -> gnoi.software_bundle.InstallSoftwareBundleResponse.Operation
-	12, // 2: gnoi.software_bundle.InstallSoftwareBundleRequest.transfer_request:type_name -> gnoi.software_bundle.TransferRequest
-	11, // 3: gnoi.software_bundle.InstallSoftwareBundleRequest.install_request:type_name -> gnoi.software_bundle.InstallRequest
-	2,  // 4: gnoi.software_bundle.InstallRequest.source:type_name -> gnoi.software_bundle.InstallRequest.TrustSource
-	14, // 5: gnoi.software_bundle.TransferRequest.hash:type_name -> gnoi.types.HashType
-	0,  // 6: gnoi.software_bundle.ListSoftwareBundlesResponse.SoftwareBundle.install_status:type_name -> gnoi.software_bundle.ListSoftwareBundlesResponse.InstallStatus
-	3,  // 7: gnoi.software_bundle.SoftwareBundle.ListSoftwareBundles:input_type -> gnoi.software_bundle.ListSoftwareBundlesRequest
-	5,  // 8: gnoi.software_bundle.SoftwareBundle.FinalizeSoftwareBundles:input_type -> gnoi.software_bundle.FinalizeSoftwareBundlesRequest
-	10, // 9: gnoi.software_bundle.SoftwareBundle.InstallSoftwareBundle:input_type -> gnoi.software_bundle.InstallSoftwareBundleRequest
-	7,  // 10: gnoi.software_bundle.SoftwareBundle.UninstallSoftwareBundle:input_type -> gnoi.software_bundle.UninstallSoftwareBundleRequest
-	4,  // 11: gnoi.software_bundle.SoftwareBundle.ListSoftwareBundles:output_type -> gnoi.software_bundle.ListSoftwareBundlesResponse
-	6,  // 12: gnoi.software_bundle.SoftwareBundle.FinalizeSoftwareBundles:output_type -> gnoi.software_bundle.FinalizeSoftwareBundlesResponse
-	9,  // 13: gnoi.software_bundle.SoftwareBundle.InstallSoftwareBundle:output_type -> gnoi.software_bundle.InstallSoftwareBundleResponse
-	8,  // 14: gnoi.software_bundle.SoftwareBundle.UninstallSoftwareBundle:output_type -> gnoi.software_bundle.UninstallSoftwareBundleResponse
-	11, // [11:15] is the sub-list for method output_type
-	7,  // [7:11] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	14, // 0: gnoi.software_bundle.ListResponse.software_bundles:type_name -> gnoi.software_bundle.ListResponse.SoftwareBundle
+	1,  // 1: gnoi.software_bundle.InstallRequest.source:type_name -> gnoi.software_bundle.InstallRequest.TrustSource
+	15, // 2: gnoi.software_bundle.TransferRequest.hash:type_name -> gnoi.types.HashType
+	0,  // 3: gnoi.software_bundle.ListResponse.SoftwareBundle.install_status:type_name -> gnoi.software_bundle.ListResponse.InstallStatus
+	2,  // 4: gnoi.software_bundle.SoftwareBundle.List:input_type -> gnoi.software_bundle.ListRequest
+	4,  // 5: gnoi.software_bundle.SoftwareBundle.Activate:input_type -> gnoi.software_bundle.ActivateRequest
+	12, // 6: gnoi.software_bundle.SoftwareBundle.Transfer:input_type -> gnoi.software_bundle.TransferRequest
+	11, // 7: gnoi.software_bundle.SoftwareBundle.Install:input_type -> gnoi.software_bundle.InstallRequest
+	6,  // 8: gnoi.software_bundle.SoftwareBundle.Deactivate:input_type -> gnoi.software_bundle.DeactivateRequest
+	8,  // 9: gnoi.software_bundle.SoftwareBundle.Remove:input_type -> gnoi.software_bundle.RemoveRequest
+	3,  // 10: gnoi.software_bundle.SoftwareBundle.List:output_type -> gnoi.software_bundle.ListResponse
+	5,  // 11: gnoi.software_bundle.SoftwareBundle.Activate:output_type -> gnoi.software_bundle.ActivateResponse
+	13, // 12: gnoi.software_bundle.SoftwareBundle.Transfer:output_type -> gnoi.software_bundle.TransferResponse
+	10, // 13: gnoi.software_bundle.SoftwareBundle.Install:output_type -> gnoi.software_bundle.InstallResponse
+	7,  // 14: gnoi.software_bundle.SoftwareBundle.Deactivate:output_type -> gnoi.software_bundle.DeactivateResponse
+	9,  // 15: gnoi.software_bundle.SoftwareBundle.Remove:output_type -> gnoi.software_bundle.RemoveResponse
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_init() }
@@ -985,15 +971,11 @@ func file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_init(
 	if File_github_com_openconfig_gnoi_software_bundle_software_bundle_proto != nil {
 		return
 	}
-	file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[7].OneofWrappers = []any{
-		(*InstallSoftwareBundleRequest_TransferRequest)(nil),
-		(*InstallSoftwareBundleRequest_InstallRequest)(nil),
-	}
-	file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[8].OneofWrappers = []any{
+	file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[9].OneofWrappers = []any{
 		(*InstallRequest_Source)(nil),
 		(*InstallRequest_SslProfileId)(nil),
 	}
-	file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[9].OneofWrappers = []any{
+	file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_msgTypes[10].OneofWrappers = []any{
 		(*TransferRequest_SoftwareBundleName)(nil),
 		(*TransferRequest_Contents)(nil),
 		(*TransferRequest_Hash)(nil),
@@ -1003,8 +985,8 @@ func file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_init(
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDesc), len(file_github_com_openconfig_gnoi_software_bundle_software_bundle_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   11,
+			NumEnums:      2,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

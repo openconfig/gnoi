@@ -74,13 +74,14 @@ The following workflows for installation are expected:
 sequenceDiagram
     participant client
     participant server
+    Note over client,server: BEGIN Transfer RPC stream
     client->>server: TransferRequest (with software_bundle_name set)
     client->>server: TransferRequest (with contents set)
     Note over client,server: repeated TransferRequest with contents are<br/>sent until the file is transferred
     client->>server: TransferRequest (with hash set)
     Note over server: server verifies hash matches expected
-    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = TRANSFER_COMPLETE)
-    Note over client,server: STREAM END
+    server-->>client: TransferResponse
+    Note over client,server: END Transfer RPC stream
 ```
 
 2. To transfer and install a new software bundle:
@@ -88,16 +89,19 @@ sequenceDiagram
 sequenceDiagram
     participant client
     participant server
+    Note over client,server: BEGIN Transfer RPC stream
     client->>server: TransferRequest (with software_bundle_name set)
     client->>server: TransferRequest (with contents set)
     Note over client,server: repeated TransferRequest with contents are<br/>sent until the file is transferred
     client->>server: TransferRequest (with hash set)
     Note over server: server verifies hash matches expected
-    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = TRANSFER_COMPLETE)
+    server-->>client: TransferResponse
+    Note over client,server: END Transfer RPC stream
+    Note over client,server: BEGIN Install RPC stream
     client->>server: InstallRequest (with software_bundle_name set)<br/>(note, other fields may be set)
     Note over server: server installs software<br/>bundle according to fields
-    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = INSTALL_COMPLETE)
-    Note over client,server: STREAM END
+    server-->>client: InstallResponse
+    Note over client,server: END Install RPC stream
 ```
 
 3. To install a pre-existing software bundle:
@@ -105,10 +109,11 @@ sequenceDiagram
 sequenceDiagram
     participant client
     participant server
+    Note over client,server: BEGIN Install RPC stream
     client->>server: InstallRequest (with software_bundle_name set)<br/>(note, other fields may be set)
     Note over server: server installs software<br/>bundle according to fields
-    server-->>client: InstallSoftwareBundleResponse<br/>(with acknowledgement = INSTALL_COMPLETE)
-    Note over client,server: STREAM END
+    server-->>client: InstallResponse
+    Note over client,server: END Install RPC stream
 ```
 
 #### 3. Process reload
@@ -117,7 +122,14 @@ Once any required software bundles are installed, the system needs to restart an
 currently-running processes which would be affected by those software bundles.
 When those processes reload, they will reload with the software bundles applied.
 
-This restart be done with the `FinalizeSoftwareBundles` RPC
+This restart be done with the `Activate` RPC
+
+
+#### 4. Cleanup
+
+To uninstall a software bundle, run the Deactivate RPC.
+To cleanup the originally-transferred software bundle from disk,
+run the Remove RPC.
 
 ### Comparison to existing SetPackage RPC
 

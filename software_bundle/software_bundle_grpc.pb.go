@@ -19,20 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SoftwareBundle_ListSoftwareBundles_FullMethodName     = "/gnoi.software_bundle.SoftwareBundle/ListSoftwareBundles"
-	SoftwareBundle_FinalizeSoftwareBundles_FullMethodName = "/gnoi.software_bundle.SoftwareBundle/FinalizeSoftwareBundles"
-	SoftwareBundle_InstallSoftwareBundle_FullMethodName   = "/gnoi.software_bundle.SoftwareBundle/InstallSoftwareBundle"
-	SoftwareBundle_UninstallSoftwareBundle_FullMethodName = "/gnoi.software_bundle.SoftwareBundle/UninstallSoftwareBundle"
+	SoftwareBundle_List_FullMethodName       = "/gnoi.software_bundle.SoftwareBundle/List"
+	SoftwareBundle_Activate_FullMethodName   = "/gnoi.software_bundle.SoftwareBundle/Activate"
+	SoftwareBundle_Transfer_FullMethodName   = "/gnoi.software_bundle.SoftwareBundle/Transfer"
+	SoftwareBundle_Install_FullMethodName    = "/gnoi.software_bundle.SoftwareBundle/Install"
+	SoftwareBundle_Deactivate_FullMethodName = "/gnoi.software_bundle.SoftwareBundle/Deactivate"
+	SoftwareBundle_Remove_FullMethodName     = "/gnoi.software_bundle.SoftwareBundle/Remove"
 )
 
 // SoftwareBundleClient is the client API for SoftwareBundle service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SoftwareBundleClient interface {
-	ListSoftwareBundles(ctx context.Context, in *ListSoftwareBundlesRequest, opts ...grpc.CallOption) (*ListSoftwareBundlesResponse, error)
-	FinalizeSoftwareBundles(ctx context.Context, in *FinalizeSoftwareBundlesRequest, opts ...grpc.CallOption) (*FinalizeSoftwareBundlesResponse, error)
-	InstallSoftwareBundle(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse], error)
-	UninstallSoftwareBundle(ctx context.Context, in *UninstallSoftwareBundleRequest, opts ...grpc.CallOption) (*UninstallSoftwareBundleResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	Activate(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error)
+	Transfer(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[TransferRequest, TransferResponse], error)
+	Install(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InstallRequest, InstallResponse], error)
+	Deactivate(ctx context.Context, in *DeactivateRequest, opts ...grpc.CallOption) (*DeactivateResponse, error)
+	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error)
 }
 
 type softwareBundleClient struct {
@@ -43,43 +47,66 @@ func NewSoftwareBundleClient(cc grpc.ClientConnInterface) SoftwareBundleClient {
 	return &softwareBundleClient{cc}
 }
 
-func (c *softwareBundleClient) ListSoftwareBundles(ctx context.Context, in *ListSoftwareBundlesRequest, opts ...grpc.CallOption) (*ListSoftwareBundlesResponse, error) {
+func (c *softwareBundleClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListSoftwareBundlesResponse)
-	err := c.cc.Invoke(ctx, SoftwareBundle_ListSoftwareBundles_FullMethodName, in, out, cOpts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, SoftwareBundle_List_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *softwareBundleClient) FinalizeSoftwareBundles(ctx context.Context, in *FinalizeSoftwareBundlesRequest, opts ...grpc.CallOption) (*FinalizeSoftwareBundlesResponse, error) {
+func (c *softwareBundleClient) Activate(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(FinalizeSoftwareBundlesResponse)
-	err := c.cc.Invoke(ctx, SoftwareBundle_FinalizeSoftwareBundles_FullMethodName, in, out, cOpts...)
+	out := new(ActivateResponse)
+	err := c.cc.Invoke(ctx, SoftwareBundle_Activate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *softwareBundleClient) InstallSoftwareBundle(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse], error) {
+func (c *softwareBundleClient) Transfer(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[TransferRequest, TransferResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SoftwareBundle_ServiceDesc.Streams[0], SoftwareBundle_InstallSoftwareBundle_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SoftwareBundle_ServiceDesc.Streams[0], SoftwareBundle_Transfer_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse]{ClientStream: stream}
+	x := &grpc.GenericClientStream[TransferRequest, TransferResponse]{ClientStream: stream}
 	return x, nil
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SoftwareBundle_InstallSoftwareBundleClient = grpc.BidiStreamingClient[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse]
+type SoftwareBundle_TransferClient = grpc.ClientStreamingClient[TransferRequest, TransferResponse]
 
-func (c *softwareBundleClient) UninstallSoftwareBundle(ctx context.Context, in *UninstallSoftwareBundleRequest, opts ...grpc.CallOption) (*UninstallSoftwareBundleResponse, error) {
+func (c *softwareBundleClient) Install(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InstallRequest, InstallResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UninstallSoftwareBundleResponse)
-	err := c.cc.Invoke(ctx, SoftwareBundle_UninstallSoftwareBundle_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SoftwareBundle_ServiceDesc.Streams[1], SoftwareBundle_Install_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[InstallRequest, InstallResponse]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SoftwareBundle_InstallClient = grpc.ClientStreamingClient[InstallRequest, InstallResponse]
+
+func (c *softwareBundleClient) Deactivate(ctx context.Context, in *DeactivateRequest, opts ...grpc.CallOption) (*DeactivateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeactivateResponse)
+	err := c.cc.Invoke(ctx, SoftwareBundle_Deactivate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *softwareBundleClient) Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveResponse)
+	err := c.cc.Invoke(ctx, SoftwareBundle_Remove_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,10 +117,12 @@ func (c *softwareBundleClient) UninstallSoftwareBundle(ctx context.Context, in *
 // All implementations should embed UnimplementedSoftwareBundleServer
 // for forward compatibility.
 type SoftwareBundleServer interface {
-	ListSoftwareBundles(context.Context, *ListSoftwareBundlesRequest) (*ListSoftwareBundlesResponse, error)
-	FinalizeSoftwareBundles(context.Context, *FinalizeSoftwareBundlesRequest) (*FinalizeSoftwareBundlesResponse, error)
-	InstallSoftwareBundle(grpc.BidiStreamingServer[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse]) error
-	UninstallSoftwareBundle(context.Context, *UninstallSoftwareBundleRequest) (*UninstallSoftwareBundleResponse, error)
+	List(context.Context, *ListRequest) (*ListResponse, error)
+	Activate(context.Context, *ActivateRequest) (*ActivateResponse, error)
+	Transfer(grpc.ClientStreamingServer[TransferRequest, TransferResponse]) error
+	Install(grpc.ClientStreamingServer[InstallRequest, InstallResponse]) error
+	Deactivate(context.Context, *DeactivateRequest) (*DeactivateResponse, error)
+	Remove(context.Context, *RemoveRequest) (*RemoveResponse, error)
 }
 
 // UnimplementedSoftwareBundleServer should be embedded to have
@@ -103,17 +132,23 @@ type SoftwareBundleServer interface {
 // pointer dereference when methods are called.
 type UnimplementedSoftwareBundleServer struct{}
 
-func (UnimplementedSoftwareBundleServer) ListSoftwareBundles(context.Context, *ListSoftwareBundlesRequest) (*ListSoftwareBundlesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListSoftwareBundles not implemented")
+func (UnimplementedSoftwareBundleServer) List(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedSoftwareBundleServer) FinalizeSoftwareBundles(context.Context, *FinalizeSoftwareBundlesRequest) (*FinalizeSoftwareBundlesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FinalizeSoftwareBundles not implemented")
+func (UnimplementedSoftwareBundleServer) Activate(context.Context, *ActivateRequest) (*ActivateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Activate not implemented")
 }
-func (UnimplementedSoftwareBundleServer) InstallSoftwareBundle(grpc.BidiStreamingServer[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method InstallSoftwareBundle not implemented")
+func (UnimplementedSoftwareBundleServer) Transfer(grpc.ClientStreamingServer[TransferRequest, TransferResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method Transfer not implemented")
 }
-func (UnimplementedSoftwareBundleServer) UninstallSoftwareBundle(context.Context, *UninstallSoftwareBundleRequest) (*UninstallSoftwareBundleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UninstallSoftwareBundle not implemented")
+func (UnimplementedSoftwareBundleServer) Install(grpc.ClientStreamingServer[InstallRequest, InstallResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method Install not implemented")
+}
+func (UnimplementedSoftwareBundleServer) Deactivate(context.Context, *DeactivateRequest) (*DeactivateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Deactivate not implemented")
+}
+func (UnimplementedSoftwareBundleServer) Remove(context.Context, *RemoveRequest) (*RemoveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
 func (UnimplementedSoftwareBundleServer) testEmbeddedByValue() {}
 
@@ -135,63 +170,88 @@ func RegisterSoftwareBundleServer(s grpc.ServiceRegistrar, srv SoftwareBundleSer
 	s.RegisterService(&SoftwareBundle_ServiceDesc, srv)
 }
 
-func _SoftwareBundle_ListSoftwareBundles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSoftwareBundlesRequest)
+func _SoftwareBundle_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SoftwareBundleServer).ListSoftwareBundles(ctx, in)
+		return srv.(SoftwareBundleServer).List(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SoftwareBundle_ListSoftwareBundles_FullMethodName,
+		FullMethod: SoftwareBundle_List_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoftwareBundleServer).ListSoftwareBundles(ctx, req.(*ListSoftwareBundlesRequest))
+		return srv.(SoftwareBundleServer).List(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SoftwareBundle_FinalizeSoftwareBundles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FinalizeSoftwareBundlesRequest)
+func _SoftwareBundle_Activate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SoftwareBundleServer).FinalizeSoftwareBundles(ctx, in)
+		return srv.(SoftwareBundleServer).Activate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SoftwareBundle_FinalizeSoftwareBundles_FullMethodName,
+		FullMethod: SoftwareBundle_Activate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoftwareBundleServer).FinalizeSoftwareBundles(ctx, req.(*FinalizeSoftwareBundlesRequest))
+		return srv.(SoftwareBundleServer).Activate(ctx, req.(*ActivateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SoftwareBundle_InstallSoftwareBundle_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(SoftwareBundleServer).InstallSoftwareBundle(&grpc.GenericServerStream[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse]{ServerStream: stream})
+func _SoftwareBundle_Transfer_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(SoftwareBundleServer).Transfer(&grpc.GenericServerStream[TransferRequest, TransferResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SoftwareBundle_InstallSoftwareBundleServer = grpc.BidiStreamingServer[InstallSoftwareBundleRequest, InstallSoftwareBundleResponse]
+type SoftwareBundle_TransferServer = grpc.ClientStreamingServer[TransferRequest, TransferResponse]
 
-func _SoftwareBundle_UninstallSoftwareBundle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UninstallSoftwareBundleRequest)
+func _SoftwareBundle_Install_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(SoftwareBundleServer).Install(&grpc.GenericServerStream[InstallRequest, InstallResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SoftwareBundle_InstallServer = grpc.ClientStreamingServer[InstallRequest, InstallResponse]
+
+func _SoftwareBundle_Deactivate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SoftwareBundleServer).UninstallSoftwareBundle(ctx, in)
+		return srv.(SoftwareBundleServer).Deactivate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SoftwareBundle_UninstallSoftwareBundle_FullMethodName,
+		FullMethod: SoftwareBundle_Deactivate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoftwareBundleServer).UninstallSoftwareBundle(ctx, req.(*UninstallSoftwareBundleRequest))
+		return srv.(SoftwareBundleServer).Deactivate(ctx, req.(*DeactivateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SoftwareBundle_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoftwareBundleServer).Remove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SoftwareBundle_Remove_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoftwareBundleServer).Remove(ctx, req.(*RemoveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -204,23 +264,31 @@ var SoftwareBundle_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*SoftwareBundleServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListSoftwareBundles",
-			Handler:    _SoftwareBundle_ListSoftwareBundles_Handler,
+			MethodName: "List",
+			Handler:    _SoftwareBundle_List_Handler,
 		},
 		{
-			MethodName: "FinalizeSoftwareBundles",
-			Handler:    _SoftwareBundle_FinalizeSoftwareBundles_Handler,
+			MethodName: "Activate",
+			Handler:    _SoftwareBundle_Activate_Handler,
 		},
 		{
-			MethodName: "UninstallSoftwareBundle",
-			Handler:    _SoftwareBundle_UninstallSoftwareBundle_Handler,
+			MethodName: "Deactivate",
+			Handler:    _SoftwareBundle_Deactivate_Handler,
+		},
+		{
+			MethodName: "Remove",
+			Handler:    _SoftwareBundle_Remove_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "InstallSoftwareBundle",
-			Handler:       _SoftwareBundle_InstallSoftwareBundle_Handler,
-			ServerStreams: true,
+			StreamName:    "Transfer",
+			Handler:       _SoftwareBundle_Transfer_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Install",
+			Handler:       _SoftwareBundle_Install_Handler,
 			ClientStreams: true,
 		},
 	},
