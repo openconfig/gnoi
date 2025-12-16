@@ -10,31 +10,10 @@ A software bundle may be installed to:
 - add/update some software utility (e.g. perl, ncurses)
 - update some dependency (e.g. updating some python site-package)
 
-#### Comparison with the gNOI OS package:
-The gNOI OS service is responsible for installing/activating/verifying new OS images.   
-By comparison, the software bundle does not constitute a whole new OS image - it is
-purely to extend the functionality provided by the *current* OS image.    
-This SoftwareBundle service was introduced as there are nuances regarding software bundle
-installation which cannot be captured by the OS service.
-
-For example, an operator may want to transfer software bundles to a device ahead of a scheduled maintenance.
-The transfer/installation may take a significant amount of time so it is operationally useful to decouple
-the transfer/installation from the activation of the software bundle (i.e. the FinalizeSoftwareBundles RPC).     
-In addition, software installation may require signature verification,
-dependency checks and boot/system startup changes.
-
-The software bundle service allows for the transfer/installation and activation workflow to be
-spread over multiple RPCs (InstallSoftwareBundle and FinalizeSoftwareBundles), which gives an
-opportunity for a network operator to install multiple extensions in sequence,
-verifying that they all succeed before finalizing and reloading the relevant processes.
-
-Network operators may choose to use a software bundle instead of an OS image if they
-wish to apply a more targeted change to the system's behaviour. E.g they may be able to
-patch a bug or CVE without needing to qualify a new image for their device.
-Additionally, network operators may wish to add features which are not available in any OS image,
-and would always require a software bundle to install.   
-For example, the containerz binary may be packaged as a software bundle:
-https://github.com/openconfig/containerz/tree/4d2da9ba981e73031f49e0d27f5cc4a1755fc66f/packaging
+A software bundle should have a unique name, which RPCs will use to refer to it.    
+If network operators wish to have multiple versions of the same software bundle
+coexisting on the system (and activate only one version at a time), they could
+generate a unique name by appending the version into the name. 
 
 ### Software bundle installation workflow
 
@@ -178,6 +157,34 @@ message SetPackageRequest {
 message SetPackageResponse {
 }
 ```
+
+### Comparisions with other gNOI RPCs
+
+#### Comparison with the gNOI OS package:
+The gNOI OS service is responsible for installing/activating/verifying new OS images.   
+By comparison, the software bundle does not constitute a whole new OS image - it is
+purely to extend the functionality provided by the *current* OS image.    
+This SoftwareBundle service was introduced as there are nuances regarding software bundle
+installation which cannot be captured by the OS service.
+
+For example, an operator may want to transfer software bundles to a device ahead of a scheduled maintenance.
+The transfer/installation may take a significant amount of time so it is operationally useful to decouple
+the transfer/installation from the activation of the software bundle (i.e. the Activate RPC).     
+In addition, software installation may require signature verification,
+dependency checks and boot/system startup changes.
+
+The software bundle service allows for the transfer/installation and activation workflow to be
+spread over multiple RPCs (Install and Activate), which gives an
+opportunity for a network operator to install multiple extensions in sequence,
+verifying that they all succeed before finalizing and reloading the relevant processes.
+
+Network operators may choose to use a software bundle instead of an OS image if they
+wish to apply a more targeted change to the system's behaviour. E.g they may be able to
+patch a bug or CVE without needing to qualify a new image for their device.
+Additionally, network operators may wish to add features which are not available in any OS image,
+and would always require a software bundle to install.   
+For example, the containerz binary may be packaged as a software bundle:
+https://github.com/openconfig/containerz/tree/4d2da9ba981e73031f49e0d27f5cc4a1755fc66f/packaging
 
 #### Comparison with the current version of SetPackage:
 Under `SetPackage`, a "package" is very loosely defined.    
