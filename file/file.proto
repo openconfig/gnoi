@@ -23,8 +23,13 @@ import "github.com/openconfig/gnoi/types/types.proto";
 
 option go_package = "github.com/openconfig/gnoi/file";
 
-option (types.gnoi_version) = "0.1.0";
+option (types.gnoi_version) = "0.1.1";
 
+// Error handling for files must utilize gRPC error codes.  For a file path
+// (directory or file) that does not exist, the "NOT_FOUND" error must be
+// used.  For errors reading or writing a file, the most specific error
+// condition should be used.  Examples include but are not limited to
+// "PERMISSION_DENIED", "RESOURCE_EXHAUSTED" or "ALREADY_EXISTS".
 service File {
   // Get reads and streams the contents of a file from the target.
   // The file is streamed by sequential messages, each containing up to
@@ -36,8 +41,8 @@ service File {
   // TransferToRemote transfers the contents of a file from the target to a
   // specified remote location. The response contains the hash of the data
   // transferred. An error is returned if the file does not exist, the file
-  // transfer fails, or if there was an error reading the file. This is a
-  // blocking call until the file transfer is complete.
+  // transfer fails, or if there was an error reading the file. This is
+  // a blocking call until the file transfer is complete.
   rpc TransferToRemote(TransferToRemoteRequest)
     returns (TransferToRemoteResponse) {}
 
