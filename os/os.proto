@@ -136,6 +136,20 @@ service OS {
   //                  TransferEnd -->
   //                              <-- [Validated|InstallError]
   //
+  // Rather than transferring a file, clients may initiate a remote download
+  // of the OS package if the requested OS package is not present (on either
+  // supervisor).
+  // After the package is downloaded, the target will respond with Validated
+  // (or InstallError if the download failed).
+  // This scenario applies to both single and dual supervisor targets.
+  //
+  //         Client :--------------|--------------> Target
+  //              TransferRequest -->
+  //                              <-- [TransferReady|InstallError]
+  //            remote_download  -->
+  //                               ...
+  //                              <-- [Validated|InstallError]
+  //
   rpc Install(stream InstallRequest) returns (stream InstallResponse);
 
   // Activate sets the requested OS version as the version which is used at the
@@ -161,6 +175,9 @@ message InstallRequest {
     TransferRequest transfer_request = 1;
     bytes transfer_content = 2;
     TransferEnd transfer_end = 3;
+
+    // Details for the device to download the image from a remote location
+    common.RemoteDownload remote_download = 4;
   }
 }
 

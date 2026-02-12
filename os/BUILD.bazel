@@ -30,6 +30,7 @@ proto_library(
     deps = [
         "//bootconfig:bootconfig_proto",
         "//types:types_proto",
+        "//common:common_proto",
     ],
 )
 
@@ -56,6 +57,7 @@ go_proto_library(
     deps = [
         "//bootconfig",
         "//types",
+        "//common",
     ],
 )
 
