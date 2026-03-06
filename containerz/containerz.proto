@@ -537,6 +537,15 @@ message StartContainerRequest {
   //
   // Containers started with the location set to ALL should only have one
   // instance if the device is in single mode.
+  //
+  // Furthermore, location status should be reported via labels associated
+  // with the container. Specificaly, the following labels should be defined:
+  //
+  // "com.google.containerz.location.intented": reports the intended location.
+  // "com.google.containerz.location.actual": reports the actual location.
+  // "com.google.containerz.location.reason": reports the error, if any.
+  //
+  // These must be reported in the ListContainer reponse in the label field.
   Location location = 15;
 
   // Other container properties will be added as it becomes necessary.
