@@ -346,8 +346,10 @@ message ListContainerResponse {
   Status status = 4;
 
   // Metadata associated to this container. This is limited to metadata
-  // about the running container and should in no way change the bahaviour
-  // or the RPC.
+  // about the running container and should in no way change the behaviour
+  // or the RPC. Labels may contain dynamic information added by the
+  // containerz implementation and therefore this list is not strictly
+  // static.
   map<string, string> labels = 5;
 
   // The computed hash of the image as returned by the container runtime.
@@ -537,6 +539,16 @@ message StartContainerRequest {
   //
   // Containers started with the location set to ALL should only have one
   // instance if the device is in single mode.
+  //
+  // Furthermore, location status should be reported via labels associated
+  // with the container. Specificaly, the following labels should be defined:
+  //
+  // "net.openconfig.containerz.location.intended": reports the intended
+  //   location.
+  // "net.openconfig.containerz.location.actual": reports the actual location.
+  // "net.openconfig.containerz.location.reason": reports the error, if any.
+  //
+  // These must be reported in the ListContainer reponse in the label field.
   Location location = 15;
 
   // Other container properties will be added as it becomes necessary.
