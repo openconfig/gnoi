@@ -39,19 +39,14 @@ service BootConfig {
   rpc SetBootConfig(SetBootConfigRequest) returns (SetBootConfigResponse) {}
 
   // SetBootConfigVerified replaces the existing boot config with the
-  // newly provide one, and permits validation (SetBootConfigVerify) of
-  // this change with automatic rollback on failure, or if the
-  // SetBootConfigFinalize rpc is not sent.
+  // newly provide one, and permits validation (outside of this RPC set)
+  // of this change with explicit rollback on failure of validation, or if the
+  // SetBootConfigFinalize RPC is not sent.
   //
-  // A rollack request may also be sent in the case that the management system
-  // believes the configuration is unsuitable with SetBootConfigRollback.
-  //
-  // The expected use-case for this set of RPCs is to enable an atomic
-  // config update process with clear rollback/rescue semantics.
+  // The expected use-case for this set of RPCs is to enable a config update
+  // process with clear rollback/rescue semantics.
   rpc SetBootConfigVerified(SetBootConfigVerifiedRequest) returns
     (SetBootConfigVerifiedResponse) {}
-  rpc SetBootConfigVerify(SetBootConfigVerifyRequest) returns
-    (SetBootConfigVerifyResponse) {}
   rpc SetBootConfigRollback(SetBootConfigRollbackRequest) returns
     (SetBootConfigRollbackResponse) {}
   rpc SetBootConfigFinalize(SetBootConfigFinalizeRequest) returns
@@ -95,12 +90,6 @@ message SetBootConfigVerifiedRequest {
 }
 
 message SetBootConfigVerifiedResponse {
-}
-
-message SetBootConfigVerifyRequest {
-}
-
-message SetBootConfigVerifyResponse{
 }
 
 // Rollback the pending or latest configuration change, provide

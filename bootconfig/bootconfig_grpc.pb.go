@@ -22,7 +22,6 @@ const (
 	BootConfig_GetBootConfig_FullMethodName         = "/gnoi.bootconfig.BootConfig/GetBootConfig"
 	BootConfig_SetBootConfig_FullMethodName         = "/gnoi.bootconfig.BootConfig/SetBootConfig"
 	BootConfig_SetBootConfigVerified_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigVerified"
-	BootConfig_SetBootConfigVerify_FullMethodName   = "/gnoi.bootconfig.BootConfig/SetBootConfigVerify"
 	BootConfig_SetBootConfigRollback_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigRollback"
 	BootConfig_SetBootConfigFinalize_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigFinalize"
 )
@@ -34,7 +33,6 @@ type BootConfigClient interface {
 	GetBootConfig(ctx context.Context, in *GetBootConfigRequest, opts ...grpc.CallOption) (*GetBootConfigResponse, error)
 	SetBootConfig(ctx context.Context, in *SetBootConfigRequest, opts ...grpc.CallOption) (*SetBootConfigResponse, error)
 	SetBootConfigVerified(ctx context.Context, in *SetBootConfigVerifiedRequest, opts ...grpc.CallOption) (*SetBootConfigVerifiedResponse, error)
-	SetBootConfigVerify(ctx context.Context, in *SetBootConfigVerifyRequest, opts ...grpc.CallOption) (*SetBootConfigVerifyResponse, error)
 	SetBootConfigRollback(ctx context.Context, in *SetBootConfigRollbackRequest, opts ...grpc.CallOption) (*SetBootConfigRollbackResponse, error)
 	SetBootConfigFinalize(ctx context.Context, in *SetBootConfigFinalizeRequest, opts ...grpc.CallOption) (*SetBootConfigFinalizeResponse, error)
 }
@@ -77,16 +75,6 @@ func (c *bootConfigClient) SetBootConfigVerified(ctx context.Context, in *SetBoo
 	return out, nil
 }
 
-func (c *bootConfigClient) SetBootConfigVerify(ctx context.Context, in *SetBootConfigVerifyRequest, opts ...grpc.CallOption) (*SetBootConfigVerifyResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SetBootConfigVerifyResponse)
-	err := c.cc.Invoke(ctx, BootConfig_SetBootConfigVerify_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *bootConfigClient) SetBootConfigRollback(ctx context.Context, in *SetBootConfigRollbackRequest, opts ...grpc.CallOption) (*SetBootConfigRollbackResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SetBootConfigRollbackResponse)
@@ -114,7 +102,6 @@ type BootConfigServer interface {
 	GetBootConfig(context.Context, *GetBootConfigRequest) (*GetBootConfigResponse, error)
 	SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error)
 	SetBootConfigVerified(context.Context, *SetBootConfigVerifiedRequest) (*SetBootConfigVerifiedResponse, error)
-	SetBootConfigVerify(context.Context, *SetBootConfigVerifyRequest) (*SetBootConfigVerifyResponse, error)
 	SetBootConfigRollback(context.Context, *SetBootConfigRollbackRequest) (*SetBootConfigRollbackResponse, error)
 	SetBootConfigFinalize(context.Context, *SetBootConfigFinalizeRequest) (*SetBootConfigFinalizeResponse, error)
 }
@@ -134,9 +121,6 @@ func (UnimplementedBootConfigServer) SetBootConfig(context.Context, *SetBootConf
 }
 func (UnimplementedBootConfigServer) SetBootConfigVerified(context.Context, *SetBootConfigVerifiedRequest) (*SetBootConfigVerifiedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfigVerified not implemented")
-}
-func (UnimplementedBootConfigServer) SetBootConfigVerify(context.Context, *SetBootConfigVerifyRequest) (*SetBootConfigVerifyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfigVerify not implemented")
 }
 func (UnimplementedBootConfigServer) SetBootConfigRollback(context.Context, *SetBootConfigRollbackRequest) (*SetBootConfigRollbackResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfigRollback not implemented")
@@ -218,24 +202,6 @@ func _BootConfig_SetBootConfigVerified_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BootConfig_SetBootConfigVerify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetBootConfigVerifyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BootConfigServer).SetBootConfigVerify(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: BootConfig_SetBootConfigVerify_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootConfigServer).SetBootConfigVerify(ctx, req.(*SetBootConfigVerifyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _BootConfig_SetBootConfigRollback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetBootConfigRollbackRequest)
 	if err := dec(in); err != nil {
@@ -290,10 +256,6 @@ var BootConfig_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetBootConfigVerified",
 			Handler:    _BootConfig_SetBootConfigVerified_Handler,
-		},
-		{
-			MethodName: "SetBootConfigVerify",
-			Handler:    _BootConfig_SetBootConfigVerify_Handler,
 		},
 		{
 			MethodName: "SetBootConfigRollback",
