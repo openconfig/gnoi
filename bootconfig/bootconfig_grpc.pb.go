@@ -22,8 +22,6 @@ const (
 	BootConfig_GetBootConfig_FullMethodName         = "/gnoi.bootconfig.BootConfig/GetBootConfig"
 	BootConfig_SetBootConfig_FullMethodName         = "/gnoi.bootconfig.BootConfig/SetBootConfig"
 	BootConfig_SetBootConfigVerified_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigVerified"
-	BootConfig_SetBootConfigRollback_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigRollback"
-	BootConfig_SetBootConfigFinalize_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigFinalize"
 )
 
 // BootConfigClient is the client API for BootConfig service.
@@ -32,9 +30,7 @@ const (
 type BootConfigClient interface {
 	GetBootConfig(ctx context.Context, in *GetBootConfigRequest, opts ...grpc.CallOption) (*GetBootConfigResponse, error)
 	SetBootConfig(ctx context.Context, in *SetBootConfigRequest, opts ...grpc.CallOption) (*SetBootConfigResponse, error)
-	SetBootConfigVerified(ctx context.Context, in *SetBootConfigVerifiedRequest, opts ...grpc.CallOption) (*SetBootConfigVerifiedResponse, error)
-	SetBootConfigRollback(ctx context.Context, in *SetBootConfigRollbackRequest, opts ...grpc.CallOption) (*SetBootConfigRollbackResponse, error)
-	SetBootConfigFinalize(ctx context.Context, in *SetBootConfigFinalizeRequest, opts ...grpc.CallOption) (*SetBootConfigFinalizeResponse, error)
+	SetBootConfigVerified(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse], error)
 }
 
 type bootConfigClient struct {
@@ -65,35 +61,18 @@ func (c *bootConfigClient) SetBootConfig(ctx context.Context, in *SetBootConfigR
 	return out, nil
 }
 
-func (c *bootConfigClient) SetBootConfigVerified(ctx context.Context, in *SetBootConfigVerifiedRequest, opts ...grpc.CallOption) (*SetBootConfigVerifiedResponse, error) {
+func (c *bootConfigClient) SetBootConfigVerified(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SetBootConfigVerifiedResponse)
-	err := c.cc.Invoke(ctx, BootConfig_SetBootConfigVerified_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &BootConfig_ServiceDesc.Streams[0], BootConfig_SetBootConfigVerified_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]{ClientStream: stream}
+	return x, nil
 }
 
-func (c *bootConfigClient) SetBootConfigRollback(ctx context.Context, in *SetBootConfigRollbackRequest, opts ...grpc.CallOption) (*SetBootConfigRollbackResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SetBootConfigRollbackResponse)
-	err := c.cc.Invoke(ctx, BootConfig_SetBootConfigRollback_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *bootConfigClient) SetBootConfigFinalize(ctx context.Context, in *SetBootConfigFinalizeRequest, opts ...grpc.CallOption) (*SetBootConfigFinalizeResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SetBootConfigFinalizeResponse)
-	err := c.cc.Invoke(ctx, BootConfig_SetBootConfigFinalize_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type BootConfig_SetBootConfigVerifiedClient = grpc.BidiStreamingClient[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]
 
 // BootConfigServer is the server API for BootConfig service.
 // All implementations should embed UnimplementedBootConfigServer
@@ -101,9 +80,7 @@ func (c *bootConfigClient) SetBootConfigFinalize(ctx context.Context, in *SetBoo
 type BootConfigServer interface {
 	GetBootConfig(context.Context, *GetBootConfigRequest) (*GetBootConfigResponse, error)
 	SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error)
-	SetBootConfigVerified(context.Context, *SetBootConfigVerifiedRequest) (*SetBootConfigVerifiedResponse, error)
-	SetBootConfigRollback(context.Context, *SetBootConfigRollbackRequest) (*SetBootConfigRollbackResponse, error)
-	SetBootConfigFinalize(context.Context, *SetBootConfigFinalizeRequest) (*SetBootConfigFinalizeResponse, error)
+	SetBootConfigVerified(grpc.BidiStreamingServer[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]) error
 }
 
 // UnimplementedBootConfigServer should be embedded to have
@@ -119,14 +96,8 @@ func (UnimplementedBootConfigServer) GetBootConfig(context.Context, *GetBootConf
 func (UnimplementedBootConfigServer) SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfig not implemented")
 }
-func (UnimplementedBootConfigServer) SetBootConfigVerified(context.Context, *SetBootConfigVerifiedRequest) (*SetBootConfigVerifiedResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfigVerified not implemented")
-}
-func (UnimplementedBootConfigServer) SetBootConfigRollback(context.Context, *SetBootConfigRollbackRequest) (*SetBootConfigRollbackResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfigRollback not implemented")
-}
-func (UnimplementedBootConfigServer) SetBootConfigFinalize(context.Context, *SetBootConfigFinalizeRequest) (*SetBootConfigFinalizeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfigFinalize not implemented")
+func (UnimplementedBootConfigServer) SetBootConfigVerified(grpc.BidiStreamingServer[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method SetBootConfigVerified not implemented")
 }
 func (UnimplementedBootConfigServer) testEmbeddedByValue() {}
 
@@ -184,59 +155,12 @@ func _BootConfig_SetBootConfig_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BootConfig_SetBootConfigVerified_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetBootConfigVerifiedRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BootConfigServer).SetBootConfigVerified(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: BootConfig_SetBootConfigVerified_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootConfigServer).SetBootConfigVerified(ctx, req.(*SetBootConfigVerifiedRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+func _BootConfig_SetBootConfigVerified_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BootConfigServer).SetBootConfigVerified(&grpc.GenericServerStream[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]{ServerStream: stream})
 }
 
-func _BootConfig_SetBootConfigRollback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetBootConfigRollbackRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BootConfigServer).SetBootConfigRollback(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: BootConfig_SetBootConfigRollback_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootConfigServer).SetBootConfigRollback(ctx, req.(*SetBootConfigRollbackRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _BootConfig_SetBootConfigFinalize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetBootConfigFinalizeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BootConfigServer).SetBootConfigFinalize(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: BootConfig_SetBootConfigFinalize_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BootConfigServer).SetBootConfigFinalize(ctx, req.(*SetBootConfigFinalizeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type BootConfig_SetBootConfigVerifiedServer = grpc.BidiStreamingServer[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]
 
 // BootConfig_ServiceDesc is the grpc.ServiceDesc for BootConfig service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -253,19 +177,14 @@ var BootConfig_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SetBootConfig",
 			Handler:    _BootConfig_SetBootConfig_Handler,
 		},
+	},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "SetBootConfigVerified",
-			Handler:    _BootConfig_SetBootConfigVerified_Handler,
-		},
-		{
-			MethodName: "SetBootConfigRollback",
-			Handler:    _BootConfig_SetBootConfigRollback_Handler,
-		},
-		{
-			MethodName: "SetBootConfigFinalize",
-			Handler:    _BootConfig_SetBootConfigFinalize_Handler,
+			StreamName:    "SetBootConfigVerified",
+			Handler:       _BootConfig_SetBootConfigVerified_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "github.com/openconfig/gnoi/bootconfig/bootconfig.proto",
 }

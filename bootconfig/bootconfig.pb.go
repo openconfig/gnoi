@@ -229,14 +229,13 @@ func (*SetBootConfigResponse) Descriptor() ([]byte, []int) {
 }
 
 type SetBootConfigVerifiedRequest struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	BootConfig  *bootz.BootConfig      `protobuf:"bytes,1,opt,name=boot_config,json=bootConfig,proto3" json:"boot_config,omitempty"`
-	Credentials *bootz.Credentials     `protobuf:"bytes,2,opt,name=credentials,proto3" json:"credentials,omitempty"`
-	Pathz       *pathz.UploadRequest   `protobuf:"bytes,3,opt,name=pathz,proto3" json:"pathz,omitempty"`
-	Authz       *authz.UploadRequest   `protobuf:"bytes,4,opt,name=authz,proto3" json:"authz,omitempty"`
-	// Deprecated: Marked as deprecated in github.com/openconfig/gnoi/bootconfig/bootconfig.proto.
-	Certificates  *certz.UploadRequest `protobuf:"bytes,5,opt,name=certificates,proto3" json:"certificates,omitempty"`
-	Certz         *bootz.CertzProfiles `protobuf:"bytes,6,opt,name=certz,proto3" json:"certz,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to SetRequest:
+	//
+	//	*SetBootConfigVerifiedRequest_Set
+	//	*SetBootConfigVerifiedRequest_Rollback
+	//	*SetBootConfigVerifiedRequest_Finalize
+	SetRequest    isSetBootConfigVerifiedRequest_SetRequest `protobuf_oneof:"set_request"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -271,48 +270,61 @@ func (*SetBootConfigVerifiedRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *SetBootConfigVerifiedRequest) GetBootConfig() *bootz.BootConfig {
+func (x *SetBootConfigVerifiedRequest) GetSetRequest() isSetBootConfigVerifiedRequest_SetRequest {
 	if x != nil {
-		return x.BootConfig
+		return x.SetRequest
 	}
 	return nil
 }
 
-func (x *SetBootConfigVerifiedRequest) GetCredentials() *bootz.Credentials {
+func (x *SetBootConfigVerifiedRequest) GetSet() *SetBootConfigRequest {
 	if x != nil {
-		return x.Credentials
+		if x, ok := x.SetRequest.(*SetBootConfigVerifiedRequest_Set); ok {
+			return x.Set
+		}
 	}
 	return nil
 }
 
-func (x *SetBootConfigVerifiedRequest) GetPathz() *pathz.UploadRequest {
+func (x *SetBootConfigVerifiedRequest) GetRollback() *RollbackRequest {
 	if x != nil {
-		return x.Pathz
+		if x, ok := x.SetRequest.(*SetBootConfigVerifiedRequest_Rollback); ok {
+			return x.Rollback
+		}
 	}
 	return nil
 }
 
-func (x *SetBootConfigVerifiedRequest) GetAuthz() *authz.UploadRequest {
+func (x *SetBootConfigVerifiedRequest) GetFinalize() *FinalizeRequest {
 	if x != nil {
-		return x.Authz
+		if x, ok := x.SetRequest.(*SetBootConfigVerifiedRequest_Finalize); ok {
+			return x.Finalize
+		}
 	}
 	return nil
 }
 
-// Deprecated: Marked as deprecated in github.com/openconfig/gnoi/bootconfig/bootconfig.proto.
-func (x *SetBootConfigVerifiedRequest) GetCertificates() *certz.UploadRequest {
-	if x != nil {
-		return x.Certificates
-	}
-	return nil
+type isSetBootConfigVerifiedRequest_SetRequest interface {
+	isSetBootConfigVerifiedRequest_SetRequest()
 }
 
-func (x *SetBootConfigVerifiedRequest) GetCertz() *bootz.CertzProfiles {
-	if x != nil {
-		return x.Certz
-	}
-	return nil
+type SetBootConfigVerifiedRequest_Set struct {
+	Set *SetBootConfigRequest `protobuf:"bytes,1,opt,name=set,proto3,oneof"`
 }
+
+type SetBootConfigVerifiedRequest_Rollback struct {
+	Rollback *RollbackRequest `protobuf:"bytes,2,opt,name=rollback,proto3,oneof"`
+}
+
+type SetBootConfigVerifiedRequest_Finalize struct {
+	Finalize *FinalizeRequest `protobuf:"bytes,3,opt,name=finalize,proto3,oneof"`
+}
+
+func (*SetBootConfigVerifiedRequest_Set) isSetBootConfigVerifiedRequest_SetRequest() {}
+
+func (*SetBootConfigVerifiedRequest_Rollback) isSetBootConfigVerifiedRequest_SetRequest() {}
+
+func (*SetBootConfigVerifiedRequest_Finalize) isSetBootConfigVerifiedRequest_SetRequest() {}
 
 type SetBootConfigVerifiedResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -350,27 +362,27 @@ func (*SetBootConfigVerifiedResponse) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP(), []int{5}
 }
 
-type SetBootConfigRollbackRequest struct {
+type RollbackRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Reason        string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetBootConfigRollbackRequest) Reset() {
-	*x = SetBootConfigRollbackRequest{}
+func (x *RollbackRequest) Reset() {
+	*x = RollbackRequest{}
 	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SetBootConfigRollbackRequest) String() string {
+func (x *RollbackRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SetBootConfigRollbackRequest) ProtoMessage() {}
+func (*RollbackRequest) ProtoMessage() {}
 
-func (x *SetBootConfigRollbackRequest) ProtoReflect() protoreflect.Message {
+func (x *RollbackRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -382,38 +394,38 @@ func (x *SetBootConfigRollbackRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SetBootConfigRollbackRequest.ProtoReflect.Descriptor instead.
-func (*SetBootConfigRollbackRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RollbackRequest.ProtoReflect.Descriptor instead.
+func (*RollbackRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *SetBootConfigRollbackRequest) GetReason() string {
+func (x *RollbackRequest) GetReason() string {
 	if x != nil {
 		return x.Reason
 	}
 	return ""
 }
 
-type SetBootConfigRollbackResponse struct {
+type FinalizeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetBootConfigRollbackResponse) Reset() {
-	*x = SetBootConfigRollbackResponse{}
+func (x *FinalizeRequest) Reset() {
+	*x = FinalizeRequest{}
 	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SetBootConfigRollbackResponse) String() string {
+func (x *FinalizeRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SetBootConfigRollbackResponse) ProtoMessage() {}
+func (*FinalizeRequest) ProtoMessage() {}
 
-func (x *SetBootConfigRollbackResponse) ProtoReflect() protoreflect.Message {
+func (x *FinalizeRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -425,81 +437,9 @@ func (x *SetBootConfigRollbackResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SetBootConfigRollbackResponse.ProtoReflect.Descriptor instead.
-func (*SetBootConfigRollbackResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use FinalizeRequest.ProtoReflect.Descriptor instead.
+func (*FinalizeRequest) Descriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP(), []int{7}
-}
-
-type SetBootConfigFinalizeRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SetBootConfigFinalizeRequest) Reset() {
-	*x = SetBootConfigFinalizeRequest{}
-	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SetBootConfigFinalizeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SetBootConfigFinalizeRequest) ProtoMessage() {}
-
-func (x *SetBootConfigFinalizeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SetBootConfigFinalizeRequest.ProtoReflect.Descriptor instead.
-func (*SetBootConfigFinalizeRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP(), []int{8}
-}
-
-type SetBootConfigFinalizeResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SetBootConfigFinalizeResponse) Reset() {
-	*x = SetBootConfigFinalizeResponse{}
-	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SetBootConfigFinalizeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SetBootConfigFinalizeResponse) ProtoMessage() {}
-
-func (x *SetBootConfigFinalizeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SetBootConfigFinalizeResponse.ProtoReflect.Descriptor instead.
-func (*SetBootConfigFinalizeResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP(), []int{9}
 }
 
 var File_github_com_openconfig_gnoi_bootconfig_bootconfig_proto protoreflect.FileDescriptor
@@ -519,28 +459,21 @@ const file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDesc = "" +
 	"\x05authz\x18\x04 \x01(\v2\x1c.gnsi.authz.v1.UploadRequestR\x05authz\x12D\n" +
 	"\fcertificates\x18\x05 \x01(\v2\x1c.gnsi.certz.v1.UploadRequestB\x02\x18\x01R\fcertificates\x12*\n" +
 	"\x05certz\x18\x06 \x01(\v2\x14.bootz.CertzProfilesR\x05certz\"\x17\n" +
-	"\x15SetBootConfigResponse\"\xe2\x02\n" +
-	"\x1cSetBootConfigVerifiedRequest\x122\n" +
-	"\vboot_config\x18\x01 \x01(\v2\x11.bootz.BootConfigR\n" +
-	"bootConfig\x124\n" +
-	"\vcredentials\x18\x02 \x01(\v2\x12.bootz.CredentialsR\vcredentials\x122\n" +
-	"\x05pathz\x18\x03 \x01(\v2\x1c.gnsi.pathz.v1.UploadRequestR\x05pathz\x122\n" +
-	"\x05authz\x18\x04 \x01(\v2\x1c.gnsi.authz.v1.UploadRequestR\x05authz\x12D\n" +
-	"\fcertificates\x18\x05 \x01(\v2\x1c.gnsi.certz.v1.UploadRequestB\x02\x18\x01R\fcertificates\x12*\n" +
-	"\x05certz\x18\x06 \x01(\v2\x14.bootz.CertzProfilesR\x05certz\"\x1f\n" +
-	"\x1dSetBootConfigVerifiedResponse\"6\n" +
-	"\x1cSetBootConfigRollbackRequest\x12\x16\n" +
-	"\x06reason\x18\x01 \x01(\tR\x06reason\"\x1f\n" +
-	"\x1dSetBootConfigRollbackResponse\"\x1e\n" +
-	"\x1cSetBootConfigFinalizeRequest\"\x1f\n" +
-	"\x1dSetBootConfigFinalizeResponse2\xbe\x04\n" +
+	"\x15SetBootConfigResponse\"\xe8\x01\n" +
+	"\x1cSetBootConfigVerifiedRequest\x129\n" +
+	"\x03set\x18\x01 \x01(\v2%.gnoi.bootconfig.SetBootConfigRequestH\x00R\x03set\x12>\n" +
+	"\brollback\x18\x02 \x01(\v2 .gnoi.bootconfig.RollbackRequestH\x00R\brollback\x12>\n" +
+	"\bfinalize\x18\x03 \x01(\v2 .gnoi.bootconfig.FinalizeRequestH\x00R\bfinalizeB\r\n" +
+	"\vset_request\"\x1f\n" +
+	"\x1dSetBootConfigVerifiedResponse\")\n" +
+	"\x0fRollbackRequest\x12\x16\n" +
+	"\x06reason\x18\x01 \x01(\tR\x06reason\"\x11\n" +
+	"\x0fFinalizeRequest2\xce\x02\n" +
 	"\n" +
 	"BootConfig\x12`\n" +
 	"\rGetBootConfig\x12%.gnoi.bootconfig.GetBootConfigRequest\x1a&.gnoi.bootconfig.GetBootConfigResponse\"\x00\x12`\n" +
-	"\rSetBootConfig\x12%.gnoi.bootconfig.SetBootConfigRequest\x1a&.gnoi.bootconfig.SetBootConfigResponse\"\x00\x12x\n" +
-	"\x15SetBootConfigVerified\x12-.gnoi.bootconfig.SetBootConfigVerifiedRequest\x1a..gnoi.bootconfig.SetBootConfigVerifiedResponse\"\x00\x12x\n" +
-	"\x15SetBootConfigRollback\x12-.gnoi.bootconfig.SetBootConfigRollbackRequest\x1a..gnoi.bootconfig.SetBootConfigRollbackResponse\"\x00\x12x\n" +
-	"\x15SetBootConfigFinalize\x12-.gnoi.bootconfig.SetBootConfigFinalizeRequest\x1a..gnoi.bootconfig.SetBootConfigFinalizeResponse\"\x00B/\xd2>\x050.1.0Z%github.com/openconfig/gnoi/bootconfigb\x06proto3"
+	"\rSetBootConfig\x12%.gnoi.bootconfig.SetBootConfigRequest\x1a&.gnoi.bootconfig.SetBootConfigResponse\"\x00\x12|\n" +
+	"\x15SetBootConfigVerified\x12-.gnoi.bootconfig.SetBootConfigVerifiedRequest\x1a..gnoi.bootconfig.SetBootConfigVerifiedResponse\"\x00(\x010\x01B/\xd2>\x050.1.0Z%github.com/openconfig/gnoi/bootconfigb\x06proto3"
 
 var (
 	file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescOnce sync.Once
@@ -554,7 +487,7 @@ func file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescGZIP() [
 	return file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDescData
 }
 
-var file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_goTypes = []any{
 	(*GetBootConfigRequest)(nil),          // 0: gnoi.bootconfig.GetBootConfigRequest
 	(*GetBootConfigResponse)(nil),         // 1: gnoi.bootconfig.GetBootConfigResponse
@@ -562,46 +495,37 @@ var file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_goTypes = []any{
 	(*SetBootConfigResponse)(nil),         // 3: gnoi.bootconfig.SetBootConfigResponse
 	(*SetBootConfigVerifiedRequest)(nil),  // 4: gnoi.bootconfig.SetBootConfigVerifiedRequest
 	(*SetBootConfigVerifiedResponse)(nil), // 5: gnoi.bootconfig.SetBootConfigVerifiedResponse
-	(*SetBootConfigRollbackRequest)(nil),  // 6: gnoi.bootconfig.SetBootConfigRollbackRequest
-	(*SetBootConfigRollbackResponse)(nil), // 7: gnoi.bootconfig.SetBootConfigRollbackResponse
-	(*SetBootConfigFinalizeRequest)(nil),  // 8: gnoi.bootconfig.SetBootConfigFinalizeRequest
-	(*SetBootConfigFinalizeResponse)(nil), // 9: gnoi.bootconfig.SetBootConfigFinalizeResponse
-	(*bootz.BootConfig)(nil),              // 10: bootz.BootConfig
-	(*bootz.Credentials)(nil),             // 11: bootz.Credentials
-	(*pathz.UploadRequest)(nil),           // 12: gnsi.pathz.v1.UploadRequest
-	(*authz.UploadRequest)(nil),           // 13: gnsi.authz.v1.UploadRequest
-	(*certz.UploadRequest)(nil),           // 14: gnsi.certz.v1.UploadRequest
-	(*bootz.CertzProfiles)(nil),           // 15: bootz.CertzProfiles
+	(*RollbackRequest)(nil),               // 6: gnoi.bootconfig.RollbackRequest
+	(*FinalizeRequest)(nil),               // 7: gnoi.bootconfig.FinalizeRequest
+	(*bootz.BootConfig)(nil),              // 8: bootz.BootConfig
+	(*bootz.Credentials)(nil),             // 9: bootz.Credentials
+	(*pathz.UploadRequest)(nil),           // 10: gnsi.pathz.v1.UploadRequest
+	(*authz.UploadRequest)(nil),           // 11: gnsi.authz.v1.UploadRequest
+	(*certz.UploadRequest)(nil),           // 12: gnsi.certz.v1.UploadRequest
+	(*bootz.CertzProfiles)(nil),           // 13: bootz.CertzProfiles
 }
 var file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_depIdxs = []int32{
-	10, // 0: gnoi.bootconfig.GetBootConfigResponse.boot_config:type_name -> bootz.BootConfig
-	10, // 1: gnoi.bootconfig.SetBootConfigRequest.boot_config:type_name -> bootz.BootConfig
-	11, // 2: gnoi.bootconfig.SetBootConfigRequest.credentials:type_name -> bootz.Credentials
-	12, // 3: gnoi.bootconfig.SetBootConfigRequest.pathz:type_name -> gnsi.pathz.v1.UploadRequest
-	13, // 4: gnoi.bootconfig.SetBootConfigRequest.authz:type_name -> gnsi.authz.v1.UploadRequest
-	14, // 5: gnoi.bootconfig.SetBootConfigRequest.certificates:type_name -> gnsi.certz.v1.UploadRequest
-	15, // 6: gnoi.bootconfig.SetBootConfigRequest.certz:type_name -> bootz.CertzProfiles
-	10, // 7: gnoi.bootconfig.SetBootConfigVerifiedRequest.boot_config:type_name -> bootz.BootConfig
-	11, // 8: gnoi.bootconfig.SetBootConfigVerifiedRequest.credentials:type_name -> bootz.Credentials
-	12, // 9: gnoi.bootconfig.SetBootConfigVerifiedRequest.pathz:type_name -> gnsi.pathz.v1.UploadRequest
-	13, // 10: gnoi.bootconfig.SetBootConfigVerifiedRequest.authz:type_name -> gnsi.authz.v1.UploadRequest
-	14, // 11: gnoi.bootconfig.SetBootConfigVerifiedRequest.certificates:type_name -> gnsi.certz.v1.UploadRequest
-	15, // 12: gnoi.bootconfig.SetBootConfigVerifiedRequest.certz:type_name -> bootz.CertzProfiles
-	0,  // 13: gnoi.bootconfig.BootConfig.GetBootConfig:input_type -> gnoi.bootconfig.GetBootConfigRequest
-	2,  // 14: gnoi.bootconfig.BootConfig.SetBootConfig:input_type -> gnoi.bootconfig.SetBootConfigRequest
-	4,  // 15: gnoi.bootconfig.BootConfig.SetBootConfigVerified:input_type -> gnoi.bootconfig.SetBootConfigVerifiedRequest
-	6,  // 16: gnoi.bootconfig.BootConfig.SetBootConfigRollback:input_type -> gnoi.bootconfig.SetBootConfigRollbackRequest
-	8,  // 17: gnoi.bootconfig.BootConfig.SetBootConfigFinalize:input_type -> gnoi.bootconfig.SetBootConfigFinalizeRequest
-	1,  // 18: gnoi.bootconfig.BootConfig.GetBootConfig:output_type -> gnoi.bootconfig.GetBootConfigResponse
-	3,  // 19: gnoi.bootconfig.BootConfig.SetBootConfig:output_type -> gnoi.bootconfig.SetBootConfigResponse
-	5,  // 20: gnoi.bootconfig.BootConfig.SetBootConfigVerified:output_type -> gnoi.bootconfig.SetBootConfigVerifiedResponse
-	7,  // 21: gnoi.bootconfig.BootConfig.SetBootConfigRollback:output_type -> gnoi.bootconfig.SetBootConfigRollbackResponse
-	9,  // 22: gnoi.bootconfig.BootConfig.SetBootConfigFinalize:output_type -> gnoi.bootconfig.SetBootConfigFinalizeResponse
-	18, // [18:23] is the sub-list for method output_type
-	13, // [13:18] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	8,  // 0: gnoi.bootconfig.GetBootConfigResponse.boot_config:type_name -> bootz.BootConfig
+	8,  // 1: gnoi.bootconfig.SetBootConfigRequest.boot_config:type_name -> bootz.BootConfig
+	9,  // 2: gnoi.bootconfig.SetBootConfigRequest.credentials:type_name -> bootz.Credentials
+	10, // 3: gnoi.bootconfig.SetBootConfigRequest.pathz:type_name -> gnsi.pathz.v1.UploadRequest
+	11, // 4: gnoi.bootconfig.SetBootConfigRequest.authz:type_name -> gnsi.authz.v1.UploadRequest
+	12, // 5: gnoi.bootconfig.SetBootConfigRequest.certificates:type_name -> gnsi.certz.v1.UploadRequest
+	13, // 6: gnoi.bootconfig.SetBootConfigRequest.certz:type_name -> bootz.CertzProfiles
+	2,  // 7: gnoi.bootconfig.SetBootConfigVerifiedRequest.set:type_name -> gnoi.bootconfig.SetBootConfigRequest
+	6,  // 8: gnoi.bootconfig.SetBootConfigVerifiedRequest.rollback:type_name -> gnoi.bootconfig.RollbackRequest
+	7,  // 9: gnoi.bootconfig.SetBootConfigVerifiedRequest.finalize:type_name -> gnoi.bootconfig.FinalizeRequest
+	0,  // 10: gnoi.bootconfig.BootConfig.GetBootConfig:input_type -> gnoi.bootconfig.GetBootConfigRequest
+	2,  // 11: gnoi.bootconfig.BootConfig.SetBootConfig:input_type -> gnoi.bootconfig.SetBootConfigRequest
+	4,  // 12: gnoi.bootconfig.BootConfig.SetBootConfigVerified:input_type -> gnoi.bootconfig.SetBootConfigVerifiedRequest
+	1,  // 13: gnoi.bootconfig.BootConfig.GetBootConfig:output_type -> gnoi.bootconfig.GetBootConfigResponse
+	3,  // 14: gnoi.bootconfig.BootConfig.SetBootConfig:output_type -> gnoi.bootconfig.SetBootConfigResponse
+	5,  // 15: gnoi.bootconfig.BootConfig.SetBootConfigVerified:output_type -> gnoi.bootconfig.SetBootConfigVerifiedResponse
+	13, // [13:16] is the sub-list for method output_type
+	10, // [10:13] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_init() }
@@ -609,13 +533,18 @@ func file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_init() {
 	if File_github_com_openconfig_gnoi_bootconfig_bootconfig_proto != nil {
 		return
 	}
+	file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_msgTypes[4].OneofWrappers = []any{
+		(*SetBootConfigVerifiedRequest_Set)(nil),
+		(*SetBootConfigVerifiedRequest_Rollback)(nil),
+		(*SetBootConfigVerifiedRequest_Finalize)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDesc), len(file_github_com_openconfig_gnoi_bootconfig_bootconfig_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
