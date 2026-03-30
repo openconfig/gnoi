@@ -37,6 +37,16 @@ service BootConfig {
 
   // SetBootConfig replaces the existing boot config with the new provided one.
   rpc SetBootConfig(SetBootConfigRequest) returns (SetBootConfigResponse) {}
+
+  // SetBootConfigVerified replaces the existing boot config with the
+  // newly provide one, permits validation (outside of this streaming RPC)
+  // of this change with explicit rollback on failure of validation, or if the
+  // FinalizeRequest is not sent.
+  //
+  // The expected use-case for this set of RPCs is to enable a config update
+  // process with clear rollback/rescue semantics.
+  rpc SetBootConfigVerified(stream SetBootConfigVerifiedRequest)
+    returns (stream SetBootConfigVerifiedResponse) {}
 }
 
 // It is safe to assume that gNOI service is hosted on the primary Controller
@@ -64,4 +74,26 @@ message SetBootConfigRequest {
 }
 
 message SetBootConfigResponse {
+}
+
+// Perform a verified SetBootConfig workflow, in a single stream.
+// Send a set request, verify the state of the system outside of
+// this RPC stream, request a rollback if necessary or send a
+// finalize message to commit the configuration.
+message SetBootConfigVerifiedRequest {
+  oneof set_request {
+    SetBootConfigRequest set = 1;
+    RollbackRequest rollback = 2;
+    FinalizeRequest finalize = 3;
+  }
+}
+
+message SetBootConfigVerifiedResponse {
+}
+
+message RollbackRequest {
+  string reason = 1;
+}
+
+message FinalizeRequest {
 }

@@ -725,7 +725,7 @@ const file_github_com_openconfig_gnoi_file_file_proto_rawDesc = "" +
 	"\x10TransferToRemote\x12\".gnoi.file.TransferToRemoteRequest\x1a#.gnoi.file.TransferToRemoteResponse\"\x00\x128\n" +
 	"\x03Put\x12\x15.gnoi.file.PutRequest\x1a\x16.gnoi.file.PutResponse\"\x00(\x01\x129\n" +
 	"\x04Stat\x12\x16.gnoi.file.StatRequest\x1a\x17.gnoi.file.StatResponse\"\x00\x12?\n" +
-	"\x06Remove\x12\x18.gnoi.file.RemoveRequest\x1a\x19.gnoi.file.RemoveResponse\"\x00B)\xd2>\x050.1.0Z\x1fgithub.com/openconfig/gnoi/fileb\x06proto3"
+	"\x06Remove\x12\x18.gnoi.file.RemoveRequest\x1a\x19.gnoi.file.RemoveResponse\"\x00B)\xd2>\x050.1.1Z\x1fgithub.com/openconfig/gnoi/fileb\x06proto3"
 
 var (
 	file_github_com_openconfig_gnoi_file_file_proto_rawDescOnce sync.Once

@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BootConfig_GetBootConfig_FullMethodName = "/gnoi.bootconfig.BootConfig/GetBootConfig"
-	BootConfig_SetBootConfig_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfig"
+	BootConfig_GetBootConfig_FullMethodName         = "/gnoi.bootconfig.BootConfig/GetBootConfig"
+	BootConfig_SetBootConfig_FullMethodName         = "/gnoi.bootconfig.BootConfig/SetBootConfig"
+	BootConfig_SetBootConfigVerified_FullMethodName = "/gnoi.bootconfig.BootConfig/SetBootConfigVerified"
 )
 
 // BootConfigClient is the client API for BootConfig service.
@@ -29,6 +30,7 @@ const (
 type BootConfigClient interface {
 	GetBootConfig(ctx context.Context, in *GetBootConfigRequest, opts ...grpc.CallOption) (*GetBootConfigResponse, error)
 	SetBootConfig(ctx context.Context, in *SetBootConfigRequest, opts ...grpc.CallOption) (*SetBootConfigResponse, error)
+	SetBootConfigVerified(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse], error)
 }
 
 type bootConfigClient struct {
@@ -59,12 +61,26 @@ func (c *bootConfigClient) SetBootConfig(ctx context.Context, in *SetBootConfigR
 	return out, nil
 }
 
+func (c *bootConfigClient) SetBootConfigVerified(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &BootConfig_ServiceDesc.Streams[0], BootConfig_SetBootConfigVerified_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type BootConfig_SetBootConfigVerifiedClient = grpc.BidiStreamingClient[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]
+
 // BootConfigServer is the server API for BootConfig service.
 // All implementations should embed UnimplementedBootConfigServer
 // for forward compatibility.
 type BootConfigServer interface {
 	GetBootConfig(context.Context, *GetBootConfigRequest) (*GetBootConfigResponse, error)
 	SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error)
+	SetBootConfigVerified(grpc.BidiStreamingServer[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]) error
 }
 
 // UnimplementedBootConfigServer should be embedded to have
@@ -79,6 +95,9 @@ func (UnimplementedBootConfigServer) GetBootConfig(context.Context, *GetBootConf
 }
 func (UnimplementedBootConfigServer) SetBootConfig(context.Context, *SetBootConfigRequest) (*SetBootConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBootConfig not implemented")
+}
+func (UnimplementedBootConfigServer) SetBootConfigVerified(grpc.BidiStreamingServer[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method SetBootConfigVerified not implemented")
 }
 func (UnimplementedBootConfigServer) testEmbeddedByValue() {}
 
@@ -136,6 +155,13 @@ func _BootConfig_SetBootConfig_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BootConfig_SetBootConfigVerified_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BootConfigServer).SetBootConfigVerified(&grpc.GenericServerStream[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type BootConfig_SetBootConfigVerifiedServer = grpc.BidiStreamingServer[SetBootConfigVerifiedRequest, SetBootConfigVerifiedResponse]
+
 // BootConfig_ServiceDesc is the grpc.ServiceDesc for BootConfig service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +178,13 @@ var BootConfig_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BootConfig_SetBootConfig_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SetBootConfigVerified",
+			Handler:       _BootConfig_SetBootConfigVerified_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "github.com/openconfig/gnoi/bootconfig/bootconfig.proto",
 }
