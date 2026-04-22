@@ -47,6 +47,9 @@ service SoftwareBundle {
   // It returns an error if the requested software bundle is not installed.
   // The software bundle file will still remain on disk. To remove it, issue
   // a Remove RPC.
+  // Please note that this may kill the connection if the process
+  // hosting the gRPC server reloads, so the server is not guaranteed
+  // to return a response here.
   rpc Deactivate(DeactivateRequest) returns (DeactivateResponse);
 
   // Remove cleans up the software bundle from disk.
