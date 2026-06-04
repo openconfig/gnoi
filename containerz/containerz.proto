@@ -182,7 +182,8 @@ service Containerz {
   // RemovePluginTar removes the plugin tar file (which was transferred via
   // the Deploy RPC) from the system.
   // It returns the NotFound error code if the named plugin tar does not exist.
-  rpc RemovePluginTar(RemovePluginTarRequest) returns (RemovePluginTarResponse) {}
+  rpc RemovePluginTar(RemovePluginTarRequest)
+      returns (RemovePluginTarResponse) {}
 }
 
 message DeployRequest {
