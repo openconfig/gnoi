@@ -178,6 +178,11 @@ service Containerz {
   // RemovePlugin deletes the plugin from the system. If the plugin
   // does not exist this operation is a no-op.
   rpc RemovePlugin(RemovePluginRequest) returns (RemovePluginResponse) {}
+
+  // RemovePluginTar removes the plugin tar file (which was transferred via
+  // the Deploy RPC) from the system.
+  // It returns the NotFound error code if the named plugin tar does not exist.
+  rpc RemovePluginTar(RemovePluginTarRequest) returns (RemovePluginTarResponse) {}
 }
 
 message DeployRequest {
@@ -787,4 +792,13 @@ message RemovePluginRequest {
 }
 
 message RemovePluginResponse {
+}
+
+message RemovePluginTarRequest {
+  // The plugin name. This is the name of the
+  // plugin tarball as provided to the Deploy RPC.
+  string name = 1;
+}
+
+message RemovePluginTarResponse {
 }
