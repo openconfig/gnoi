@@ -1,4 +1,6 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 go_library(
     name = "test",
@@ -18,4 +20,46 @@ go_test(
         "//types",
         "@com_github_golang_protobuf//proto",
     ],
+)
+
+# BlackBoxTest.
+proto_library(
+    name = "blackbox_test_proto",
+    srcs = ["blackbox_test.proto"],
+    deps = ["//types:types_proto",
+            "@go_googleapis//google/rpc:status_proto",
+           ],
+)
+
+go_proto_library(
+    name = "blackbox_test_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    proto = ":blackbox_test_proto",
+    importpath = "github.com/openconfig/gnoi/test",
+    deps = ["//types:types_go_proto",
+     "@go_googleapis//google/rpc:status_go_proto"],
+)
+
+cc_proto_library(
+    name = "blackbox_test_cc_proto",
+    deps = [":blackbox_test_proto"],
+)
+
+# WhiteBoxTest.
+proto_library(
+    name = "whitebox_test_proto",
+    srcs = ["whitebox_test.proto"],
+)
+
+go_proto_library(
+    name = "whitebox_test_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    proto = ":whitebox_test_proto",
+    importpath = "github.com/openconfig/gnoi/test",
+    deps = ["//types:types_go_proto"],
+)
+
+cc_proto_library(
+    name = "whitebox_test_cc_proto",
+    deps = [":whitebox_test_proto"],
 )
