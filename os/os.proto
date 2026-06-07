@@ -199,6 +199,8 @@ message TransferRequest {
   // and 2) the required space in the Target is larger than the available space
   // and 3) the Target is unable to release space for the incoming OS package,
   // then the Target must reply with InstallError->Type->TOO_LARGE.
+  // It is recommended that this field be set, so that the Target can
+  // free up space more precisely.
   uint64 package_size = 3;
 }
 
