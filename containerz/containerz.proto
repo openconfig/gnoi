@@ -33,7 +33,7 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 option go_package = "github.com/openconfig/gnoi/containerz";
-option (types.gnoi_version) = "0.2.0";
+option (types.gnoi_version) = "0.3.0";
 
 service Containerz {
   // Deploy sets a container image on the target. The container is sent as
@@ -43,6 +43,10 @@ service Containerz {
   // plugin, the target must save the file until StartPlugin is called. Whether
   // the registry is local or remote is target and deployment specific. A valid
   // container is one that has passed its checksum.
+  //
+  // When ImageTransfer.cosign_bundle_size is non-zero, the client must stream
+  // a Sigstore cosign bundle after ImageTransferEnd and before the target
+  // completes integrity verification and loads the image.
   // This RPC will return the following error codes in case of error:
   //    - ResourceExhausted if there isn't enough disk space to save the image.
   //    - InvalidArgument sends more data than was advertised or if there is
@@ -191,6 +195,8 @@ message DeployRequest {
     ImageTransfer image_transfer = 1;
     bytes content = 2;
     ImageTransferEnd image_transfer_end = 3;
+    bytes cosign_bundle_content = 4;
+    CosignBundleTransferEnd cosign_bundle_transfer_end = 5;
   }
 }
 
@@ -215,13 +221,27 @@ message ImageTransfer {
 
   // Indicates that the file to be transferred is a plugin.
   bool is_plugin = 5;
+
+  // Optional size (in bytes) of a Sigstore cosign bundle transferred alongside
+  // the container image. When non-zero, the client must stream cosign bundle
+  // bytes after ImageTransferEnd using cosign_bundle_content messages and
+  // terminate the bundle transfer with CosignBundleTransferEnd. The bundle is
+  // typically produced by `cosign sign-blob --bundle`.
+  uint64 cosign_bundle_size = 6;
 }
 
 // ImageTransferEnd indicates to the target that the client is finished sending
-// and therefore no more content will be sent. Any content sent after this
-// message should be discarded. This message serves as a signal to the target
-// to begin integrity verifications on the received data.
+// image content. If ImageTransfer.cosign_bundle_size is zero, no more content
+// will be sent and the target may begin integrity verification on the received
+// image data. If cosign_bundle_size is non-zero, the client must stream the
+// cosign bundle before verification completes.
 message ImageTransferEnd {
+}
+
+// CosignBundleTransferEnd indicates to the target that the client is finished
+// sending cosign bundle content. The target may begin integrity verification
+// on the received image and bundle data.
+message CosignBundleTransferEnd {
 }
 
 message DeployResponse {
@@ -230,6 +250,8 @@ message DeployResponse {
     ImageTransferProgress image_transfer_progress = 2;
     ImageTransferSuccess image_transfer_success = 3;
     google.rpc.Status image_transfer_error = 4;
+    CosignBundleTransferReady cosign_bundle_transfer_ready = 5;
+    CosignBundleTransferProgress cosign_bundle_transfer_progress = 6;
   }
 }
 
@@ -244,6 +266,21 @@ message ImageTransferReady {
 // ImageTransferProgress is sent periodically to the client during the transfer.
 message ImageTransferProgress {
   // The number of bytes transferred so far.
+  uint64 bytes_received = 1;
+}
+
+// CosignBundleTransferReady indicates to the client that the target is ready
+// to receive cosign bundle content after the image transfer completes.
+message CosignBundleTransferReady {
+  // Indicates the size of the chunks that the client should break the bundle
+  // into as it is transferred.
+  int32 chunk_size = 1;
+}
+
+// CosignBundleTransferProgress is sent periodically to the client during the
+// cosign bundle transfer.
+message CosignBundleTransferProgress {
+  // The number of cosign bundle bytes transferred so far.
   uint64 bytes_received = 1;
 }
 
