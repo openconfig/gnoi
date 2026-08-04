@@ -48,10 +48,21 @@ service Containerz {
   // a signed bundle after ImageTransferEnd and before the target completes
   // integrity verification and loads the image. The bundle format and signing
   // mechanism are implementation-specific and opaque to this RPC.
+  //
+  // If signed_bundle_size is non-zero and the target does not support signed
+  // bundle transfer, the target must respond to ImageTransfer with
+  // image_transfer_error (google.rpc.Status code FAILED_PRECONDITION) before
+  // sending ImageTransferReady. The target must not accept image or bundle
+  // content in this case.
+  //
+  // When signed_bundle_size is zero, behavior is unchanged and targets that do
+  // not implement signed bundle transfer remain compatible.
   // This RPC will return the following error codes in case of error:
   //    - ResourceExhausted if there isn't enough disk space to save the image.
   //    - InvalidArgument sends more data than was advertised or if there is
   //          no image file associated with this transfer.
+  //    - FailedPrecondition if signed_bundle_size is non-zero but the target
+  //          does not support signed bundle transfer or verification fails.
   //    - Internal if the container runtime is unable to store the image.
   //    - Unavailable if the client is unable to receive responses from the
   //          server.
@@ -228,6 +239,12 @@ message ImageTransfer {
   // after ImageTransferEnd using signed_bundle_content messages and terminate
   // the bundle transfer with SignedBundleTransferEnd. The bundle contents and
   // signing scheme are opaque to this RPC.
+  //
+  // When non-zero, the target must support signed bundle transfer and
+  // verification. If the target does not support this feature, it must reject
+  // the Deploy stream by sending image_transfer_error with code
+  // FAILED_PRECONDITION in response to ImageTransfer, before
+  // ImageTransferReady.
   uint64 signed_bundle_size = 6;
 }
 
@@ -250,6 +267,12 @@ message DeployResponse {
     ImageTransferReady image_transfer_ready = 1;
     ImageTransferProgress image_transfer_progress = 2;
     ImageTransferSuccess image_transfer_success = 3;
+    // Terminal error for the Deploy stream. Sent when the transfer or
+    // verification fails, or when ImageTransfer requests signed bundle
+    // transfer (signed_bundle_size non-zero) but the target does not support
+    // it. Unsupported signed bundle transfer must be reported here (code
+    // FAILED_PRECONDITION) in response to ImageTransfer, before
+    // ImageTransferReady.
     google.rpc.Status image_transfer_error = 4;
     SignedBundleTransferReady signed_bundle_transfer_ready = 5;
     SignedBundleTransferProgress signed_bundle_transfer_progress = 6;
