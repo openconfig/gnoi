@@ -1,0 +1,253 @@
+//
+// Copyright 2024 Google LLC. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// This Protocol Buffers file defines the PON service in the gnoi.pon
+// package. The PON service provides functionality for managing PON
+// Controller, OLT, and ONU devices including clear, reset, and status
+// operations.
+
+syntax = "proto3";
+
+package gnoi.pon;
+
+import "github.com/openconfig/gnoi/types/types.proto";
+
+option go_package = "github.com/openconfig/gnoi/pon";
+
+option (types.gnoi_version) = "0.1.0";
+
+// PON service definition.
+// This service provides methods for managing PON Controller, OLT, and ONU
+// devices.
+service Pon {
+  // Clear state data for a PON Controller from the database.
+  rpc ControllerClear(ControllerClearRequest) returns (PonResponse);
+
+  // Pause or start the PON Controller.
+  rpc ControllerSetStatus(ControllerSetStatusRequest) returns (PonResponse);
+
+  // Clear the registration disallowed state for faulty ONUs on an OLT.
+  rpc OltAllowOnuRegistration(OltAllowOnuRegistrationRequest)
+      returns (PonResponse);
+
+  // Clear state data for an OLT device from the database.
+  rpc OltClear(OltClearRequest) returns (PonResponse);
+
+  // Send a disable serial number PLOAM message to the ONT (XGS-PON only).
+  rpc OltDisableOnu(OltDisableOnuRequest) returns (PonResponse);
+
+  // Reset the OLT device.
+  rpc OltReset(OltResetRequest) returns (PonResponse);
+
+  // Allow ONU firmware upgrades to continue by clearing the aborted state.
+  rpc OnuClearAbortedUpgrade(OnuClearAbortedUpgradeRequest)
+      returns (PonResponse);
+
+  // Clear state data for an ONU device from the database.
+  rpc OnuClear(OnuClearRequest) returns (PonResponse);
+
+  // Reset the ONU device.
+  rpc OnuReset(OnuResetRequest) returns (PonResponse);
+
+  // Arm or disarm OLT protection switching.
+  rpc OltProtectionArm(OltProtectionArmRequest) returns (PonResponse);
+
+  // Perform an OLT protection switch.
+  rpc OltProtectionSwitch(OltProtectionSwitchRequest) returns (PonResponse);
+
+  // Restart the PON database manager.
+  rpc DbManagerDbRestart(DbManagerDbRestartRequest)
+      returns (DbManagerResponse);
+
+  // Clear PON database manager server statistics.
+  rpc DbManagerServerStatisticsClear(DbManagerServerStatisticsClearRequest)
+      returns (DbManagerResponse);
+
+  // Clear PON database manager client statistics.
+  rpc DbManagerDbClientStatisticsClear(DbManagerDbClientStatisticsClearRequest)
+      returns (DbManagerResponse);
+
+  // Download OLT or ONU firmware to the device.
+  rpc FirmwareDownload(stream FirmwareDownloadRequest) returns (PonResponse);
+
+  // Download ONU Service Configuration. Service config file must always be
+  // a JSON file, otherwise the request will be rejected by the server.
+  rpc OnuServiceConfigDownload(stream OnuServiceConfigDownloadRequest)
+      returns (PonResponse);
+}
+
+// Enum representing the firmware type for download operations.
+enum FWType {
+  FW_TYPE_UNSPECIFIED = 0;    // Unspecified firmware type (invalid)
+  FW_TYPE_OLT_FIRMWARE = 1;   // OLT firmware
+  FW_TYPE_ONU_FIRMWARE = 2;   // ONU firmware
+}
+
+// Common message for streaming file contents to be written on the target
+// device.
+message PonFilePutRequest {
+  oneof request {
+    // Name of the file to be written on the target device.
+    string filename = 1;
+    // Contents of the file to be written, streamed in multiple messages.
+    bytes contents = 2;
+    // Hash of the file contents for verification. Also marks end of stream.
+    types.HashType hash = 3;
+  }
+}
+
+// Request message for FirmwareDownload RPC.
+message FirmwareDownloadRequest {
+  // Type of firmware to download (OLT or ONU)
+  FWType fw_type = 1;
+  // Manufacturer name of the target device
+  string manufacturer = 2;
+  // Firmware version
+  string version = 3;
+  // List of target device models the firmware is compatible with
+  repeated string model_list = 4;
+  // Streaming file contents to be written on the target device
+  PonFilePutRequest file_put_request = 5;
+}
+
+// Request message for OnuServiceConfigDownload RPC.
+message OnuServiceConfigDownloadRequest {
+  // Service config file must always be a JSON file, otherwise the request
+  // will be rejected.
+  // Streaming file contents to be written on the target device
+  PonFilePutRequest file_put_request = 1;
+}
+
+// Enum representing the device state type for clear operations.
+enum DeviceStateType {
+  DEVICE_STATE_UNSPECIFIED = 0;
+  DEVICE_STATE_LOGS = 1;        // Clear logs
+  DEVICE_STATE_STATISTICS = 2;  // Clear statistics
+}
+
+// Enum representing the controller administrative status.
+enum ControllerAdminStatus {
+  ADMIN_STATUS_UNSPECIFIED = 0;
+  ADMIN_STATUS_PAUSE = 1;     // Pause the PON Controller
+  ADMIN_STATUS_START = 2;     // Start the PON Controller
+}
+
+// Request message for ControllerClear RPC.
+message ControllerClearRequest {
+  // Name identifier for the target PON Controller
+  string name = 1;
+  // Type of state data to clear (logs, statistics)
+  DeviceStateType device_state = 2;
+}
+
+// Request message for ControllerSetStatus RPC.
+message ControllerSetStatusRequest {
+  // Name identifier for the target PON Controller
+  string name = 1;
+  // PON Controller administrative status
+  ControllerAdminStatus admin_status = 2;
+}
+
+// Request message for OltAllowOnuRegistration RPC.
+message OltAllowOnuRegistrationRequest {
+  string olt_name = 1;  // Name identifier for the target OLT device
+  // ONU identifier: 'ALL' | ONU Serial Number (XGS-PON) |
+  // ONU MAC Address (EPON)
+  string onu_id = 2;
+}
+
+// Request message for OltClear RPC.
+message OltClearRequest {
+  // Name identifier for the target OLT device
+  string name = 1;
+  // Type of state data to clear (logs, statistics)
+  DeviceStateType device_state = 2;
+}
+
+// Request message for OltDisableOnu RPC.
+message OltDisableOnuRequest {
+  string olt_name = 1;  // Name identifier for the target OLT device
+  // ONU identifier: Serial Number (XGS-PON) | MAC Address (EPON)
+  string onu_id = 2;
+  bool disable = 3;     // true=disable, false=enable the ONU
+}
+
+// Request message for OltReset RPC.
+message OltResetRequest {
+  string name = 1;  // Name identifier for the target OLT device
+}
+
+// Request message for OnuClearAbortedUpgrade RPC.
+message OnuClearAbortedUpgradeRequest {
+  string name = 1;  // Name identifier for the target ONU device
+}
+
+// Request message for OnuClear RPC.
+message OnuClearRequest {
+  // Name identifier for the target ONU device
+  string name = 1;
+  // Type of state data to clear (logs, statistics)
+  DeviceStateType device_state = 2;
+}
+
+// Request message for OnuReset RPC.
+message OnuResetRequest {
+  string name = 1;  // Name identifier for the target ONU device
+}
+
+// Request message for OltProtectionArm RPC.
+message OltProtectionArmRequest {
+  string name = 1;          // Name identifier for the target OLT device
+  // true=arm (default), false=disarm protection switching
+  bool arm = 2;
+  // true=force protection switch, false=normal (default)
+  bool force_switch = 3;
+}
+
+// Request message for OltProtectionSwitch RPC.
+message OltProtectionSwitchRequest {
+  string name = 1;  // Name identifier for the target OLT device
+}
+
+// Request message for DbManagerDbRestart RPC.
+message DbManagerDbRestartRequest {
+  // No input fields required
+}
+
+// Request message for DbManagerServerStatisticsClear RPC.
+message DbManagerServerStatisticsClearRequest {
+  // No input fields required
+}
+
+// Request message for DbManagerDbClientStatisticsClear RPC.
+message DbManagerDbClientStatisticsClearRequest {
+  // No input fields required
+}
+
+// Common response message for PON RPCs.
+message PonResponse {
+  bool success = 1;         // Indicates whether the operation was successful
+  string error_message = 2; // Error message if the operation failed
+}
+
+// Response message for PON Database Manager RPCs.
+// Returns status string and optional error message from the db-manager
+// backend.
+message DbManagerResponse {
+  bool success = 1;         // Indicates whether the operation was successful
+  string status = 2;        // Status string returned by the db-manager backend
+  string error_message = 3; // Error message if the operation failed
+}
