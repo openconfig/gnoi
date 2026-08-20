@@ -783,6 +783,9 @@ message Plugin {
 
   // The configuration the plugin was started for.
   string config = 4;
+
+  // The state of the plugin - enabled or not.
+  bool enabled = 5;
 }
 
 message ListPluginsResponse {
