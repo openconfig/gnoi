@@ -30,7 +30,7 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
-option (types.gnoi_version) = "1.3.0";
+option (types.gnoi_version) = "1.4.0";
 
 // The Healthz service provides access to the status of a path on the
 // system. Addtitionally it allows the implementor to provide path specific
@@ -201,6 +201,11 @@ message CheckRequest {
   // that are relevant to the event that were not automatically
   // collected. Previous artifacts MUST NOT be overwritten.
   string event_id = 2;
+
+  // When initiate_only is set to true, the check is initiated and the
+  // target should return without waiting for the check or artifact
+  // collection to complete.
+  bool initiate_only = 3;
 }
 
 message CheckResponse{

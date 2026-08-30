@@ -879,6 +879,7 @@ type CheckRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          *types.Path            `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
 	EventId       string                 `protobuf:"bytes,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	InitiateOnly  bool                   `protobuf:"varint,3,opt,name=initiate_only,json=initiateOnly,proto3" json:"initiate_only,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -925,6 +926,13 @@ func (x *CheckRequest) GetEventId() string {
 		return x.EventId
 	}
 	return ""
+}
+
+func (x *CheckRequest) GetInitiateOnly() bool {
+	if x != nil {
+		return x.InitiateOnly
+	}
+	return false
 }
 
 type CheckResponse struct {
@@ -1023,10 +1031,11 @@ const file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc = "" +
 	"\x04size\x18\x04 \x01(\x03R\x04size\x12(\n" +
 	"\x04hash\x18\x05 \x01(\v2\x14.gnoi.types.HashTypeR\x04hash\"\x13\n" +
 	"\x11ProtoArtifactType\"\x11\n" +
-	"\x0fArtifactTrailer\"O\n" +
+	"\x0fArtifactTrailer\"t\n" +
 	"\fCheckRequest\x12$\n" +
 	"\x04path\x18\x01 \x01(\v2\x10.gnoi.types.PathR\x04path\x12\x19\n" +
-	"\bevent_id\x18\x02 \x01(\tR\aeventId\"F\n" +
+	"\bevent_id\x18\x02 \x01(\tR\aeventId\x12#\n" +
+	"\rinitiate_only\x18\x03 \x01(\bR\finitiateOnly\"F\n" +
 	"\rCheckResponse\x125\n" +
 	"\x06status\x18\x01 \x01(\v2\x1d.gnoi.healthz.ComponentStatusR\x06status*J\n" +
 	"\x06Status\x12\x16\n" +
@@ -1038,7 +1047,7 @@ const file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc = "" +
 	"\x04List\x12\x19.gnoi.healthz.ListRequest\x1a\x1a.gnoi.healthz.ListResponse\"\x00\x12T\n" +
 	"\vAcknowledge\x12 .gnoi.healthz.AcknowledgeRequest\x1a!.gnoi.healthz.AcknowledgeResponse\"\x00\x12M\n" +
 	"\bArtifact\x12\x1d.gnoi.healthz.ArtifactRequest\x1a\x1e.gnoi.healthz.ArtifactResponse\"\x000\x01\x12B\n" +
-	"\x05Check\x12\x1a.gnoi.healthz.CheckRequest\x1a\x1b.gnoi.healthz.CheckResponse\"\x00B,\xd2>\x051.3.0Z\"github.com/openconfig/gnoi/healthzb\x06proto3"
+	"\x05Check\x12\x1a.gnoi.healthz.CheckRequest\x1a\x1b.gnoi.healthz.CheckResponse\"\x00B,\xd2>\x051.4.0Z\"github.com/openconfig/gnoi/healthzb\x06proto3"
 
 var (
 	file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDescOnce sync.Once
