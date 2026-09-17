@@ -44,23 +44,28 @@ service Containerz {
   // the registry is local or remote is target and deployment specific. A valid
   // container is one that has passed its checksum.
   //
-  // When ImageTransfer.signed_bundle_size is non-zero, the client must stream
-  // a signed bundle after ImageTransferEnd and before the target completes
-  // integrity verification and loads the image. The bundle format and signing
-  // mechanism are implementation-specific and opaque to this RPC.
+  // When ImageTransfer.signed_bundle_size is non-zero, ImageTransfer must
+  // include signed_bundle whose length equals signed_bundle_size. After
+  // ImageTransferEnd the target verifies the signed bundle against the
+  // received image and then loads the image. The bundle format and signing
+  // mechanism are implementation-specific and opaque to this RPC. Typical
+  // Sigstore/cosign bundles are small enough to send in ImageTransfer
+  // without a separate streamed transfer.
   //
   // If signed_bundle_size is non-zero and the target does not support signed
   // bundle transfer, the target must respond to ImageTransfer with
   // image_transfer_error (google.rpc.Status code FAILED_PRECONDITION) before
-  // sending ImageTransferReady. The target must not accept image or bundle
-  // content in this case.
+  // sending ImageTransferReady. The target must not accept image content in
+  // this case.
   //
-  // When signed_bundle_size is zero, behavior is unchanged and targets that do
-  // not implement signed bundle transfer remain compatible.
+  // When signed_bundle_size is zero, signed_bundle must be empty and behavior
+  // is unchanged; targets that do not implement signed bundle transfer remain
+  // compatible.
   // This RPC will return the following error codes in case of error:
   //    - ResourceExhausted if there isn't enough disk space to save the image.
-  //    - InvalidArgument sends more data than was advertised or if there is
-  //          no image file associated with this transfer.
+  //    - InvalidArgument sends more data than was advertised, if there is
+  //          no image file associated with this transfer, or if
+  //          signed_bundle_size does not match signed_bundle.
   //    - FailedPrecondition if signed_bundle_size is non-zero but the target
   //          does not support signed bundle transfer or verification fails.
   //    - Internal if the container runtime is unable to store the image.
@@ -203,12 +208,11 @@ service Containerz {
 }
 
 message DeployRequest {
+  reserved 4, 5;
   oneof request {
     ImageTransfer image_transfer = 1;
     bytes content = 2;
     ImageTransferEnd image_transfer_end = 3;
-    bytes signed_bundle_content = 4;
-    SignedBundleTransferEnd signed_bundle_transfer_end = 5;
   }
 }
 
@@ -234,11 +238,11 @@ message ImageTransfer {
   // Indicates that the file to be transferred is a plugin.
   bool is_plugin = 5;
 
-  // Optional size (in bytes) of a signed bundle transferred alongside the
-  // container image. When non-zero, the client must stream signed bundle bytes
-  // after ImageTransferEnd using signed_bundle_content messages and terminate
-  // the bundle transfer with SignedBundleTransferEnd. The bundle contents and
-  // signing scheme are opaque to this RPC.
+  // Optional size (in bytes) of a signed bundle included in signed_bundle.
+  // When non-zero, signed_bundle must be present and its length must equal
+  // this value. The target uses this field to validate the advertised bundle
+  // size and to reserve disk space before accepting image content. The bundle
+  // contents and signing scheme are opaque to this RPC.
   //
   // When non-zero, the target must support signed bundle transfer and
   // verification. If the target does not support this feature, it must reject
@@ -246,23 +250,23 @@ message ImageTransfer {
   // FAILED_PRECONDITION in response to ImageTransfer, before
   // ImageTransferReady.
   uint64 signed_bundle_size = 6;
+
+  // Optional signed bundle accompanying the container image. Present when
+  // signed_bundle_size is non-zero. Typical Sigstore/cosign bundles are on
+  // the order of 10KB and fit in a single ImageTransfer message.
+  bytes signed_bundle = 7;
 }
 
 // ImageTransferEnd indicates to the target that the client is finished sending
-// image content. If ImageTransfer.signed_bundle_size is zero, no more content
-// will be sent and the target may begin integrity verification on the received
-// image data. If signed_bundle_size is non-zero, the client must stream the
-// signed bundle before verification completes.
+// image content. If ImageTransfer.signed_bundle_size is zero, the target may
+// begin integrity verification on the received image data. If
+// signed_bundle_size is non-zero, the target must verify signed_bundle against
+// the received image before loading it.
 message ImageTransferEnd {
 }
 
-// SignedBundleTransferEnd indicates to the target that the client is finished
-// sending signed bundle content. The target may begin integrity verification
-// on the received image and bundle data.
-message SignedBundleTransferEnd {
-}
-
 message DeployResponse {
+  reserved 5, 6;
   oneof response {
     ImageTransferReady image_transfer_ready = 1;
     ImageTransferProgress image_transfer_progress = 2;
@@ -274,8 +278,6 @@ message DeployResponse {
     // FAILED_PRECONDITION) in response to ImageTransfer, before
     // ImageTransferReady.
     google.rpc.Status image_transfer_error = 4;
-    SignedBundleTransferReady signed_bundle_transfer_ready = 5;
-    SignedBundleTransferProgress signed_bundle_transfer_progress = 6;
   }
 }
 
@@ -290,21 +292,6 @@ message ImageTransferReady {
 // ImageTransferProgress is sent periodically to the client during the transfer.
 message ImageTransferProgress {
   // The number of bytes transferred so far.
-  uint64 bytes_received = 1;
-}
-
-// SignedBundleTransferReady indicates to the client that the target is ready
-// to receive signed bundle content after the image transfer completes.
-message SignedBundleTransferReady {
-  // Indicates the size of the chunks that the client should break the bundle
-  // into as it is transferred.
-  int32 chunk_size = 1;
-}
-
-// SignedBundleTransferProgress is sent periodically to the client during the
-// signed bundle transfer.
-message SignedBundleTransferProgress {
-  // The number of signed bundle bytes transferred so far.
   uint64 bytes_received = 1;
 }
 
