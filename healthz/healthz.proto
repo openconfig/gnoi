@@ -30,7 +30,7 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/openconfig/gnoi/healthz";
 
-option (types.gnoi_version) = "1.3.0";
+option (types.gnoi_version) = "1.4.0";
 
 // The Healthz service provides access to the status of a path on the
 // system. Addtitionally it allows the implementor to provide path specific
@@ -73,6 +73,13 @@ enum Status {
   STATUS_UNSPECIFIED = 0;   // The path doesn't support healthz
   STATUS_HEALTHY = 1;       // The path is healthy
   STATUS_UNHEALTHY = 2;     // The path is unhealthy
+}
+
+enum CollectionState {
+  COLLECTION_STATE_UNSPECIFIED = 0;
+  COLLECTION_STATE_IN_PROGRESS = 1;
+  COLLECTION_STATE_COMPLETE = 2;
+  COLLECTION_STATE_FAILED = 3;
 }
 
 message ArtifactHeader {
@@ -124,6 +131,9 @@ message ComponentStatus {
   // artifact. If unset, the artifact is not scheduled for garbage
   // collection.
   google.protobuf.Timestamp expires = 9;
+
+  // Lifecycle state of artifact collection for this event.
+  CollectionState collection_state = 10;
 }
 
 message ListRequest {
@@ -201,6 +211,11 @@ message CheckRequest {
   // that are relevant to the event that were not automatically
   // collected. Previous artifacts MUST NOT be overwritten.
   string event_id = 2;
+
+  // When initiate_only is set to true, the check is initiated and the
+  // target should return without waiting for the check or artifact
+  // collection to complete.
+  bool initiate_only = 3;
 }
 
 message CheckResponse{
