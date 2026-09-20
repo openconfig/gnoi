@@ -75,6 +75,13 @@ enum Status {
   STATUS_UNHEALTHY = 2;     // The path is unhealthy
 }
 
+enum CollectionState {
+  COLLECTION_STATE_UNSPECIFIED = 0;
+  COLLECTION_STATE_IN_PROGRESS = 1;
+  COLLECTION_STATE_COMPLETE = 2;
+  COLLECTION_STATE_FAILED = 3;
+}
+
 message ArtifactHeader {
   // ID of the artifact.
   string id = 1;
@@ -124,6 +131,9 @@ message ComponentStatus {
   // artifact. If unset, the artifact is not scheduled for garbage
   // collection.
   google.protobuf.Timestamp expires = 9;
+
+  // Lifecycle state of artifact collection for this event.
+  CollectionState collection_state = 10;
 }
 
 message ListRequest {
