@@ -554,8 +554,19 @@ message StartContainerRequest {
   //   location.
   // "net.openconfig.containerz.location.actual": reports the actual location.
   // "net.openconfig.containerz.location.reason": reports the error, if any.
+  // "net.openconfig.containerz.location.backup.status": reports the status
+  //  of the backup container. This is a string version of a
+  //  ListContainerResponse.Status enum value, ("RUNNING", "PRESENT", etc).
   //
-  // These must be reported in the ListContainer reponse in the label field.
+  // These must be reported in the ListContainer response in the label field.
+  //
+  // When running a ListContainer RPC against a system with running
+  // one L_PRIMARY container, one L_BACKUP container, and one L_ALL container,
+  // three ListContainerResponse messages are returned:
+  // - one for the L_PRIMARY container
+  // - one for the L_BACKUP container
+  // - one for the L_ALL container
+  //  (with the "net.openconfig.containerz.location.backup.status" label set).
   Location location = 15;
 
   // Other container properties will be added as it becomes necessary.
