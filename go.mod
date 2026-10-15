@@ -1,6 +1,7 @@
 module github.com/openconfig/gnoi
 
-go 1.24.0
+go 1.25.9
+toolchain go1.25.9
 
 require (
 	github.com/golang/protobuf v1.5.4
