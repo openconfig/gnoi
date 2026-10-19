@@ -73,6 +73,58 @@ func (Status) EnumDescriptor() ([]byte, []int) {
 	return file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDescGZIP(), []int{0}
 }
 
+type CollectionState int32
+
+const (
+	CollectionState_COLLECTION_STATE_UNSPECIFIED CollectionState = 0
+	CollectionState_COLLECTION_STATE_IN_PROGRESS CollectionState = 1
+	CollectionState_COLLECTION_STATE_COMPLETE    CollectionState = 2
+	CollectionState_COLLECTION_STATE_FAILED      CollectionState = 3
+)
+
+// Enum value maps for CollectionState.
+var (
+	CollectionState_name = map[int32]string{
+		0: "COLLECTION_STATE_UNSPECIFIED",
+		1: "COLLECTION_STATE_IN_PROGRESS",
+		2: "COLLECTION_STATE_COMPLETE",
+		3: "COLLECTION_STATE_FAILED",
+	}
+	CollectionState_value = map[string]int32{
+		"COLLECTION_STATE_UNSPECIFIED": 0,
+		"COLLECTION_STATE_IN_PROGRESS": 1,
+		"COLLECTION_STATE_COMPLETE":    2,
+		"COLLECTION_STATE_FAILED":      3,
+	}
+)
+
+func (x CollectionState) Enum() *CollectionState {
+	p := new(CollectionState)
+	*p = x
+	return p
+}
+
+func (x CollectionState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CollectionState) Descriptor() protoreflect.EnumDescriptor {
+	return file_github_com_openconfig_gnoi_healthz_healthz_proto_enumTypes[1].Descriptor()
+}
+
+func (CollectionState) Type() protoreflect.EnumType {
+	return &file_github_com_openconfig_gnoi_healthz_healthz_proto_enumTypes[1]
+}
+
+func (x CollectionState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CollectionState.Descriptor instead.
+func (CollectionState) EnumDescriptor() ([]byte, []int) {
+	return file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDescGZIP(), []int{1}
+}
+
 type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          *types.Path            `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
@@ -273,14 +325,15 @@ type ComponentStatus struct {
 	Subcomponents []*ComponentStatus     `protobuf:"bytes,2,rep,name=subcomponents,proto3" json:"subcomponents,omitempty"`
 	Status        Status                 `protobuf:"varint,3,opt,name=status,proto3,enum=gnoi.healthz.Status" json:"status,omitempty"`
 	// Deprecated: Marked as deprecated in github.com/openconfig/gnoi/healthz/healthz.proto.
-	Healthz       *anypb.Any             `protobuf:"bytes,4,opt,name=healthz,proto3" json:"healthz,omitempty"`
-	Artifacts     []*ArtifactHeader      `protobuf:"bytes,5,rep,name=artifacts,proto3" json:"artifacts,omitempty"`
-	Id            string                 `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
-	Acknowledged  bool                   `protobuf:"varint,7,opt,name=acknowledged,proto3" json:"acknowledged,omitempty"`
-	Created       *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created,proto3" json:"created,omitempty"`
-	Expires       *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=expires,proto3" json:"expires,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Healthz         *anypb.Any             `protobuf:"bytes,4,opt,name=healthz,proto3" json:"healthz,omitempty"`
+	Artifacts       []*ArtifactHeader      `protobuf:"bytes,5,rep,name=artifacts,proto3" json:"artifacts,omitempty"`
+	Id              string                 `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
+	Acknowledged    bool                   `protobuf:"varint,7,opt,name=acknowledged,proto3" json:"acknowledged,omitempty"`
+	Created         *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created,proto3" json:"created,omitempty"`
+	Expires         *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=expires,proto3" json:"expires,omitempty"`
+	CollectionState CollectionState        `protobuf:"varint,10,opt,name=collection_state,json=collectionState,proto3,enum=gnoi.healthz.CollectionState" json:"collection_state,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ComponentStatus) Reset() {
@@ -375,6 +428,13 @@ func (x *ComponentStatus) GetExpires() *timestamppb.Timestamp {
 		return x.Expires
 	}
 	return nil
+}
+
+func (x *ComponentStatus) GetCollectionState() CollectionState {
+	if x != nil {
+		return x.CollectionState
+	}
+	return CollectionState_COLLECTION_STATE_UNSPECIFIED
 }
 
 type ListRequest struct {
@@ -879,6 +939,7 @@ type CheckRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          *types.Path            `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
 	EventId       string                 `protobuf:"bytes,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	InitiateOnly  bool                   `protobuf:"varint,3,opt,name=initiate_only,json=initiateOnly,proto3" json:"initiate_only,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -925,6 +986,13 @@ func (x *CheckRequest) GetEventId() string {
 		return x.EventId
 	}
 	return ""
+}
+
+func (x *CheckRequest) GetInitiateOnly() bool {
+	if x != nil {
+		return x.InitiateOnly
+	}
+	return false
 }
 
 type CheckResponse struct {
@@ -986,7 +1054,7 @@ const file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc = "" +
 	"\x04file\x18e \x01(\v2\x1e.gnoi.healthz.FileArtifactTypeH\x00R\x04file\x127\n" +
 	"\x05proto\x18f \x01(\v2\x1f.gnoi.healthz.ProtoArtifactTypeH\x00R\x05proto\x12.\n" +
 	"\x06custom\x18g \x01(\v2\x14.google.protobuf.AnyH\x00R\x06customB\x0f\n" +
-	"\rartifact_type\"\xba\x03\n" +
+	"\rartifact_type\"\x84\x04\n" +
 	"\x0fComponentStatus\x12$\n" +
 	"\x04path\x18\x01 \x01(\v2\x10.gnoi.types.PathR\x04path\x12C\n" +
 	"\rsubcomponents\x18\x02 \x03(\v2\x1d.gnoi.healthz.ComponentStatusR\rsubcomponents\x12,\n" +
@@ -996,7 +1064,9 @@ const file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc = "" +
 	"\x02id\x18\x06 \x01(\tR\x02id\x12\"\n" +
 	"\facknowledged\x18\a \x01(\bR\facknowledged\x124\n" +
 	"\acreated\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\acreated\x124\n" +
-	"\aexpires\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\aexpires\"f\n" +
+	"\aexpires\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\aexpires\x12H\n" +
+	"\x10collection_state\x18\n" +
+	" \x01(\x0e2\x1d.gnoi.healthz.CollectionStateR\x0fcollectionState\"f\n" +
 	"\vListRequest\x12$\n" +
 	"\x04path\x18\x01 \x01(\v2\x10.gnoi.types.PathR\x04path\x121\n" +
 	"\x14include_acknowledged\x18\x02 \x01(\bR\x13includeAcknowledged\"I\n" +
@@ -1023,22 +1093,28 @@ const file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc = "" +
 	"\x04size\x18\x04 \x01(\x03R\x04size\x12(\n" +
 	"\x04hash\x18\x05 \x01(\v2\x14.gnoi.types.HashTypeR\x04hash\"\x13\n" +
 	"\x11ProtoArtifactType\"\x11\n" +
-	"\x0fArtifactTrailer\"O\n" +
+	"\x0fArtifactTrailer\"t\n" +
 	"\fCheckRequest\x12$\n" +
 	"\x04path\x18\x01 \x01(\v2\x10.gnoi.types.PathR\x04path\x12\x19\n" +
-	"\bevent_id\x18\x02 \x01(\tR\aeventId\"F\n" +
+	"\bevent_id\x18\x02 \x01(\tR\aeventId\x12#\n" +
+	"\rinitiate_only\x18\x03 \x01(\bR\finitiateOnly\"F\n" +
 	"\rCheckResponse\x125\n" +
 	"\x06status\x18\x01 \x01(\v2\x1d.gnoi.healthz.ComponentStatusR\x06status*J\n" +
 	"\x06Status\x12\x16\n" +
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSTATUS_HEALTHY\x10\x01\x12\x14\n" +
-	"\x10STATUS_UNHEALTHY\x10\x022\xf1\x02\n" +
+	"\x10STATUS_UNHEALTHY\x10\x02*\x91\x01\n" +
+	"\x0fCollectionState\x12 \n" +
+	"\x1cCOLLECTION_STATE_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cCOLLECTION_STATE_IN_PROGRESS\x10\x01\x12\x1d\n" +
+	"\x19COLLECTION_STATE_COMPLETE\x10\x02\x12\x1b\n" +
+	"\x17COLLECTION_STATE_FAILED\x10\x032\xf1\x02\n" +
 	"\aHealthz\x12<\n" +
 	"\x03Get\x12\x18.gnoi.healthz.GetRequest\x1a\x19.gnoi.healthz.GetResponse\"\x00\x12?\n" +
 	"\x04List\x12\x19.gnoi.healthz.ListRequest\x1a\x1a.gnoi.healthz.ListResponse\"\x00\x12T\n" +
 	"\vAcknowledge\x12 .gnoi.healthz.AcknowledgeRequest\x1a!.gnoi.healthz.AcknowledgeResponse\"\x00\x12M\n" +
 	"\bArtifact\x12\x1d.gnoi.healthz.ArtifactRequest\x1a\x1e.gnoi.healthz.ArtifactResponse\"\x000\x01\x12B\n" +
-	"\x05Check\x12\x1a.gnoi.healthz.CheckRequest\x1a\x1b.gnoi.healthz.CheckResponse\"\x00B,\xd2>\x051.3.0Z\"github.com/openconfig/gnoi/healthzb\x06proto3"
+	"\x05Check\x12\x1a.gnoi.healthz.CheckRequest\x1a\x1b.gnoi.healthz.CheckResponse\"\x00B,\xd2>\x051.4.0Z\"github.com/openconfig/gnoi/healthzb\x06proto3"
 
 var (
 	file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDescOnce sync.Once
@@ -1052,68 +1128,70 @@ func file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDescGZIP() []byte 
 	return file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDescData
 }
 
-var file_github_com_openconfig_gnoi_healthz_healthz_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_github_com_openconfig_gnoi_healthz_healthz_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_github_com_openconfig_gnoi_healthz_healthz_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_github_com_openconfig_gnoi_healthz_healthz_proto_goTypes = []any{
 	(Status)(0),                   // 0: gnoi.healthz.Status
-	(*GetRequest)(nil),            // 1: gnoi.healthz.GetRequest
-	(*GetResponse)(nil),           // 2: gnoi.healthz.GetResponse
-	(*ArtifactHeader)(nil),        // 3: gnoi.healthz.ArtifactHeader
-	(*ComponentStatus)(nil),       // 4: gnoi.healthz.ComponentStatus
-	(*ListRequest)(nil),           // 5: gnoi.healthz.ListRequest
-	(*ListResponse)(nil),          // 6: gnoi.healthz.ListResponse
-	(*AcknowledgeRequest)(nil),    // 7: gnoi.healthz.AcknowledgeRequest
-	(*AcknowledgeResponse)(nil),   // 8: gnoi.healthz.AcknowledgeResponse
-	(*ArtifactRequest)(nil),       // 9: gnoi.healthz.ArtifactRequest
-	(*ArtifactResponse)(nil),      // 10: gnoi.healthz.ArtifactResponse
-	(*FileArtifactType)(nil),      // 11: gnoi.healthz.FileArtifactType
-	(*ProtoArtifactType)(nil),     // 12: gnoi.healthz.ProtoArtifactType
-	(*ArtifactTrailer)(nil),       // 13: gnoi.healthz.ArtifactTrailer
-	(*CheckRequest)(nil),          // 14: gnoi.healthz.CheckRequest
-	(*CheckResponse)(nil),         // 15: gnoi.healthz.CheckResponse
-	(*types.Path)(nil),            // 16: gnoi.types.Path
-	(*anypb.Any)(nil),             // 17: google.protobuf.Any
-	(*timestamppb.Timestamp)(nil), // 18: google.protobuf.Timestamp
-	(*types.HashType)(nil),        // 19: gnoi.types.HashType
+	(CollectionState)(0),          // 1: gnoi.healthz.CollectionState
+	(*GetRequest)(nil),            // 2: gnoi.healthz.GetRequest
+	(*GetResponse)(nil),           // 3: gnoi.healthz.GetResponse
+	(*ArtifactHeader)(nil),        // 4: gnoi.healthz.ArtifactHeader
+	(*ComponentStatus)(nil),       // 5: gnoi.healthz.ComponentStatus
+	(*ListRequest)(nil),           // 6: gnoi.healthz.ListRequest
+	(*ListResponse)(nil),          // 7: gnoi.healthz.ListResponse
+	(*AcknowledgeRequest)(nil),    // 8: gnoi.healthz.AcknowledgeRequest
+	(*AcknowledgeResponse)(nil),   // 9: gnoi.healthz.AcknowledgeResponse
+	(*ArtifactRequest)(nil),       // 10: gnoi.healthz.ArtifactRequest
+	(*ArtifactResponse)(nil),      // 11: gnoi.healthz.ArtifactResponse
+	(*FileArtifactType)(nil),      // 12: gnoi.healthz.FileArtifactType
+	(*ProtoArtifactType)(nil),     // 13: gnoi.healthz.ProtoArtifactType
+	(*ArtifactTrailer)(nil),       // 14: gnoi.healthz.ArtifactTrailer
+	(*CheckRequest)(nil),          // 15: gnoi.healthz.CheckRequest
+	(*CheckResponse)(nil),         // 16: gnoi.healthz.CheckResponse
+	(*types.Path)(nil),            // 17: gnoi.types.Path
+	(*anypb.Any)(nil),             // 18: google.protobuf.Any
+	(*timestamppb.Timestamp)(nil), // 19: google.protobuf.Timestamp
+	(*types.HashType)(nil),        // 20: gnoi.types.HashType
 }
 var file_github_com_openconfig_gnoi_healthz_healthz_proto_depIdxs = []int32{
-	16, // 0: gnoi.healthz.GetRequest.path:type_name -> gnoi.types.Path
-	4,  // 1: gnoi.healthz.GetResponse.component:type_name -> gnoi.healthz.ComponentStatus
-	11, // 2: gnoi.healthz.ArtifactHeader.file:type_name -> gnoi.healthz.FileArtifactType
-	12, // 3: gnoi.healthz.ArtifactHeader.proto:type_name -> gnoi.healthz.ProtoArtifactType
-	17, // 4: gnoi.healthz.ArtifactHeader.custom:type_name -> google.protobuf.Any
-	16, // 5: gnoi.healthz.ComponentStatus.path:type_name -> gnoi.types.Path
-	4,  // 6: gnoi.healthz.ComponentStatus.subcomponents:type_name -> gnoi.healthz.ComponentStatus
+	17, // 0: gnoi.healthz.GetRequest.path:type_name -> gnoi.types.Path
+	5,  // 1: gnoi.healthz.GetResponse.component:type_name -> gnoi.healthz.ComponentStatus
+	12, // 2: gnoi.healthz.ArtifactHeader.file:type_name -> gnoi.healthz.FileArtifactType
+	13, // 3: gnoi.healthz.ArtifactHeader.proto:type_name -> gnoi.healthz.ProtoArtifactType
+	18, // 4: gnoi.healthz.ArtifactHeader.custom:type_name -> google.protobuf.Any
+	17, // 5: gnoi.healthz.ComponentStatus.path:type_name -> gnoi.types.Path
+	5,  // 6: gnoi.healthz.ComponentStatus.subcomponents:type_name -> gnoi.healthz.ComponentStatus
 	0,  // 7: gnoi.healthz.ComponentStatus.status:type_name -> gnoi.healthz.Status
-	17, // 8: gnoi.healthz.ComponentStatus.healthz:type_name -> google.protobuf.Any
-	3,  // 9: gnoi.healthz.ComponentStatus.artifacts:type_name -> gnoi.healthz.ArtifactHeader
-	18, // 10: gnoi.healthz.ComponentStatus.created:type_name -> google.protobuf.Timestamp
-	18, // 11: gnoi.healthz.ComponentStatus.expires:type_name -> google.protobuf.Timestamp
-	16, // 12: gnoi.healthz.ListRequest.path:type_name -> gnoi.types.Path
-	4,  // 13: gnoi.healthz.ListResponse.statuses:type_name -> gnoi.healthz.ComponentStatus
-	16, // 14: gnoi.healthz.AcknowledgeRequest.path:type_name -> gnoi.types.Path
-	4,  // 15: gnoi.healthz.AcknowledgeResponse.status:type_name -> gnoi.healthz.ComponentStatus
-	3,  // 16: gnoi.healthz.ArtifactResponse.header:type_name -> gnoi.healthz.ArtifactHeader
-	13, // 17: gnoi.healthz.ArtifactResponse.trailer:type_name -> gnoi.healthz.ArtifactTrailer
-	17, // 18: gnoi.healthz.ArtifactResponse.proto:type_name -> google.protobuf.Any
-	19, // 19: gnoi.healthz.FileArtifactType.hash:type_name -> gnoi.types.HashType
-	16, // 20: gnoi.healthz.CheckRequest.path:type_name -> gnoi.types.Path
-	4,  // 21: gnoi.healthz.CheckResponse.status:type_name -> gnoi.healthz.ComponentStatus
-	1,  // 22: gnoi.healthz.Healthz.Get:input_type -> gnoi.healthz.GetRequest
-	5,  // 23: gnoi.healthz.Healthz.List:input_type -> gnoi.healthz.ListRequest
-	7,  // 24: gnoi.healthz.Healthz.Acknowledge:input_type -> gnoi.healthz.AcknowledgeRequest
-	9,  // 25: gnoi.healthz.Healthz.Artifact:input_type -> gnoi.healthz.ArtifactRequest
-	14, // 26: gnoi.healthz.Healthz.Check:input_type -> gnoi.healthz.CheckRequest
-	2,  // 27: gnoi.healthz.Healthz.Get:output_type -> gnoi.healthz.GetResponse
-	6,  // 28: gnoi.healthz.Healthz.List:output_type -> gnoi.healthz.ListResponse
-	8,  // 29: gnoi.healthz.Healthz.Acknowledge:output_type -> gnoi.healthz.AcknowledgeResponse
-	10, // 30: gnoi.healthz.Healthz.Artifact:output_type -> gnoi.healthz.ArtifactResponse
-	15, // 31: gnoi.healthz.Healthz.Check:output_type -> gnoi.healthz.CheckResponse
-	27, // [27:32] is the sub-list for method output_type
-	22, // [22:27] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	18, // 8: gnoi.healthz.ComponentStatus.healthz:type_name -> google.protobuf.Any
+	4,  // 9: gnoi.healthz.ComponentStatus.artifacts:type_name -> gnoi.healthz.ArtifactHeader
+	19, // 10: gnoi.healthz.ComponentStatus.created:type_name -> google.protobuf.Timestamp
+	19, // 11: gnoi.healthz.ComponentStatus.expires:type_name -> google.protobuf.Timestamp
+	1,  // 12: gnoi.healthz.ComponentStatus.collection_state:type_name -> gnoi.healthz.CollectionState
+	17, // 13: gnoi.healthz.ListRequest.path:type_name -> gnoi.types.Path
+	5,  // 14: gnoi.healthz.ListResponse.statuses:type_name -> gnoi.healthz.ComponentStatus
+	17, // 15: gnoi.healthz.AcknowledgeRequest.path:type_name -> gnoi.types.Path
+	5,  // 16: gnoi.healthz.AcknowledgeResponse.status:type_name -> gnoi.healthz.ComponentStatus
+	4,  // 17: gnoi.healthz.ArtifactResponse.header:type_name -> gnoi.healthz.ArtifactHeader
+	14, // 18: gnoi.healthz.ArtifactResponse.trailer:type_name -> gnoi.healthz.ArtifactTrailer
+	18, // 19: gnoi.healthz.ArtifactResponse.proto:type_name -> google.protobuf.Any
+	20, // 20: gnoi.healthz.FileArtifactType.hash:type_name -> gnoi.types.HashType
+	17, // 21: gnoi.healthz.CheckRequest.path:type_name -> gnoi.types.Path
+	5,  // 22: gnoi.healthz.CheckResponse.status:type_name -> gnoi.healthz.ComponentStatus
+	2,  // 23: gnoi.healthz.Healthz.Get:input_type -> gnoi.healthz.GetRequest
+	6,  // 24: gnoi.healthz.Healthz.List:input_type -> gnoi.healthz.ListRequest
+	8,  // 25: gnoi.healthz.Healthz.Acknowledge:input_type -> gnoi.healthz.AcknowledgeRequest
+	10, // 26: gnoi.healthz.Healthz.Artifact:input_type -> gnoi.healthz.ArtifactRequest
+	15, // 27: gnoi.healthz.Healthz.Check:input_type -> gnoi.healthz.CheckRequest
+	3,  // 28: gnoi.healthz.Healthz.Get:output_type -> gnoi.healthz.GetResponse
+	7,  // 29: gnoi.healthz.Healthz.List:output_type -> gnoi.healthz.ListResponse
+	9,  // 30: gnoi.healthz.Healthz.Acknowledge:output_type -> gnoi.healthz.AcknowledgeResponse
+	11, // 31: gnoi.healthz.Healthz.Artifact:output_type -> gnoi.healthz.ArtifactResponse
+	16, // 32: gnoi.healthz.Healthz.Check:output_type -> gnoi.healthz.CheckResponse
+	28, // [28:33] is the sub-list for method output_type
+	23, // [23:28] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_github_com_openconfig_gnoi_healthz_healthz_proto_init() }
@@ -1137,7 +1215,7 @@ func file_github_com_openconfig_gnoi_healthz_healthz_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc), len(file_github_com_openconfig_gnoi_healthz_healthz_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
