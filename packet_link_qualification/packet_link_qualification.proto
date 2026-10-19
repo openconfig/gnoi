@@ -12,7 +12,7 @@ import "google/rpc/status.proto";
 option go_package = 
   "github.com/openconfig/gnoi/packet_link_qualification;linkqual";
 
-option (types.gnoi_version) = "1.1.0";
+option (types.gnoi_version) = "1.2.0";
 
 service LinkQualification {
   // Create will dispatch a create operation for each interface and return.
@@ -150,6 +150,10 @@ message PacketGeneratorConfiguration {
   // Size of packets to inject.
   // if unspecified, the default value is 1500 bytes.
   uint32 packet_size = 2;
+
+  // If true, the Layer 2 MTU of the underlying interface should be set to the
+  // packet size for the duration of the test.
+  bool set_mtu = 3;
 }
 
 // A packet injector implementation defines that the generator side of the link
@@ -165,6 +169,11 @@ message PacketInjectorConfiguration {
   // Size of packets to inject.
   // if unspecified, the default value is 1500 bytes.
   uint32 packet_size = 2;
+
+  // If true, the gnoi service must ensure the L2 MTU of the interface is set
+  // to a value greater than or equal to packet_size for the duration of the
+  // test.
+  bool set_mtu = 3;
 
   // Loopback mode for this qualification.
   oneof loopback_mode {
@@ -186,7 +195,9 @@ message PmdLoopbackConfiguration {
 }
 
 message AsicLoopbackConfiguration {
-  // This is where any l2/l3/l4 match criteria would be described.
+  // The gnoi service must ensure the L2 MTU of the interface is set to a
+  // value greater than or equal to packet_size for the duration of the test.
+  uint32 packet_size = 1;
 }
 // GetRequest returns the status for the provided ids.
 message GetRequest {
