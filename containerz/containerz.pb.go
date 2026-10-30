@@ -3525,12 +3525,12 @@ var File_github_com_openconfig_gnoi_containerz_containerz_proto protoreflect.Fil
 
 const file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc = "" +
 	"\n" +
-	"6github.com/openconfig/gnoi/containerz/containerz.proto\x12\x0fgnoi.containerz\x1a.github.com/openconfig/gnoi/common/common.proto\x1a,github.com/openconfig/gnoi/types/types.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xde\x01\n" +
+	"6github.com/openconfig/gnoi/containerz/containerz.proto\x12\x0fgnoi.containerz\x1a.github.com/openconfig/gnoi/common/common.proto\x1a,github.com/openconfig/gnoi/types/types.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\"\xd2\x01\n" +
 	"\rDeployRequest\x12G\n" +
 	"\x0eimage_transfer\x18\x01 \x01(\v2\x1e.gnoi.containerz.ImageTransferH\x00R\rimageTransfer\x12\x1a\n" +
 	"\acontent\x18\x02 \x01(\fH\x00R\acontent\x12Q\n" +
 	"\x12image_transfer_end\x18\x03 \x01(\v2!.gnoi.containerz.ImageTransferEndH\x00R\x10imageTransferEndB\t\n" +
-	"\arequestJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06\"\x8a\x02\n" +
+	"\arequest\"\x8a\x02\n" +
 	"\rImageTransfer\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03tag\x18\x02 \x01(\tR\x03tag\x12\x1d\n" +
@@ -3540,14 +3540,14 @@ const file_github_com_openconfig_gnoi_containerz_containerz_proto_rawDesc = "" +
 	"\tis_plugin\x18\x05 \x01(\bR\bisPlugin\x12,\n" +
 	"\x12signed_bundle_size\x18\x06 \x01(\x04R\x10signedBundleSize\x12#\n" +
 	"\rsigned_bundle\x18\a \x01(\fR\fsignedBundle\"\x12\n" +
-	"\x10ImageTransferEnd\"\x8a\x03\n" +
+	"\x10ImageTransferEnd\"\xfe\x02\n" +
 	"\x0eDeployResponse\x12W\n" +
 	"\x14image_transfer_ready\x18\x01 \x01(\v2#.gnoi.containerz.ImageTransferReadyH\x00R\x12imageTransferReady\x12`\n" +
 	"\x17image_transfer_progress\x18\x02 \x01(\v2&.gnoi.containerz.ImageTransferProgressH\x00R\x15imageTransferProgress\x12]\n" +
 	"\x16image_transfer_success\x18\x03 \x01(\v2%.gnoi.containerz.ImageTransferSuccessH\x00R\x14imageTransferSuccess\x12F\n" +
 	"\x14image_transfer_error\x18\x04 \x01(\v2\x12.google.rpc.StatusH\x00R\x12imageTransferErrorB\n" +
 	"\n" +
-	"\bresponseJ\x04\b\x05\x10\x06J\x04\b\x06\x10\a\"3\n" +
+	"\bresponse\"3\n" +
 	"\x12ImageTransferReady\x12\x1d\n" +
 	"\n" +
 	"chunk_size\x18\x01 \x01(\x05R\tchunkSize\">\n" +
