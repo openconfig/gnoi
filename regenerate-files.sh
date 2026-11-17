@@ -48,6 +48,8 @@ bazel build //packet_capture:all
 copy_generated "packet_capture" "pcap"
 bazel build //packet_link_qualification:all
 copy_generated "packet_link_qualification" "linkqual"
+bazel build //pon:all
+copy_generated "pon"
 bazel build //software_bundle:all
 copy_generated "software_bundle"
 bazel build //system:all
